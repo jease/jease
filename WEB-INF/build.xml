@@ -1,0 +1,43 @@
+<project default="build" basedir=".">
+
+	<property environment="env" />
+	<property name="build.sysclasspath" value="last" />
+
+	<path id="classpath">
+		<pathelement location="${env.SERVLET_API}" />
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="check" unless="env.SERVLET_API">
+		<fail message="Please point SERVLET_API in your environment to a servlet-api.jar (e.g. tomcat/lib/servlet-api.jar)." />
+	</target>
+
+	<target name="clean">
+		<delete dir="classes" />
+		<mkdir dir="classes" />
+	</target>
+
+	<target name="compile">
+		<javac srcdir="src" destdir="classes" classpathref="classpath" />
+		<copy todir="classes">
+			<fileset dir="src">
+				<exclude name="**/*.java" />
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build" depends="check,clean,compile" />
+	
+	<target name="war" depends="build">
+		<war destfile="../../ROOT.war" webxml="web.xml">
+			<fileset dir="..">
+				<exclude name=".*" />
+				<include name="**/*" />
+			</fileset>
+		</war>
+	</target>
+	
+</project>

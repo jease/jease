@@ -1,0 +1,29 @@
+@page {
+	size: A4;
+    margin-bottom: 100px;
+    @bottom-center {
+    	font-size: 12px;
+        content: counter(page) " / " counter(pages);
+    }
+}
+
+#header,#navigation,#editorial,#footer,.editorial,.news{
+	display: none;
+}
+
+body {
+	background: white;
+}
+
+#main, #content-wrapper {
+	width: 100%;
+	margin: 0px;
+	background: none;
+}
+
+#content {
+	margin-left: 2%;
+	margin-right: 2%;
+	padding: 2%;
+	width: 90%;
+}

@@ -1,0 +1,4 @@
+<?page title="Jease - The Java CMS with Ease" ?>
+<zk>
+	<div use="jease.cms.web.Setup" />
+</zk>

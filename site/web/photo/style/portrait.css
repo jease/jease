@@ -1,0 +1,41 @@
+/* ----------------------------------------------
+	Template Name : Unbound
+	Template Code : S-0023
+	Version : 1.1   
+	Author : Erwin Aligam
+	Author URI : http://www.styleshout.com/       
+	Last Date Modified : January 17, 2010
+ ------------------------------------------------ */
+/* Major modifications by Maik Jablonski (2010) */
+/* Responsive design by Patrick Boisclair (2011) */
+
+#tabs ul {
+	height: auto;
+	border-bottom: 1px solid #bbbbbb;
+}
+
+#tabs ul li {
+	float: none;
+	display: block;
+	margin: 0px 4px;
+	padding: 0px 0px;
+	border-top: 1px solid #bbbbbb;
+}
+
+#tabs ul li a {
+	float: none;
+	display: block;
+	padding: 0px 4px;
+}
+
+#navigation h1 {
+	padding: 0px 2px;
+}
+
+#navigation ul li {
+	padding: 7px 4px;
+}
+
+* html body #navigation ul li {
+	height: 1%;
+}

@@ -1,0 +1,181 @@
+/* ----------------------------------------------
+	Template Name : Unbound
+	Template Code : S-0023
+	Version : 1.1   
+	Author : Erwin Aligam
+	Author URI : http://www.styleshout.com/       
+	Last Date Modified : January 17, 2010
+ ------------------------------------------------ */
+/* Major modifications by Maik Jablonski (2010) */
+/* Responsive design by Patrick Boisclair (2011) */
+
+body {
+	padding: 0;
+	background: none;
+}
+
+h1 {
+	margin-top: 0px;	
+	margin-bottom: 10px;	
+}
+
+h2 {
+	font-size: 135%;
+	margin-top: 20px;	
+	margin-bottom: 10px;	
+}
+
+h3 {
+	font-size: 120%;
+	margin-top: 15px;	
+	margin-bottom: 5px;	
+}
+
+code, pre {
+	margin-right: 8px;
+}
+
+#photos {
+	display: none;
+}
+
+#header {
+	position: static;
+	background: #070707 url(img/bg.jpg) repeat-x;
+	margin: 0;
+	width: 100%;
+	height: auto;
+}
+
+#header img {
+	position: static;
+	height: 0px;
+	width: 0px;
+}
+
+#header h1 a {
+	position: static;
+	font: normal 34px Georgia, 'Times New Roman', Times, serif;
+	color: #111;
+}
+
+#header h1, #header h2 {
+	padding: 4px 8px;
+}
+
+#header h2 {
+	position: static;
+	display: block;
+	padding: 4px 8px;
+	width: 100%;
+}
+
+#header form#search {
+	position: static;
+	margin: 10px 4px;
+}
+
+#header form#search input[type=text] {
+	position: static;
+	margin: 2px 2px;
+}
+
+#tabs {
+	position: static;
+	margin: 2px 4px;
+	width: 100%;
+	}
+
+#tabs ul {
+	float: none;
+	display: block;
+	clear: both;
+
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+#tabs ul li {
+	clear: both;
+	padding: 4px 4px;
+}
+
+#tabs ul li a {
+	padding: 4px 4px 4px 4px;
+}
+
+#tabs ul li.current a {
+	background: #d5d3d6;
+}
+
+#breadcrumb {
+	position: static;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+#wrap {
+	padding-bottom: 20px;
+}
+
+#main-wrapper {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+#main {
+	padding-left: 4px;
+	padding-right: 4px;
+	width: 100%;
+}
+
+#content-wrapper {
+	clear: both;
+	background: none;
+}
+
+#content {
+	margin-right: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+#navigation {
+	position: static;
+	width: 100%;
+	margin-left: 0px;
+	margin-top: 5px;
+	padding: 0px;
+}
+
+#navigation h1 {
+	font-size: 16px;
+	padding: 0px 10px;
+}
+
+#navigation ul {
+	margin: 0px;
+}
+
+#navigation ul li a {
+	padding: 7px 10px;
+}
+
+#navigation ul li a:hover {
+	color: #ffffff;
+	background-color: #A56F38;
+}
+
+#edit {
+	display: none;
+}
+
+#footer {
+	position: static;
+}
+
+.editorial {
+	text-align: left;
+}
+

@@ -1,0 +1,483 @@
+/* ----------------------------------------------
+	Template Name : Unbound
+	Template Code : S-0023
+	Version : 1.1   
+	Author : Erwin Aligam
+	Author URI : http://www.styleshout.com/       
+	Last Date Modified : January 17, 2010
+ ------------------------------------------------ */
+/* Major modifications by Maik Jablonski (2010) */
+/* Responsive design by Patrick Boisclair (2011) */
+
+* {
+	margin: 0;
+	padding: 0;
+	outline: 0;
+}
+
+html {
+	height: 98%;
+}
+
+body {
+	font: 12px/165% "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif;
+	color: #666666;
+	margin: 0;
+	padding: 0 0 10px 0;
+	background: #070707 url(img/bg.jpg) repeat-x;
+	height: 98%;
+}
+
+a {
+	text-decoration: none;
+	color: #A56F38;
+}
+
+a:hover {
+	color: #663333;	
+}
+
+h1, h2, h3, h4 {
+	font: bold 1em/1.5em "Trebuchet MS", Tahoma, Arial, Sans-serif;
+	color: #111;
+	padding: 0px;
+	margin-bottom: 5px;
+}
+
+h1 {
+	font-size: 175%;
+	font-weight: normal;
+}
+
+h2 {
+	font-size: 150%;
+	color: #663333;
+}
+
+h3 {
+	font-size: 125%;
+	font-weight: normal;
+}
+
+h4 {
+	font-size: 110%;
+	font-weight: normal;
+}
+
+hr {
+	border: 1px dotted #bababa;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+p, dl {
+	padding: 0px;
+	margin-bottom: 10px;
+}
+
+ul, ol {
+	margin-bottom: 10px;
+	margin-left: 20px;
+	padding: 0px;
+}
+
+ul {
+	list-style: none;
+}
+
+dt {
+	font-weight: bold;
+	color: #895F30;
+}
+
+dd {
+	padding-left: 0px;
+}
+
+img {
+	border: none;
+}
+
+code, pre {
+	margin-bottom: 10px;
+	padding: 0px;
+	text-align: left;
+	display: block;
+	overflow: auto;
+	font: 500 1em/1.5em 'Lucida Console', 'courier new', monospace;
+	white-space: pre;
+	border: 1px solid #EBEBEB;
+	background: #F0F0F0;
+}
+
+acronym {
+	cursor: help;
+	border-bottom: 1px dotted #895F30;
+}
+
+blockquote {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 10px 10px 10px 40px;
+	border: 1px solid #F0F0F0;
+	background: #F0F0F0 url(img/quote.jpg) no-repeat 5px 5px;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 1.5em;
+	font-style: italic;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: #555;
+}
+
+form {
+	margin-bottom: 10px;
+	padding: 0px;
+	border: 1px solid #f1f1f1;
+	background: #fdfdfd;
+}
+
+input, select {
+	padding: 4px;
+	font: normal 1em Verdana, sans-serif;
+	color: #666666;
+	background: #fff;
+}
+
+textarea {
+	padding: 4px;
+	font: normal 1em Verdana, sans-serif;
+	display: block;
+	color: #666666;
+}
+
+input,textarea,select {
+	background: #fff;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #D4D4D4 #ebebeb #ebebeb #d4d4d4;
+}
+
+input[type=button]:hover,input[type=submit]:hover,input:focus,textarea:focus {
+	border: 1px solid #555;
+}
+
+#photos {
+	z-index: 0;
+}
+
+#header {
+	position: relative;
+	background: #fff url(img/wrap-bg.jpg) no-repeat;
+	margin: 0 auto;
+	width: 940px;
+	height: 300px;
+	text-align: left;
+}
+
+#header img {
+	border: none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 90px;
+	left: 24px;
+	height: 200px;
+	width: 890px;
+	clear: both;	
+}
+
+#header h1 a {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	font: normal 62px Georgia, 'Times New Roman', Times, serif;
+	letter-spacing: -1.5px;
+	color: #070000;
+	text-decoration: none;
+	/* change the values of top and left to adjust the position of the logo*/
+	top: 140px;
+	left: 45px;
+	/* Makes the title come out more since it sometimes blends with the background picture */
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+#header h1, #header h2 {
+	margin: 0px;
+	padding: 0px;
+}
+
+#header h1 a:hover {
+	background: none;
+	border: none;
+}
+
+#header h2 {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	font-family: Georgia, 'Times New Roman', Times, serif;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 1.6em;
+	font-style: italic;
+	text-transform: none;
+	color: #663333;
+	width: 400px;
+	/* change the values of top and left to adjust the position */
+	top: 200px;
+	left: 65px;
+}
+
+#header form#search {
+	position: absolute;
+	top: 25px;
+	right: 25px;
+	padding: 0;
+	margin: 0;
+	width: 210px;
+	height: 26px;
+	background: #fff;
+	border: 1px solid #D8D8D8;
+}
+
+#header form#search input[type=text] {
+	margin: 2px 0 0 4px;
+	width: 200px;
+	background: none;
+	border: none;
+	color: #ABABAB;
+}
+
+#tabs {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	width: 880px;
+	left: 25px;
+	top: 0px;
+}
+
+#tabs ul {
+	float: left;
+	list-style: none;
+	width: 880px;
+	height: 40px;
+	margin: 0;
+	padding: 0;
+}
+
+#tabs ul li {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+#tabs ul li a {
+	float: left;
+	margin: 0;
+	padding: 18px 11px 0 11px;
+	font: bold 14px/35px 'Trebuchet MS', Tahoma, Helvetica, Arial, Geneva, Sans-serif;
+	text-decoration: none;
+	color: #070000;
+}
+
+#tabs ul li a:hover,#tabs ul li a:active {
+	color: #663333;
+	background: none;
+	border: none;
+}
+
+#tabs ul li.current a {
+	color: #000;
+	background: #d5d3d6 url(img/tab-current.jpg) repeat-x;
+	border-bottom: 1px solid #CECECE;
+}
+
+#breadcrumb {
+	position: relative;
+	left: 40px;
+	top: 300px;
+}
+
+#wrap {
+	min-height: 98%;
+    width: 100%;
+	background: #fff url(img/bg.jpg) repeat-x;
+	/* Required for when navigation is longer than page content */
+	padding-bottom: 10px; 
+}
+
+#main-wrapper {
+	background: #fff;
+	width: 100%;
+}
+
+#main {
+	width: 940px;
+	margin: 0 auto;	
+	text-align: left;
+}
+
+#content-wrapper {
+	float: left;
+	width: 100%;
+	background: #fff url(img/content-bg.jpg) no-repeat;
+	margin-bottom: 3em;
+}
+
+#content {
+	margin-right: 300px;
+	padding-left: 40px;
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+
+#content ul li {
+	list-style-image: url(img/bullet.gif);
+}
+
+#navigation {
+	float: left;
+	width: 210px;
+	margin-left: -230px;
+	margin-top: 15px;
+}
+
+#navigation h1 {
+	color: #111;	
+	padding: 0px;
+	margin: 0px;
+}
+
+#navigation ul {
+	text-align: left;
+	margin: 7px 5px 8px -8px;
+	padding: 0px;
+	text-decoration: none;
+	border-top: 1px dotted #bababa;
+}
+
+#navigation ul li {
+	list-style: none;
+	border-bottom: 1px dotted #bababa;	
+	padding: 7px 10px;
+	margin: 0px;
+}
+
+* html body #navigation ul li {
+	height: 1%;
+}
+
+#navigation ul li a {
+	text-decoration: none;
+	background-image: none;
+	background-color: transparent;
+	border: none;
+	color: #666666;
+}
+
+#navigation ul li a:hover {
+	color: #663333;
+}
+
+#navigation ul li .current {
+	color: #A56F38;
+}
+
+#footer {
+	position: relative;
+	clear: both;
+	width: 100%;
+	height: 4em;
+	margin-top: -1.8em;
+	margin-bottom: 0;
+	padding-top: 0.7em;
+	padding-bottom: 0;
+	text-align: center;
+	font: normal 1em/1.6em 'Trebuchet MS', Tahoma, Sans-serif;
+	background: #070707;
+}
+
+#footer a {
+	color: #fff;
+	background: transparent;
+}
+
+.editorial {
+	font-size: .95em;
+	color: #bababa;
+	text-align: right;
+}
+
+.news {
+	border-top: 1px dotted #bababa;
+	margin-top: 15px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+}
+
+.clear {
+	display: inline-block;
+}
+
+.clear:after {
+	display: block; 
+	visibility: hidden; 
+	clear: both; 
+	height: 0; 
+	content: "."; 
+}
+
+.search-pager a {
+  border: 1px solid #ccc;
+  border-color: #ccc #aaa #aaa #ccc;
+  margin: 0 1px;
+  padding: 2px 6px;
+}
+
+.search-pager a:hover {
+	background-color: #A56F38;
+	color: white;
+}
+
+.Discussion form {
+	padding: 10px;
+}
+
+.Discussion input[type=text], .Discussion textarea {
+	width: 100%;
+}
+
+.Gallery a.Image {
+	margin-right: 10px;
+	margin-bottom: 10px;
+	float: left;
+}
+
+.Gallery:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.News .Date {
+	float: right;
+}
+
+.News .Teaser {
+	font-weight: bold;
+}
+
+.Video, .Flash {
+	display: block;
+	width:640px;
+	height:480px;
+}
+
+.Audio {
+	display: block;
+	width:640px;
+	height:30px;
+}

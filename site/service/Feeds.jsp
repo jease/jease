@@ -1,0 +1,2 @@
+<link rel="alternate" type="application/rss+xml"  href="<%= request.getContextPath() %>/site/service/feeds/rss.jsp" title="RSS Feed" />
+<link rel="alternate" type="application/atom+xml" href="<%= request.getContextPath() %>/site/service/feeds/atom.jsp" title="ATOM Feed" />

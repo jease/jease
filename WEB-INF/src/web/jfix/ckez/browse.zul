@@ -1,0 +1,3 @@
+<zk>
+	<div use="jease.cmf.web.node.browser.CKEditorNodeBrowser" />
+</zk>
