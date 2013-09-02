@@ -92,8 +92,8 @@ public class ContentTableModel extends NodeTableModel<Node> {
 	/**
 	 * Which content should be searchable in addition to columns above?
 	 */
-	public Object[] getSearchValues(Content content) {
-		return new Object[] { content.getFulltext() };
+	public Object[] getSearchValues(Node content) {
+		return new Object[] { ((Content) content).getFulltext() };
 	}
 
 	private void visibilityChangePerformed(Content content, Checkbox checkbox) {
