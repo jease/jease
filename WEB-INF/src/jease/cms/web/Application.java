@@ -22,6 +22,7 @@ import jease.Names;
 import jease.Registry;
 import jease.cmf.domain.Node;
 import jease.cmf.service.Nodes;
+import jease.cmf.web.JeaseConfig;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.NodeFilter;
 import jease.cms.domain.User;
@@ -56,6 +57,7 @@ public class Application extends LoginWindow {
 
 	private String queryString = ZK.getQueryString();
 	private String navigationClassName = Navigation.class.getName();
+	private String configurationClassName = Configuration.class.getName();
 
 	public Application() {
 		loginUser(JeaseSession.get(User.class));
@@ -94,7 +96,8 @@ public class Application extends LoginWindow {
 		storeLastSession(user);
 		JeaseSession.set(user);
 		if (ArrayUtils.isNotEmpty(user.getRoots())) {
-			JeaseSession.setConfig(new Configuration());
+			JeaseSession.setConfig((JeaseConfig) Reflections
+					.newInstance(configurationClassName));
 			JeaseSession.setFilter(new NodeFilter(JeaseSession.getConfig()
 					.newNodes()));
 			JeaseSession.setRoots(user.getRoots());
@@ -156,4 +159,9 @@ public class Application extends LoginWindow {
 	public void setNavigation(String classname) {
 		this.navigationClassName = classname;
 	}
+
+	public void setConfiguration(String classname) {
+		this.configurationClassName = classname;
+	}
+
 }
