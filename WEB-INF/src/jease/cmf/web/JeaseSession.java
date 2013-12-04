@@ -20,7 +20,7 @@ import jease.Names;
 import jease.cmf.domain.Node;
 import jease.cmf.web.node.NodeFilter;
 
-public class JeaseSession extends jfix.zk.Sessions {	
+public class JeaseSession extends jfix.zk.Sessions {
 
 	public static void setRoots(Node[] nodes) {
 		set(Names.JEASE_SESSION_ROOTS, nodes);
@@ -31,8 +31,9 @@ public class JeaseSession extends jfix.zk.Sessions {
 	}
 
 	public static void setContainer(Node node) {
-		set(Names.JEASE_SESSION_CONTAINER, node == null ? null : (node.isContainer() ? node
-				: node.getParent()));
+		set(Names.JEASE_SESSION_CONTAINER,
+				node == null ? null : (node.isContainer() ? node : node
+						.getParent()));
 	}
 
 	public static Node getContainer() {
@@ -46,12 +47,12 @@ public class JeaseSession extends jfix.zk.Sessions {
 	public static JeaseConfig getConfig() {
 		return (JeaseConfig) get(Names.JEASE_SESSION_CONFIG);
 	}
-	
+
 	public static NodeFilter getFilter() {
 		return (NodeFilter) get(Names.JEASE_SESSION_FILTER);
 	}
 
-	public static void setFilter(NodeFilter nodeFilter) {		
+	public static void setFilter(NodeFilter nodeFilter) {
 		set(Names.JEASE_SESSION_FILTER, nodeFilter);
 	}
 }
