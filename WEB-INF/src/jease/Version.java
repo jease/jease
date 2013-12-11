@@ -18,8 +18,8 @@ package jease;
 
 public class Version {
 
-	private static int MAJOR = 2;
-	private static int MINOR = 11;
+	private static int MAJOR = 3;
+	private static int MINOR = 0;
 	private static int REVISION = 0;
 
 	public static String getName() {
