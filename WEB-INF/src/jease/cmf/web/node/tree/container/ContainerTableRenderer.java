@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node.tree.container;
 
 import jease.cmf.domain.Node;
@@ -24,17 +24,19 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
 public class ContainerTableRenderer implements ListitemRenderer {
-	
+
 	private ListitemRenderer itemRenderer;
 	private ActionListener dropListener;
-	
-	public ContainerTableRenderer(ListitemRenderer itemRenderer, ActionListener dropListener) {
+
+	public ContainerTableRenderer(ListitemRenderer itemRenderer,
+			ActionListener dropListener) {
 		this.itemRenderer = itemRenderer;
 		this.dropListener = dropListener;
 	}
 
-	public void render(Listitem listitem, Object value) throws Exception {
-		itemRenderer.render(listitem, value);
+	public void render(Listitem listitem, Object value, int index)
+			throws Exception {
+		itemRenderer.render(listitem, value, index);
 		if (value != null) {
 			listitem.setDraggable(Node.class.getSimpleName());
 		}

@@ -22,12 +22,14 @@ import jease.cmf.web.JeaseSession;
 import jfix.zk.Refreshable;
 import jfix.zk.Selectfield;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 public class NodeConstructor extends Selectfield implements Refreshable {
 
 	public NodeConstructor() {
 		setWidth(null);
 		setItemRenderer(new NodeConstructorRenderer());
-		setValues(JeaseSession.getConfig().newNodes());
+		setValues(ArrayUtils.add(JeaseSession.getConfig().newNodes(), 0, null));
 	}
 
 	public Node getSelectedNode() {

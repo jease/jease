@@ -36,7 +36,8 @@ public class NavigationTreeRenderer implements TreeitemRenderer {
 		this.dropListener = dropListener;
 	}
 
-	public void render(Treeitem treeitem, Object value) throws Exception {
+	public void render(Treeitem treeitem, Object value, int index)
+			throws Exception {
 		Node node = (Node) value;
 		treeitem.setLabel(node.getId());
 		treeitem.setTooltiptext(node.getType());

@@ -23,9 +23,12 @@ public class RichTextarea extends jfix.zk.RichTextarea {
 
 	public RichTextarea() {
 		super();
+		setFileBrowserTemplate("~./jfix/ckez/browse.zul");
 		String path = Registry.getParameter(Names.JEASE_CKEDITOR_PATH);
 		if (path != null) {
 			setCustomConfigurationsPath(path);
+		} else {
+			setCustomConfigurationsPath("/cms/config/ckeditor.js");
 		}
 	}
 }

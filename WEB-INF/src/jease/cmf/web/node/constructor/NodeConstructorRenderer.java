@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node.constructor;
 
 import jease.cmf.domain.Node;
@@ -22,11 +22,12 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
 public class NodeConstructorRenderer implements ListitemRenderer {
-	
-	public void render(Listitem listitem, Object value) throws Exception {
+
+	public void render(Listitem listitem, Object value, int index)
+			throws Exception {
 		if (value != null) {
 			listitem.setLabel(((Node) value).getType());
 		}
 	}
-	
+
 }

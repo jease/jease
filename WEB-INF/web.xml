@@ -23,10 +23,10 @@
 
 	<context-param>
 		<description>
-			Which database engine should be used? For db4o, use "jfix.db4o.engine.PersistenceEngineDb4o".
+			Which database engine should be used? For Perst, use "jfix.db4o.engine.PersistenceEnginePerst".
 		</description>
 		<param-name>JEASE_DATABASE_ENGINE</param-name>
-		<param-value>jfix.db4o.engine.PersistenceEnginePerst</param-value>
+		<param-value>jfix.db4o.engine.PersistenceEngineDb4o</param-value>
 	</context-param>
 
 	<listener>

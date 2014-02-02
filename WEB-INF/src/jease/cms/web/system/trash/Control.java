@@ -22,7 +22,6 @@ import jease.cms.service.Revisions;
 import jfix.util.I18N;
 import jfix.zk.ActionListener;
 import jfix.zk.Button;
-import jfix.zk.Div;
 import jfix.zk.Formbox;
 import jfix.zk.Images;
 import jfix.zk.ItemRenderer;
@@ -33,7 +32,7 @@ import jfix.zk.Spinner;
 
 import org.zkoss.zk.ui.event.Event;
 
-public class Control extends Div implements Refreshable {
+public class Control extends Formbox implements Refreshable {
 
 	Spinner trashDays = new Spinner(Revisions.getDays());
 	Button emptyTrash = new Button(I18N.get("Empty_Trash"),
@@ -44,8 +43,6 @@ public class Control extends Div implements Refreshable {
 	Button purge = new Button(I18N.get("Purge"), Images.EditClear);
 
 	public Control() {
-		setWidth("300px");
-
 		type.setItemRenderer(new ItemRenderer() {
 			public String render(Object value) {
 				Content content = (Content) value;
@@ -70,18 +67,15 @@ public class Control extends Div implements Refreshable {
 			}
 		});
 
-		Formbox form = new Formbox();
-		form.add(I18N.get("Trash"));
-		form.add(I18N.get("Days"), trashDays);
-		form.add("", emptyTrash);
+		add(I18N.get("Trash"));
+		add(I18N.get("Days"), trashDays);
+		add("", emptyTrash);
 
-		form.add(I18N.get("Revision"));
-		form.add(I18N.get("Type"), type);
-		form.add(I18N.get("Count"), count);
-		form.add(I18N.get("Days"), days);
-		form.add("", purge);
-
-		appendChild(form);
+		add(I18N.get("Revision"));
+		add(I18N.get("Type"), type);
+		add(I18N.get("Count"), count);
+		add(I18N.get("Days"), days);
+		add("", purge);
 	}
 
 	private Class<Content> getSelectedType() {

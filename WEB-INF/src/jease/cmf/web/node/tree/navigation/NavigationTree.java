@@ -36,6 +36,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
+import org.zkoss.zul.ext.TreeOpenableModel;
 
 public class NavigationTree extends Tree {
 
@@ -52,6 +53,7 @@ public class NavigationTree extends Tree {
 		});
 		setModel(new NavigationTreeModel(JeaseSession.getRoots(),
 				JeaseSession.getFilter()));
+		((TreeOpenableModel) getModel()).addOpenPath(new int[] { 0 });
 	}
 
 	public Object getSelectedValue() {
@@ -108,4 +110,5 @@ public class NavigationTree extends Tree {
 			fireChangeEvent();
 		}
 	}
+
 }

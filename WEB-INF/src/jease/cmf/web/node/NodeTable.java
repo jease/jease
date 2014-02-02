@@ -32,8 +32,6 @@ public class NodeTable extends ObjectTable {
 	private NodeConstructor nodeConstructor;
 
 	public NodeTable() {
-		// Quirk: otherwise content runs out of view
-		setWidth("99%");
 	}
 
 	public void refresh() {
@@ -80,7 +78,7 @@ public class NodeTable extends ObjectTable {
 	}
 
 	public void addChangeListener(final ActionListener actionListener) {
-		addEventListener(Events.ON_CHANGE, new EventListener() {
+		addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			public void onEvent(Event e) throws Exception {
 				actionListener.actionPerformed(e);
 			}

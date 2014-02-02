@@ -80,7 +80,6 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			getButtons().appendChild(viewContent);
 		}
 
-		revisionSelection.setNullable(false);
 		revisionSelection.addSelectListener(new ActionListener() {
 			public void actionPerformed(Event event) {
 				peek(Revisions.checkout(getNode(),

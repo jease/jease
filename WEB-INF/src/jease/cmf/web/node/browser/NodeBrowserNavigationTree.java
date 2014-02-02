@@ -21,12 +21,15 @@ import jease.cmf.web.node.tree.navigation.NavigationTreeModel;
 import jease.cmf.web.node.tree.navigation.NavigationTreeRenderer;
 import jfix.zk.Tree;
 
+import org.zkoss.zul.ext.TreeOpenableModel;
+
 public class NodeBrowserNavigationTree extends Tree {
 
 	public NodeBrowserNavigationTree() {
 		setWidth("300px");
 		setModel(new NavigationTreeModel(JeaseSession.getRoots(),
 				JeaseSession.getFilter()));
+		((TreeOpenableModel) getModel()).addOpenPath(new int[] { 0 });
 		setItemRenderer(new NavigationTreeRenderer());
 		refresh();
 	}

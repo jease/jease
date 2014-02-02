@@ -58,11 +58,8 @@ public class TransitEditor extends ContentEditor<Transit> {
 		uri.setSelection(getPathnames(ZK.getRealPath("/")), getObject()
 				.getURI());
 		if (getNode().getURI() != null) {
-			uri.setDisabled(true);
 			file.setMedia(getNode().getId(), getNode().getContentType(),
 					getNode().getFile());
-		} else {
-			uri.setDisabled(false);
 		}
 		forward.setChecked(getNode().isForward());
 	}

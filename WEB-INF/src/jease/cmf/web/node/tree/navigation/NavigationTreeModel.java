@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node.tree.navigation;
 
 import jease.cmf.domain.Node;
@@ -26,7 +26,7 @@ import org.zkoss.zul.AbstractTreeModel;
 public class NavigationTreeModel extends AbstractTreeModel {
 
 	private NodeFilter nodeFilter;
-	
+
 	public NavigationTreeModel(Node[] roots, NodeFilter nodeFilter) {
 		super(roots);
 		this.nodeFilter = nodeFilter;

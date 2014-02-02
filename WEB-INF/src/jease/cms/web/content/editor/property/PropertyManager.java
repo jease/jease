@@ -158,7 +158,7 @@ public class PropertyManager extends Formbox {
 		add("", controls);
 		Image trash = new Image(Images.UserTrashFull);
 		trash.setDroppable(toString());
-		trash.addEventListener(Events.ON_DROP, new EventListener() {
+		trash.addEventListener(Events.ON_DROP, new EventListener<Event>() {
 			public void onEvent(Event evt) throws Exception {
 				DropEvent dropEvent = (DropEvent) evt;
 				getRows().removeChild(
@@ -180,13 +180,13 @@ public class PropertyManager extends Formbox {
 			label.setStyle("cursor: pointer; font-style: italic;");
 			label.setDraggable(toString());
 			label.setDroppable(toString());
-			label.addEventListener(Events.ON_DROP, new EventListener() {
+			label.addEventListener(Events.ON_DROP, new EventListener<Event>() {
 				public void onEvent(Event evt) throws Exception {
 					DropEvent dropEvent = (DropEvent) evt;
 					swapRows(dropEvent.getDragged(), dropEvent.getTarget());
 				}
 			});
-			label.addEventListener(Events.ON_CLICK, new EventListener() {
+			label.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				public void onEvent(Event evt) throws Exception {
 					convertLabelToTextfield(label);
 				}
@@ -201,7 +201,7 @@ public class PropertyManager extends Formbox {
 
 	private void convertLabelToTextfield(final Label label) {
 		final Textfield textfield = new Textfield(label.getValue());
-		EventListener labelEditPerformed = new EventListener() {
+		EventListener<Event> labelEditPerformed = new EventListener<Event>() {
 			public void onEvent(Event evt) throws Exception {
 				String value = textfield.getValue();
 				label.setValue(value);

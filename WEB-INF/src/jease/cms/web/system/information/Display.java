@@ -34,6 +34,7 @@ public class Display extends Div implements Refreshable {
 		form.add(I18N.get("Information"));
 		form.add(I18N.get("Version"), new Label(Version.getName()));
 		form.add("");
+		form.add("");
 		form.add(I18N.get("Database"));
 		form.add(I18N.get("Path"),
 				new Label(Informatons.getDatabaseDirectory()));

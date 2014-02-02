@@ -127,13 +127,16 @@ public class Application extends LoginWindow {
 	}
 
 	private void initBrowserInfo() {
-		getRoot().addEventListener(Events.ON_CLIENT_INFO, new EventListener() {
-			public void onEvent(Event evt) throws Exception {
-				ClientInfoEvent ce = (ClientInfoEvent) evt;
-				JeaseSession.set(Names.JEASE_CMS_HEIGHT, ce.getDesktopHeight());
-				JeaseSession.set(Names.JEASE_CMS_WIDTH, ce.getDesktopWidth());
-			}
-		});
+		getRoot().addEventListener(Events.ON_CLIENT_INFO,
+				new EventListener<Event>() {
+					public void onEvent(Event evt) throws Exception {
+						ClientInfoEvent ce = (ClientInfoEvent) evt;
+						JeaseSession.set(Names.JEASE_CMS_HEIGHT,
+								ce.getDesktopHeight());
+						JeaseSession.set(Names.JEASE_CMS_WIDTH,
+								ce.getDesktopWidth());
+					}
+				});
 	}
 
 	private void notifyAboutMaintenance(User user) {
