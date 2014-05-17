@@ -33,13 +33,10 @@ public class Display extends Div implements Refreshable {
 		Formbox form = new Formbox();
 		form.add(I18N.get("Information"));
 		form.add(I18N.get("Version"), new Label(Version.getName()));
-		form.add("");
-		form.add("");
 		form.add(I18N.get("Database"));
 		form.add(I18N.get("Path"),
 				new Label(Informatons.getDatabaseDirectory()));
 		form.add(I18N.get("Size"), new Label(Informatons.getDatabaseSize()));
-		form.add("");
 		form.add(I18N.get("Objects"));
 		form.add(I18N.get("Count"), new Label(""
 				+ Informatons.getDatabaseObjectCount().size()));
