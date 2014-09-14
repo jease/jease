@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,11 @@ package jease.cms.web.content.editor;
 import jease.cms.domain.Gallery;
 import jease.cms.web.component.RichTextarea;
 import jfix.util.I18N;
-import jfix.zk.Checkbox;
 import jfix.zk.Div;
-import jfix.zk.Label;
 import jfix.zk.Spinner;
+
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Label;
 
 public class GalleryEditor extends ContentEditor<Gallery> {
 

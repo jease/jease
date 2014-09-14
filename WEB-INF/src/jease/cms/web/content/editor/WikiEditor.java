@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,11 +18,12 @@ package jease.cms.web.content.editor;
 
 import jease.cms.domain.Wiki;
 import jfix.util.I18N;
-import jfix.zk.Codearea;
+
+import org.zkoss.codemirror.Codemirror;
 
 public class WikiEditor extends ContentEditor<Wiki> {
 
-	Codearea content = new Codearea();
+	Codemirror content = new Codemirror();
 
 	public WikiEditor() {
 		content.setHeight((100 + getDesktopHeight() / 3) + "px");
@@ -34,11 +35,11 @@ public class WikiEditor extends ContentEditor<Wiki> {
 	}
 
 	public void load() {
-		content.setText(getNode().getContent());
+		content.setValue(getNode().getContent());
 	}
 
 	public void save() {
-		getNode().setContent(content.getText());
+		getNode().setContent(content.getValue());
 	}
 
 	public void validate() {

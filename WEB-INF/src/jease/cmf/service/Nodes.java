@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,14 +18,12 @@ package jease.cmf.service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
 import jfix.db4o.Database;
-import jfix.functor.Command;
-import jfix.functor.Predicate;
-import jfix.functor.Procedure;
-import jfix.functor.Supplier;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -41,21 +39,14 @@ public class Nodes {
 
 	private static Node root = queryRoot();
 
-	private static Supplier<Map<String, Node>> nodesByPath = new Supplier<Map<String, Node>>() {
-		public Map<String, Node> get() {
-			return new ConcurrentHashMap<String, Node>();
-		}
-	};
+	private static Supplier<Map<String, Node>> nodesByPath = ConcurrentHashMap::new;
 
 	/**
 	 * Returns the root node derived by a database-query.
 	 */
 	public static Node queryRoot() {
-		return Database.queryUnique(Node.class, new Predicate<Node>() {
-			public boolean test(Node node) {
-				return node.getParent() == null;
-			}
-		});
+		return Database.queryUnique(Node.class,
+				$node -> $node.getParent() == null);
 	}
 
 	/**
@@ -135,14 +126,14 @@ public class Nodes {
 	 * Saves all changes of a given node to database.
 	 */
 	public static void save(Node node) {
-		Processor.save.execute(node);
+		Processor.save.accept(node);
 	}
 
 	/**
 	 * Deletes given node from repository.
 	 */
 	public static void delete(Node node) {
-		Processor.delete.execute(node);
+		Processor.delete.accept(node);
 	}
 
 	/**
@@ -156,30 +147,26 @@ public class Nodes {
 		private static Delete delete = new Delete();
 		private static Traverse traverse = new Traverse();
 
-		public static class Save implements Procedure<Node> {
-			public void execute(final Node node) {
-				Database.write(new Command() {
-					public void run() {
-						node.markChanged();
-						root.processChangedNodes(traverse);
-					}
+		public static class Save implements Consumer<Node> {
+			public void accept(final Node node) {
+				Database.write(() -> {
+					node.markChanged();
+					root.processChangedNodes(traverse);
 				});
 			}
 		}
 
-		public static class Delete implements Procedure<Node> {
-			public void execute(final Node node) {
-				Database.write(new Command() {
-					public void run() {
-						node.detach();
-						root.processChangedNodes(traverse);
-					}
+		public static class Delete implements Consumer<Node> {
+			public void accept(final Node node) {
+				Database.write(() -> {
+					node.detach();
+					root.processChangedNodes(traverse);
 				});
 			}
 		}
 
-		public static class Traverse implements Procedure<Node> {
-			public void execute(Node node) {
+		public static class Traverse implements Consumer<Node> {
+			public void accept(Node node) {
 				if (isRooted(node)) {
 					Database.save(node);
 				} else {

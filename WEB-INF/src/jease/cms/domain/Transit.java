@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,9 @@
  */
 package jease.cms.domain;
 
+import java.io.IOException;
 import java.net.URI;
 
-import jfix.util.Files;
 import jfix.util.Urls;
 
 /**
@@ -47,7 +47,14 @@ public class Transit extends Content {
 		if (uri != null) {
 			java.io.File file = new java.io.File(URI.create(uri));
 			try {
-				Files.createMissing(file);
+				if (!file.exists()) {
+					try {
+						file.getParentFile().mkdirs();
+						file.createNewFile();
+					} catch (IOException e) {
+						throw new RuntimeException(e.getMessage(), e);
+					}
+				}
 			} catch (RuntimeException e) {
 				return null;
 			}

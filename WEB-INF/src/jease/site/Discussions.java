@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -52,9 +52,9 @@ public class Discussions {
 		}
 
 		// Escape all user input
-		subject = StringEscapeUtils.escapeXml(subject);
-		author = StringEscapeUtils.escapeXml(author);
-		comment = StringEscapeUtils.escapeXml(comment);
+		subject = StringEscapeUtils.escapeHtml4(subject);
+		author = StringEscapeUtils.escapeHtml4(author);
+		comment = StringEscapeUtils.escapeHtml4(comment);
 
 		// Save comment to database.
 		discussion.addComment(subject, author, comment, visible);

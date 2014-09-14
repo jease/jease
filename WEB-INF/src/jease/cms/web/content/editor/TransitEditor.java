@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,15 +23,14 @@ import java.util.List;
 
 import jease.cms.domain.Transit;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Checkbox;
 import jfix.zk.Combobox;
 import jfix.zk.Mediafield;
 import jfix.zk.ZK;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Checkbox;
 
 public class TransitEditor extends ContentEditor<Transit> {
 
@@ -41,11 +40,7 @@ public class TransitEditor extends ContentEditor<Transit> {
 
 	public TransitEditor() {
 		file.setHeight((100 + getDesktopHeight() / 3) + "px");
-		uri.addSelectListener(new ActionListener() {
-			public void actionPerformed(Event paramEvent) {
-				pathSelected();
-			}
-		});
+		uri.addEventListener(Events.ON_SELECT, event -> pathSelected());
 	}
 
 	public void init() {
@@ -84,10 +79,10 @@ public class TransitEditor extends ContentEditor<Transit> {
 		String pathname = (String) uri.getValue();
 		if (StringUtils.isNotBlank(pathname)) {
 			String name = FilenameUtils.getName(pathname);
-			if (id.isEmpty()) {
+			if (StringUtils.isEmpty(id.getValue())) {
 				id.setText(name);
 			}
-			if (title.isEmpty()) {
+			if (StringUtils.isEmpty(title.getValue())) {
 				title.setText(FilenameUtils.removeExtension(name));
 			}
 		}

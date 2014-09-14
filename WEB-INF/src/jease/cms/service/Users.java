@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@ import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
 import jease.cms.domain.User;
 import jfix.db4o.Database;
-import jfix.functor.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,11 +31,7 @@ public class Users {
 	 * Returns all users with administration rights.
 	 */
 	public static List<User> queryAdministrators() {
-		return Database.query(User.class, new Predicate<User>() {
-			public boolean test(User user) {
-				return user.isAdministrator();
-			}
-		});
+		return Database.query(User.class, User::isAdministrator);
 	}
 
 	/**
@@ -45,11 +40,8 @@ public class Users {
 	 * retrieve themselfes.
 	 */
 	public static List<User> queryModifiableByUser(final User user) {
-		return Database.query(User.class, new Predicate<User>() {
-			public boolean test(User testUser) {
-				return user.isAdministrator() || user == testUser;
-			}
-		});
+		return Database.query(User.class, $user -> user.isAdministrator()
+				|| user == $user);
 	}
 
 	/**
@@ -57,34 +49,26 @@ public class Users {
 	 * login is also compared to the email address of the user.
 	 */
 	public static User queryByLogin(final String login, final String password) {
-		return Database.queryUnique(User.class, new Predicate<User>() {
-			public boolean test(User user) {
-				return (login.equals(user.getLogin()) || login.equals(user
-						.getEmail())) && user.hasPassword(password);
-			}
-		});
+		return Database.queryUnique(
+				User.class,
+				$user -> (login.equals($user.getLogin()) || login.equals($user
+						.getEmail())) && $user.hasPassword(password));
 	}
 
 	/**
 	 * Returns a unique user for given login
 	 */
 	public static User queryByLogin(final String login) {
-		return Database.queryUnique(User.class, new Predicate<User>() {
-			public boolean test(User user) {
-				return login.equals(user.getLogin());
-			}
-		});
+		return Database.queryUnique(User.class,
+				$user -> login.equals($user.getLogin()));
 	}
 
 	/**
 	 * Returns a unique user for given email address.
 	 */
 	public static User queryByEmail(final String email) {
-		return Database.queryUnique(User.class, new Predicate<User>() {
-			public boolean test(User user) {
-				return email.equals(user.getEmail());
-			}
-		});
+		return Database.queryUnique(User.class,
+				$user -> email.equals($user.getEmail()));
 	}
 
 	/**
@@ -93,14 +77,12 @@ public class Users {
 	 */
 	public static boolean isIdentityUnique(final User user, final String login,
 			final String email) {
-		return Database.isUnique(user, new Predicate<User>() {
-			public boolean test(User user) {
-				return (StringUtils.isNotBlank(login) && login.equals(user
+		return Database.isUnique(
+				user,
+				$user -> (StringUtils.isNotBlank(login) && login.equals($user
 						.getLogin()))
-						|| (StringUtils.isNotBlank(email) && email.equals(user
-								.getEmail()));
-			}
-		});
+						|| (StringUtils.isNotBlank(email) && email.equals($user
+								.getEmail())));
 	}
 
 	/**
@@ -114,11 +96,8 @@ public class Users {
 	}
 
 	private static List<Content> queryContentsEditedByUser(final User user) {
-		return Database.query(Content.class, new Predicate<Content>() {
-			public boolean test(Content content) {
-				return content.getEditor() == user;
-			}
-		});
+		return Database.query(Content.class,
+				$content -> $content.getEditor() == user);
 	}
 
 	/**

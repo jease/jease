@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,18 +19,19 @@ package jease.cms.web.system.role;
 import jease.cms.domain.Role;
 import jease.cms.service.Contents;
 import jfix.db4o.Database;
-import jfix.util.Arrays;
 import jfix.util.I18N;
-import jfix.zk.Checkbox;
 import jfix.zk.Checklist;
 import jfix.zk.ItemRenderer;
 import jfix.zk.ObjectEditor;
 import jfix.zk.Scrollbox;
-import jfix.zk.Textfield;
+
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Textbox;
 
 public class Editor extends ObjectEditor<Role> {
 
-	Textfield name = new Textfield();
+	Textbox name = new Textbox();
 	Checkbox administrator = new Checkbox();
 	Checklist types = new Checklist();
 
@@ -59,7 +60,7 @@ public class Editor extends ObjectEditor<Role> {
 	public void save() {
 		getObject().setName(name.getText());
 		getObject().setAdministrator(administrator.isChecked());
-		getObject().setTypes(Arrays.cast(types.getSelected(), String.class));
+		getObject().setTypes((String[]) types.getSelected());
 		Database.save(getObject());
 	}
 
@@ -68,7 +69,8 @@ public class Editor extends ObjectEditor<Role> {
 	}
 
 	public void validate() {
-		validate(name.isEmpty(), I18N.get("Name_is_required"));
+		validate(StringUtils.isEmpty(name.getValue()),
+				I18N.get("Name_is_required"));
 	}
 
 }

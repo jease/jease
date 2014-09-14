@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,12 +43,8 @@ public class Informatons {
 	}
 
 	public static Map<Class<?>, Integer> getDatabaseClassCount() {
-		Map<Class<?>, Integer> resultMap = new TreeMap<Class<?>, Integer>(
-				new Comparator<Class<?>>() {
-					public int compare(Class<?> o1, Class<?> o2) {
-						return o1.getName().compareTo(o2.getName());
-					}
-				});
+		Map<Class<?>, Integer> resultMap = new TreeMap<>(
+				Comparator.comparing(Class::getName));
 		for (Persistent obj : Database.query(Persistent.class)) {
 			Class<?> clazz = obj.getClass();
 			if (!resultMap.containsKey(clazz)) {

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,46 +20,39 @@ import jease.cmf.web.node.NodeTable;
 import jease.cmf.web.node.flat.FlatDesktop;
 import jease.cmf.web.node.tree.TreeDesktop;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
 import jfix.zk.Div;
-import jfix.zk.Radiobutton;
 import jfix.zk.Radiogroup;
 import jfix.zk.Refreshable;
-import jfix.zk.Row;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Radio;
 
 public class Jease extends Div implements Refreshable {
 
 	private Div workspace = new Div();
-	private Row accessory = new Row();
-	private Radiobutton viewTreeDesktop = new Radiobutton(I18N.get("Navigation"));
-	private Radiobutton viewFlatDesktop = new Radiobutton(I18N.get("Search"));
+	private Div accessory = new Div();
+	private Radio viewTreeDesktop = new Radio(I18N.get("Navigation"));
+	private Radio viewFlatDesktop = new Radio(I18N.get("Search"));
 	private TreeDesktop treeDesktop = new TreeDesktop();
 	private FlatDesktop flatDesktop = new FlatDesktop();
-	
+
 	public Jease() {
 		setWidth("100%");
 
 		workspace.setWidth("100%");
 		workspace.appendChild(treeDesktop);
 
-		accessory.setPack("stretch");
 		accessory.setWidth("100%");
-		accessory.appendChild(new Radiogroup(viewTreeDesktop,
-				viewFlatDesktop));
+		accessory.appendChild(new Radiogroup(viewTreeDesktop, viewFlatDesktop));
 
 		appendChild(workspace);
 		appendChild(accessory);
 
-		ActionListener desktopSwitch = new ActionListener() {
-			public void actionPerformed(Event event) {
-				switchDesktop();
-			}
-		};
-		viewFlatDesktop.addCheckListener(desktopSwitch);
-		viewTreeDesktop.addCheckListener(desktopSwitch);
+		viewFlatDesktop.addEventListener(Events.ON_CHECK,
+				$event -> switchDesktop());
+		viewTreeDesktop.addEventListener(Events.ON_CHECK,
+				$event -> switchDesktop());
 		viewTreeDesktop.setChecked(true);
 	}
 
@@ -73,11 +66,11 @@ public class Jease extends Div implements Refreshable {
 	public void refresh() {
 		((Refreshable) workspace.getFirstChild()).refresh();
 	}
-	
+
 	protected Component getWorkspace() {
 		return workspace;
 	}
-	
+
 	protected Component getAccessory() {
 		return accessory;
 	}

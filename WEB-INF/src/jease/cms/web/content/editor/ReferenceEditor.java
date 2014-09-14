@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,12 +23,12 @@ import jease.cms.domain.Content;
 import jease.cms.domain.Reference;
 import jease.cms.service.Contents;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Button;
 import jfix.zk.Images;
 import jfix.zk.Selectbutton;
 
-import org.zkoss.zk.ui.event.Event;
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
 
 public class ReferenceEditor extends ContentEditor<Reference> {
 
@@ -36,16 +36,9 @@ public class ReferenceEditor extends ContentEditor<Reference> {
 	Button browse = new Button(I18N.get("Browser"), Images.UserHome);
 
 	public ReferenceEditor() {
-		content.addSelectListener(new ActionListener() {
-			public void actionPerformed(Event evt) {
-				contentSelected((Content) content.getSelectedValue());
-			}
-		});
-		browse.addClickListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				browsePerformed();
-			}
-		});
+		content.addEventListener(Events.ON_SELECT,
+				event -> contentSelected((Content) content.getSelectedValue()));
+		browse.addEventListener(Events.ON_CLICK, event -> browsePerformed());
 	}
 
 	public void init() {
@@ -70,10 +63,10 @@ public class ReferenceEditor extends ContentEditor<Reference> {
 
 	private void contentSelected(Content content) {
 		if (content != null) {
-			if (id.isEmpty()) {
+			if (StringUtils.isEmpty(id.getValue())) {
 				id.setText(content.getId());
 			}
-			if (title.isEmpty()) {
+			if (StringUtils.isEmpty(title.getValue())) {
 				title.setText(content.getTitle());
 			}
 		}
@@ -82,13 +75,10 @@ public class ReferenceEditor extends ContentEditor<Reference> {
 	private void browsePerformed() {
 		final NodeBrowserWindow nodeBrowserWindow = new NodeBrowserWindow(
 				(Node) content.getSelectedValue());
-		nodeBrowserWindow.addCloseListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				if (nodeBrowserWindow.getSelectedNode() != null) {
-					content.setSelectedValue(nodeBrowserWindow
-							.getSelectedNode());
-					contentSelected((Content) content.getSelectedValue());
-				}
+		nodeBrowserWindow.addEventListener(Events.ON_CLOSE, evt -> {
+			if (nodeBrowserWindow.getSelectedNode() != null) {
+				content.setSelectedValue(nodeBrowserWindow.getSelectedNode());
+				contentSelected((Content) content.getSelectedValue());
 			}
 		});
 		getRoot().appendChild(nodeBrowserWindow);

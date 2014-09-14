@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,17 +18,27 @@ package jease.cms.web.content.editor;
 
 import jease.cms.domain.Access;
 import jfix.util.I18N;
-import jfix.zk.Datetimefield;
-import jfix.zk.Passwordfield;
-import jfix.zk.Textfield;
+
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Textbox;
 
 public class AccessEditor extends ContentEditor<Access> {
 
-	Textfield login = new Textfield();
-	Passwordfield password = new Passwordfield();
-	Passwordfield passwordRepeat = new Passwordfield();
-	Datetimefield start = new Datetimefield();
-	Datetimefield stop = new Datetimefield();
+	Textbox login = new Textbox();
+	Textbox password = new Textbox();
+	Textbox passwordRepeat = new Textbox();
+	Datebox start = new Datebox();
+	Datebox stop = new Datebox();
+
+	public AccessEditor() {
+		password.setType("password");
+		passwordRepeat.setType("password");
+		start.setLenient(false);
+		start.setFormat("short+short");
+		stop.setLenient(false);
+		stop.setFormat("short+short");
+	}
 
 	public void init() {
 		add(I18N.get("Login"), login);
@@ -54,8 +64,10 @@ public class AccessEditor extends ContentEditor<Access> {
 	}
 
 	public void validate() {
-		validate(login.isEmpty(), I18N.get("Login_is_required"));
-		validate(password.isEmpty(), I18N.get("Password_is_required"));
+		validate(StringUtils.isEmpty(login.getValue()),
+				I18N.get("Login_is_required"));
+		validate(StringUtils.isEmpty(password.getValue()),
+				I18N.get("Password_is_required"));
 		validate(!password.getText().equals(passwordRepeat.getText()),
 				I18N.get("Passwords_do_not_match"));
 	}

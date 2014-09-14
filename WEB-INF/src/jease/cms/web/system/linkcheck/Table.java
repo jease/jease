@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,15 +26,14 @@ import jease.cms.domain.Linkcheck;
 import jease.cms.domain.User;
 import jease.cms.service.Linkchecker;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Button;
 import jfix.zk.Images;
 import jfix.zk.Modal;
 import jfix.zk.ObjectTable;
 
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
 
-public class Table extends ObjectTable {
+public class Table extends ObjectTable<Linkcheck> {
 
 	private Button linkcheck = new Button();
 
@@ -46,11 +45,8 @@ public class Table extends ObjectTable {
 	}
 
 	private void initLinkcheck() {
-		linkcheck.addClickListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				linkcheckPerformed();
-			}
-		});
+		linkcheck.addEventListener(Events.ON_CLICK,
+				$event -> linkcheckPerformed());
 		getLeftbox().appendChild(linkcheck);
 	}
 
@@ -58,11 +54,7 @@ public class Table extends ObjectTable {
 		if (!Linkchecker.isActive()
 				&& linkcheck.getLabel().equals(I18N.get("Start"))) {
 			Linkchecker.start();
-			Modal.info(I18N.get("In_Progress"), new ActionListener() {
-				public void actionPerformed(Event event) {
-					refresh();
-				}
-			});
+			Modal.info(I18N.get("In_Progress"), $event -> refresh());
 		} else {
 			refresh();
 		}
@@ -84,12 +76,10 @@ public class Table extends ObjectTable {
 		final Content content = (Content) Nodes.getByPath(linkcheck.getPath());
 		if (content != null) {
 			NodeEditor<Node> editor = Registry.getEditor(content);
-			editor.addChangeListener(new ActionListener() {
-				public void actionPerformed(Event event) {
-					Linkchecker.clear(linkcheck.getPath());
-					Linkchecker.check(content);
-					refresh();
-				}
+			editor.addEventListener(Events.ON_CHANGE, $event -> {
+				Linkchecker.clear(linkcheck.getPath());
+				Linkchecker.check(content);
+				refresh();
 			});
 			setEditor(editor);
 			super.onSelect(content);

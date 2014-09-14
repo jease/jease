@@ -43,7 +43,7 @@
 
 	// Which template should be used to render the node?
 	String pageTemplate = Templates.get(node);
-	
+
 	// If node is page-like content (e.g. text) and no file-parameter exists in request,
 	// then include template, otherwise forward (e.g. to stream binary content).
 	if (node.isPage() && request.getParameter("file") == null) {

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,14 +19,16 @@ package jease.cmf.web.node;
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Checkbox;
-import jfix.zk.Image;
-import jfix.zk.Label;
 import jfix.zk.Row;
 import jfix.zk.View;
 
 import org.apache.commons.io.FileUtils;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Image;
+import org.zkoss.zul.Label;
 
 public class NodeViews {
 
@@ -37,16 +39,17 @@ public class NodeViews {
 
 	public static View<String> asIcon(Node node) {
 		Image image = new Image();
+		image.setStyle("margin-left: 5px;");
 		image.setSrc(JeaseSession.getConfig().getIcon(node));
 		image.setTooltiptext(node.getType());
 		return new View<String>(node.getType(), image);
 	}
 
 	public static View<String> asCheckbox(boolean state,
-			final ActionListener action) {
+			final EventListener<Event> action) {
 		final Checkbox checkbox = new Checkbox();
 		checkbox.setChecked(state);
-		checkbox.addCheckListener(action);
+		checkbox.addEventListener(Events.ON_CHECK, action);
 		return new View<String>(state ? I18N.get("Yes") : I18N.get("No"),
 				checkbox);
 	}

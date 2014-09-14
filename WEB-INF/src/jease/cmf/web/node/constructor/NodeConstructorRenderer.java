@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,13 +21,12 @@ import jease.cmf.domain.Node;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
-public class NodeConstructorRenderer implements ListitemRenderer {
+public class NodeConstructorRenderer implements ListitemRenderer<Node> {
 
-	public void render(Listitem listitem, Object value, int index)
+	public void render(Listitem listitem, Node value, int index)
 			throws Exception {
 		if (value != null) {
-			listitem.setLabel(((Node) value).getType());
+			listitem.setLabel(value.getType());
 		}
 	}
-
 }

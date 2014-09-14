@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,14 +16,14 @@
  */
 package jease.cmf.web.node.tree.navigation;
 
+import java.util.stream.Stream;
+
 import jease.cmf.domain.Node;
 import jease.cmf.web.node.NodeFilter;
-import jfix.functor.Functors;
-import jfix.functor.Predicate;
 
 import org.zkoss.zul.AbstractTreeModel;
 
-public class NavigationTreeModel extends AbstractTreeModel {
+public class NavigationTreeModel extends AbstractTreeModel<Object> {
 
 	private NodeFilter nodeFilter;
 
@@ -36,7 +36,8 @@ public class NavigationTreeModel extends AbstractTreeModel {
 		if (node instanceof Node[]) {
 			return ((Node[]) node)[idx];
 		} else {
-			return getChildContainer((Node) node)[idx];
+			Node[] children = getChildContainer((Node) node);
+			return children[Math.min(idx, children.length - 1)];
 		}
 	}
 
@@ -56,13 +57,9 @@ public class NavigationTreeModel extends AbstractTreeModel {
 		}
 	}
 
-	private Node[] getChildContainer(Node node) {
-		Node[] result = Functors.filter(node.getChildren(),
-				new Predicate<Node>() {
-					public boolean test(Node obj) {
-						return obj.isContainer();
-					}
-				});
+	private Node[] getChildContainer(final Node node) {
+		Node[] result = Stream.of(node.getChildren()).filter(Node::isContainer)
+				.toArray($size -> new Node[$size]);
 		return result == null ? new Node[] {} : nodeFilter.apply(result);
 	}
 }

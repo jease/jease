@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 
 import jease.cmf.domain.Node;
 import jfix.db4o.Blob;
-import jfix.util.Files;
 
 public class Revisioner extends Serializer {
 
@@ -56,7 +56,7 @@ public class Revisioner extends Serializer {
 		}
 		try {
 			Blob blob = new Blob();
-			Writer writer = Files.newWriter(blob.getFile());
+			Writer writer = Files.newBufferedWriter(blob.getFile().toPath());
 			toXML(node, writer);
 			writer.close();
 			return blob;
@@ -73,7 +73,7 @@ public class Revisioner extends Serializer {
 			return null;
 		}
 		try {
-			Reader reader = Files.newReader(blob.getFile());
+			Reader reader = Files.newBufferedReader(blob.getFile().toPath());
 			Node node = fromXML(reader);
 			reader.close();
 			return node;

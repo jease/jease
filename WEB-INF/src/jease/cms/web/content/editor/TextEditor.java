@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,29 +19,24 @@ package jease.cms.web.content.editor;
 import jease.cms.domain.Text;
 import jease.cms.web.component.RichTextarea;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Checkbox;
-import jfix.zk.Codearea;
 import jfix.zk.Div;
 import jfix.zk.ZK;
 
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.codemirror.Codemirror;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Checkbox;
 
 public class TextEditor extends ContentEditor<Text> {
 
 	RichTextarea richText = new RichTextarea();
-	Codearea plainText = new Codearea();
+	Codemirror plainText = new Codemirror();
 	Checkbox plainMode = new Checkbox(I18N.get("Plaintext"));
 
 	public TextEditor() {
 		richText.setHeight((getDesktopHeight() / 3) + "px");
 		plainText.setHeight((100 + getDesktopHeight() / 3) + "px");
 		plainText.setWidth("100%");
-		plainMode.addCheckListener(new ActionListener() {
-			public void actionPerformed(Event evt) {
-				updateTextMode();
-			}
-		});
+		plainMode.addEventListener(Events.ON_CHECK, evt -> updateTextMode());
 	}
 
 	public void init() {
@@ -51,7 +46,7 @@ public class TextEditor extends ContentEditor<Text> {
 
 	public void load() {
 		richText.setText(getNode().getContent());
-		plainText.setText(getNode().getContent());
+		plainText.setValue(getNode().getContent());
 		plainMode.setChecked(getNode().isPlain());
 		updateTextMode();
 	}
@@ -61,7 +56,7 @@ public class TextEditor extends ContentEditor<Text> {
 			getNode().setContent(richText.getText());
 		}
 		if (plainText.getParent() != null) {
-			getNode().setContent(plainText.getText());
+			getNode().setContent(plainText.getValue());
 		}
 		getNode().setPlain(plainMode.isChecked());
 	}
@@ -76,7 +71,7 @@ public class TextEditor extends ContentEditor<Text> {
 				ZK.replace(richText, plainText);
 			}
 		} else {
-			richText.setText(plainText.getText());
+			richText.setText(plainText.getValue());
 			if (plainText.getParent() != null) {
 				ZK.replace(plainText, richText);
 			}

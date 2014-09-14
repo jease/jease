@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,15 +16,13 @@
  */
 package jease.cms.domain;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
 import jease.cmf.annotation.NotSerialized;
 import jease.cmf.domain.Node;
 import jease.cms.domain.property.Property;
-import jfix.functor.Functors;
-import jfix.functor.Predicate;
-import jfix.util.Arrays;
 import jfix.util.I18N;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -145,7 +143,7 @@ public abstract class Content extends Node {
 	 * array, so newest revision is always first element in array.
 	 */
 	public void addRevision(Version version) {
-		versions = Arrays.prepend(versions, version, Version.class);
+		versions = ArrayUtils.add(versions, 0, version);
 	}
 
 	/**
@@ -166,18 +164,18 @@ public abstract class Content extends Node {
 	 * Add given property to contet.
 	 */
 	public void addProperty(Property property) {
-		properties = Arrays.append(properties, property, Property.class);
+		properties = ArrayUtils.add(properties, property);
 	}
 
 	/**
 	 * Returns all properties for given name.
 	 */
 	public Property[] getProperties(final String name) {
-		return Functors.filter(properties, new Predicate<Property>() {
-			public boolean test(Property property) {
-				return property != null && name.equals(property.getName());
-			}
-		});
+		return Arrays
+				.stream(properties)
+				.filter(property -> property != null
+						&& name.equals(property.getName()))
+				.toArray(size -> new Property[size]);
 	}
 
 	/**

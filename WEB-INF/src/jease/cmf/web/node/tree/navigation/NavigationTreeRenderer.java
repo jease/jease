@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,27 +18,27 @@ package jease.cmf.web.node.tree.navigation;
 
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
-import jfix.zk.ActionListener;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
 
-public class NavigationTreeRenderer implements TreeitemRenderer {
+public class NavigationTreeRenderer implements TreeitemRenderer<Node> {
 
-	private ActionListener dropListener;
+	private EventListener<Event> dropListener;
 
 	public NavigationTreeRenderer() {
 	}
 
-	public NavigationTreeRenderer(ActionListener dropListener) {
+	public NavigationTreeRenderer(EventListener<Event> dropListener) {
 		this.dropListener = dropListener;
 	}
 
-	public void render(Treeitem treeitem, Object value, int index)
+	public void render(Treeitem treeitem, Node node, int index)
 			throws Exception {
-		Node node = (Node) value;
 		treeitem.setLabel(node.getId());
 		treeitem.setTooltiptext(node.getType());
 		treeitem.setImage(JeaseSession.getConfig().getIcon(node));

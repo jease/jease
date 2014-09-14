@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,9 +17,10 @@
 package jease.cms.web.content.editor.property;
 
 import jease.cms.domain.property.StringProperty;
-import jfix.zk.Textfield;
 
-public class StringPropertyEditor extends Textfield implements
+import org.zkoss.zul.Textbox;
+
+public class StringPropertyEditor extends Textbox implements
 		PropertyEditor<StringProperty> {
 
 	private StringProperty property;

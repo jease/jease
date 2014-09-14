@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import jease.Registry;
 import jease.cmf.domain.Node;
@@ -29,8 +31,6 @@ import jease.cms.domain.Factory;
 import jease.cms.domain.property.Property;
 import jease.cms.domain.property.Provider;
 import jfix.db4o.Database;
-import jfix.functor.Procedure;
-import jfix.functor.Supplier;
 import jfix.util.Natural;
 
 /**
@@ -38,33 +38,29 @@ import jfix.util.Natural;
  */
 public class Properties {
 
-	private static Supplier<String[]> propertyNames = new Supplier<String[]>() {
-		public String[] get() {
-			Set<String> result = new HashSet<String>();
-			for (Property property : Database.query(Property.class)) {
-				result.add(property.getName());
-			}
-			return Natural.sort(result.toArray(new String[] {}));
+	private static Supplier<String[]> propertyNames = () -> {
+		Set<String> result = new HashSet<>();
+		for (Property property : Database.query(Property.class)) {
+			result.add(property.getName());
 		}
+		return Natural.sort(result.toArray(new String[] {}));
 	};
 
-	private static Supplier<String[]> providerPaths = new Supplier<String[]>() {
-		public String[] get() {
-			final List<String> result = new ArrayList<String>();
-			Nodes.getRoot().traverse(new Procedure<Node>() {
-				public void execute(Node node) {
-					Content content = (Content) node;
-					if (content.getProperties() != null) {
-						for (Property property : content.getProperties()) {
-							if (property instanceof Provider) {
-								result.add(getPath(content, property));
-							}
+	private static Supplier<String[]> providerPaths = () -> {
+		final List<String> result = new ArrayList<>();
+		Nodes.getRoot().traverse(new Consumer<Node>() {
+			public void accept(Node node) {
+				Content content = (Content) node;
+				if (content.getProperties() != null) {
+					for (Property property : content.getProperties()) {
+						if (property instanceof Provider) {
+							result.add(getPath(content, property));
 						}
 					}
 				}
-			});
-			return result.toArray(new String[] {});
-		}
+			}
+		});
+		return result.toArray(new String[] {});
 	};
 
 	/**

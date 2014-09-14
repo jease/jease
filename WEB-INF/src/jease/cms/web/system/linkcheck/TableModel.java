@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@ package jease.cms.web.system.linkcheck;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import jease.cmf.domain.Node;
 import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
 import jease.cms.domain.Linkcheck;
 import jfix.db4o.Database;
-import jfix.functor.Predicate;
 import jfix.util.I18N;
 import jfix.zk.ObjectTableModel;
 

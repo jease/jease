@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
  */
 package jease.cms.web.user;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 import jease.cmf.web.JeaseSession;
@@ -26,31 +27,29 @@ import jease.cms.service.Contents;
 import jease.cms.service.Passwords;
 import jease.cms.service.Users;
 import jfix.db4o.Database;
-import jfix.util.Arrays;
 import jfix.util.Crypts;
 import jfix.util.I18N;
 import jfix.util.Natural;
-import jfix.zk.Checkbox;
 import jfix.zk.ItemRenderer;
 import jfix.zk.ObjectEditor;
-import jfix.zk.Passwordfield;
 import jfix.zk.Picklist;
 import jfix.zk.Selectfield;
-import jfix.zk.Textfield;
 
 import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Textbox;
 
 public class Editor extends ObjectEditor<User> {
 
-	Textfield name = new Textfield();
-	Textfield username = new Textfield();
-	Passwordfield password = new Passwordfield();
-	Passwordfield passwordRepeat = new Passwordfield();
-	Textfield email = new Textfield();
+	Textbox name = new Textbox();
+	Textbox username = new Textbox();
+	Textbox password = new Textbox();
+	Textbox passwordRepeat = new Textbox();
+	Textbox email = new Textbox();
 	Selectfield role = new Selectfield();
-	Picklist roots = new Picklist(new Comparator<Content>() {
-		public int compare(Content o1, Content o2) {
-			return o1.getPath().compareTo(o2.getPath());
+	Picklist roots = new Picklist(new Comparator<Object>() {
+		public int compare(Object o1, Object o2) {
+			return ((Content) o1).getPath().compareTo(((Content) o2).getPath());
 		}
 	}, true);
 	Checkbox disabled = new Checkbox();
@@ -67,6 +66,8 @@ public class Editor extends ObjectEditor<User> {
 			hideButtons();
 			getSaveButton().setVisible(true);
 		}
+		password.setType("password");
+		passwordRepeat.setType("password");
 	}
 
 	public void init() {
@@ -106,7 +107,8 @@ public class Editor extends ObjectEditor<User> {
 		if (isAdministrationMode()) {
 			getObject().setRole((Role) role.getSelectedValue());
 			getObject().setRoots(
-					Arrays.cast(roots.getSelected(), Content.class));
+					Arrays.asList(roots.getSelected())
+							.toArray(new Content[] {}));
 			getObject().setDisabled(disabled.isChecked());
 		}
 		Database.save(getObject());
@@ -118,9 +120,12 @@ public class Editor extends ObjectEditor<User> {
 	}
 
 	public void validate() {
-		validate(name.isEmpty(), I18N.get("Name_is_required"));
-		validate(username.isEmpty(), I18N.get("Login_is_required"));
-		validate(password.isEmpty(), I18N.get("Password_is_required"));
+		validate(StringUtils.isEmpty(name.getValue()),
+				I18N.get("Name_is_required"));
+		validate(StringUtils.isEmpty(username.getValue()),
+				I18N.get("Login_is_required"));
+		validate(StringUtils.isEmpty(password.getValue()),
+				I18N.get("Password_is_required"));
 		validate(!password.getText().equals(passwordRepeat.getText()),
 				I18N.get("Passwords_do_not_match"));
 		validate(

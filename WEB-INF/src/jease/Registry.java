@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@ package jease;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import jease.cmf.domain.Node;
 import jease.cmf.web.node.NodeEditor;
@@ -34,7 +34,6 @@ import jease.cms.domain.Parameter;
 import jease.cms.domain.property.Property;
 import jease.cms.web.content.editor.property.PropertyEditor;
 import jfix.db4o.Database;
-import jfix.functor.Supplier;
 import jfix.util.Reflections;
 
 import com.thoughtworks.xstream.XStream;
@@ -56,7 +55,7 @@ public class Registry {
 	private static class ParameterMap implements
 			Supplier<Map<String, Parameter>> {
 		public Map<String, Parameter> get() {
-			Map<String, Parameter> map = new HashMap<String, Parameter>();
+			Map<String, Parameter> map = new HashMap<>();
 			for (Parameter parameter : Database.query(Parameter.class)) {
 				map.put(parameter.getKey(), parameter);
 			}
@@ -69,7 +68,7 @@ public class Registry {
 	}
 
 	private static Supplier<Map<String, Parameter>> parameters = new ParameterMap();
-	private static Map<String, Component> components = new HashMap<String, Component>();
+	private static Map<String, Component> components = new HashMap<>();
 	private static Content[] contents;
 	private static Property[] properties;
 
@@ -98,8 +97,8 @@ public class Registry {
 	}
 
 	private static void initDomainTypes(Set<String> domainClasses) {
-		List<Content> contentList = new ArrayList<Content>();
-		List<Property> propertyList = new ArrayList<Property>();
+		List<Content> contentList = new ArrayList<>();
+		List<Property> propertyList = new ArrayList<>();
 
 		for (String domainClass : domainClasses) {
 			Object obj = Reflections.newInstance(domainClass);
@@ -111,16 +110,8 @@ public class Registry {
 			}
 		}
 
-		Collections.sort(contentList, new Comparator<Content>() {
-			public int compare(Content o1, Content o2) {
-				return o1.getType().compareTo(o2.getType());
-			}
-		});
-		Collections.sort(propertyList, new Comparator<Property>() {
-			public int compare(Property o1, Property o2) {
-				return o1.getType().compareTo(o2.getType());
-			}
-		});
+		contentList.sort(Comparator.comparing(Content::getType));
+		propertyList.sort(Comparator.comparing(Property::getType));
 
 		contents = contentList.toArray(new Content[] {});
 		properties = propertyList.toArray(new Property[] {});

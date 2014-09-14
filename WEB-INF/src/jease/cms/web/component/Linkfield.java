@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,39 +19,32 @@ package jease.cms.web.component;
 import jease.cmf.service.Nodes;
 import jease.cmf.web.node.browser.NodeBrowserWindow;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Button;
 import jfix.zk.Div;
 import jfix.zk.Images;
-import jfix.zk.Linkbutton;
-import jfix.zk.Textfield;
 import jfix.zk.WebBrowser;
 
-import org.zkoss.zk.ui.event.Event;
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
 
 public class Linkfield extends Div {
 
-	Textfield url = new Textfield();
+	Textbox url = new Textbox();
 	Button browse = new Button();
-	Linkbutton preview = new Linkbutton();
+	Button preview = new Toolbarbutton();
 
 	public Linkfield() {
 		browse.setTooltiptext(I18N.get("Browser"));
 		browse.setImage(Images.UserHome);
-		browse.addClickListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				browsePerformed();
-			}
-		});
-
+		browse.addEventListener(Events.ON_CLICK, $event -> browsePerformed());
 		preview.setTooltiptext(I18N.get("Open"));
 		preview.setImage(Images.InternetWebBrowser);
 		preview.setWidth("24px");
-		preview.addClickListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				if (!url.isEmpty()) {
-					getRoot().appendChild(new WebBrowser(url.getText()));
-				}
+		preview.addEventListener(Events.ON_CLICK, $event -> {
+			if (StringUtils.isNotEmpty(url.getValue())) {
+				getRoot().appendChild(new WebBrowser(url.getText()));
 			}
 		});
 
@@ -68,12 +61,10 @@ public class Linkfield extends Div {
 		final NodeBrowserWindow nodeBrowserWindow = new NodeBrowserWindow(
 				Nodes.getByPath(path));
 		nodeBrowserWindow.setTitle(I18N.get("Browser"));
-		nodeBrowserWindow.addCloseListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				if (nodeBrowserWindow.getSelectedNode() != null) {
-					url.setText("./~"
-							+ nodeBrowserWindow.getSelectedNode().getPath());
-				}
+		nodeBrowserWindow.addEventListener(Events.ON_CLOSE, $event -> {
+			if (nodeBrowserWindow.getSelectedNode() != null) {
+				url.setText("./~"
+						+ nodeBrowserWindow.getSelectedNode().getPath());
 			}
 		});
 		getRoot().appendChild(nodeBrowserWindow);
@@ -85,10 +76,6 @@ public class Linkfield extends Div {
 
 	public String getValue() {
 		return this.url.getValue();
-	}
-
-	public boolean isEmpty() {
-		return this.url.isEmpty();
 	}
 
 }

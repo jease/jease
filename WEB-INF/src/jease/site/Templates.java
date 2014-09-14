@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,13 +16,14 @@
  */
 package jease.site;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import jease.Names;
 import jease.Registry;
-import jease.cmf.service.Compilers;
 import jease.cms.domain.Content;
 import jfix.db4o.Database;
-import jfix.functor.Function;
-import jfix.functor.Supplier;
+import jfix.util.Reflections;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,29 +32,27 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Templates implements Function<Content, String> {
 
-	private static Supplier<Function<Content, String>> supplier = new Supplier<Function<Content, String>>() {
-		public Function<Content, String> get() {
-			String templateResolver = Registry
-					.getParameter(Names.JEASE_TEMPLATE_RESOLVER);
-			if (StringUtils.isNotBlank(templateResolver)) {
-				return (Function<Content, String>) Compilers
-						.eval(templateResolver);
-			}
-			return new Templates();
+	private static Supplier<Function<Content, String>> supplier = () -> {
+		String templateResolver = Registry
+				.getParameter(Names.JEASE_TEMPLATE_RESOLVER);
+		if (StringUtils.isNotBlank(templateResolver)) {
+			return (Function<Content, String>) Reflections
+					.newInstance(templateResolver);
 		}
+		return new Templates();
 	};
 
 	/**
 	 * Returns template path for given content.
 	 */
 	public static String get(Content content) {
-		return Database.query(supplier).evaluate(content);
+		return Database.query(supplier).apply(content);
 	}
 
 	/**
 	 * Returns template path for given content.
 	 */
-	public String evaluate(Content content) {
+	public String apply(Content content) {
 		return Registry.getView(content);
 	}
 

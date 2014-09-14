@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<config-name>jease</config-name>
+	<device-config>
+		<device-type>ajax</device-type>
+		<automatic-timeout />
+		<timeout-uri></timeout-uri>
+	</device-config>
+	<system-config>
+		<max-upload-size>-1</max-upload-size>
+	</system-config>
+</config>

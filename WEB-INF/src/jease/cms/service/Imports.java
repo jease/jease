@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -156,7 +156,7 @@ public class Imports {
 		text.setId(Filenames.asId(filename));
 		text.setTitle(FilenameUtils.removeExtension(filename));
 		text.setLastModified(new Date());
-		text.setContent(readString(inputStream));
+		text.setContent(IOUtils.toString(inputStream, "UTF-8"));
 		text.setPlain(true);
 		return text;
 	}
@@ -194,11 +194,6 @@ public class Imports {
 		file.setContentType(Urls.guessContentTypeFromName(filename));
 		copyStreamToFile(inputStream, file.getFile());
 		return file;
-	}
-
-	private static String readString(InputStream inputStream)
-			throws IOException {
-		return IOUtils.toString(inputStream, "UTF-8");
 	}
 
 	private static void copyStreamToFile(InputStream inputStream,

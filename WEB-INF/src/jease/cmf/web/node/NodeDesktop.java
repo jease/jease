@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@ package jease.cmf.web.node;
 
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
-import jfix.zk.ActionListener;
-import jfix.zk.Linkbutton;
 import jfix.zk.Panel;
 import jfix.zk.Refreshable;
 import jfix.zk.Row;
 
 import org.apache.commons.lang3.StringUtils;
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Toolbarbutton;
 
 public abstract class NodeDesktop extends Row implements Refreshable {
 
@@ -35,17 +35,14 @@ public abstract class NodeDesktop extends Row implements Refreshable {
 
 	public NodeDesktop() {
 		setWidth("100%");
-		setPack("stretch");
+		// setPack("stretch");
 		refreshState = new NodeRefreshState();
 	}
 
 	protected void appendDesktop(NodeTable nodeTable) {
 		desktopTable = nodeTable;
-		desktopTable.addChangeListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				forceRefresh();
-			}
-		});
+		desktopTable.addEventListener(Events.ON_CHANGE,
+				$event -> forceRefresh());
 		desktopPanel = new Panel(desktopTable);
 		desktopPanel.setHflex("9");
 		appendChild(desktopPanel);
@@ -72,29 +69,24 @@ public abstract class NodeDesktop extends Row implements Refreshable {
 		desktopPanel.appendChildToToolbar(newEditButton(node));
 	}
 
-	protected Linkbutton newNavigationButton(final Node node) {
-		Linkbutton button = new Linkbutton(node.getId() + " /");
+	protected Button newNavigationButton(final Node node) {
+		Button button = new Toolbarbutton(node.getId() + " /");
 		button.setDisabled(!node.isDescendant(JeaseSession.getRoots()));
 		button.setTooltiptext(node.getType());
-		button.addClickListener(new ActionListener() {
-			public void actionPerformed(Event evt) {
-				JeaseSession.setContainer(node);
-				forceRefresh();
-			}
+		button.addEventListener(Events.ON_CLICK, $event -> {
+			JeaseSession.setContainer(node);
+			forceRefresh();
 		});
 		return button;
 	}
 
-	protected Linkbutton newEditButton(final Node node) {
+	protected Button newEditButton(final Node node) {
 		String label = StringUtils.isBlank(node.getId()) ? node.getPath()
 				: node.getId();
-		Linkbutton button = new Linkbutton(label);
+		Button button = new Toolbarbutton(label);
 		button.setTooltiptext(node.getType());
-		button.addClickListener(new ActionListener() {
-			public void actionPerformed(Event evt) {
-				desktopTable.onSelect(node);
-			}
-		});
+		button.addEventListener(Events.ON_CLICK,
+				$event -> desktopTable.onSelect(node));
 		return button;
 	}
 

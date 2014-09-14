@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,9 +21,10 @@ import java.util.List;
 import jease.cms.domain.Parameter;
 import jfix.db4o.Database;
 import jfix.util.I18N;
-import jfix.zk.Label;
 import jfix.zk.ObjectTableModel;
 import jfix.zk.View;
+
+import org.zkoss.zul.Label;
 
 public class TableModel extends ObjectTableModel<Parameter> {
 

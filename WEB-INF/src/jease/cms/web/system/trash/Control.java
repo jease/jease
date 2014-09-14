@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,8 +20,6 @@ import jease.cms.domain.Content;
 import jease.cms.service.Contents;
 import jease.cms.service.Revisions;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Button;
 import jfix.zk.Formbox;
 import jfix.zk.Images;
 import jfix.zk.ItemRenderer;
@@ -30,7 +28,8 @@ import jfix.zk.Refreshable;
 import jfix.zk.Selectfield;
 import jfix.zk.Spinner;
 
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
 
 public class Control extends Formbox implements Refreshable {
 
@@ -43,6 +42,7 @@ public class Control extends Formbox implements Refreshable {
 	Button purge = new Button(I18N.get("Purge"), Images.EditClear);
 
 	public Control() {
+		setHflex(null);
 		type.setItemRenderer(new ItemRenderer() {
 			public String render(Object value) {
 				Content content = (Content) value;
@@ -55,17 +55,9 @@ public class Control extends Formbox implements Refreshable {
 			}
 		});
 
-		emptyTrash.addClickListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				empyTrashPerformed();
-			}
-		});
-
-		purge.addClickListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				purgePerformed();
-			}
-		});
+		emptyTrash.addEventListener(Events.ON_CLICK,
+				$event -> empyTrashPerformed());
+		purge.addEventListener(Events.ON_CLICK, $event -> purgePerformed());
 
 		add(I18N.get("Trash"));
 		add(I18N.get("Days"), trashDays);
@@ -84,24 +76,22 @@ public class Control extends Formbox implements Refreshable {
 	}
 
 	private void empyTrashPerformed() {
-		Modal.confirm(I18N.get("Are_you_sure"), new ActionListener() {
-			public void actionPerformed(Event event) {
-				Contents.emptyTrash(trashDays.intValue());
-				Modal.info(I18N.get("Action_performed"));
-				refresh();
-			}
+		Modal.confirm(I18N.get("Are_you_sure"), $event -> {
+			Contents.emptyTrash(trashDays.intValue());
+			Modal.info(I18N.get("Action_performed"));
+			refresh();
 		});
 	}
 
 	private void purgePerformed() {
-		Modal.confirm(I18N.get("Are_you_sure"), new ActionListener() {
-			public void actionPerformed(Event event) {
-				int result = Revisions.purge(getSelectedType(),
-						count.intValue(), days.intValue());
-				Modal.info(I18N.get("Revisions_purged") + ": " + result);
-				refresh();
-			}
-		});
+		Modal.confirm(
+				I18N.get("Are_you_sure"),
+				$event -> {
+					int result = Revisions.purge(getSelectedType(),
+							count.intValue(), days.intValue());
+					Modal.info(I18N.get("Revisions_purged") + ": " + result);
+					refresh();
+				});
 	}
 
 	public void refresh() {

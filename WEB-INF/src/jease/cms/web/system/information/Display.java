@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,8 +23,9 @@ import jease.cms.service.Informatons;
 import jfix.util.I18N;
 import jfix.zk.Div;
 import jfix.zk.Formbox;
-import jfix.zk.Label;
 import jfix.zk.Refreshable;
+
+import org.zkoss.zul.Label;
 
 public class Display extends Div implements Refreshable {
 

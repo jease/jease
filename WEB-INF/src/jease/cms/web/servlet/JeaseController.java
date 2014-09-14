@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,12 +17,13 @@
 package jease.cms.web.servlet;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import javax.servlet.FilterChain;
@@ -36,12 +37,9 @@ import javax.servlet.http.HttpServletResponse;
 import jease.Names;
 import jease.Registry;
 import jease.cmf.domain.Node;
-import jease.cmf.service.Compilers;
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Redirect;
 import jfix.db4o.Database;
-import jfix.functor.Function;
-import jfix.functor.Supplier;
 import jfix.servlet.ResponseRewriter;
 import jfix.servlet.Servlets;
 
@@ -49,22 +47,20 @@ import org.apache.commons.lang3.StringUtils;
 
 public class JeaseController implements javax.servlet.Filter {
 
-	private static Supplier<List<Redirect>> redirectSupplier = new Supplier<List<Redirect>>() {
-		public List<Redirect> get() {
-			List<Redirect> redirects = Database.query(Redirect.class);
-			Collections.sort(redirects, new Comparator<Redirect>() {
-				public int compare(Redirect r1, Redirect r2) {
-					return r2.getTimestamp().compareTo(r1.getTimestamp());
-				}
-			});
-			return redirects;
-		}
+	private static Supplier<List<Redirect>> redirectSupplier = () -> {
+		List<Redirect> redirects = Database.query(Redirect.class);
+		redirects.sort(Comparator.comparing(Redirect::getTimestamp));
+		return redirects;
 	};
 
-	private static Supplier<Function<String, String>> rewriterSupplier = new Supplier<Function<String, String>>() {
-		public Function<String, String> get() {
-			return (Function<String, String>) Compilers.eval(Registry
-					.getParameter(Names.JEASE_SITE_REWRITER));
+	private static Supplier<Function<String, String>> rewriterSupplier = () -> {
+		try {
+			return (Function<String, String>) Class.forName(
+					Registry.getParameter(Names.JEASE_SITE_REWRITER))
+					.newInstance();
+		} catch (ReflectiveOperationException e) {
+			e.printStackTrace();
+			return null;
 		}
 	};
 

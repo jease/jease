@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@ package jease.cms.web.content.editor;
 import jease.cms.domain.Link;
 import jease.cms.web.component.Linkfield;
 import jfix.util.I18N;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class LinkEditor extends ContentEditor<Link> {
 
@@ -40,6 +42,7 @@ public class LinkEditor extends ContentEditor<Link> {
 	}
 
 	public void validate() {
-		validate(link.isEmpty(), I18N.get("Url_is_required"));
+		validate(StringUtils.isEmpty(link.getValue()),
+				I18N.get("Url_is_required"));
 	}
 }

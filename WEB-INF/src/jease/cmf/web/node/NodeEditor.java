@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,13 +23,14 @@ import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
 import jfix.util.I18N;
 import jfix.zk.ObjectEditor;
-import jfix.zk.Textfield;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zul.Textbox;
 
 public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 
-	protected Textfield id = new Textfield();
+	protected Textbox id = new Textbox();
 
 	public E getNode() {
 		return getObject();
@@ -63,7 +64,7 @@ public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 	protected void doValidate() throws Exception {
 		if (id.getParent() != null) {
 			if (getNode() != Nodes.getRoot()) {
-				if (id.isEmpty()) {
+				if (StringUtils.isEmpty(id.getValue())) {
 					addError(I18N.get("Id_is_required"));
 				} else {
 					try {

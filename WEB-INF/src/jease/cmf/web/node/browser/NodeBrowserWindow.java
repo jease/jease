@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,13 +18,12 @@ package jease.cmf.web.node.browser;
 
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
-import jfix.zk.ActionListener;
-import jfix.zk.Linkbutton;
 import jfix.zk.Window;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Toolbarbutton;
 
 public class NodeBrowserWindow extends Window {
 
@@ -46,13 +45,10 @@ public class NodeBrowserWindow extends Window {
 
 	public class NodeBrowser extends AbstractNodeBrowser {
 		protected Button newNodeSelector(final Node node) {
-			Linkbutton button = new Linkbutton(node.getId(), JeaseSession
+			Button button = new Toolbarbutton(node.getId(), JeaseSession
 					.getConfig().getIcon(node));
-			button.addClickListener(new ActionListener() {
-				public void actionPerformed(Event event) {
-					nodeSelectPerformed(node);
-				}
-			});
+			button.addEventListener(Events.ON_CLICK,
+					$event -> nodeSelectPerformed(node));
 			return button;
 		}
 	}

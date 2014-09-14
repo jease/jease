@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 package jease.cms.service;
 
 import java.io.File;
+import java.util.function.Consumer;
 
 import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
@@ -24,7 +25,6 @@ import jease.cmf.service.Backup;
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
 import jease.cms.domain.User;
-import jfix.functor.Procedure;
 
 /**
  * Service to dump/restore contents into/from XML-files.
@@ -48,8 +48,8 @@ public class Backups {
 	public static void restore(File backupFile, Node container, final User user)
 			throws NodeException {
 		Node node = backup.restore(backupFile);
-		node.traverse(new Procedure<Node>() {
-			public void execute(Node node) {
+		node.traverse(new Consumer<Node>() {
+			public void accept(Node node) {
 				Content content = (Content) node;
 				content.markChanged();
 				content.setEditor(user);

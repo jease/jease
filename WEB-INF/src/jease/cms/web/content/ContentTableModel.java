@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,10 +28,8 @@ import jease.cmf.web.node.NodeViews;
 import jease.cmf.web.node.tree.container.ContainerTable;
 import jease.cms.domain.Content;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
 import jfix.zk.Listbox;
 
-import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -56,7 +54,7 @@ public class ContentTableModel extends NodeTableModel<Node> {
 	 * Which relative width (proportion) should be used to size a column?
 	 */
 	public int[] getProportions() {
-		return new int[] { 2, 8, 8, 5, 4, 3, 2 };
+		return new int[] { 2, 5, 8, 5, 4, 3, 2 };
 	}
 
 	/**
@@ -78,13 +76,10 @@ public class ContentTableModel extends NodeTableModel<Node> {
 		case 5:
 			return NodeViews.asSize(content);
 		case 6:
-			return NodeViews.asCheckbox(content.isVisible(),
-					new ActionListener() {
-						public void actionPerformed(Event event) {
-							visibilityChangePerformed(content,
-									(Checkbox) event.getTarget());
-						}
-					});
+			return NodeViews.asCheckbox(
+					content.isVisible(),
+					event -> visibilityChangePerformed(content,
+							(Checkbox) event.getTarget()));
 		}
 		return "";
 	}

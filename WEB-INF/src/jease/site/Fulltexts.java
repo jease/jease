@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@ package jease.site;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 import jease.cms.domain.Content;
 import jease.cms.domain.Folder;
 import jease.cms.domain.Reference;
 import jease.cms.domain.Trash;
 import jfix.db4o.Database;
-import jfix.functor.Predicate;
-import jfix.functor.Supplier;
 import jfix.search.FullTextIndex;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -37,26 +37,20 @@ import org.jsoup.Jsoup;
  */
 public class Fulltexts {
 
-	private static Supplier<FullTextIndex<Content>> fullTextIndex = new Supplier<FullTextIndex<Content>>() {
-		public FullTextIndex<Content> get() {
-			FullTextIndex<Content> index = new FullTextIndex<Content>();
-			for (Content content : getContents()) {
-				index.add(
-						content,
-						Jsoup.parseBodyFragment(
-								content.getFulltext().toString()).text());
-			}
-			index.commit();
-			return index;
+	private static Supplier<FullTextIndex<Content>> fullTextIndex = () -> {
+		FullTextIndex<Content> index = new FullTextIndex<>();
+		for (Content content : getContents()) {
+			index.add(content,
+					Jsoup.parseBodyFragment(content.getFulltext().toString())
+							.text());
 		}
+		index.commit();
+		return index;
 	};
 
 	private static Collection<Content> getContents() {
-		return Database.query(Content.class, new Predicate<Content>() {
-			public boolean test(Content content) {
-				return isDefault(content) || isPublic(content);
-			}
-		});
+		return Database.query(Content.class, $content -> isDefault($content)
+				|| isPublic($content));
 	}
 
 	/**
@@ -89,7 +83,7 @@ public class Fulltexts {
 	 */
 	public static List<Content> query(Content context, String query) {
 		try {
-			List<Content> result = new ArrayList<Content>();
+			List<Content> result = new ArrayList<>();
 			for (Content content : (List<Content>) Database
 					.query(fullTextIndex).search(query)) {
 				// When content is child of a "paged container" (e.g.
@@ -108,7 +102,7 @@ public class Fulltexts {
 			}
 			return result;
 		} catch (Exception e) {
-			return new ArrayList<Content>();
+			return Collections.EMPTY_LIST;
 		}
 	}
 

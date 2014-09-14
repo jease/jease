@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,17 +28,12 @@ import jease.cms.domain.property.Property;
 import jease.cms.service.Properties;
 import jfix.util.I18N;
 import jfix.util.Natural;
-import jfix.zk.ActionListener;
-import jfix.zk.Button;
 import jfix.zk.Combobox;
 import jfix.zk.Formbox;
-import jfix.zk.Image;
 import jfix.zk.Images;
 import jfix.zk.ItemRenderer;
-import jfix.zk.Label;
 import jfix.zk.Row;
 import jfix.zk.Selectfield;
-import jfix.zk.Textfield;
 import jfix.zk.ZK;
 
 import org.apache.commons.lang3.StringUtils;
@@ -47,10 +42,14 @@ import org.zkoss.zk.ui.event.DropEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Image;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Textbox;
 
 public class PropertyManager extends Formbox {
 
-	private List<Label> augmentableLabels = new ArrayList<Label>();
+	private List<Label> augmentableLabels = new ArrayList<>();
 	private Selectfield typeSelect = newTypeSelect();
 	private Combobox nameInput = newNameInput();
 	private Button addButton = newAddButton();
@@ -105,11 +104,7 @@ public class PropertyManager extends Formbox {
 	private Button newAddButton() {
 		Button button = new Button("", Images.ListAdd);
 		button.setHflex("1");
-		button.addClickListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				addPerformed();
-			}
-		});
+		button.addEventListener(Events.ON_CLICK, event -> addPerformed());
 		return button;
 	}
 
@@ -200,7 +195,7 @@ public class PropertyManager extends Formbox {
 	}
 
 	private void convertLabelToTextfield(final Label label) {
-		final Textfield textfield = new Textfield(label.getValue());
+		final Textbox textfield = new Textbox(label.getValue());
 		EventListener<Event> labelEditPerformed = new EventListener<Event>() {
 			public void onEvent(Event evt) throws Exception {
 				String value = textfield.getValue();

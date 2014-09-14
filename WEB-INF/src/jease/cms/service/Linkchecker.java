@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 import jease.cms.domain.Content;
 import jease.cms.domain.Linkcheck;
 import jfix.db4o.Database;
-import jfix.functor.Command;
 import jfix.util.Regexps;
 import jfix.util.Urls;
 
@@ -61,7 +60,7 @@ public class Linkchecker implements Runnable {
 	 * Deletes all linkcheck objects from database.
 	 */
 	public static void clear() {
-		Database.write(new Command() {
+		Database.write(new Runnable() {
 			public void run() {
 				for (Linkcheck linkcheck : Database.query(Linkcheck.class)) {
 					Database.delete(linkcheck);
@@ -85,7 +84,7 @@ public class Linkchecker implements Runnable {
 	 * Performs full link check and saves status to database.
 	 */
 	public static void check() {
-		Map<String, Integer> linkStates = new HashMap<String, Integer>();
+		Map<String, Integer> linkStates = new HashMap<>();
 		for (Content content : Database.query(Content.class)) {
 			String fulltext = content.getFulltext().toString();
 			for (String url : extractUrls(fulltext)) {
@@ -114,7 +113,7 @@ public class Linkchecker implements Runnable {
 	}
 
 	private static Set<String> extractUrls(String fulltext) {
-		return new HashSet<String>(Regexps.extractUrlsFromHtml(fulltext));
+		return new HashSet<>(Regexps.extractUrlsFromHtml(fulltext));
 	}
 
 	private static int getStatus(Content content, String url) {

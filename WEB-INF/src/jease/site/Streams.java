@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@ package jease.site;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jease.Names;
 import jease.Registry;
-import jfix.servlet.Servlets;
 import jfix.util.Images;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -49,7 +49,9 @@ public class Streams {
 			if (scale > 0) {
 				java.io.File scaledImage = Images.scale(file, scale);
 				scaledImage.deleteOnExit();
-				Servlets.write(scaledImage, contentType, response);
+				response.setContentType(contentType);
+				response.setContentLength((int) scaledImage.length());
+				Files.copy(scaledImage.toPath(), response.getOutputStream());
 				return;
 			}
 			int limit = NumberUtils.toInt(Registry
@@ -57,11 +59,15 @@ public class Streams {
 			if (limit > 0) {
 				java.io.File scaledImage = Images.limit(file, limit);
 				scaledImage.deleteOnExit();
-				Servlets.write(scaledImage, contentType, response);
+				response.setContentType(contentType);
+				response.setContentLength((int) scaledImage.length());
+				Files.copy(scaledImage.toPath(), response.getOutputStream());
 				return;
 			}
 
 		}
-		Servlets.write(file, contentType, response);
+		response.setContentType(contentType);
+		response.setContentLength((int) file.length());
+		Files.copy(file.toPath(), response.getOutputStream());
 	}
 }

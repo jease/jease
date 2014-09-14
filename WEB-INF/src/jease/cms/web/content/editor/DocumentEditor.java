@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,25 +18,20 @@ package jease.cms.web.content.editor;
 
 import jease.cms.domain.Document;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Button;
 import jfix.zk.Images;
 import jfix.zk.Modal;
-import jfix.zk.Textarea;
 import jfix.zk.Window;
 
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Textbox;
 
 public class DocumentEditor extends FileEditor<Document> {
 
 	Button showText = new Button(I18N.get("Text"), Images.EditFind);
 
 	public DocumentEditor() {
-		showText.addClickListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				showText();
-			}
-		});
+		showText.addEventListener(Events.ON_CLICK, event -> showText());
 		getButtons().appendChild(showText);
 	}
 
@@ -46,7 +41,8 @@ public class DocumentEditor extends FileEditor<Document> {
 			copyObject();
 			saveEditorToObject();
 			getNode().setParent(null);
-			Textarea textarea = new Textarea();
+			Textbox textarea = new Textbox();
+			textarea.setRows(3);
 			textarea.setVflex("1");
 			textarea.setHflex("1");
 			textarea.setValue(getObject().getText());

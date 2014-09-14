@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,22 +18,21 @@ package jease.cms.web.content.editor.property;
 
 import jease.cms.domain.property.ScriptProperty;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Button;
-import jfix.zk.Codearea;
 import jfix.zk.Div;
 import jfix.zk.Images;
 import jfix.zk.Modal;
-import jfix.zk.Textfield;
 
 import org.apache.commons.lang3.StringUtils;
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.codemirror.Codemirror;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Textbox;
 
 public class ScriptPropertyEditor extends Div implements
 		PropertyEditor<ScriptProperty> {
 
-	private Textfield classarea = new Textfield();
-	private Codearea codearea = new Codearea();
+	private Textbox classarea = new Textbox();
+	private Codemirror codearea = new Codemirror();
 	private ScriptProperty property;
 
 	public ScriptPropertyEditor() {
@@ -41,11 +40,8 @@ public class ScriptPropertyEditor extends Div implements
 		codearea.setHeight("300px");
 		codearea.setSyntax("java");
 		Button execute = new Button(I18N.get("Execute"),
-				Images.MediaPlaybackStart, new ActionListener() {
-					public void actionPerformed(Event event) {
-						executePerformed();
-					}
-				});
+				Images.MediaPlaybackStart);
+		execute.addEventListener(Events.ON_CLICK, $event -> executePerformed());
 		appendChild(new Div(codearea, classarea));
 		appendChild(execute);
 	}
@@ -71,7 +67,7 @@ public class ScriptPropertyEditor extends Div implements
 
 	private void executePerformed() {
 		ScriptProperty clone = property.copy();
-		clone.setCode(codearea.getText());
+		clone.setCode(codearea.getValue());
 		Modal.info(clone.toString());
 	}
 

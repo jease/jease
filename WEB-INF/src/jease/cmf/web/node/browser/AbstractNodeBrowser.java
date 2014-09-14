@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,17 +19,16 @@ package jease.cmf.web.node.browser;
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
 import jfix.zk.Div;
 import jfix.zk.Grid;
-import jfix.zk.Image;
 import jfix.zk.Panel;
 import jfix.zk.Popup;
 import jfix.zk.Row;
 import jfix.zk.Tree;
 
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Image;
 
 public abstract class AbstractNodeBrowser extends Div {
 
@@ -44,11 +43,7 @@ public abstract class AbstractNodeBrowser extends Div {
 
 	protected void init() {
 		tree = new NodeBrowserNavigationTree();
-		tree.addSelectListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				updateContent();
-			}
-		});
+		tree.addEventListener(Events.ON_SELECT, $event -> updateContent());
 		grid = new Grid();
 		grid.setMold("paging");
 		appendChild(new Panel(I18N.get("Browser"), new Row(tree, grid)));

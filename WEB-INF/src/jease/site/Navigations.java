@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,18 +17,17 @@
 package jease.site;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
 import jease.cms.domain.Folder;
 import jease.cms.domain.News;
 import jease.cms.domain.Reference;
-import jfix.functor.Functors;
-import jfix.functor.Predicate;
 
 /**
  * Common service-methods to ease the building of navigations for a site.
@@ -76,12 +75,11 @@ public class Navigations {
 	 * displayed as tabs.
 	 */
 	public static Content[] getTabs(Content container) {
-		return Functors.filter(container.getChildren(Content.class),
-				new Predicate<Content>() {
-					public boolean test(Content content) {
-						return content instanceof Folder && content.isVisible();
-					}
-				});
+		return Stream
+				.of(container.getChildren(Content.class))
+				.filter($content -> $content instanceof Folder
+						&& $content.isVisible())
+				.toArray($size -> new Content[$size]);
 	}
 
 	/**
@@ -98,12 +96,9 @@ public class Navigations {
 	 */
 	public static Content[] getBreadcrumb(final Content root,
 			final Content content) {
-		return Functors.filter(getBreadcrumb(content),
-				new Predicate<Content>() {
-					public boolean test(Content obj) {
-						return obj.isDescendant(root);
-					}
-				});
+		return Stream.of(getBreadcrumb(content))
+				.filter($content -> $content.isDescendant(root))
+				.toArray($size -> new Content[$size]);
 	}
 
 	/**
@@ -117,14 +112,10 @@ public class Navigations {
 	 * Returns all items (visible, not news) to be displayed in navigation for a
 	 * given container.
 	 */
-	public static Content[] getItems(Content container) {
-		List<Content> navigation = new ArrayList<Content>();
-		for (Content content : container.getChildren(Content.class)) {
-			if (content.isVisible() && !isNews(content)) {
-				navigation.add(content);
-			}
-		}
-		return navigation.toArray(new Content[] {});
+	public static Content[] getItems(final Content container) {
+		return Stream.of(container.getChildren(Content.class))
+				.filter($content -> $content.isVisible() && !isNews($content))
+				.toArray($size -> new Content[$size]);
 	}
 
 	/**
@@ -162,13 +153,9 @@ public class Navigations {
 	 * Returns all visible items contained in given container.
 	 */
 	public static Content[] getVisibleContent(Content container) {
-		List<Content> navigation = new ArrayList<Content>();
-		for (Content content : container.getChildren(Content.class)) {
-			if (content.isVisible()) {
-				navigation.add(content);
-			}
-		}
-		return navigation.toArray(new Content[] {});
+		return Stream.of(container.getChildren(Content.class))
+				.filter($content -> $content.isVisible())
+				.toArray($size -> new Content[$size]);
 	}
 
 	/**
@@ -192,7 +179,7 @@ public class Navigations {
 	 * given container.
 	 */
 	public static News[] getSiteNews(Content container) {
-		Set<News> news = new HashSet<News>();
+		Set<News> news = new HashSet<>();
 		for (Content content : container.getDescendants(Content.class)) {
 			if (content.isVisible()) {
 				News candidate = null;
@@ -212,12 +199,8 @@ public class Navigations {
 				}
 			}
 		}
-		List<News> result = new ArrayList<News>(news);
-		Collections.sort(result, new java.util.Comparator<News>() {
-			public int compare(News o1, News o2) {
-				return o2.getDate().compareTo(o1.getDate());
-			}
-		});
+		List<News> result = new ArrayList<>(news);
+		result.sort(Comparator.comparing(News::getDate).reversed());
 		return result.toArray(new News[] {});
 	}
 

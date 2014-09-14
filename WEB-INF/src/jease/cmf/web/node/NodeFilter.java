@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,19 +18,18 @@ package jease.cmf.web.node;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import jease.cmf.domain.Node;
-import jfix.functor.Functors;
-import jfix.functor.Predicate;
 
 /**
  * Filters all Nodes which are not in the initial array of accepted Nodes.
  */
 public class NodeFilter {
 
-	private Set<Class<? extends Node>> acceptedNodes = new HashSet<Class<? extends Node>>();
+	private Set<Class<? extends Node>> acceptedNodes = new HashSet<>();
 
-	public NodeFilter(Node[] validNodes) {
+	public NodeFilter(final Node[] validNodes) {
 		for (Node node : validNodes) {
 			acceptedNodes.add(node.getClass());
 		}
@@ -40,12 +39,9 @@ public class NodeFilter {
 	 * Returns only valid Nodes from given Nodes which were registered with this
 	 * NodeFilter.
 	 */
-	public Node[] apply(Node[] nodes) {
-		return Functors.filter(nodes, new Predicate<Node>() {
-			public boolean test(Node node) {
-				return isAccepted(node);
-			}
-		});
+	public Node[] apply(final Node[] nodes) {
+		return Stream.of(nodes).filter($node -> isAccepted($node))
+				.toArray($size -> new Node[$size]);
 	}
 
 	/**

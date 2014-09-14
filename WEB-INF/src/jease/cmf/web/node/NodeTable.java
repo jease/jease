@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,15 +19,13 @@ package jease.cmf.web.node;
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.constructor.NodeConstructor;
-import jfix.zk.ActionListener;
 import jfix.zk.ObjectEditor;
 import jfix.zk.ObjectTable;
 
 import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
-public class NodeTable extends ObjectTable {
+public class NodeTable extends ObjectTable<Node> {
 
 	private NodeConstructor nodeConstructor;
 
@@ -44,11 +42,8 @@ public class NodeTable extends ObjectTable {
 
 	private void initNodeConstructor() {
 		nodeConstructor = new NodeConstructor();
-		nodeConstructor.addSelectListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				onSelect(nodeConstructor.getSelectedNode());
-			}
-		});
+		nodeConstructor.addEventListener(Events.ON_SELECT,
+				$event -> onSelect(nodeConstructor.getSelectedNode()));
 		getCreateButton().setVisible(true);
 		getCreateButton().getParent().insertBefore(nodeConstructor,
 				getCreateButton());
@@ -62,27 +57,19 @@ public class NodeTable extends ObjectTable {
 			final Node node = (Node) obj;
 			ObjectEditor<? extends Node> nodeEditor = JeaseSession.getConfig()
 					.newEditor(node);
-			nodeEditor.addChangeListener(new ActionListener() {
-				public void actionPerformed(Event event) {
-					fireChangeEvent();
-					int index = getElements().indexOf(node);
-					if (index != -1) {
-						getListbox().setActivePage(
-								index / getListbox().getPageSize());
-					}
-				}
-			});
+			nodeEditor.addEventListener(
+					Events.ON_CHANGE,
+					$event -> {
+						fireChangeEvent();
+						int index = getElements().indexOf(node);
+						if (index != -1) {
+							getListbox().setActivePage(
+									index / getListbox().getPageSize());
+						}
+					});
 			setEditor(nodeEditor);
 			super.onSelect(obj);
 		}
-	}
-
-	public void addChangeListener(final ActionListener actionListener) {
-		addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
-			public void onEvent(Event e) throws Exception {
-				actionListener.actionPerformed(e);
-			}
-		});
 	}
 
 	protected void fireChangeEvent() {

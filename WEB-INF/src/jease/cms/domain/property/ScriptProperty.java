@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 package jease.cms.domain.property;
 
-import jease.cmf.service.Compilers;
+import jfix.util.Reflections;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,7 +40,7 @@ public class ScriptProperty extends Property implements Provider {
 	public String[] getValue() {
 		try {
 			if (provider == null) {
-				provider = (Provider) Compilers.eval(code);
+				provider = (Provider) Reflections.newInstance(code);
 			}
 			return provider.getValue();
 		} catch (Throwable e) {

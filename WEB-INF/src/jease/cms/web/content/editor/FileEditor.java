@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,12 +20,12 @@ import jease.Names;
 import jease.Registry;
 import jease.cms.domain.File;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
 import jfix.zk.Mediafield;
 import jfix.zk.Modal;
 
 import org.apache.commons.io.FilenameUtils;
-import org.zkoss.zk.ui.event.Event;
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zk.ui.event.Events;
 
 public class FileEditor<E extends File> extends ContentEditor<E> {
 
@@ -33,11 +33,9 @@ public class FileEditor<E extends File> extends ContentEditor<E> {
 
 	public FileEditor() {
 		media.setHeight((100 + getDesktopHeight() / 3) + "px");
-		media.addUploadListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				if (media.getMedia() != null) {
-					uploadPerformed();
-				}
+		media.addEventListener(Events.ON_UPLOAD, evt -> {
+			if (media.getMedia() != null) {
+				uploadPerformed();
 			}
 		});
 		media.setUploadLimit(Registry.getParameter(Names.JEASE_UPLOAD_LIMIT));
@@ -64,10 +62,10 @@ public class FileEditor<E extends File> extends ContentEditor<E> {
 	protected void uploadPerformed() {
 		if (getObject().isValidContentType(media.getContentType())) {
 			String filename = media.getName();
-			if (id.isEmpty()) {
+			if (StringUtils.isEmpty(id.getValue())) {
 				id.setText(filename);
 			}
-			if (title.isEmpty()) {
+			if (StringUtils.isEmpty(title.getValue())) {
 				title.setText(FilenameUtils.removeExtension(filename));
 			}
 		} else {

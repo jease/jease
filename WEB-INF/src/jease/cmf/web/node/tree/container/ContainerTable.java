@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,7 +16,9 @@
  */
 package jease.cmf.web.node.tree.container;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,18 +29,16 @@ import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.NodeTable;
 import jease.cmf.web.node.NodeTableModel;
-import jfix.util.Arrays;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
 import jfix.zk.Modal;
-import jfix.zk.Radiobutton;
 import jfix.zk.Radiogroup;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.DropEvent;
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Radio;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
@@ -46,8 +46,8 @@ public class ContainerTable extends NodeTable {
 
 	private NodeTableModel<Node> nodeTableModel;
 
-	private Radiobutton singleSelect = new Radiobutton(I18N.get("Edit"));
-	private Radiobutton multiSelect = new Radiobutton(I18N.get("Select"));
+	private Radio singleSelect = new Radio(I18N.get("Edit"));
+	private Radio multiSelect = new Radio(I18N.get("Select"));
 
 	public ContainerTable() {
 		initTableModel();
@@ -67,31 +67,23 @@ public class ContainerTable extends NodeTable {
 	}
 
 	private void initItemRenderer() {
-		ActionListener dropListener = new ActionListener() {
-			public void actionPerformed(Event event) {
-				dropPerformed((DropEvent) event);
-			}
-		};
-		ListitemRenderer treeTableRenderer = new ContainerTableRenderer(
-				getListbox().getItemRenderer(), dropListener);
+		ListitemRenderer<Node> treeTableRenderer = new ContainerTableRenderer(
+				getListbox().getItemRenderer(),
+				$event -> dropPerformed((DropEvent) $event));
 		getListbox().setItemRenderer(treeTableRenderer);
 	}
 
 	private void initModeControl() {
 		singleSelect.setChecked(true);
-		singleSelect.addCheckListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				getListbox().setPageSize(getListbox().getPageSize() / 10);
-				getListbox().setMultiple(false);
-				getListbox().setCheckmark(false);
-			}
+		singleSelect.addEventListener(Events.ON_CHECK, $event -> {
+			getListbox().setPageSize(getListbox().getPageSize() / 10);
+			getListbox().setMultiple(false);
+			getListbox().setCheckmark(false);
 		});
-		multiSelect.addCheckListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				getListbox().setPageSize(getListbox().getPageSize() * 10);
-				getListbox().setMultiple(true);
-				getListbox().setCheckmark(true);
-			}
+		multiSelect.addEventListener(Events.ON_CHECK, $event -> {
+			getListbox().setPageSize(getListbox().getPageSize() * 10);
+			getListbox().setMultiple(true);
+			getListbox().setCheckmark(true);
 		});
 		appendChild(new Radiogroup(singleSelect, multiSelect));
 	}
@@ -103,11 +95,10 @@ public class ContainerTable extends NodeTable {
 		Component dragged = dropEvent.getDragged();
 
 		if (dragged instanceof Listitem) {
-			Set<Listitem> itemSet = new HashSet<Listitem>(getListbox()
+			Set<Listitem> itemSet = new HashSet<>(getListbox()
 					.getSelectedItems());
 			itemSet.add((Listitem) dragged);
-			List<Listitem> itemList = new ArrayList<Listitem>(getListbox()
-					.getItems());
+			List<Listitem> itemList = new ArrayList<>(getListbox().getItems());
 			itemList.retainAll(itemSet);
 			for (Listitem listitem : itemList) {
 				if (listitem != target) {
@@ -127,13 +118,15 @@ public class ContainerTable extends NodeTable {
 		}
 
 		try {
-			Nodes.append(JeaseSession.getContainer(),
-					Arrays.cast(getListbox().getValues(), Node.class));
+			Nodes.append(
+					JeaseSession.getContainer(),
+					Arrays.stream(getListbox().getValues()).toArray(
+							$size -> (Node[]) Array.newInstance(Node.class,
+									$size)));
 		} catch (NodeException e) {
 			Modal.error(e.getMessage());
 		} finally {
 			fireChangeEvent();
 		}
 	}
-
 }

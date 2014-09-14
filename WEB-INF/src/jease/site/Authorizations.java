@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,16 +17,16 @@
 package jease.site;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 import jease.cms.domain.Access;
 import jease.cms.domain.Content;
 import jease.cms.domain.Reference;
 import jfix.db4o.Database;
-import jfix.functor.Supplier;
-import jfix.util.Crypts;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -35,11 +35,7 @@ import org.apache.commons.lang3.ArrayUtils;
  */
 public class Authorizations {
 
-	private static Supplier<Map<Content, Access[]>> accessByContent = new Supplier<Map<Content, Access[]>>() {
-		public Map<Content, Access[]> get() {
-			return new ConcurrentHashMap<Content, Access[]>();
-		}
-	};
+	private static Supplier<Map<Content, Access[]>> accessByContent = ConcurrentHashMap::new;
 
 	/**
 	 * Returns guarding Access object for given content or null, if content is
@@ -51,7 +47,7 @@ public class Authorizations {
 		}
 		Map<Content, Access[]> cache = Database.query(accessByContent);
 		if (!cache.containsKey(content)) {
-			List<Access> allGuards = new ArrayList<Access>();
+			List<Access> allGuards = new ArrayList<>();
 			Access[] accessGuards = content.getGuards(Access.class);
 			if (ArrayUtils.isNotEmpty(accessGuards)) {
 				for (Access access : accessGuards) {
@@ -70,7 +66,7 @@ public class Authorizations {
 			}
 			cache.put(content, allGuards.toArray(new Access[] {}));
 		}
-		List<Access> activeGuards = new ArrayList<Access>();
+		List<Access> activeGuards = new ArrayList<>();
 		for (Access access : cache.get(content)) {
 			if (access.isGuarding()) {
 				activeGuards.add(access);
@@ -89,7 +85,7 @@ public class Authorizations {
 	 */
 	public static Access findAuthorizingGuard(String authorization,
 			Access[] guards) {
-		String userpass = Crypts.decodeBasicAuthorization(authorization);
+		String userpass = decodeBasicAuthorization(authorization);
 		if (userpass == null) {
 			return null;
 		}
@@ -108,10 +104,19 @@ public class Authorizations {
 	 * Returns the username from given basic authorization header.
 	 */
 	public static String getUsername(String authorization) {
-		String userpass = Crypts.decodeBasicAuthorization(authorization);
+		String userpass = decodeBasicAuthorization(authorization);
 		if (userpass != null) {
 			return userpass.substring(0, userpass.indexOf(":"));
 		}
 		return null;
 	}
+
+	private static String decodeBasicAuthorization(String authorizationHeader) {
+		if (authorizationHeader == null) {
+			return null;
+		}
+		String userpassEncoded = authorizationHeader.substring(6);
+		return new String(Base64.getDecoder().decode(userpassEncoded));
+	}
+
 }

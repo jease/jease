@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 
 import jease.cmf.domain.Node;
-import jfix.util.Files;
 import jfix.util.Zipfiles;
 
 import org.apache.commons.lang3.StringUtils;
@@ -64,11 +64,12 @@ public class Backup extends Serializer {
 			nodeCopy.setParent(null);
 			String filename = (StringUtils.isEmpty(nodeCopy.getId()) ? nodeCopy
 					.getType() : nodeCopy.getId()) + ".xml";
-			File tmpDirectory = Files.createTempDirectory();
+			File tmpDirectory = Files.createTempDirectory("jease-backup")
+					.toFile();
 			tmpDirectory.deleteOnExit();
 			File dumpFile = new File(tmpDirectory, filename);
 			dumpFile.deleteOnExit();
-			Writer writer = Files.newWriter(dumpFile);
+			Writer writer = Files.newBufferedWriter(dumpFile.toPath());
 			toXML(nodeCopy, writer);
 			writer.close();
 			File zipFile = Zipfiles.zip(dumpFile);
@@ -87,7 +88,8 @@ public class Backup extends Serializer {
 			return null;
 		}
 		try {
-			Reader reader = Files.newReader(Zipfiles.unzip(dumpFile));
+			Reader reader = Files.newBufferedReader(Zipfiles.unzip(dumpFile)
+					.toPath());
 			Node node = fromXML(reader);
 			node.setId(Filenames.asId(dumpFile.getName()).replace(".xml.zip",
 					""));

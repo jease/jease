@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,18 +32,17 @@ import jease.cms.service.Revisions;
 import jease.cms.service.Sequences;
 import jease.cms.web.content.editor.property.PropertyManager;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Button;
 import jfix.zk.Images;
 import jfix.zk.Modal;
 import jfix.zk.Selectfield;
 import jfix.zk.Sessions;
-import jfix.zk.Textfield;
 import jfix.zk.WebBrowser;
 
 import org.apache.commons.lang3.StringUtils;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Textbox;
 
 /**
  * Base class for all content editors. All common fields for Content should be
@@ -52,7 +51,7 @@ import org.zkoss.zk.ui.event.Events;
 public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	protected Date lastNodeModification;
-	protected Textfield title = new Textfield();
+	protected Textbox title = new Textbox();
 	protected Selectfield revisionSelection = new Selectfield();
 	protected PropertyManager propertyManager = new PropertyManager();
 	protected Button editProperties = new Button(I18N.get("Properties"),
@@ -63,37 +62,27 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	public ContentEditor() {
 		if (getSessionUser().isAdministrator()) {
-			editProperties.addClickListener(new ActionListener() {
-				public void actionPerformed(Event event) {
-					propertyManager.toogleEdit();
-				}
-			});
+			editProperties.addEventListener(Events.ON_CLICK,
+					event -> propertyManager.toogleEdit());
 			getButtons().appendChild(editProperties);
 		}
 
 		if (Registry.getParameter(Names.JEASE_SITE_DESIGN) != null) {
-			viewContent.addClickListener(new ActionListener() {
-				public void actionPerformed(Event event) {
-					viewContent();
-				}
-			});
+			viewContent.addEventListener(Events.ON_CLICK,
+					event -> viewContent());
 			getButtons().appendChild(viewContent);
 		}
 
-		revisionSelection.addSelectListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				peek(Revisions.checkout(getNode(),
-						revisionSelection.getSelectedIndex()));
-				viewContent.setVisible(true);
-				lastNodeModification = null;
-			}
-		});
+		revisionSelection.addEventListener(
+				Events.ON_SELECT,
+				event -> {
+					peek(Revisions.checkout(getNode(),
+							revisionSelection.getSelectedIndex()));
+					viewContent.setVisible(true);
+					lastNodeModification = null;
+				});
 
-		addEventListener(Events.ON_CLOSE, new ActionListener() {
-			public void actionPerformed(Event event) {
-				closePerformed(event);
-			}
-		});
+		addEventListener(Events.ON_CLOSE, event -> closePerformed(event));
 		closeCheckEnabled = true;
 	}
 
@@ -106,11 +95,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		String message = Registry.getParameter(Names.JEASE_CMS_MAINTENANCE);
 		if (StringUtils.isNotBlank(message)
 				&& !getSessionUser().isAdministrator()) {
-			Modal.info(message, new ActionListener() {
-				public void actionPerformed(Event event) {
-					Sessions.invalidate();
-				}
-			});
+			Modal.info(message, event -> Sessions.invalidate());
 		}
 	}
 
@@ -138,7 +123,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			Factory factory = Properties.getFactory(
 					(Content) JeaseSession.getContainer(), getNode());
 			if (factory != null && factory != JeaseSession.getContainer()) {
-				if (id.isEmpty()
+				if (StringUtils.isEmpty(id.getValue())
 						&& StringUtils.isNotBlank(factory.getSequence())) {
 					id.setText(String.valueOf(Sequences.getNext(factory
 							.getSequence())));
@@ -189,13 +174,15 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	protected void doValidate() throws Exception {
-		if (id.isEmpty() && id.isVisible() && !id.isDisabled()) {
+		if (StringUtils.isEmpty(id.getValue()) && id.isVisible()
+				&& !id.isDisabled()) {
 			id.setValue(title.getValue());
 		}
 		super.doValidate();
 		if (!isFactoryMode()) {
 			if (title.getParent() != null) {
-				validate(title.isEmpty(), I18N.get("Title_is_required"));
+				validate(StringUtils.isEmpty(title.getValue()),
+						I18N.get("Title_is_required"));
 			}
 			validate(lastNodeModification != null
 					&& lastNodeModification != getNode().getLastModified(),
@@ -252,14 +239,11 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 				String newFulltext = getNode().getFulltext().toString();
 				if (!StringUtils.equals(currentFulltext, newFulltext)) {
 					event.stopPropagation();
-					Modal.confirm(I18N.get("Are_you_sure"),
-							new ActionListener() {
-								public void actionPerformed(Event evt) {
-									closeCheckEnabled = false;
-									refresh();
-									fireClose();
-								}
-							});
+					Modal.confirm(I18N.get("Are_you_sure"), evt -> {
+						closeCheckEnabled = false;
+						refresh();
+						fireClose();
+					});
 				}
 			} catch (Exception e) {
 				Modal.exception(e);
@@ -284,11 +268,8 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			setObject(currentNode);
 		}
 		WebBrowser browser = new WebBrowser(getNode().getPath());
-		browser.addCloseListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				Sessions.remove(currentNode.getPath());
-			}
-		});
+		browser.addEventListener(Events.ON_CLOSE,
+				event -> Sessions.remove(currentNode.getPath()));
 		getRoot().appendChild(browser);
 	}
 

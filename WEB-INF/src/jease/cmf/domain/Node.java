@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,17 +16,20 @@
  */
 package jease.cmf.domain;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import jfix.db4o.Persistent;
-import jfix.functor.Procedure;
-import jfix.util.Arrays;
 import jfix.util.Urls;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -42,7 +45,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Node extends Persistent {
 
-	private transient static Set<Node> changedNodes = new HashSet<Node>();
+	private transient static Set<Node> changedNodes = new HashSet<>();
 	private String id;
 	private Node parent;
 	private Node[] children = new Node[] {};
@@ -58,7 +61,7 @@ public class Node extends Persistent {
 	/**
 	 * Sets the id of the node. No checks are performed.
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		String oldPath = null;
 		if (getParent() != null && StringUtils.isNotBlank(getId())) {
 			oldPath = getPath();
@@ -80,7 +83,7 @@ public class Node extends Persistent {
 	 * Sets given parent for node. Internally the call is forwarded to
 	 * #appendChild(Node).
 	 */
-	public void setParent(Node newParent) {
+	public void setParent(final Node newParent) {
 		if (newParent == null) {
 			detachParent();
 		} else if (parent != newParent) {
@@ -92,7 +95,7 @@ public class Node extends Persistent {
 	 * Returns all parents of node ordered from root to parent of node.
 	 */
 	public Node[] getParents() {
-		List<Node> parents = new ArrayList<Node>();
+		List<Node> parents = new ArrayList<>();
 		Node parentNode = getParent();
 		while (parentNode != null) {
 			parents.add(parentNode);
@@ -106,14 +109,16 @@ public class Node extends Persistent {
 	 * Returns all parents of node which are of given class type ordered from
 	 * root to parent of node.
 	 */
-	public <E extends Node> E[] getParents(Class<E> clazz) {
-		return Arrays.filter(getParents(), clazz);
+	public <E extends Node> E[] getParents(final Class<E> clazz) {
+		return (E[]) Stream.of(getParents())
+				.filter($node -> clazz.isAssignableFrom($node.getClass()))
+				.toArray($size -> (E[]) Array.newInstance(clazz, $size));
 	}
 
 	/**
 	 * Returns true if node is a descendant of given parents.
 	 */
-	public boolean isDescendant(Node... possibleParents) {
+	public boolean isDescendant(final Node... possibleParents) {
 		for (Node possibleParent : possibleParents) {
 			if (this == possibleParent) {
 				return true;
@@ -133,9 +138,9 @@ public class Node extends Persistent {
 	 * Returns all descendant nodes by recursively traversing children.
 	 */
 	public Node[] getDescendants() {
-		final List<Node> nodes = new ArrayList<Node>();
-		traverse(new Procedure<Node>() {
-			public void execute(Node node) {
+		final List<Node> nodes = new ArrayList<>();
+		traverse(new Consumer<Node>() {
+			public void accept(Node node) {
 				nodes.add(node);
 			}
 		});
@@ -146,8 +151,10 @@ public class Node extends Persistent {
 	 * Returns all descendant nodes of given class type by recursively
 	 * traversing children.
 	 */
-	public <E extends Node> E[] getDescendants(Class<E> clazz) {
-		return Arrays.filter(getDescendants(), clazz);
+	public <E extends Node> E[] getDescendants(final Class<E> clazz) {
+		return (E[]) Stream.of(getDescendants())
+				.filter($node -> clazz.isAssignableFrom($node.getClass()))
+				.toArray($size -> (E[]) Array.newInstance(clazz, $size));
 	}
 
 	/**
@@ -160,8 +167,10 @@ public class Node extends Persistent {
 	/**
 	 * Returns all children of given class type.
 	 */
-	public <E extends Node> E[] getChildren(Class<E> clazz) {
-		return Arrays.filter(getChildren(), clazz);
+	public <E extends Node> E[] getChildren(final Class<E> clazz) {
+		return (E[]) Stream.of(getChildren())
+				.filter($node -> clazz.isAssignableFrom($node.getClass()))
+				.toArray($size -> (E[]) Array.newInstance(clazz, $size));
 	}
 
 	/**
@@ -216,14 +225,14 @@ public class Node extends Persistent {
 	 * Appends given child to node. This method automatically detaches the given
 	 * child before the child is attached to the new parent.
 	 */
-	public void appendChild(Node child) {
+	public void appendChild(final Node child) {
 		String oldPath = null;
 		if (child.getParent() != null && StringUtils.isNotBlank(child.getId())) {
 			oldPath = child.getPath();
 		}
 		child.detachParent();
 		child.parent = this;
-		children = Arrays.append(children, child, Node.class);
+		children = ArrayUtils.add(children, child);
 		markChanged();
 		if (StringUtils.isNotBlank(oldPath)) {
 			child.onPathChange(oldPath);
@@ -234,10 +243,10 @@ public class Node extends Persistent {
 	 * Appens given children to node. This method automatically detaches all
 	 * children before each child is attached to the new parent.
 	 */
-	public void appendChildren(Node[] newChildren) {
-		Set<Node> newChildrenSet = Arrays.asSet(newChildren);
-		Set<Node> currentChildrenSet = Arrays.asSet(children);
-		List<Node> result = new ArrayList<Node>();
+	public void appendChildren(final Node[] newChildren) {
+		Set<Node> newChildrenSet = new HashSet<>(Arrays.asList(newChildren));
+		Set<Node> currentChildrenSet = new HashSet<>(Arrays.asList(children));
+		List<Node> result = new ArrayList<>();
 		if (newChildrenSet.containsAll(currentChildrenSet)) {
 			result.addAll(Arrays.asList(newChildren));
 		} else {
@@ -279,8 +288,8 @@ public class Node extends Persistent {
 	 * Detaches parent from node.
 	 */
 	protected void detachParent() {
-		if (parent != null && Arrays.contains(parent.children, this)) {
-			parent.children = Arrays.remove(parent.children, this, Node.class);
+		if (parent != null && ArrayUtils.contains(parent.children, this)) {
+			parent.children = ArrayUtils.removeElement(parent.children, this);
 			parent.markChanged();
 		}
 		parent = null;
@@ -334,7 +343,7 @@ public class Node extends Persistent {
 	 * If recursive is true, a recursive copy is performed where children and
 	 * children of children will be copied as well.
 	 */
-	public Node copy(boolean recursive) {
+	public Node copy(final boolean recursive) {
 		try {
 			Node node = getClass().newInstance();
 			if (recursive) {
@@ -352,8 +361,8 @@ public class Node extends Persistent {
 	/**
 	 * Validates if the given child with given id can be appended to node.
 	 */
-	public void validateChild(Node potentialChild, String potentialChildId)
-			throws NodeException {
+	public void validateChild(final Node potentialChild,
+			final String potentialChildId) throws NodeException {
 		validateId(potentialChild, potentialChildId);
 		validateDuplicate(potentialChild, potentialChildId);
 		validateNesting(potentialChild, potentialChildId);
@@ -363,8 +372,8 @@ public class Node extends Persistent {
 	/**
 	 * Valididates if given id for given child is correct.
 	 */
-	protected void validateId(Node potentialChild, String potentialChildId)
-			throws NodeException {
+	protected void validateId(final Node potentialChild,
+			final String potentialChildId) throws NodeException {
 		if (potentialChildId != null && !Urls.isValid(potentialChildId)) {
 			throw new NodeException.IllegalId();
 		}
@@ -374,8 +383,8 @@ public class Node extends Persistent {
 	 * Validates if given child with given id is unique between children of a
 	 * node.
 	 */
-	protected void validateDuplicate(Node potentialChild,
-			String potentialChildId) throws NodeException {
+	protected void validateDuplicate(final Node potentialChild,
+			final String potentialChildId) throws NodeException {
 		for (Node actualChild : getChildren()) {
 			if (actualChild.getId().equals(potentialChildId)
 					&& actualChild != potentialChild) {
@@ -388,8 +397,8 @@ public class Node extends Persistent {
 	 * Validates if given child with given id can be child of node. Use this
 	 * method in derived implementations to restrict the set of valid children.
 	 */
-	protected void validateNesting(Node potentialChild, String potentialChildId)
-			throws NodeException {
+	protected void validateNesting(final Node potentialChild,
+			final String potentialChildId) throws NodeException {
 		for (Node parentNode = this; parentNode != null; parentNode = parentNode
 				.getParent()) {
 			if (potentialChild == parentNode) {
@@ -403,16 +412,16 @@ public class Node extends Persistent {
 	 * potential parent. Use this method in derived implementations to restrict
 	 * the set of valid parents for certain kinds of nodes.
 	 */
-	protected void validateParent(Node potentialParent, String potentialId)
-			throws NodeException {
+	protected void validateParent(final Node potentialParent,
+			final String potentialId) throws NodeException {
 		// No restrictions per default.
 	}
 
 	/**
 	 * Applies given procedure to node and recursively to all children.
 	 */
-	public void traverse(Procedure<Node> action) {
-		action.execute(this);
+	public void traverse(final Consumer<Node> action) {
+		action.accept(this);
 		for (Node child : getChildren()) {
 			child.traverse(action);
 		}
@@ -421,10 +430,10 @@ public class Node extends Persistent {
 	/**
 	 * Applies given procedure to all changed nodes.
 	 */
-	public void processChangedNodes(Procedure<Node> action) {
+	public void processChangedNodes(final Consumer<Node> action) {
 		synchronized (changedNodes) {
 			for (Node node : changedNodes) {
-				action.execute(node);
+				action.accept(node);
 			}
 			changedNodes.clear();
 		}

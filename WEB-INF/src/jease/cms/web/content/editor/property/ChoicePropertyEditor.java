@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,11 +16,13 @@
  */
 package jease.cms.web.content.editor.property;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 import jease.cms.domain.property.ChoiceProperty;
 import jease.cms.domain.property.Property;
 import jease.cms.domain.property.Provider;
 import jease.cms.service.Properties;
-import jfix.util.Arrays;
 import jfix.zk.Checklist;
 import jfix.zk.Container;
 import jfix.zk.Scrollbox;
@@ -41,8 +43,10 @@ public class ChoicePropertyEditor extends Container implements
 		if (setupProvider) {
 			property.setProvider((String) providerSelection.getSelectedValue());
 		} else {
-			property.setValue(Arrays.cast(valueSelection.getSelected(),
-					String.class));
+			property.setValue(Arrays.stream(valueSelection.getSelected())
+					.toArray(
+							size -> (String[]) Array.newInstance(String.class,
+									size)));
 		}
 		return property;
 	}

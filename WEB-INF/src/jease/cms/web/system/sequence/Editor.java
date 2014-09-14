@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,11 +21,13 @@ import jfix.db4o.Database;
 import jfix.util.I18N;
 import jfix.zk.ObjectEditor;
 import jfix.zk.Spinner;
-import jfix.zk.Textfield;
+
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zul.Textbox;
 
 public class Editor extends ObjectEditor<Sequence> {
 
-	Textfield name = new Textfield();
+	Textbox name = new Textbox();
 	Spinner value = new Spinner();
 
 	public Editor() {
@@ -52,7 +54,8 @@ public class Editor extends ObjectEditor<Sequence> {
 	}
 
 	public void validate() {
-		validate(name.isEmpty(), I18N.get("Name_is_required"));
+		validate(StringUtils.isEmpty(name.getValue()),
+				I18N.get("Name_is_required"));
 	}
 
 }

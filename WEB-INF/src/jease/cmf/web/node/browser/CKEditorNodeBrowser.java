@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@ package jease.cmf.web.node.browser;
 
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
-import jfix.zk.Linkbutton;
 
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Toolbarbutton;
 
 public class CKEditorNodeBrowser extends AbstractNodeBrowser {
 
@@ -34,7 +34,7 @@ public class CKEditorNodeBrowser extends AbstractNodeBrowser {
 	}
 
 	protected Button newNodeSelector(Node node) {
-		Linkbutton button = new Linkbutton(node.getId(), JeaseSession
+		Button button = new Toolbarbutton(node.getId(), JeaseSession
 				.getConfig().getIcon(node));
 		button.setWidgetListener(
 				"onClick",

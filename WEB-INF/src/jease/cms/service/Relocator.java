@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,14 +17,13 @@
 package jease.cms.service;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
 import jease.cms.domain.Content.PathChangeProcessor;
 import jease.cms.domain.Trash;
 import jfix.db4o.Database;
-import jfix.functor.Command;
-import jfix.functor.Predicate;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -40,7 +39,7 @@ public class Relocator implements PathChangeProcessor {
 						Trash.class))) {
 			final String target = "./~" + oldPath;
 			final String replacement = "./~" + newPath;
-			Database.write(new Command() {
+			Database.write(new Runnable() {
 				public void run() {
 					for (Content content : searchContent(target)) {
 						content.replace(target, replacement);

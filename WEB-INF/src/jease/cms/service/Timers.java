@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import java.util.TimerTask;
 
 import jease.Names;
 import jease.Registry;
-import jease.cmf.service.Compilers;
+import jfix.util.Reflections;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,7 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 public class Timers {
 
 	private static Timer timer;
-	private static String source;
+	private static String timerTaskClass;
 	private static Runnable runnable;
 
 	public static void start() {
@@ -41,19 +41,21 @@ public class Timers {
 		timer.schedule(new TimerTask() {
 			public void run() {
 				try {
-					String newSource = Registry
+					String newTimerTaskClass = Registry
 							.getParameter(Names.JEASE_TIMER_TASK);
-					if (StringUtils.isNotBlank(newSource)) {
-						if (!StringUtils.equals(source, newSource)) {
-							source = newSource;
-							runnable = (Runnable) Compilers.eval(source);
+					if (StringUtils.isNotBlank(newTimerTaskClass)) {
+						if (!StringUtils.equals(timerTaskClass,
+								newTimerTaskClass)) {
+							timerTaskClass = newTimerTaskClass;
+							runnable = (Runnable) Reflections
+									.newInstance(timerTaskClass);
 						}
 						if (runnable != null) {
 							runnable.run();
 						}
 					}
 				} catch (Throwable e) {
-					source = null;
+					timerTaskClass = null;
 					runnable = null;
 				}
 			}
@@ -63,7 +65,7 @@ public class Timers {
 	public static void stop() {
 		if (timer != null) {
 			timer.cancel();
-			source = null;
+			timerTaskClass = null;
 			runnable = null;
 		}
 	}

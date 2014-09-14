@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 package jease.cms.web;
 
 import java.util.Date;
+import java.util.stream.Stream;
 
 import jease.Names;
 import jease.cmf.service.Nodes;
@@ -32,15 +33,12 @@ import jease.cms.service.Contents;
 import jease.cms.service.Users;
 import jease.cms.web.user.Editor;
 import jfix.db4o.Database;
-import jfix.functor.Functors;
-import jfix.functor.Predicate;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
 import jfix.zk.Div;
 import jfix.zk.Window;
 import jfix.zk.ZK;
 
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
 
 /**
  * Initial setup and upgrade for JeaseCMS.
@@ -91,28 +89,22 @@ public class Setup extends Div {
 
 			Role editor = new Role();
 			editor.setName(I18N.get("Editor"));
-			editor.setTypes(Functors.filter(
-					Contents.getClassNamesForAvailableTypes(),
-					new Predicate<String>() {
-						public boolean test(String type) {
-							return !(type.equals(Factory.class.getName())
-									|| type.equals(Script.class.getName()) || type
-									.equals(Transit.class.getName()));
-						}
-					}));
+			editor.setTypes(Stream
+					.of(Contents.getClassNamesForAvailableTypes())
+					.filter(type -> !(type.equals(Factory.class.getName())
+							|| type.equals(Script.class.getName()) || type
+							.equals(Transit.class.getName())))
+					.toArray(size -> new String[size]));
 			Database.save(editor);
 		}
 	}
 
 	public void setupAdministrator() {
 		if (Users.queryAdministrators().isEmpty()) {
-			Role role = Database.queryUnique(Role.class, new Predicate<Role>() {
-				public boolean test(Role role) {
-					return role.getName().equals(I18N.get("Administrator"));
-				}
-			});
+			Role admin = Database.queryUnique(Role.class, role -> role
+					.getName().equals(I18N.get("Administrator")));
 			final User administrator = new User();
-			administrator.setRole(role);
+			administrator.setRole(admin);
 			administrator.setRoots(new Folder[] { (Folder) Nodes.getRoot() });
 
 			final Window window = new Window(I18N.get("Setup_Administrator"));
@@ -121,12 +113,10 @@ public class Setup extends Div {
 
 			final Editor editor = new Editor();
 			editor.setObject(administrator);
-			editor.addChangeListener(new ActionListener() {
-				public void actionPerformed(Event evt) {
-					window.close();
-					JeaseSession.set(administrator);
-					redirectToLogin();
-				}
+			editor.addEventListener(Events.ON_CHANGE, event -> {
+				window.close();
+				JeaseSession.set(administrator);
+				redirectToLogin();
 			});
 			editor.refresh();
 			editor.setParent(window);

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,28 +18,24 @@ package jease.cms.web.content.editor;
 
 import jease.cms.domain.Script;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Checkbox;
-import jfix.zk.Codearea;
 
 import org.apache.commons.io.FilenameUtils;
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.codemirror.Codemirror;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
+import org.zkoss.zul.Checkbox;
 
 public class ScriptEditor extends ContentEditor<Script> {
 
-	Codearea code = new Codearea();
+	Codemirror code = new Codemirror();
 	Checkbox forward = new Checkbox();
 
 	public ScriptEditor() {
 		code.setHeight((100 + getDesktopHeight() / 3) + "px");
 		code.setConfig("lineNumbers:true");
-		id.addChangingListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				code.setSyntax(FilenameUtils.getExtension(((InputEvent) event)
-						.getValue()));
-			}
-		});
+		id.addEventListener(Events.ON_CHANGING, event -> code
+				.setSyntax(FilenameUtils.getExtension(((InputEvent) event)
+						.getValue())));
 	}
 
 	public void init() {
@@ -49,12 +45,12 @@ public class ScriptEditor extends ContentEditor<Script> {
 
 	public void load() {
 		code.setSyntax(FilenameUtils.getExtension(id.getValue()));
-		code.setText(getNode().getCode());
+		code.setValue(getNode().getCode());
 		forward.setChecked(getNode().isForward());
 	}
 
 	public void save() {
-		getNode().setCode(code.getText());
+		getNode().setCode(code.getValue());
 		getNode().setForward(forward.isChecked());
 	}
 

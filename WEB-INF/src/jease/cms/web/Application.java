@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import jease.cms.service.Users;
 import jease.cms.web.content.Configuration;
 import jfix.db4o.Database;
 import jfix.util.Reflections;
-import jfix.zk.ActionListener;
 import jfix.zk.LoginWindow;
 import jfix.zk.Modal;
 import jfix.zk.Sessions;
@@ -42,8 +41,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.ClientInfoEvent;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
 /**
@@ -127,16 +124,11 @@ public class Application extends LoginWindow {
 	}
 
 	private void initBrowserInfo() {
-		getRoot().addEventListener(Events.ON_CLIENT_INFO,
-				new EventListener<Event>() {
-					public void onEvent(Event evt) throws Exception {
-						ClientInfoEvent ce = (ClientInfoEvent) evt;
-						JeaseSession.set(Names.JEASE_CMS_HEIGHT,
-								ce.getDesktopHeight());
-						JeaseSession.set(Names.JEASE_CMS_WIDTH,
-								ce.getDesktopWidth());
-					}
-				});
+		getRoot().addEventListener(Events.ON_CLIENT_INFO, event -> {
+			ClientInfoEvent ce = (ClientInfoEvent) event;
+			JeaseSession.set(Names.JEASE_CMS_HEIGHT, ce.getDesktopHeight());
+			JeaseSession.set(Names.JEASE_CMS_WIDTH, ce.getDesktopWidth());
+		});
 	}
 
 	private void notifyAboutMaintenance(User user) {
@@ -145,11 +137,7 @@ public class Application extends LoginWindow {
 			if (user.isAdministrator()) {
 				Modal.info(message);
 			} else {
-				Modal.info(message, new ActionListener() {
-					public void actionPerformed(Event event) {
-						Sessions.invalidate();
-					}
-				});
+				Modal.info(message, event -> Sessions.invalidate());
 			}
 		}
 	}

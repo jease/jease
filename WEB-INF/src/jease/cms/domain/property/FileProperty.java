@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,8 +16,11 @@
  */
 package jease.cms.domain.property;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 import jfix.db4o.Blob;
-import jfix.util.Files;
 
 public class FileProperty extends Property {
 
@@ -70,7 +73,12 @@ public class FileProperty extends Property {
 		FileProperty property = (FileProperty) super.copy();
 		property.setFilename(getFilename());
 		property.setContentType(getContentType());
-		Files.copy(getFile(), property.getFile());
+		try {
+			Files.copy(getFile().toPath(), property.getFile().toPath(),
+					StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		return property;
 	}
 

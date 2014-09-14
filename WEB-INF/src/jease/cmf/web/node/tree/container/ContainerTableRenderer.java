@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,24 +17,25 @@
 package jease.cmf.web.node.tree.container;
 
 import jease.cmf.domain.Node;
-import jfix.zk.ActionListener;
 
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
-public class ContainerTableRenderer implements ListitemRenderer {
+public class ContainerTableRenderer implements ListitemRenderer<Node> {
 
-	private ListitemRenderer itemRenderer;
-	private ActionListener dropListener;
+	private ListitemRenderer<Node> itemRenderer;
+	private EventListener<Event> dropListener;
 
-	public ContainerTableRenderer(ListitemRenderer itemRenderer,
-			ActionListener dropListener) {
+	public ContainerTableRenderer(ListitemRenderer<Node> itemRenderer,
+			EventListener<Event> dropListener) {
 		this.itemRenderer = itemRenderer;
 		this.dropListener = dropListener;
 	}
 
-	public void render(Listitem listitem, Object value, int index)
+	public void render(Listitem listitem, Node value, int index)
 			throws Exception {
 		itemRenderer.render(listitem, value, index);
 		if (value != null) {

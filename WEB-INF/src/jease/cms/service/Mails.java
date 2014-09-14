@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.Properties;
+import java.util.function.Supplier;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -32,7 +33,6 @@ import javax.mail.internet.MimeMessage;
 import jease.Names;
 import jease.Registry;
 import jfix.db4o.Database;
-import jfix.functor.Supplier;
 
 /**
  * Service for sending emails.

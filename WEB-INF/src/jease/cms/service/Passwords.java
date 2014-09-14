@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,13 +16,12 @@
  */
 package jease.cms.service;
 
+import java.util.function.Function;
+
 import jease.Names;
 import jease.Registry;
-import jease.cmf.service.Compilers;
-import jfix.functor.Function;
 import jfix.util.Crypts;
-
-import org.apache.commons.lang3.StringUtils;
+import jfix.util.Reflections;
 
 /**
  * Service to ease the handling of passwords (e.g. validation).
@@ -35,36 +34,30 @@ public class Passwords {
 	 * symbols.
 	 */
 	public static class PasswordValidator implements Function<String, Boolean> {
-		public Boolean evaluate(String password) {
+		public Boolean apply(String password) {
 			return Crypts.isStrongPassword(password);
 		}
 	}
-
-	private static Function<String, Boolean> passwordValidator = new PasswordValidator();
-	private static String passwordValidatorSource;
 
 	/**
 	 * Returns true if given password is valid.
 	 * 
 	 * If JEASE_PASSWORD_VALIDATOR is found in the Registry, it will be used. It
 	 * must be a class which implements
-	 * <code>jfix.functor.Function<String, Boolean></code>.
+	 * <code>java.util.function.Function<String, Boolean></code>.
 	 * 
 	 * Otherwise a generic password validation is used: the password must
 	 * contain 8 characters (mixed case letters, digits and symbols).
 	 */
 	public static boolean isValid(String password) {
-		String newPasswordValidatorSource = Registry
+		String passwordValidator = Registry
 				.getParameter(Names.JEASE_PASSWORD_VALIDATOR);
-		if (newPasswordValidatorSource != null) {
-			if (!StringUtils.equals(newPasswordValidatorSource,
-					passwordValidatorSource)) {
-				passwordValidatorSource = newPasswordValidatorSource;
-				passwordValidator = ((Function<String, Boolean>) Compilers
-						.eval(passwordValidatorSource));
-			}
+		if (passwordValidator != null) {
+			return ((Function<String, Boolean>) Reflections
+					.newInstance(passwordValidator)).apply(password);
+		} else {
+			return new PasswordValidator().apply(password);
 		}
-		return passwordValidator.evaluate(password);
 	}
 
 }

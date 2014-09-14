@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,13 +25,12 @@ import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
 import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
-import jfix.zk.ActionListener;
 import jfix.zk.Modal;
 import jfix.zk.Tree;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.DropEvent;
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Treeitem;
@@ -41,16 +40,9 @@ import org.zkoss.zul.ext.TreeOpenableModel;
 public class NavigationTree extends Tree {
 
 	public NavigationTree() {
-		setItemRenderer(new NavigationTreeRenderer(new ActionListener() {
-			public void actionPerformed(Event event) {
-				dropPerformed((DropEvent) event);
-			}
-		}));
-		addSelectListener(new ActionListener() {
-			public void actionPerformed(Event event) {
-				selectPerformed();
-			}
-		});
+		setItemRenderer(new NavigationTreeRenderer(
+				$event -> dropPerformed((DropEvent) $event)));
+		addEventListener(Events.ON_SELECT, $event -> selectPerformed());
 		setModel(new NavigationTreeModel(JeaseSession.getRoots(),
 				JeaseSession.getFilter()));
 		((TreeOpenableModel) getModel()).addOpenPath(new int[] { 0 });
@@ -80,10 +72,9 @@ public class NavigationTree extends Tree {
 		Node[] draggedNodes = null;
 		if (dragged instanceof Listitem) {
 			Listbox listbox = ((Listitem) dragged).getListbox();
-			Set<Listitem> itemSet = new HashSet<Listitem>(
-					listbox.getSelectedItems());
+			Set<Listitem> itemSet = new HashSet<>(listbox.getSelectedItems());
 			itemSet.add((Listitem) dragged);
-			List<Node> nodes = new ArrayList<Node>();
+			List<Node> nodes = new ArrayList<>();
 			for (Object item : listbox.getItems()) {
 				if (itemSet.contains(item)) {
 					if (((Listitem) item).getValue() instanceof Node) {

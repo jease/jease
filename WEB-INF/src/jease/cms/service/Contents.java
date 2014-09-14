@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,29 +19,23 @@ package jease.cms.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import jease.Names;
 import jease.Registry;
-import jease.cmf.service.Compilers;
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
 import jease.cms.domain.Reference;
 import jease.cms.domain.Trash;
 import jease.cms.domain.User;
 import jfix.db4o.Database;
-import jfix.functor.Function;
-import jfix.functor.Functors;
-import jfix.functor.Predicate;
-import jfix.functor.Procedure;
+import jfix.util.Reflections;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 public class Contents {
-
-	private static Procedure<Content> contentCustomizer;
-	private static String contentCustomizerSource;
 
 	/**
 	 * Returns content object for given uuid.
@@ -50,32 +44,23 @@ public class Contents {
 		if (uuid == null) {
 			return null;
 		}
-		return Database.queryUnique(Content.class, new Predicate<Content>() {
-			public boolean test(Content content) {
-				return uuid.equals(content.getUUID());
-			}
-		});
+		return Database.queryUnique(Content.class,
+				$content -> uuid.equals($content.getUUID()));
 	}
 
 	/**
-	 * A dynamically compiled jfix.functor.Procedure<Content> is used to
-	 * customize the given content before it is saved to the database. The
-	 * customizer is taken as Java source from the global registry. If no
-	 * customizer is present, nothing is done.
+	 * A <code>java.util.function.Consumer<Content></code> is used to customize
+	 * the given content before it is saved to the database. The customizer is
+	 * taken as Java class name from the global registry. If no customizer is
+	 * present, nothing is done.
 	 */
 	public static Content customize(Content content) {
-		String source = Registry.getParameter(Names.JEASE_CONTENT_CUSTOMIZER);
-		if (StringUtils.isBlank(source)) {
-			contentCustomizer = null;
-			contentCustomizerSource = null;
-			return content;
+		String contentCustomizer = Registry
+				.getParameter(Names.JEASE_CONTENT_CUSTOMIZER);
+		if (contentCustomizer != null) {
+			((Consumer<Content>) Reflections.newInstance(contentCustomizer))
+					.accept(content);
 		}
-		if (!source.equals(contentCustomizerSource)) {
-			contentCustomizerSource = source;
-			contentCustomizer = (Procedure<Content>) Compilers
-					.eval(contentCustomizerSource);
-		}
-		contentCustomizer.execute(content);
 		return content;
 	}
 
@@ -87,12 +72,9 @@ public class Contents {
 	}
 
 	public static String[] getClassNamesForAvailableTypes() {
-		return Functors.transform(getAvailableTypes(),
-				new Function<Content, String>() {
-					public String evaluate(Content content) {
-						return content.getClass().getName();
-					}
-				});
+		return Stream.of(getAvailableTypes())
+				.map($content -> $content.getClass().getName())
+				.toArray($size -> new String[$size]);
 	}
 
 	/**
@@ -185,7 +167,7 @@ public class Contents {
 	 * Returns all descendants for given nodes.
 	 */
 	public static Content[] getDescendants(Content[] nodes) {
-		List<Content> contents = new ArrayList<Content>();
+		List<Content> contents = new ArrayList<>();
 		if (nodes != null) {
 			for (Content node : nodes) {
 				for (Content content : node.getDescendants(Content.class)) {
@@ -200,10 +182,7 @@ public class Contents {
 	 * Returns all available content containers.
 	 */
 	public static Content[] getContainer() {
-		return Database.query(Content.class, new Predicate<Content>() {
-			public boolean test(Content content) {
-				return content.isContainer();
-			}
-		}).toArray(new Content[] {});
+		return Database.query(Content.class, Content::isContainer).toArray(
+				new Content[] {});
 	}
 }

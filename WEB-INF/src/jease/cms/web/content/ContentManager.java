@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@ import jease.cms.domain.User;
 import jease.cms.service.Backups;
 import jease.cms.service.Imports;
 import jfix.util.I18N;
-import jfix.zk.ActionListener;
-import jfix.zk.Button;
 import jfix.zk.Filedownload;
 import jfix.zk.Fileupload;
 import jfix.zk.Images;
@@ -37,8 +35,9 @@ import jfix.zk.WebBrowser;
 
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zul.Button;
 
 /**
  * JeaseCMS with additional content dump/restore and fileupload for quick
@@ -71,54 +70,52 @@ public class ContentManager extends Jease {
 	}
 
 	private void initDumpButton() {
-		dump = new Button(I18N.get("Dump"), Images.DriveCdrom,
-				new ActionListener() {
-					public void actionPerformed(Event evt) {
-						Filedownload.save(Backups.dump(JeaseSession
-								.getContainer()));
-					}
-				});
+		dump = new Button(I18N.get("Dump"), Images.DriveCdrom);
+		dump.addEventListener(Events.ON_CLICK, event -> Filedownload
+				.save(Backups.dump(JeaseSession.getContainer()))
+
+		);
 	}
 
 	private void initRestoreButton() {
-		restore = new Fileupload(I18N.get("Restore"), Images.MediaCdrom,
-				new ActionListener() {
-					public void actionPerformed(Event evt) {
-						Media media = ((UploadEvent) evt).getMedia();
-						if (media != null) {
-							try {
-								File backupFile = Medias.asFile(media);
-								backupFile.deleteOnExit();
-								Backups.restore(backupFile,
-										JeaseSession.getContainer(),
-										JeaseSession.get(User.class));
-							} catch (Exception e) {
-								Modal.error(e.getMessage());
-							} finally {
-								refresh();
-							}
+		restore = new Fileupload(I18N.get("Restore"), Images.MediaCdrom);
+		restore.addEventListener(
+				Events.ON_CLICK,
+				event -> {
+					Media media = ((UploadEvent) event).getMedia();
+					if (media != null) {
+						try {
+							File backupFile = Medias.asFile(media);
+							backupFile.deleteOnExit();
+							Backups.restore(backupFile,
+									JeaseSession.getContainer(),
+									JeaseSession.get(User.class));
+						} catch (Exception e) {
+							Modal.error(e.getMessage());
+						} finally {
+							refresh();
 						}
 					}
 				});
 	}
 
 	private void initUploadButton() {
-		upload = new Fileupload(I18N.get("Upload"), Images.UserHome,
-				new ActionListener() {
-					public void actionPerformed(Event evt) {
-						Media media = ((UploadEvent) evt).getMedia();
-						if (media != null) {
-							try {
-								File inputFile = Medias.asFile(media);
-								inputFile.deleteOnExit();
-								Imports.fromFile(inputFile,
-										JeaseSession.getContainer(),
-										JeaseSession.get(User.class));
-							} catch (Exception e) {
-								Modal.error(e.getMessage());
-							} finally {
-								refresh();
-							}
+		upload = new Fileupload(I18N.get("Upload"), Images.UserHome);
+		upload.addEventListener(
+				Events.ON_CLICK,
+				event -> {
+					Media media = ((UploadEvent) event).getMedia();
+					if (media != null) {
+						try {
+							File inputFile = Medias.asFile(media);
+							inputFile.deleteOnExit();
+							Imports.fromFile(inputFile,
+									JeaseSession.getContainer(),
+									JeaseSession.get(User.class));
+						} catch (Exception e) {
+							Modal.error(e.getMessage());
+						} finally {
+							refresh();
 						}
 					}
 				});
@@ -126,13 +123,13 @@ public class ContentManager extends Jease {
 	}
 
 	private void initViewButton() {
-		view = new Button(I18N.get("View"), Images.InternetWebBrowser,
-				new ActionListener() {
-					public void actionPerformed(Event evt) {
-						getRoot().appendChild(
-								new WebBrowser(JeaseSession.getContainer()
-										.getPath()));
-					}
+		view = new Button(I18N.get("View"), Images.InternetWebBrowser);
+		view.addEventListener(
+				Events.ON_CLICK,
+				event -> {
+					getRoot().appendChild(
+							new WebBrowser(JeaseSession.getContainer()
+									.getPath()));
 				});
 	}
 

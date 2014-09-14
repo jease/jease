@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,10 @@
  */
 package jease.cms.web.system.parameter;
 
+import jease.cms.domain.Parameter;
 import jfix.zk.ObjectTable;
 
-public class Table extends ObjectTable {
+public class Table extends ObjectTable<Parameter> {
 
 	public Table() {
 		init(new TableModel(), new Editor());

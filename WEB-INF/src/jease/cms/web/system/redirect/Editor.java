@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,12 +22,14 @@ import jease.cms.domain.Redirect;
 import jfix.db4o.Database;
 import jfix.util.I18N;
 import jfix.zk.ObjectEditor;
-import jfix.zk.Textfield;
+
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zul.Textbox;
 
 public class Editor extends ObjectEditor<Redirect> {
 
-	Textfield source = new Textfield();
-	Textfield target = new Textfield();
+	Textbox source = new Textbox();
+	Textbox target = new Textbox();
 
 	public Editor() {
 	}
@@ -54,8 +56,10 @@ public class Editor extends ObjectEditor<Redirect> {
 	}
 
 	public void validate() {
-		validate(source.isEmpty(), I18N.get("Source_is_required"));
-		validate(target.isEmpty(), I18N.get("Target_is_required"));
+		validate(StringUtils.isEmpty(source.getValue()),
+				I18N.get("Source_is_required"));
+		validate(StringUtils.isEmpty(target.getValue()),
+				I18N.get("Target_is_required"));
 	}
 
 }

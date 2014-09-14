@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013 maik.jablonski@jease.org
+    Copyright (C) 2014 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,15 +17,13 @@
 package jease.cms.web.system.role;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jease.cms.domain.Role;
 import jfix.db4o.Database;
-import jfix.functor.Function;
-import jfix.functor.Functors;
 import jfix.util.I18N;
 import jfix.zk.ObjectTableModel;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class TableModel extends ObjectTableModel<Role> {
 
@@ -50,12 +48,10 @@ public class TableModel extends ObjectTableModel<Role> {
 		case 0:
 			return role.getName();
 		case 1:
-			return StringUtils.join(Functors.transform(role.getTypes(),
-					new Function<String, String>() {
-						public String evaluate(String str) {
-							return I18N.get(str.substring(str.lastIndexOf(".") + 1));
-						}
-					}), " | ");
+			return Stream
+					.of(role.getTypes())
+					.map($str -> I18N.get($str.substring($str.lastIndexOf(".") + 1)))
+					.collect(Collectors.joining(" | "));
 		}
 		return "";
 	}

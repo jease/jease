@@ -38,7 +38,7 @@
 	String message = null;
 
 	ReCaptcha recaptcha = null;
-	if (StringUtils.isNotBlank(Registry.getParameter(Names.JEASE_RECAPTCHA_PUBLIC)) && StringUtils.isNotBlank(Registry.getParameter(Names.JEASE_RECAPTCHA_PRIVATE))) {
+	if (session.getAttribute(Names.JEASE_DISCUSSION_AUTHOR) == null && StringUtils.isNotBlank(Registry.getParameter(Names.JEASE_RECAPTCHA_PUBLIC)) && StringUtils.isNotBlank(Registry.getParameter(Names.JEASE_RECAPTCHA_PRIVATE))) {
 		recaptcha = ReCaptchaFactory.newReCaptcha(Registry.getParameter(Names.JEASE_RECAPTCHA_PUBLIC), Registry.getParameter(Names.JEASE_RECAPTCHA_PRIVATE), true);
 	}
 
