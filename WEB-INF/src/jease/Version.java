@@ -23,11 +23,7 @@ public class Version {
 	private static int REVISION = 0;
 
 	public static String getName() {
-		if (REVISION != 0) {
-			return String.format("%d.%d.%d", MAJOR, MINOR, REVISION);
-		} else {
-			return String.format("%d.%d", MAJOR, MINOR);
-		}
+		return String.format("%d.%d.%d", MAJOR, MINOR, REVISION);
 	}
 
 	public static void main(String[] args) {
