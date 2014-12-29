@@ -22,8 +22,6 @@ import jfix.zk.Div;
 import jfix.zk.Images;
 import jfix.zk.Modal;
 
-import org.apache.commons.lang3.StringUtils;
-import org.zkoss.codemirror.Codemirror;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Textbox;
@@ -32,42 +30,30 @@ public class ScriptPropertyEditor extends Div implements
 		PropertyEditor<ScriptProperty> {
 
 	private Textbox classarea = new Textbox();
-	private Codemirror codearea = new Codemirror();
 	private ScriptProperty property;
 
 	public ScriptPropertyEditor() {
 		classarea.setWidth("100%");
-		codearea.setHeight("300px");
-		codearea.setSyntax("java");
 		Button execute = new Button(I18N.get("Execute"),
 				Images.MediaPlaybackStart);
 		execute.addEventListener(Events.ON_CLICK, $event -> executePerformed());
-		appendChild(new Div(codearea, classarea));
+		appendChild(classarea);
 		appendChild(execute);
 	}
 
 	public ScriptProperty getProperty() {
-		if (codearea.isVisible()) {
-			property.setCode(codearea.getValue());
-		} else {
-			property.setCode(classarea.getValue());
-		}
+		property.setCode(classarea.getValue());
 		return property;
 	}
 
 	public void setProperty(ScriptProperty property) {
-		boolean clazzMode = StringUtils.isNotBlank(property.getCode())
-				&& !property.getCode().contains("\n");
 		this.property = property;
-		this.codearea.setValue(property.getCode());
-		this.codearea.setVisible(!clazzMode);
 		this.classarea.setValue(property.getCode());
-		this.classarea.setVisible(clazzMode);
 	}
 
 	private void executePerformed() {
 		ScriptProperty clone = property.copy();
-		clone.setCode(codearea.getValue());
+		clone.setCode(classarea.getValue());
 		Modal.info(clone.toString());
 	}
 
