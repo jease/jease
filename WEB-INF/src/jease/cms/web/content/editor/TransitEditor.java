@@ -17,9 +17,11 @@
 package jease.cms.web.content.editor;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jease.cms.domain.Transit;
 import jfix.util.I18N;
@@ -93,17 +95,13 @@ public class TransitEditor extends ContentEditor<Transit> {
 	 * given directory.
 	 */
 	private List<String> getPathnames(String directory) {
-		List<String> result = new ArrayList<String>();
-		File file = new File(directory);
-		if (file.isFile()) {
-			result.add(file.toURI().toString());
+		try {
+			return Files.walk(new File(directory).toPath())
+					.filter(path -> path.toFile().isFile())
+					.map(path -> path.toUri().toString())
+					.collect(Collectors.toList());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-		if (file.isDirectory()) {
-			for (File child : file.listFiles()) {
-				result.addAll(getPathnames(child.getPath()));
-			}
-		}
-		return result;
 	}
-
 }
