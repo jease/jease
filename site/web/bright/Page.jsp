@@ -36,7 +36,7 @@
 		<% } %>
 		<form method="get" class="searchform" action="<%=request.getContextPath() %><%=root.getPath()%>">
 		<p>
-			<input type="text" name="query" class="textbox" value="<%=request.getParameter("query") != null ? StringEscapeUtils.escapeXml(request.getParameter("query")) : ""%>" />
+			<input type="text" name="query" class="textbox" value="<%=request.getParameter("query") != null ? StringEscapeUtils.escapeHtml4(request.getParameter("query")) : ""%>" />
 			<input type="hidden" name="page" value="/site/service/Search.jsp" />
 			<input type="submit" class="button" value="Search" />
 		</p>
@@ -118,7 +118,7 @@
 	<div id="footer">
 		<div class="footer-left">
 			<p class="align-left">
-				<%@include file="/site/service/Copyright.jsp" %> | <%@include file="/site/service/Pdf.jsp" %>
+				<%@include file="/site/service/Copyright.jsp" %>
 				<br />
 				<%@include file="/site/service/Designswitch.jsp" %>
 			</p>

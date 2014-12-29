@@ -90,7 +90,7 @@
 			<div id="search">
 				<form method="get" action="<%=request.getContextPath() %><%=root.getPath()%>" class="searchform">
 				<fieldset>
-					<input type="text" class="textbox" name="query" value="<%=request.getParameter("query") != null ? StringEscapeUtils.escapeXml(request.getParameter("query")) : ""%>" />
+					<input type="text" class="textbox" name="query" value="<%=request.getParameter("query") != null ? StringEscapeUtils.escapeHtml4(request.getParameter("query")) : ""%>" />
 					<input type="hidden" name="page" value="/site/service/Search.jsp" />
 					<input type="submit" class="button" value="Search" />
 				</fieldset>
@@ -110,7 +110,7 @@
 	</div>
 	<div id="footer">
 		<p>
-			<%@include file="/site/service/Copyright.jsp" %> | <%@include file="/site/service/Pdf.jsp" %> | Design by <a href="http://www.styleshout.com/">styleshout</a>
+			<%@include file="/site/service/Copyright.jsp" %> | Design by <a href="http://www.styleshout.com/">styleshout</a>
 			<br />
 			<%@include file="/site/service/Designswitch.jsp" %>
 		</p>

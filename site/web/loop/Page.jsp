@@ -91,7 +91,7 @@
 	<div id="search">
 		<h2>Search this site</h2>
 		<form action="<%=request.getContextPath() %><%=root.getPath()%>" method="get">
-			<input type="text" name="query" <% if(request.getParameter("query") != null) { %>value="<%= StringEscapeUtils.escapeXml(request.getParameter("query")) %>"<% } else { %>value="Enter your search..." onfocus="this.value='';"<% } %> />
+			<input type="text" name="query" <% if(request.getParameter("query") != null) { %>value="<%= StringEscapeUtils.escapeHtml4(request.getParameter("query")) %>"<% } else { %>value="Enter your search..." onfocus="this.value='';"<% } %> />
 			<input type="hidden" name="page" value="/site/service/Search.jsp" />
 		</form>
 		</div>
@@ -100,7 +100,7 @@
 	</div>
 	<div id="footer">
 	<p>
-		<%@include file="/site/service/Copyright.jsp" %> | <%@include file="/site/service/Pdf.jsp" %> | Design by <a href="http://connormckelvey.com">Connor McKelvey</a>
+		<%@include file="/site/service/Copyright.jsp" %> | Design by <a href="http://connormckelvey.com">Connor McKelvey</a>
 		<br />
 		<%@include file="/site/service/Designswitch.jsp" %>
 		</p>

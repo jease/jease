@@ -1,14 +1,14 @@
 /********************************************
-    AUTHOR:             Erwin Aligam 
+    AUTHOR:             Erwin Aligam
     WEBSITE:            http://www.styleshout.com/
     TEMPLATE NAME:  Bright Side of Life
     TEMPLATE CODE:  S-0005
-    VERSION:            1.0          	
+    VERSION:            1.0
  *******************************************/
- 
+
 /********************************************
    HTML ELEMENTS
-********************************************/ 
+********************************************/
 
 /* top elements */
 
@@ -91,11 +91,11 @@ dl {
 
 dt {
 	font-weight: bold;
-	color: #6297BC;	
+	color: #6297BC;
 }
 
 dd {
-	margin-bottom: 10px;	
+	margin-bottom: 10px;
 }
 
 img {
@@ -229,7 +229,7 @@ form.searchform input.button {
 #wrap {
 	background: #FFF;
 	width: 820px;
-	
+
 	margin: 0 auto;
 	text-align: left;
 }
@@ -510,7 +510,7 @@ form.searchform input.button {
 .news-date {
 	float: right;
 	position: relative;
-	top: -12px;	
+	top: -12px;
 	color: #A9BAC3;
 }
 

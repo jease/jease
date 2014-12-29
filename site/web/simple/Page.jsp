@@ -30,7 +30,7 @@
 	<div id="header">
 		<%-- Site Search: 'query' and 'page' are required attributes! --%>
 		<form id="search" action="<%=request.getContextPath() %><%=root.getPath()%>" method="get">
-			<input type="text" name="query" <% if(request.getParameter("query") != null) { %>value="<%= StringEscapeUtils.escapeXml(request.getParameter("query")) %>"<% } else { %>value="Search this site..." style="color:#a0a0a0;" onfocus="this.style.color=''; this.value='';"<% } %> />
+			<input type="text" name="query" <% if(request.getParameter("query") != null) { %>value="<%= StringEscapeUtils.escapeHtml4(request.getParameter("query")) %>"<% } else { %>value="Search this site..." style="color:#a0a0a0;" onfocus="this.style.color=''; this.value='';"<% } %> />
 			<input type="hidden" name="page" value="/site/service/Search.jsp" />
 			<input type="submit" value="Go" />
 		</form>
@@ -113,7 +113,7 @@
 	<%-- Footer with integrated design selector --%>
 	<div id="footer">
 		<p>
-		<%@include file="/site/service/Copyright.jsp" %> | <%@include file="/site/service/Pdf.jsp" %> | 
+		<%@include file="/site/service/Copyright.jsp" %> | 
 		Liquid Layout by <a href="http://matthewjamestaylor.com/blog/perfect-3-column.htm">Matthew James Taylor</a>
 		<br />
 		<%@include file="/site/service/Designswitch.jsp" %>

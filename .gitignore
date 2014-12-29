@@ -1,4 +1,5 @@
 .settings
 .project
 .classpath
+WEB-INF/src/custom
 WEB-INF/classes

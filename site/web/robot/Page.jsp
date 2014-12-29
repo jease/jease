@@ -53,7 +53,7 @@ $(document).ready(function(){
 						<div class="fright">
 							<form action="<%=request.getContextPath() %><%=root.getPath()%>" id="search-form">
 							<fieldset>
-								<input type="text" class="text" name="query" value="<%=request.getParameter("query") != null ? StringEscapeUtils.escapeXml(request.getParameter("query")) : ""%>" />
+								<input type="text" class="text" name="query" value="<%=request.getParameter("query") != null ? StringEscapeUtils.escapeHtml4(request.getParameter("query")) : ""%>" />
 								<input type="hidden" name="page" value="/site/service/Search.jsp" />
 								<input type="submit" class="submit" value="" />
 							</fieldset>
@@ -131,7 +131,7 @@ $(document).ready(function(){
 		<div class="bg">
 			<div class="container">
 				<div class="indent">
-					<%@include file="/site/service/Copyright.jsp" %> | <%@include file="/site/service/Pdf.jsp" %> | Design by <a href="http://www.templates.com/">templates.com</a>
+					<%@include file="/site/service/Copyright.jsp" %> | Design by <a href="http://www.templates.com/">templates.com</a>
 					<br />
   					<%@include file="/site/service/Designswitch.jsp" %>
 				</div>	
