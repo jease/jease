@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2014 maik.jablonski@jease.org
+    Copyright (C) 2015 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -102,7 +102,7 @@ public class ContentManager extends Jease {
 	private void initUploadButton() {
 		upload = new Fileupload(I18N.get("Upload"), Images.UserHome);
 		upload.addEventListener(
-				Events.ON_CLICK,
+				Events.ON_UPLOAD,
 				event -> {
 					Media media = ((UploadEvent) event).getMedia();
 					if (media != null) {
