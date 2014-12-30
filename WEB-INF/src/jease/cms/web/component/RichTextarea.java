@@ -1,7 +1,7 @@
 package jease.cms.web.component;
 
 /*
- Copyright (C) 2014 maik.jablonski@jease.org
+ Copyright (C) 2015 maik.jablonski@jease.org
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

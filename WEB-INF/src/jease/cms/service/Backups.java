@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2014 maik.jablonski@jease.org
+    Copyright (C) 2015 maik.jablonski@jease.org
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 package jease.cms.service;
 
 import java.io.File;
-import java.util.function.Consumer;
 
 import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
@@ -48,12 +47,10 @@ public class Backups {
 	public static void restore(File backupFile, Node container, final User user)
 			throws NodeException {
 		Node node = backup.restore(backupFile);
-		node.traverse(new Consumer<Node>() {
-			public void accept(Node node) {
-				Content content = (Content) node;
-				content.markChanged();
-				content.setEditor(user);
-			}
+		node.traverse($node -> {
+			Content content = (Content) $node;
+			content.setEditor(user);
+			content.markChanged();
 		});
 		Nodes.append(container, node);
 	}
