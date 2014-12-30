@@ -80,7 +80,7 @@ public class ContentManager extends Jease {
 	private void initRestoreButton() {
 		restore = new Fileupload(I18N.get("Restore"), Images.MediaCdrom);
 		restore.addEventListener(
-				Events.ON_CLICK,
+				Events.ON_UPLOAD,
 				event -> {
 					Media media = ((UploadEvent) event).getMedia();
 					if (media != null) {
