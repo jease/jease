@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
 	<context-param>
 		<description>
-			Two-letter code (bg,de,en,es,fa,fr,it,ja,pl,pt,ru,zh) for the default locale. Leave it empty to use the locale from environment.
+			Two-letter code (bg,de,en,es,fa,fr,it,ja,pl,pt,ru,zh) for
+			the default locale. Leave it empty to use the locale from
+			environment.
 		</description>
 		<param-name>JEASE_DEFAULT_LOCALE</param-name>
 		<param-value></param-value>
@@ -13,9 +14,12 @@
 
 	<context-param>
 		<description>
-			The name of the database folder can be specified in two ways: 
-				- If param-value doesn't include a slash, the database folder will be created in user home (prefixed by "db4o" or "perst"). 
-				- If param-value includes a slash (java.io.File.separator), the value will be interpreted as path for the database folder.
+			The name of the database folder can be specified in two
+			ways:
+			- If param-value doesn't include a slash, the database folder will be
+			created in user home (prefixed by "db4o" or "perst").
+			- If param-value includes a slash (java.io.File.separator), the value
+			will be interpreted as path for the database folder.
 		</description>
 		<param-name>JEASE_DATABASE_NAME</param-name>
 		<param-value>jease</param-value>
@@ -23,76 +27,30 @@
 
 	<context-param>
 		<description>
-			Which database engine should be used? For db4o, use "jfix.db4o.engine.PersistenceEngineDb4o".
+			Which database engine should be used? For db4o, use
+			"jfix.db4o.engine.PersistenceEngineDb4o".
 		</description>
 		<param-name>JEASE_DATABASE_ENGINE</param-name>
 		<param-value>jfix.db4o.engine.PersistenceEnginePerst</param-value>
 	</context-param>
 
-	<listener>
-		<listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
-	</listener>
+	<context-param>
+		<description>Path to dispatcher for Nodes</description>
+		<param-name>JEASE_SITE_DISPATCHER</param-name>
+		<param-value>/site/Dispatcher.jsp</param-value>
+	</context-param>
 
-	<listener>
-		<listener-class>jease.cms.web.servlet.JeaseServletListener</listener-class>
-	</listener>
-
-	<listener>
-		<listener-class>jease.cms.web.servlet.JeaseSessionListener</listener-class>
-	</listener>
-
-	<filter>
-		<filter-name>JeaseController</filter-name>
-		<filter-class>jease.cms.web.servlet.JeaseController</filter-class>
-		<init-param>
-			<description>Path to dispatcher for Nodes</description>
-			<param-name>JEASE_SITE_DISPATCHER</param-name>
-			<param-value>/site/Dispatcher.jsp</param-value>
-		</init-param>
-		<init-param>
-			<description>Servlet paths separated by pipes (|) which should be ignored by redirection service.
+	<context-param>
+		<description>Servlet paths separated by pipes (|) which should be
+				ignored by redirection service.
 			</description>
-			<param-name>JEASE_SITE_SERVLETS</param-name> 
-			<param-value>cms|site|zkau</param-value>
-		</init-param>
-	</filter>
+		<param-name>JEASE_SITE_SERVLETS</param-name>
+		<param-value>cms|site|zkau</param-value>
+	</context-param>
 	
-	<filter-mapping>
-		<filter-name>JeaseController</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-
-	<servlet>
-		<servlet-name>zkLoader</servlet-name>
-		<servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet</servlet-class>
-		<init-param>
-			<param-name>update-uri</param-name>
-			<param-value>/zkau</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>zkLoader</servlet-name>
-		<url-pattern>*.zul</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>zkLoader</servlet-name>
-		<url-pattern>*.zhtml</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>auEngine</servlet-name>
-		<servlet-class>org.zkoss.zk.au.http.DHtmlUpdateServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>auEngine</servlet-name>
-		<url-pattern>/zkau/*</url-pattern>
-	</servlet-mapping>
+	<error-page>
+		<location>/site/service/Error.jsp</location>
+	</error-page>
 
 	<jsp-config>
 		<jsp-property-group>
@@ -102,19 +60,6 @@
 		</jsp-property-group>
 	</jsp-config>
 
-	<session-config>
-		<session-timeout>30</session-timeout>
-	</session-config>
-
-	<mime-mapping>
-		<extension>zhtml</extension>
-		<mime-type>text/html</mime-type>
-	</mime-mapping>
-	<mime-mapping>
-		<extension>zul</extension>
-		<mime-type>text/html</mime-type>
-	</mime-mapping>
-
 	<welcome-file-list>
 		<welcome-file>index.zul</welcome-file>
 		<welcome-file>index.zhtml</welcome-file>
@@ -123,19 +68,4 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
-	<error-page>
-		<error-code>401</error-code>
-		<location>/site/service/Error.jsp</location>
-	</error-page>
-
-	<error-page>
-		<error-code>404</error-code>
-		<location>/site/service/Error.jsp</location>
-	</error-page>
-
-	<error-page>
-		<error-code>500</error-code>
-		<location>/site/service/Error.jsp</location>
-	</error-page>
-  
 </web-app>

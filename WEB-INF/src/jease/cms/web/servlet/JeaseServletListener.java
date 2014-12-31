@@ -21,6 +21,7 @@ import java.util.Locale;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 import jease.Names;
 import jease.cms.service.Timers;
@@ -29,6 +30,7 @@ import jfix.util.I18N;
 
 import org.apache.commons.lang3.StringUtils;
 
+@WebListener
 public class JeaseServletListener implements ServletContextListener {
 
 	public void contextInitialized(ServletContextEvent sce) {

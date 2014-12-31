@@ -26,11 +26,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,6 +47,8 @@ import jfix.servlet.Servlets;
 
 import org.apache.commons.lang3.StringUtils;
 
+@WebFilter(urlPatterns = { "/*" }, dispatcherTypes = { DispatcherType.REQUEST,
+		DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.ERROR })
 public class JeaseController implements javax.servlet.Filter {
 
 	private static Supplier<List<Redirect>> redirectSupplier = () -> {
@@ -75,9 +79,11 @@ public class JeaseController implements javax.servlet.Filter {
 
 	public void init(FilterConfig config) throws ServletException {
 		contextPath = config.getServletContext().getContextPath();
-		dispatcher = config.getInitParameter(Names.JEASE_SITE_DISPATCHER);
-		servlets = Pattern.compile(String.format("/(%s).*",
-				config.getInitParameter(Names.JEASE_SITE_SERVLETS)));
+		dispatcher = config.getServletContext().getInitParameter(
+				Names.JEASE_SITE_DISPATCHER);
+		servlets = Pattern.compile(String.format("/(%s).*", config
+				.getServletContext()
+				.getInitParameter(Names.JEASE_SITE_SERVLETS)));
 		locales = new HashSet<String>();
 		for (Locale locale : Locale.getAvailableLocales()) {
 			locales.add(locale.getLanguage());

@@ -20,10 +20,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+@WebListener
 public class JeaseSessionListener implements HttpSessionListener {
 
 	private static Set<HttpSession> sessions = Collections
