@@ -36,12 +36,12 @@
 	}
 
 	try {
-			String resourcePath = SCRIPT_WEBINF_FOLDER + script.getUUID() + "/" + scriptId;
-			if (script.isForward() || request.getParameter("file") != null) {
-				pageContext.forward(resourcePath);
-			} else {
-				pageContext.include(resourcePath);
-			}
+		String resourcePath = SCRIPT_WEBINF_FOLDER + script.getUUID() + "/" + scriptId;
+		if (script.isForward() || request.getParameter("file") != null) {
+			pageContext.forward(resourcePath);
+		} else {
+			pageContext.include(resourcePath);
+		}
 	} catch (Exception e) {
 		response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		out.println("<pre>" + StringEscapeUtils.escapeHtml4(e.getMessage()) + "</pre>");
