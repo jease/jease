@@ -61,12 +61,6 @@ public class JeaseServletListener implements ServletContextListener {
 	}
 
 	protected void initDatabase(ServletContext context) {
-		String databaseEngine = context
-				.getInitParameter(Names.JEASE_DATABASE_ENGINE);
-		if (databaseEngine != null) {
-			Database.setPersistenceEngine(databaseEngine);
-		}
-
 		String databaseName = context
 				.getInitParameter(Names.JEASE_DATABASE_NAME);
 		if (databaseName != null) {
