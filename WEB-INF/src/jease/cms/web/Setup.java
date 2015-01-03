@@ -27,6 +27,7 @@ import jease.cms.domain.Folder;
 import jease.cms.domain.Parameter;
 import jease.cms.domain.Role;
 import jease.cms.domain.Script;
+import jease.cms.domain.Text;
 import jease.cms.domain.Transit;
 import jease.cms.domain.User;
 import jease.cms.service.Contents;
@@ -76,6 +77,14 @@ public class Setup extends Div {
 			folder.setVisible(true);
 			Nodes.setRoot(folder);
 			Nodes.save(folder);
+
+			Text text = new Text();
+			text.setId("index.html");
+			text.setTitle("Welcome to Jease!");
+			text.setContent("<h2>This page was automatically created by the setup process.</h2><p>Feel free to <i>edit</i> or <b>delete</b> it.</p>");
+			text.setLastModified(new Date());
+			text.setParent(folder);
+			Nodes.save(text);
 		}
 	}
 
