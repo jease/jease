@@ -18,10 +18,8 @@ package jease.cmf.web.node.browser;
 
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
-import jfix.util.I18N;
 import jfix.zk.Div;
 import jfix.zk.Grid;
-import jfix.zk.Panel;
 import jfix.zk.Popup;
 import jfix.zk.Row;
 import jfix.zk.Tree;
@@ -29,6 +27,7 @@ import jfix.zk.Tree;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Image;
+import org.zkoss.zul.Label;
 
 public abstract class AbstractNodeBrowser extends Div {
 
@@ -45,8 +44,7 @@ public abstract class AbstractNodeBrowser extends Div {
 		tree = new NodeBrowserNavigationTree();
 		tree.addEventListener(Events.ON_SELECT, $event -> updateContent());
 		grid = new Grid();
-		grid.setMold("paging");
-		appendChild(new Panel(I18N.get("Browser"), new Row(tree, grid)));
+		appendChild(new Row(tree, grid));
 		updateContent();
 	}
 
@@ -54,14 +52,11 @@ public abstract class AbstractNodeBrowser extends Div {
 		grid.getRows().getChildren().clear();
 		for (Node node : JeaseSession.getFilter().apply(
 				((Node) tree.getSelectedValue()).getChildren())) {
-			Button button = newNodeSelector(node);
 			Popup popup = newNodePreview(node);
-			if (popup != null) {
-				button.setTooltip(popup);
-				grid.add(button, popup);
-			} else {
-				grid.add(button);
-			}
+			Button button = newNodeSelector(node);
+			button.setHflex("1");
+			button.setTooltip(popup);
+			grid.add(new Div(button, popup));
 		}
 	}
 
@@ -70,7 +65,7 @@ public abstract class AbstractNodeBrowser extends Div {
 		if (id.endsWith(".jpg") || id.endsWith(".png") || id.endsWith(".gif")) {
 			return new Popup(new Image(node.getPath()));
 		} else {
-			return null;
+			return new Popup(new Label(node.getPath()));
 		}
 	}
 }
