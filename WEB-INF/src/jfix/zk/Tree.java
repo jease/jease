@@ -23,8 +23,6 @@ import org.zkoss.zul.TreeModel;
 public class Tree extends org.zkoss.zul.Tree implements Refreshable {
 
 	public Tree() {
-		setMold("paging");
-		setPageSize(30);
 	}
 
 	public void fireChangeEvent() {
@@ -32,11 +30,9 @@ public class Tree extends org.zkoss.zul.Tree implements Refreshable {
 	}
 
 	public void refresh() {
-		int activePage = getActivePage();
 		TreeModel<?> model = (TreeModel<?>) getModel();
 		setModel(null);
 		setModel(model);
-		setActivePage(activePage);
 	}
 
 	public Object getSelectedValue() {
