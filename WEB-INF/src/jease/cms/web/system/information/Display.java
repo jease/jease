@@ -18,7 +18,6 @@ package jease.cms.web.system.information;
 
 import java.util.Map;
 
-import jease.Version;
 import jease.cms.service.Informatons;
 import jfix.util.I18N;
 import jfix.zk.Div;
@@ -32,8 +31,9 @@ public class Display extends Div implements Refreshable {
 	public void refresh() {
 		getChildren().clear();
 		Formbox form = new Formbox();
-		form.add(I18N.get("Information"));
-		form.add(I18N.get("Version"), new Label(Version.getName()));
+		form.add(I18N.get("Version"));
+		form.add(I18N.get("Jease"), new Label(jease.Version.getName()));
+		form.add(I18N.get("ZK"), new Label(org.zkoss.zk.Version.RELEASE));
 		form.add(I18N.get("Database"));
 		form.add(I18N.get("Path"),
 				new Label(Informatons.getDatabaseDirectory()));
