@@ -1,0 +1,8 @@
+<?page title="Jease - The Java CMS with Ease" ?>
+<zk>
+	<div
+		use="jease.cms.web.Application" 
+		navigation="jease.cms.web.Navigation"
+		configuration="jease.cms.web.content.Configuration"
+	/>
+</zk>

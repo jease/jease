@@ -1,5 +1,22 @@
-.settings
-.project
+# Eclipse
 .classpath
-WEB-INF/src/custom
-WEB-INF/classes
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+target/
+
+# JRebel
+rebel.xml
+
+# Jease Custom folder
+src/main/java/custom/
+src/main/webapp/WEB-INF/tmp/
