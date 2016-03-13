@@ -12,38 +12,45 @@
     </properties>
     <repositories>
         <repository>
-            <id>ZK CE</id>
-            <name>ZK CE Repository</name>
+            <id>jease-maven</id>
+            <url>https://github.com/jease/jease-maven/raw/master/repository</url>
+        </repository>
+        <repository>
+            <id>zk-ce</id>
             <url>http://mavensync.zkoss.org/maven2</url>
         </repository>
         <repository>
             <id>bintray-jmini-maven</id>
-            <name>bintray</name>
             <url>http://dl.bintray.com/jmini/maven</url>
         </repository>
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>org.zkoss.zk</groupId>
-            <artifactId>zhtml</artifactId>
-            <version>8.0.1</version>
+            <groupId>com.db4o</groupId>
+            <artifactId>db4o</artifactId>
+            <version>8.0.249.16098</version>
         </dependency>
         <dependency>
-            <groupId>org.zkoss.zkforge</groupId>
-            <artifactId>ckez</artifactId>
-            <version>4.4.6.2</version>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.8</version>
         </dependency>
         <dependency>
-            <groupId>org.zkoss.codemirror</groupId>
-            <artifactId>zk-codemirror</artifactId>
-            <version>1.0.1</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/zk-codemirror-1.0.1.jar</systemPath>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.5.5</version>
         </dependency>
         <dependency>
-            <groupId>org.beanshell</groupId>
-            <artifactId>bsh</artifactId>
-            <version>2.0b5</version>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -53,51 +60,32 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>5.4.1</version>
+            <version>5.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queries</artifactId>
-            <version>5.4.1</version>
+            <version>5.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-common</artifactId>
-            <version>5.4.1</version>
+            <version>5.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
-            <version>5.4.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.imgscalr</groupId>
-            <artifactId>imgscalr-lib</artifactId>
-            <version>4.2</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>javax.mail-api</artifactId>
-            <version>1.5.5</version>
+            <version>5.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-parsers</artifactId>
-            <version>1.11</version>
+            <version>1.12</version>
         </dependency>
         <dependency>
-            <groupId>com.db4o</groupId>
-            <artifactId>db4o</artifactId>
-            <version>8.0.249.16098</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/db4o-8.0.249.16098.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.garret</groupId>
-            <artifactId>perst</artifactId>
-            <version>4.38</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/perst-4.38.jar</systemPath>
+            <groupId>org.beanshell</groupId>
+            <artifactId>bsh</artifactId>
+            <version>2.0b5</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.mylyn.docs</groupId>
@@ -135,21 +123,29 @@
             <version>2.6.0.v20150625-2041</version>
         </dependency>
         <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.4.8</version>
+            <groupId>org.garret</groupId>
+            <artifactId>perst</artifactId>
+            <version>4.38</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.2</version>
-            <scope>provided</scope>
+            <groupId>org.zkoss.codemirror</groupId>
+            <artifactId>zk-codemirror</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zkoss.zk</groupId>
+            <artifactId>zhtml</artifactId>
+            <version>8.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zkoss.zkforge</groupId>
+            <artifactId>ckez</artifactId>
+            <version>4.4.6.2</version>
         </dependency>
     </dependencies>
     <build>
