@@ -16,18 +16,14 @@
  */
 package jease.site;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
 import jease.cms.domain.Folder;
 import jease.cms.domain.News;
 import jease.cms.domain.Reference;
+
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Common service-methods to ease the building of navigations for a site.
@@ -146,9 +142,7 @@ public class Navigations {
 	 * Returns all visible items contained in given container.
 	 */
 	public static Content[] getVisibleContent(Content container) {
-		return Stream.of(container.getChildren(Content.class))
-				.filter(Content::isVisible)
-				.toArray(Content[]::new);
+		return Stream.of(container.getChildren(Content.class)).filter(Content::isVisible).toArray(Content[]::new);
 	}
 
 	/**

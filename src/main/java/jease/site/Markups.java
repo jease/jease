@@ -16,8 +16,6 @@
  */
 package jease.site;
 
-import java.io.StringWriter;
-
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
@@ -28,6 +26,8 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import org.eclipse.mylyn.wikitext.textile.core.TextileLanguage;
 import org.eclipse.mylyn.wikitext.tracwiki.core.TracWikiLanguage;
 import org.eclipse.mylyn.wikitext.twiki.core.TWikiLanguage;
+
+import java.io.StringWriter;
 
 /**
  * Common service methods to render different (Wiki)-Markups into HTML.
@@ -89,8 +89,7 @@ public class Markups {
 		return renderMarkup(content, new TWikiLanguage(), pattern);
 	}
 
-	private static String renderMarkup(String content, AbstractMarkupLanguage markup,
-			String pattern) {
+	private static String renderMarkup(String content, AbstractMarkupLanguage markup, String pattern) {
 		markup.setInternalLinkPattern(pattern);
 		StringWriter writer = new StringWriter();
 		DocumentBuilder builder = new HtmlDocumentBuilder(writer);

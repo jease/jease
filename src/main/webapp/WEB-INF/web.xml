@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-	version="3.1">
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
 
-	<context-param>
-		<description>
-			Two-letter code (bg,de,en,es,fa,fr,it,ja,pl,pt,ru,zh) for
-			the default locale. Leave it empty to use the locale from
-			environment.
-		</description>
-		<param-name>JEASE_DEFAULT_LOCALE</param-name>
-		<param-value></param-value>
-	</context-param>
+    <context-param>
+        <description>
+            Two-letter code (bg,de,en,es,fa,fr,it,ja,pl,pt,ru,zh) for
+            the default locale. Leave it empty to use the locale from
+            environment.
+        </description>
+        <param-name>JEASE_DEFAULT_LOCALE</param-name>
+        <param-value></param-value>
+    </context-param>
 
-	<context-param>
-		<description>
-			The name of the database folder can be specified in two
-			ways:
-			- If param-value doesn't include a slash, the database folder will be
-			created in user home (prefixed by "perst").
-			- If param-value includes a slash (java.io.File.separator), the value
-			will be interpreted as path for the database folder.
-		</description>
-		<param-name>JEASE_DATABASE_NAME</param-name>
-		<param-value>jease</param-value>
-	</context-param>
+    <context-param>
+        <description>
+            The name of the database folder can be specified in two
+            ways:
+            - If param-value doesn't include a slash, the database folder will be
+            created in user home (prefixed by "perst").
+            - If param-value includes a slash (java.io.File.separator), the value
+            will be interpreted as path for the database folder.
+        </description>
+        <param-name>JEASE_DATABASE_NAME</param-name>
+        <param-value>jease</param-value>
+    </context-param>
 
-	<context-param>
-		<description>Path to dispatcher for Nodes</description>
-		<param-name>JEASE_SITE_DISPATCHER</param-name>
-		<param-value>/site/Dispatcher.jsp</param-value>
-	</context-param>
+    <context-param>
+        <description>Path to dispatcher for Nodes</description>
+        <param-name>JEASE_SITE_DISPATCHER</param-name>
+        <param-value>/site/Dispatcher.jsp</param-value>
+    </context-param>
 
-	<context-param>
-		<description>Servlet paths separated by pipes (|) which should be
-				ignored by redirection service.
-			</description>
-		<param-name>JEASE_SITE_SERVLETS</param-name>
-		<param-value>cms|site|zkau</param-value>
-	</context-param>
-	
-	<error-page>
-		<location>/site/service/Error.jsp</location>
-	</error-page>
+    <context-param>
+        <description>
+            Servlet paths separated by pipes (|) which should be ignored by redirection service.
+        </description>
+        <param-name>JEASE_SITE_SERVLETS</param-name>
+        <param-value>cms|site|zkau</param-value>
+    </context-param>
 
-	<jsp-config>
-		<jsp-property-group>
-			<url-pattern>*.jsp</url-pattern>
-			<page-encoding>UTF-8</page-encoding>
-			<trim-directive-whitespaces>true</trim-directive-whitespaces>
-		</jsp-property-group>
-	</jsp-config>
+    <error-page>
+        <location>/site/service/Error.jsp</location>
+    </error-page>
+
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+            <trim-directive-whitespaces>true</trim-directive-whitespaces>
+        </jsp-property-group>
+    </jsp-config>
 
 </web-app>
