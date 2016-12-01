@@ -147,6 +147,18 @@
             <artifactId>ckez</artifactId>
             <version>4.4.6.2</version>
         </dependency>
+        
+        <!-- Logging -->
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>1.7.21</version>
+        </dependency>
+        <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        <version>1.1.7</version>
+</dependency>
     </dependencies>
     <build>
         <finalName>ROOT</finalName>
