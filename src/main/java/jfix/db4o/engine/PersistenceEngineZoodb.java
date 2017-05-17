@@ -9,6 +9,7 @@ import javax.jdo.PersistenceManager;
 
 import org.zoodb.api.impl.ZooPC;
 import org.zoodb.jdo.ZooJdoHelper;
+import org.zoodb.schema.ZooSchema;
 
 import jfix.db4o.Persistent;
 
@@ -104,6 +105,14 @@ public class PersistenceEngineZoodb extends PersistenceEngineBase implements Per
         }
         pm.currentTransaction().setNontransactionalRead(false);
         return rslt;
+    }
+
+    public void checkSchema(Class<?> clazz) {
+        if (pm == null || clazz == null) return;
+        pm.currentTransaction().begin();
+        ZooSchema schema = ZooJdoHelper.schema(pm);
+        if (schema.getClass(clazz) == null) schema.addClass(clazz);
+        pm.currentTransaction().commit();
     }
 
 }
