@@ -16,19 +16,16 @@
  */
 package jfix.db4o.engine;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.Reader;
-import java.io.Writer;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import java.text.SimpleDateFormat;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -36,33 +33,30 @@ import java.util.Set;
 import org.garret.perst.Storage;
 import org.garret.perst.StorageFactory;
 import org.garret.perst.XMLImportException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PersistenceEnginePerst implements PersistenceEngine {
+public class PersistenceEnginePerst extends PersistenceEngineBase implements PersistenceEngine {
 
-    protected String directory;
-    protected String filename;
     protected Storage db;
     protected Set<Object> root;
-    
+
     private final Logger logger = LoggerFactory.getLogger(PersistenceEnginePerst.class);
 
+    @Override
+    protected String getEngineName() {
+        return "perst";
+    }
+
+    @Override
+    protected String getEngineFileName() {
+        return "perst.odb";
+    }
+
+    @Override
     public void open(String database) {
         initDirectory(database);
         openEngine();
-    }
-
-    protected void initDirectory(String database) {
-        if (database.contains(File.separator)) {
-            directory = database.endsWith(File.separator) ? database : database + File.separator;
-        } else {
-            directory = System.getProperty("user.home") + File.separator + "perst" + File.separator + database
-                    + File.separator;
-        }
-        filename = directory + "perst.odb";
-        new File(directory).mkdirs();
     }
 
     private void createDb() {
@@ -70,7 +64,8 @@ public class PersistenceEnginePerst implements PersistenceEngine {
         db.setProperty("perst.file.noflush", Boolean.FALSE); // from time to time perst db is getting corrupted for no obvious reason
         db.setProperty("perst.object.cache.kind", "strong");
     }
-    
+
+    @SuppressWarnings("unchecked")
     protected void openEngine() {
         createDb();
         db.open(filename);
@@ -84,7 +79,7 @@ public class PersistenceEnginePerst implements PersistenceEngine {
             root = (Set<Object>) db.getRoot();
         }
     }
-    
+
     private boolean runRecovery() {
         logger.info("Recovery started");
         try {
@@ -110,10 +105,7 @@ public class PersistenceEnginePerst implements PersistenceEngine {
         return true;
     }
 
-    public String getBlobDirectory() {
-        return directory;
-    }
-
+    @Override
     public Collection<Object> query() {
         Set<Object> rslt = new HashSet<>(root.size());
         Iterator<Object> iter = root.iterator();
@@ -127,21 +119,23 @@ public class PersistenceEnginePerst implements PersistenceEngine {
                 logger.error("Root size: {}; Added: {}; {}", root.size(), added, e);
                 throw e; // we cannot continue, database is broken
             }
-        }    
+        }
         return rslt;
     }
 
+    @Override
     public void save(Object object) {
         root.add(object);
         db.modify(object);
     }
 
+    @Override
     public void delete(Object object) {
         root.remove(object);
         db.deallocate(object);
         runGc();
     }
-    
+
     private boolean runGc() {
         try {
             db.gc();
@@ -153,21 +147,25 @@ public class PersistenceEnginePerst implements PersistenceEngine {
         }
     }
 
+    @Override
     public void begin() {
         // Empty as Perst don't needs an explicit transaction begin.
     }
 
+    @Override
     public void commit() {
         db.commit();
     }
 
+    @Override
     public void rollback() {
         db.rollback();
     }
 
+    @Override
     public void backup() {
         try {
-            String backupFilename = filename + new SimpleDateFormat("-yyyyMMdd").format(new Date());
+            String backupFilename = getBackupFileName();
             db.backup(new FileOutputStream(new File(backupFilename)));
             logger.info("Backup successful: " + backupFilename);
         } catch (Exception e) {
@@ -175,11 +173,9 @@ public class PersistenceEnginePerst implements PersistenceEngine {
         }
     }
 
+    @Override
     public void close() {
         db.close();
     }
 
-    public String toString() {
-        return filename;
-    }
 }

@@ -36,6 +36,11 @@
             <version>1.4.8</version>
         </dependency>
         <dependency>
+            <groupId>org.zoodb</groupId>
+            <artifactId>zoodb</artifactId>
+            <version>0.4.9</version>
+        </dependency>
+        <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>javax.mail-api</artifactId>
             <version>1.5.5</version>
@@ -179,7 +184,7 @@
                 <version>2.2</version>
                 <configuration>
                     <port>8080</port>
-                    <path>/</path>
+                    <path>/${project.build.finalName}</path>
                 </configuration>
             </plugin>
         </plugins>

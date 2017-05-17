@@ -18,12 +18,25 @@
             The name of the database folder can be specified in two
             ways:
             - If param-value doesn't include a slash, the database folder will be
-            created in user home (prefixed by "perst").
+            created in user home (prefixed by "perst"), for example: jease
             - If param-value includes a slash (java.io.File.separator), the value
-            will be interpreted as path for the database folder.
+            will be interpreted as path for the database folder, for example: d:\Programs\jease-dbs\jeasesip
         </description>
         <param-name>JEASE_DATABASE_NAME</param-name>
         <param-value>jease</param-value>
+    </context-param>
+    
+    <context-param>
+        <description>
+            The name of the database engine implementation class.
+            Possible values:
+            jfix.db4o.engine.PersistenceEnginePerst
+            jfix.db4o.engine.PersistenceEngineDb4o
+            jfix.db4o.engine.PersistenceEngineXStream
+            jfix.db4o.engine.PersistenceEngineZoodb
+        </description>
+        <param-name>JEASE_DATABASE_ENGINE</param-name>
+        <param-value>jfix.db4o.engine.PersistenceEnginePerst</param-value>
     </context-param>
 
     <context-param>
