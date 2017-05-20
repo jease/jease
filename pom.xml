@@ -137,11 +137,11 @@
             <artifactId>imgscalr-lib</artifactId>
             <version>4.2</version>
         </dependency>
-        <dependency>
+        <!-- dependency>
             <groupId>org.zkoss.codemirror</groupId>
             <artifactId>zk-codemirror</artifactId>
             <version>1.0.1</version>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>org.zkoss.zk</groupId>
             <artifactId>zhtml</artifactId>
@@ -151,6 +151,11 @@
             <groupId>org.zkoss.zkforge</groupId>
             <artifactId>ckez</artifactId>
             <version>4.4.6.3</version>
+        </dependency>
+        <dependency>
+          <groupId>org.zkoss.zk</groupId>
+          <artifactId>zul</artifactId>
+          <version>8.0.2.2</version>
         </dependency>
         
         <!-- Logging -->

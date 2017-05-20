@@ -23,12 +23,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import jfix.util.I18N;
-import jfix.util.MimeTypes;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.zkoss.codemirror.Codemirror;
+import org.sinnlabs.zk.ui.CodeMirror;
 import org.zkoss.image.AImage;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.util.media.Media;
@@ -41,11 +38,14 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Vbox;
 
+import jfix.util.I18N;
+import jfix.util.MimeTypes;
+
 public class Mediafield extends Vbox {
 
     private boolean preview;
     private Media media = null;
-    private Codemirror codemirror = new Codemirror();
+    private CodeMirror codemirror = new CodeMirror();
     private Image image = new Image();
     private Button rotateImage = new Button(I18N.get("Rotate"), Images.EditRedo);
     private Spinner width = new Spinner();
@@ -117,6 +117,7 @@ public class Mediafield extends Vbox {
         appendChild(new Row(download, upload));
     }
 
+    @Override
     public void setHeight(String height) {
         codemirror.setHeight(height);
         image.setHeight(height);
@@ -160,8 +161,7 @@ public class Mediafield extends Vbox {
             download.setVisible(media != null);
             imagePreview.setVisible(false);
             codemirror.setVisible(false);
-            download.setLabel(I18N.get("Download") + " (" + getContentType()
-                    + ")");
+            download.setLabel(I18N.get("Download") + " (" + getContentType() + ")");
             if (isPreview()) {
                 if (getContentType() != null) {
                     if (getContentType().startsWith("image")) {
@@ -175,8 +175,9 @@ public class Mediafield extends Vbox {
                         String mediaString = Medias.asString(media);
                         if (mediaString.length() < 1024 * 1024) {
                             codemirror.setVisible(true);
-                            codemirror.setValue(Medias.asString(media));
                             codemirror.setSyntax(FilenameUtils.getExtension(media.getName()));
+                            codemirror.setValue(Medias.asString(media));
+                            codemirror.invalidate();
                         }
                     }
                 }
@@ -224,8 +225,7 @@ public class Mediafield extends Vbox {
     private boolean isContentTypeEditable() {
         String ctype = getContentType();
         return ctype != null
-                && (ctype.startsWith("text") || ctype
-                .equals("application/javascript"));
+                && (ctype.startsWith("text") || ctype.equals("application/javascript"));
     }
 
     public String getName() {
@@ -242,8 +242,7 @@ public class Mediafield extends Vbox {
 
     private void adjustImage() {
         try {
-            int textHeight = Integer.parseInt(codemirror.getHeight().replace(
-                    "px", ""));
+            int textHeight = Integer.parseInt(codemirror.getHeight().replace("px", ""));
             File imageFile = Medias.asFile(media);
             imageFile.deleteOnExit();
             originalDimension = jfix.util.Images.getSize(imageFile);
