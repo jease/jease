@@ -36,12 +36,12 @@ import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Image;
-import org.zkoss.zul.Vbox;
+import org.zkoss.zul.Vlayout;
 
 import jfix.util.I18N;
 import jfix.util.MimeTypes;
 
-public class Mediafield extends Vbox {
+public class Mediafield extends Vlayout {
 
     private boolean preview;
     private Media media = null;
@@ -56,6 +56,7 @@ public class Mediafield extends Vbox {
     private Fileupload upload = new Fileupload();
     private Button download = new Button();
     private Dimension originalDimension = null;
+    private Checkbox showLineNums = new Checkbox(I18N.get("Show_line_numbers"));
 
     public Mediafield() {
         setHflex("1");
@@ -104,7 +105,15 @@ public class Mediafield extends Vbox {
 
         setHeight("300px");
         setPreview(true);
+
         codemirror.setVisible(false);
+        showLineNums.setVisible(false);
+        showLineNums.setStyle("margin-left: 50px");
+        showLineNums.addEventListener(Events.ON_CHECK, evt -> {
+            boolean v = codemirror.getLineNumbers();
+            codemirror.setLineNumbers(!v);
+        });
+
         imagePreview.setVisible(false);
         width.setStep(10);
         height.setStep(10);
@@ -114,7 +123,7 @@ public class Mediafield extends Vbox {
 
         appendChild(codemirror);
         appendChild(imagePreview);
-        appendChild(new Row(download, upload));
+        appendChild(new Row(download, upload, showLineNums));
     }
 
     @Override
@@ -161,6 +170,7 @@ public class Mediafield extends Vbox {
             download.setVisible(media != null);
             imagePreview.setVisible(false);
             codemirror.setVisible(false);
+            showLineNums.setVisible(false);
             download.setLabel(I18N.get("Download") + " (" + getContentType() + ")");
             if (isPreview()) {
                 if (getContentType() != null) {
@@ -173,8 +183,9 @@ public class Mediafield extends Vbox {
                     }
                     if (isContentTypeEditable()) {
                         String mediaString = Medias.asString(media);
-                        if (mediaString.length() < 1024 * 1024) {
+                        if (mediaString.length() < 5 * 1024 * 1024) {
                             codemirror.setVisible(true);
+                            showLineNums.setVisible(true);
                             codemirror.setSyntax(FilenameUtils.getExtension(media.getName()));
                             codemirror.setValue(Medias.asString(media));
                             codemirror.invalidate();

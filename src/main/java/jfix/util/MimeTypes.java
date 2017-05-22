@@ -24,6 +24,8 @@ public class MimeTypes {
     private static Map<String, String> mimeTypes = new HashMap<>();
 
     static {
+        // For additional mime types take a look to https://github.com/jshttp/mime-db/blob/master/db.json
+
         mimeTypes.put("323","text/h323");
         mimeTypes.put("3dm","x-world/x-3dmf");
         mimeTypes.put("3dmf","x-world/x-3dmf");
@@ -245,6 +247,7 @@ public class MimeTypes {
         mimeTypes.put("mcd","application/mcad,application/x-mathcad");
         mimeTypes.put("mcf","image/vasa,text/mcf");
         mimeTypes.put("mcp","application/netmc");
+        mimeTypes.put("md", "text/markdown");
         mimeTypes.put("mdb","application/x-msaccess");
         mimeTypes.put("me","application/x-troff-me");
         mimeTypes.put("mesh","model/mesh");
