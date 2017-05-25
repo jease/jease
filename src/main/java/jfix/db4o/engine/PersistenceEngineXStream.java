@@ -33,8 +33,6 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class PersistenceEngineXStream extends PersistenceEngineBase implements PersistenceEngine {
 
-	protected String directory;
-	protected String filename;
 	protected final Set<Object> objects = new HashSet<>();
 	protected final Set<Object> added   = new HashSet<>();
 	protected final Set<Object> deleted = new HashSet<>();
