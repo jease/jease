@@ -40,6 +40,7 @@ public class PersistenceEngineZoodb extends PersistenceEngineBase implements Per
 
     private void openDb() {
         pm = ZooJdoHelper.openOrCreateDB(filename);
+        pm.setMultithreaded(true);
     }
 
     /** Close the database connection. */
