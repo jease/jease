@@ -1,10 +1,12 @@
+** THIS PROJECT IS ABANDONED **
+
 Jease eases the development of content- & database-driven web-applications with Java.
 
 Out of the box Jease provides an Ajax-powered Content-Management-System (CMS) which makes use of drag & drop to organize content.
 
 Please visit the Jease-Website for more information:
 
-http://www.jease.org/
+https://jease.netlify.com/
 
 Jease is built on top of the most advanced open-source technologies existing in the Java-community:
 
