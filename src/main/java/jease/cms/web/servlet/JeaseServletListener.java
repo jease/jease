@@ -16,70 +16,73 @@
  */
 package jease.cms.web.servlet;
 
-import java.util.Locale;
+import jease.Names;
+import jease.cms.service.Timers;
+import jfix.db4o.Database;
+import jfix.util.I18N;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-
-import jease.Names;
-import jease.cms.service.Timers;
-import jfix.db4o.Database;
-import jfix.util.I18N;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.Locale;
 
 @WebListener
 public class JeaseServletListener implements ServletContextListener {
 
-	public void contextInitialized(ServletContextEvent sce) {
-		ServletContext context = sce.getServletContext();
-		initSystemProperties(context);
-		initLocale(context);
-		initDatabase(context);
-		initTimer(context);
-	}
+    public void contextInitialized(ServletContextEvent sce) {
+        ServletContext context = sce.getServletContext();
+        initSystemProperties(context);
+        initLocale(context);
+        initDatabase(context);
+        initTimer(context);
+    }
 
-	public void contextDestroyed(ServletContextEvent sce) {
-		stopTimer();
-		closeDatabase();
-	}
+    public void contextDestroyed(ServletContextEvent sce) {
+        stopTimer();
+        closeDatabase();
+    }
 
-	protected void initSystemProperties(ServletContext context) {
-		System.setProperty("networkaddress.cache.ttl", "500");
-	}
+    protected void initSystemProperties(ServletContext context) {
+        System.setProperty("networkaddress.cache.ttl", "500");
+    }
 
-	protected void initLocale(ServletContext context) {
-		String localeCode = context
-				.getInitParameter(Names.JEASE_DEFAULT_LOCALE);
-		if (StringUtils.isNotBlank(localeCode)) {
-			Locale locale = new Locale(localeCode);
-			I18N.load(locale);
-			context.setAttribute("org.zkoss.web.preferred.locale", locale);
-		}
-	}
+    protected void initLocale(ServletContext context) {
+        String localeCode = context
+                .getInitParameter(Names.JEASE_DEFAULT_LOCALE);
+        if (StringUtils.isNotBlank(localeCode)) {
+            Locale locale = new Locale(localeCode);
+            I18N.load(locale);
+            context.setAttribute("org.zkoss.web.preferred.locale", locale);
+        }
+    }
 
-	protected void initDatabase(ServletContext context) {
-		String databaseName = context
-				.getInitParameter(Names.JEASE_DATABASE_NAME);
-		if (databaseName != null) {
-			Database.open(databaseName);
-		} else {
-			throw new RuntimeException();
-		}
-	}
+    protected void initDatabase(ServletContext context) {
+        String databasePersistenceClass = context
+                .getInitParameter(Names.JEASE_DATABASE_ENGINE);
+        if (databasePersistenceClass != null) {
+            Database.setPersistenceEngine(databasePersistenceClass);
+        }
+        String databaseName = context
+                .getInitParameter(Names.JEASE_DATABASE_NAME);
+        if (databaseName != null) {
+            Database.open(databaseName);
+        } else {
+            throw new RuntimeException();
+        }
+    }
 
-	protected void closeDatabase() {
-		Database.close();
-	}
+    protected void closeDatabase() {
+        Database.close();
+    }
 
-	protected void initTimer(ServletContext context) {
-		Timers.start();
-	}
+    protected void initTimer(ServletContext context) {
+        Timers.start();
+    }
 
-	protected void stopTimer() {
-		Timers.stop();
-	}
+    protected void stopTimer() {
+        Timers.stop();
+    }
 
 }
