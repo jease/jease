@@ -17,19 +17,16 @@
 package jfix.zk;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Vlayout;
 
-public class Column extends Vlayout {
+public class Column extends org.zkoss.zul.Vbox {
 
 	public Column() {
 		setHflex("1");
 	}
 
 	public Column(Component... children) {
-		this();
-        if (children != null) {
-            for (Component child : children) appendChild(child);
-		}
+		super(children);
+		setHflex("1");
 	}
 
 }

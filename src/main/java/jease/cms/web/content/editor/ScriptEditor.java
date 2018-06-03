@@ -16,49 +16,45 @@
  */
 package jease.cms.web.content.editor;
 
+import jease.cms.domain.Script;
+import jfix.util.I18N;
+
 import org.apache.commons.io.FilenameUtils;
-import org.sinnlabs.zk.ui.CodeMirror;
+import org.zkoss.codemirror.Codemirror;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 
-import jease.cms.domain.Script;
-import jfix.util.I18N;
-
 public class ScriptEditor extends ContentEditor<Script> {
 
-	CodeMirror code = new CodeMirror();
+	Codemirror code = new Codemirror();
 	Checkbox forward = new Checkbox();
 
 	public ScriptEditor() {
-		code.setHeight(getPlainEditorHeight());
-		code.setLineNumbers(true);
-		id.addEventListener(Events.ON_CHANGING, event -> {
-		    code.setSyntax(FilenameUtils.getExtension(((InputEvent) event).getValue()));
-		});
+		code.setHeight((100 + getDesktopHeight() / 3) + "px");
+		code.setConfig("lineNumbers:true");
+		id.addEventListener(Events.ON_CHANGING, event -> code
+				.setSyntax(FilenameUtils.getExtension(((InputEvent) event)
+						.getValue())));
 	}
 
-	@Override
-    public void init() {
+	public void init() {
 		add(I18N.get("Code"), code);
 		add(I18N.get("Forward"), forward);
 	}
 
-	@Override
-    public void load() {
+	public void load() {
 		code.setSyntax(FilenameUtils.getExtension(id.getValue()));
 		code.setValue(getNode().getCode());
 		forward.setChecked(getNode().isForward());
 	}
 
-	@Override
-    public void save() {
+	public void save() {
 		getNode().setCode(code.getValue());
 		getNode().setForward(forward.isChecked());
 	}
 
-	@Override
-    public void validate() {
+	public void validate() {
 	}
 
 }

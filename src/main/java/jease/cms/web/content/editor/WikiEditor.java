@@ -16,36 +16,32 @@
  */
 package jease.cms.web.content.editor;
 
-import org.sinnlabs.zk.ui.CodeMirror;
-
 import jease.cms.domain.Wiki;
 import jfix.util.I18N;
 
+import org.zkoss.codemirror.Codemirror;
+
 public class WikiEditor extends ContentEditor<Wiki> {
 
-	CodeMirror content = new CodeMirror();
+	Codemirror content = new Codemirror();
 
 	public WikiEditor() {
-		content.setHeight(getPlainEditorHeight());
+		content.setHeight((100 + getDesktopHeight() / 3) + "px");
 		content.setSyntax("wiki");
 	}
 
-	@Override
-    public void init() {
+	public void init() {
 		add(I18N.get("Content"), content);
 	}
 
-	@Override
-    public void load() {
+	public void load() {
 		content.setValue(getNode().getContent());
 	}
 
-	@Override
-    public void save() {
+	public void save() {
 		getNode().setContent(content.getValue());
 	}
 
-	@Override
-    public void validate() {
+	public void validate() {
 	}
 }
