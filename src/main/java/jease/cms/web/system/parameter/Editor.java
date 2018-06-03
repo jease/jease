@@ -18,35 +18,34 @@ package jease.cms.web.system.parameter;
 
 import java.util.function.Predicate;
 
-import jease.Names;
-import jease.cmf.web.JeaseSession;
+import org.apache.commons.lang3.StringUtils;
+import org.sinnlabs.zk.ui.CodeMirror;
+import org.zkoss.zul.Textbox;
+
 import jease.cms.domain.Parameter;
 import jfix.db4o.Database;
 import jfix.util.I18N;
 import jfix.zk.Div;
 import jfix.zk.ObjectEditor;
 
-import org.apache.commons.lang3.StringUtils;
-import org.zkoss.codemirror.Codemirror;
-import org.zkoss.zul.Textbox;
-
 public class Editor extends ObjectEditor<Parameter> {
 
 	Textbox key = new Textbox();
 	Textbox singleValue = new Textbox();
-	Codemirror multiValue = new Codemirror();
+	CodeMirror multiValue = new CodeMirror();
 
 	public Editor() {
-		multiValue.setHeight((100 + (Integer) JeaseSession
-				.get(Names.JEASE_CMS_HEIGHT) / 3) + "px");
+		multiValue.setHeight(getPlainEditorHeight());
 	}
 
-	public void init() {
+	@Override
+    public void init() {
 		add(I18N.get("Key"), key);
 		add(I18N.get("Value"), new Div(singleValue, multiValue));
 	}
 
-	public void load() {
+	@Override
+    public void load() {
 		boolean multiline = StringUtils.isBlank(getObject().getValue())
 				|| getObject().getValue().contains("\n");
 		key.setText(getObject().getKey());
@@ -59,13 +58,14 @@ public class Editor extends ObjectEditor<Parameter> {
 
 	private void adjustSyntax() {
 		if (multiValue.getValue().startsWith("<")) {
-			multiValue.setSyntax("html");
+			multiValue.setMode(CodeMirror.TEXT_HTML);
 			return;
 		}
-		multiValue.setSyntax("txt");
+		multiValue.setMode(CodeMirror.TEXT_PLAIN);
 	}
 
-	public void save() {
+	@Override
+    public void save() {
 		getObject().setKey(key.getText());
 		if (singleValue.isVisible()) {
 			getObject().setValue(singleValue.getText());
@@ -75,15 +75,17 @@ public class Editor extends ObjectEditor<Parameter> {
 		Database.save(getObject());
 	}
 
-	public void delete() {
+	@Override
+    public void delete() {
 		Database.delete(getObject());
 	}
 
-	public void validate() {
-		validate(StringUtils.isEmpty(key.getValue()),
-				I18N.get("Key_is_required"));
+	@Override
+    public void validate() {
+		validate(StringUtils.isEmpty(key.getValue()), I18N.get("Key_is_required"));
 		validate(!Database.isUnique(getObject(), new Predicate<Parameter>() {
-			public boolean test(Parameter parameter) {
+			@Override
+            public boolean test(Parameter parameter) {
 				return parameter.getKey().equals(key.getText());
 			}
 		}), I18N.get("Key_must_be_unique"));

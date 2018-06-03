@@ -16,14 +16,14 @@
  */
 package jease.cms.web.content.editor;
 
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Label;
+
 import jease.cms.domain.Gallery;
 import jease.cms.web.component.RichTextarea;
 import jfix.util.I18N;
 import jfix.zk.Div;
 import jfix.zk.Spinner;
-
-import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Label;
 
 public class GalleryEditor extends ContentEditor<Gallery> {
 
@@ -32,30 +32,34 @@ public class GalleryEditor extends ContentEditor<Gallery> {
 	Checkbox labeled = new Checkbox();
 
 	public GalleryEditor() {
-		preface.setHeight((getDesktopHeight() / 3 - 50) + "px");
+		preface.setHeight(getVeryRichEditorHeight());
 		scale.setConstraint("min 0,no empty");
 		scale.setStep(25);
 	}
 
-	public void init() {
+	@Override
+    public void init() {
 		add(I18N.get("Preface"), preface);
 		add(I18N.get("Scale"), new Div(scale, new Label(" px")));
 		add(I18N.get("Labeled"), labeled);
 	}
 
-	public void load() {
+	@Override
+    public void load() {
 		preface.setValue(getNode().getPreface());
 		scale.setValue(getNode().getScale());
 		labeled.setChecked(getNode().isLabeled());
 	}
 
-	public void save() {
+	@Override
+    public void save() {
 		getNode().setPreface(preface.getValue());
 		getNode().setScale(scale.intValue());
 		getNode().setLabeled(labeled.isChecked());
 	}
 
-	public void validate() {
+	@Override
+    public void validate() {
 		validate(scale.intValue() < 1, I18N.get("Scale_is_not_valid"));
 	}
 

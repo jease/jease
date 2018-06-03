@@ -16,16 +16,16 @@
  */
 package jease.cms.web.content.editor;
 
-import jease.cms.domain.News;
-import jease.cms.web.component.RichTextarea;
-import jfix.util.I18N;
-import jfix.zk.Column;
-
 import org.apache.commons.lang3.StringUtils;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Textbox;
+
+import jease.cms.domain.News;
+import jease.cms.web.component.RichTextarea;
+import jfix.util.I18N;
+import jfix.zk.Column;
 
 public class NewsEditor extends ContentEditor<News> {
 
@@ -36,33 +36,37 @@ public class NewsEditor extends ContentEditor<News> {
 
 	public NewsEditor() {
 		teaser.setRows(3);
-		story.setHeight((getDesktopHeight() / 3 - 50) + "px");
+		story.setHeight(getVeryRichEditorHeight());
 		emptyTeaser.addEventListener(Events.ON_CHECK,
 				event -> emptyTeaserChecked(emptyTeaser.isChecked()));
 		date.setLenient(false);
 		date.setFormat("short");
 	}
 
-	public void init() {
+	@Override
+    public void init() {
 		add(I18N.get("Teaser"), new Column(teaser, emptyTeaser));
 		add(I18N.get("Story"), story);
 		add(I18N.get("Date"), date);
 	}
 
-	public void load() {
+	@Override
+    public void load() {
 		teaser.setText(getNode().getTeaser());
 		story.setText(getNode().getStory());
 		date.setValue(getNode().getDate());
 		emptyTeaserChecked(StringUtils.isEmpty(teaser.getValue()));
 	}
 
-	public void save() {
+	@Override
+    public void save() {
 		getNode().setTeaser(teaser.getText());
 		getNode().setStory(story.getText());
 		getNode().setDate(date.getValue());
 	}
 
-	public void validate() {
+	@Override
+    public void validate() {
 		validate(story.isEmpty(), I18N.get("Story_is_required"));
 	}
 

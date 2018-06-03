@@ -16,42 +16,53 @@
  */
 package jease.cms.web.content.editor;
 
+import org.sinnlabs.zk.ui.CodeMirror;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Checkbox;
+
 import jease.cms.domain.Text;
 import jease.cms.web.component.RichTextarea;
 import jfix.util.I18N;
 import jfix.zk.Div;
 import jfix.zk.ZK;
 
-import org.zkoss.codemirror.Codemirror;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Checkbox;
-
 public class TextEditor extends ContentEditor<Text> {
 
 	RichTextarea richText = new RichTextarea();
-	Codemirror plainText = new Codemirror();
+	CodeMirror plainText = new CodeMirror();
 	Checkbox plainMode = new Checkbox(I18N.get("Plaintext"));
+	Checkbox showLineNums = new Checkbox(I18N.get("Show_line_numbers"));
 
 	public TextEditor() {
-		richText.setHeight((getDesktopHeight() / 3) + "px");
-		plainText.setHeight((100 + getDesktopHeight() / 3) + "px");
+		richText.setHeight(getRichEditorHeight());
+		plainText.setHeight(getPlainEditorHeight());
 		plainText.setWidth("100%");
 		plainMode.addEventListener(Events.ON_CHECK, evt -> updateTextMode());
+
+		showLineNums.addEventListener(Events.ON_CHECK, evt -> {
+		    boolean v = plainText.getLineNumbers();
+            plainText.setLineNumbers(!v);
+		});
 	}
 
-	public void init() {
+	@Override
+    public void init() {
 		add(I18N.get("Content"), richText);
-		add("", new Div("text-align: right;", plainMode));
+		showLineNums.setStyle("margin-right: 15px");
+		add("", new Div("text-align: right;", showLineNums, plainMode));
 	}
 
-	public void load() {
+	@Override
+    public void load() {
 		richText.setText(getNode().getContent());
 		plainText.setValue(getNode().getContent());
 		plainMode.setChecked(getNode().isPlain());
+		showLineNums.setChecked(plainText.getLineNumbers());
 		updateTextMode();
 	}
 
-	public void save() {
+	@Override
+    public void save() {
 		if (richText.getParent() != null) {
 			getNode().setContent(richText.getText());
 		}
@@ -61,7 +72,8 @@ public class TextEditor extends ContentEditor<Text> {
 		getNode().setPlain(plainMode.isChecked());
 	}
 
-	public void validate() {
+	@Override
+    public void validate() {
 	}
 
 	private void updateTextMode() {
@@ -70,11 +82,13 @@ public class TextEditor extends ContentEditor<Text> {
 			if (richText.getParent() != null) {
 				ZK.replace(richText, plainText);
 			}
+			showLineNums.setVisible(true);
 		} else {
 			richText.setText(plainText.getValue());
 			if (plainText.getParent() != null) {
 				ZK.replace(plainText, richText);
 			}
+			showLineNums.setVisible(false);
 		}
 	}
 }

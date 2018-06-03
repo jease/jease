@@ -1,5 +1,25 @@
 <?page title="Jease - The Java CMS with Ease" ?>
 <zk>
+  <style>
+    /* Fix for Firefox 54 problem with not showing checkboxes */
+    /* See http://forum.zkoss.org/question/90365/checkbox-and-radio-button-appearance/ */
+    /* normal style */
+    input[type="checkbox"] {
+      -moz-appearance: checkbox;
+      appearance: auto;
+
+      /* In case "appearance: none;" - custom design is possible */
+      /* Design custom look and feel here */
+      /* width: 15px;
+         height: 15px;
+         border: 1px solid gray; */
+    }
+    /* checked style */
+    input[type="checkbox"]:checked {
+      -moz-appearance: checkbox;
+      appearance: auto;
+    }
+  </style>
 	<div
 		use="jease.cms.web.Application" 
 		navigation="jease.cms.web.Navigation"
