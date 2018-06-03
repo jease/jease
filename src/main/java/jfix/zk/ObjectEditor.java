@@ -16,15 +16,13 @@
  */
 package jfix.zk;
 
+import jfix.util.I18N;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Hbox;
-
-import jease.Names;
-import jease.cmf.web.JeaseSession;
-import jfix.util.I18N;
 
 public abstract class ObjectEditor<E> extends Formbox implements Objectable<E>,
 		Refreshable {
@@ -71,8 +69,7 @@ public abstract class ObjectEditor<E> extends Formbox implements Objectable<E>,
 		buttons.appendChild(loadButton);
 	}
 
-	@Override
-    public void refresh() {
+	public void refresh() {
 		invokeInit();
 		invokeLoad();
 	}
@@ -221,8 +218,7 @@ public abstract class ObjectEditor<E> extends Formbox implements Objectable<E>,
 		fireClose();
 	}
 
-	@Override
-    public void setObject(E object) {
+	public void setObject(E object) {
 		this.object = object;
 	}
 
@@ -232,54 +228,33 @@ public abstract class ObjectEditor<E> extends Formbox implements Objectable<E>,
 
 	protected void doInit() throws Exception {
 		init();
-	}
+	};
 
 	protected void doLoad() throws Exception {
 		load();
-	}
+	};
 
 	protected void doSave() throws Exception {
 		save();
-	}
+	};
 
 	protected void doCopy() throws Exception {
 		copy();
-	}
+	};
 
 	protected void doDelete() throws Exception {
 		delete();
-	}
+	};
 
 	protected void doValidate() throws Exception {
 		validate();
-	}
+	};
 
 	protected Object getMonitor() {
 		return getObject() != null ? getObject() : this;
 	}
 
-	@Override
-    public String toString() {
+	public String toString() {
 		return String.valueOf(object);
 	}
-
-	protected int getDesktopHeight() {
-        return (Integer) JeaseSession.get(Names.JEASE_CMS_HEIGHT);
-    }
-
-	protected String getPlainEditorHeight() {
-	    return (100 + getDesktopHeight() / 3) + "px";
-	}
-
-	protected String getRichEditorHeight() {
-        return (getDesktopHeight() / 3) + "px";
-    }
-
-	protected String getVeryRichEditorHeight() {
-	    return (getDesktopHeight() / 3 - 50) + "px";
-	}
-
-    protected int getDesktopWidth() {
-        return (Integer) JeaseSession.get(Names.JEASE_CMS_WIDTH);
-    }
 }

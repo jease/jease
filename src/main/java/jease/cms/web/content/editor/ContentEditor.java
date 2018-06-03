@@ -18,12 +18,6 @@ package jease.cms.web.content.editor;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Textbox;
-
 import jease.Names;
 import jease.Registry;
 import jease.cmf.service.Nodes;
@@ -43,6 +37,12 @@ import jfix.zk.Modal;
 import jfix.zk.Selectfield;
 import jfix.zk.Sessions;
 import jfix.zk.WebBrowser;
+
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Textbox;
 
 /**
  * Base class for all content editors. All common fields for Content should be
@@ -86,8 +86,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		closeCheckEnabled = true;
 	}
 
-	@Override
-    public void refresh() {
+	public void refresh() {
 		super.refresh();
 		notifyAboutMaintenance();
 	}
@@ -100,8 +99,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		}
 	}
 
-	@Override
-    protected void doInit() throws Exception {
+	protected void doInit() throws Exception {
 		if (Revisions.isConfigured()) {
 			add(I18N.get("Revision"), revisionSelection);
 		}
@@ -111,8 +109,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		add(propertyManager);
 	}
 
-	@Override
-    protected void doLoad() throws Exception {
+	protected void doLoad() throws Exception {
 		super.doLoad();
 		viewContent.setVisible(Nodes.isRooted(getNode()));
 		lastNodeModification = getNode().getLastModified();
@@ -154,8 +151,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		save();
 	}
 
-	@Override
-    protected void doSave() throws Exception {
+	protected void doSave() throws Exception {
 		saveEditorToObject();
 		persist();
 	}
@@ -177,8 +173,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		Nodes.save(Contents.customize(getNode()));
 	}
 
-	@Override
-    protected void doValidate() throws Exception {
+	protected void doValidate() throws Exception {
 		if (StringUtils.isEmpty(id.getValue()) && id.isVisible()
 				&& !id.isDisabled()) {
 			id.setValue(title.getValue());
@@ -196,8 +191,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		}
 	}
 
-	@Override
-    public void doCopy() throws Exception {
+	public void doCopy() throws Exception {
 		super.doCopy();
 		if (revisionSelection.getParent() != null) {
 			revisionSelection.setValues(new Object[] {});
@@ -205,8 +199,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		viewContent.setVisible(false);
 	}
 
-	@Override
-    public void delete() {
+	public void delete() {
 		closeCheckEnabled = false;
 		getNode().setEditor(getSessionUser());
 		getNode().setLastModified(new Date());
@@ -217,8 +210,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		return JeaseSession.get(User.class);
 	}
 
-	@Override
-    public void hideButtons() {
+	public void hideButtons() {
 		super.hideButtons();
 		viewContent.setVisible(false);
 		editProperties.setVisible(false);
@@ -226,6 +218,14 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	protected boolean isFactoryMode() {
 		return JeaseSession.getContainer() instanceof Factory;
+	}
+
+	protected int getDesktopHeight() {
+		return (Integer) JeaseSession.get(Names.JEASE_CMS_HEIGHT);
+	}
+
+	protected int getDesktopWidth() {
+		return (Integer) JeaseSession.get(Names.JEASE_CMS_WIDTH);
 	}
 
 	protected void closePerformed(final Event event) {

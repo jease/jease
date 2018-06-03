@@ -23,18 +23,17 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jease.Names;
 import jease.cms.service.Timers;
 import jfix.db4o.Database;
 import jfix.util.I18N;
 
+import org.apache.commons.lang3.StringUtils;
+
 @WebListener
 public class JeaseServletListener implements ServletContextListener {
 
-	@Override
-    public void contextInitialized(ServletContextEvent sce) {
+	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext context = sce.getServletContext();
 		initSystemProperties(context);
 		initLocale(context);
@@ -42,8 +41,7 @@ public class JeaseServletListener implements ServletContextListener {
 		initTimer(context);
 	}
 
-	@Override
-    public void contextDestroyed(ServletContextEvent sce) {
+	public void contextDestroyed(ServletContextEvent sce) {
 		stopTimer();
 		closeDatabase();
 	}
@@ -63,11 +61,8 @@ public class JeaseServletListener implements ServletContextListener {
 	}
 
 	protected void initDatabase(ServletContext context) {
-	    String engine = context.getInitParameter(Names.JEASE_DATABASE_ENGINE);
-	    if (engine != null && !engine.isEmpty()) {
-	        Database.setPersistenceEngine(engine);
-	    }
-	    String databaseName = context.getInitParameter(Names.JEASE_DATABASE_NAME);
+		String databaseName = context
+				.getInitParameter(Names.JEASE_DATABASE_NAME);
 		if (databaseName != null) {
 			Database.open(databaseName);
 		} else {

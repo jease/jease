@@ -18,25 +18,12 @@
             The name of the database folder can be specified in two
             ways:
             - If param-value doesn't include a slash, the database folder will be
-            created in user home (prefixed by "perst"), for example: jease
+            created in user home (prefixed by "perst").
             - If param-value includes a slash (java.io.File.separator), the value
-            will be interpreted as path for the database folder, for example: d:\Programs\jease-dbs\jeasesip
+            will be interpreted as path for the database folder.
         </description>
         <param-name>JEASE_DATABASE_NAME</param-name>
         <param-value>jease</param-value>
-    </context-param>
-    
-    <context-param>
-        <description>
-            The name of the database engine implementation class.
-            Possible values:
-            jfix.db4o.engine.PersistenceEnginePerst
-            jfix.db4o.engine.PersistenceEngineDb4o
-            jfix.db4o.engine.PersistenceEngineXStream
-            jfix.db4o.engine.PersistenceEngineZoodb
-        </description>
-        <param-name>JEASE_DATABASE_ENGINE</param-name>
-        <param-value>jfix.db4o.engine.PersistenceEnginePerst</param-value>
     </context-param>
 
     <context-param>
@@ -64,28 +51,5 @@
             <trim-directive-whitespaces>true</trim-directive-whitespaces>
         </jsp-property-group>
     </jsp-config>
-    
-    <filter>
-      <filter-name>SimpleCORSFilter</filter-name>
-      <filter-class>jease.cms.web.filter.SimpleCORSFilter</filter-class>
-    </filter>
-    
-    <filter>
-      <filter-name>ETagFilter</filter-name>
-      <filter-class>jease.cms.web.filter.etag.ETagServletFilter</filter-class>
-      <init-param>
-        <param-name>contentTypeFilter</param-name>
-        <param-value>image/.*</param-value>
-      </init-param>
-      <init-param>
-        <param-name>subPathFilter</param-name>
-        <param-value>.*/images/.*</param-value>
-      </init-param>    
-    </filter>
-  
-    <filter-mapping>
-      <filter-name>ETagFilter</filter-name>
-      <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
 </web-app>

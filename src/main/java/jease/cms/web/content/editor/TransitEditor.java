@@ -23,16 +23,16 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Checkbox;
-
 import jease.cms.domain.Transit;
 import jfix.util.I18N;
 import jfix.zk.Combobox;
 import jfix.zk.Mediafield;
 import jfix.zk.ZK;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Checkbox;
 
 public class TransitEditor extends ContentEditor<Transit> {
 
@@ -41,19 +41,17 @@ public class TransitEditor extends ContentEditor<Transit> {
 	Checkbox forward = new Checkbox();
 
 	public TransitEditor() {
-		file.setHeight(getPlainEditorHeight());
+		file.setHeight((100 + getDesktopHeight() / 3) + "px");
 		uri.addEventListener(Events.ON_SELECT, event -> pathSelected());
 	}
 
-	@Override
-    public void init() {
+	public void init() {
 		add(I18N.get("Path"), uri);
 		add(I18N.get("File"), file);
 		add(I18N.get("Forward"), forward);
 	}
 
-	@Override
-    public void load() {
+	public void load() {
 		uri.setSelection(getPathnames(ZK.getRealPath("/")), getObject()
 				.getURI());
 		if (getNode().getURI() != null) {
@@ -63,27 +61,24 @@ public class TransitEditor extends ContentEditor<Transit> {
 		forward.setChecked(getNode().isForward());
 	}
 
-	@Override
-    public void save() {
-		getNode().setURI(uri.getValue());
+	public void save() {
+		getNode().setURI((String) uri.getValue());
 		getNode().setForward(forward.isChecked());
 	}
 
-	@Override
-    protected void persist() {
+	protected void persist() {
 		super.persist();
 		file.copyToFile(getNode().getFile());
 	}
 
-	@Override
-    public void validate() {
+	public void validate() {
 		validate(uri.isEmpty(), I18N.get("Path_is_required"));
 		validate(!URI.create(uri.getText()).isAbsolute(),
 				I18N.get("Path_is_required"));
 	}
 
 	private void pathSelected() {
-		String pathname = uri.getValue();
+		String pathname = (String) uri.getValue();
 		if (StringUtils.isNotBlank(pathname)) {
 			String name = FilenameUtils.getName(pathname);
 			if (StringUtils.isEmpty(id.getValue())) {

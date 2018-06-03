@@ -16,10 +16,6 @@
  */
 package jease.cms.web.content.editor;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.zkoss.zk.ui.event.Events;
-
 import jease.Names;
 import jease.Registry;
 import jease.cms.domain.File;
@@ -27,12 +23,16 @@ import jfix.util.I18N;
 import jfix.zk.Mediafield;
 import jfix.zk.Modal;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zk.ui.event.Events;
+
 public class FileEditor<E extends File> extends ContentEditor<E> {
 
 	Mediafield media = new Mediafield();
 
 	public FileEditor() {
-		media.setHeight(getPlainEditorHeight());
+		media.setHeight((100 + getDesktopHeight() / 3) + "px");
 		media.addEventListener(Events.ON_UPLOAD, evt -> {
 			if (media.getMedia() != null) {
 				uploadPerformed();
@@ -41,25 +41,21 @@ public class FileEditor<E extends File> extends ContentEditor<E> {
 		media.setUploadLimit(Registry.getParameter(Names.JEASE_UPLOAD_LIMIT));
 	}
 
-	@Override
-    public void init() {
+	public void init() {
 		add(I18N.get("File"), media);
 	}
 
-	@Override
-    public void load() {
+	public void load() {
 		media.setMedia(getNode().getId(), getNode().getContentType(), getNode()
 				.getFile());
 	}
 
-	@Override
-    public void save() {
+	public void save() {
 		getNode().setContentType(media.getContentType());
 		media.copyToFile(getNode().getFile());
 	}
 
-	@Override
-    public void validate() {
+	public void validate() {
 		validate(media.isEmpty(), I18N.get("File_is_required"));
 	}
 

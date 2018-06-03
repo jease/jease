@@ -16,15 +16,10 @@
  */
 package jfix.db4o;
 
-import org.zoodb.api.impl.ZooPC;
-
 /**
  * Base class for all persistent classes.
- * <br> Unfortunately ZooDb requires all persistent classes to be descendants of ZooPC,
- * but luckily it does not affects other engines, and could be eliminated with byte-code enhance
- * in the future, see <a href="https://github.com/tzaeschke/zoodb/issues/97">ZooPC should not be required to be super class of all persistent classes.</a>
  */
-public class Persistent extends ZooPC {
+public class Persistent {
 
 	/**
 	 * Marker interface for value-objects. Whereas an entity (first class

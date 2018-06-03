@@ -19,66 +19,65 @@ package jfix.db4o.engine;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.commons.io.FileUtils;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * This implemenation is ONLY intended for debug-purposes.
- *
+ * 
  * @author mjablonski
  */
-public class PersistenceEngineXStream extends PersistenceEngineBase implements PersistenceEngine {
+public class PersistenceEngineXStream implements PersistenceEngine {
 
-	protected final Set<Object> objects = new HashSet<>();
-	protected final Set<Object> added   = new HashSet<>();
-	protected final Set<Object> deleted = new HashSet<>();
+	protected String directory;
+	protected String filename;
+	protected Set<Object> objects;
+	protected Set<Object> objectsToSave;
+	protected Set<Object> objectsToDelete;
 
-	@Override
-    protected String getEngineName() {
-        return "xstream";
-    }
-
-    @Override
-    protected String getEngineFileName() {
-        return "odb.xml";
-    }
-
-	@Override
-    public void open(String database) {
+	public void open(String database) {
 		initDirectory(database);
 		openEngine();
 	}
 
-	protected void clearObjects() {
-	    objects.clear();
-        added.clear();
-        deleted.clear();
+	protected void initDirectory(String database) {
+		if (database.contains(File.separator)) {
+			directory = database.endsWith(File.separator) ? database : database
+					+ File.separator;
+		} else {
+			directory = System.getProperty("user.home") + File.separator
+					+ "xstream" + File.separator + database + File.separator;
+		}
+		filename = directory + "odb.xml";
+		new File(directory).mkdirs();
 	}
 
 	protected void openEngine() {
-	    clearObjects();
+		objects = new HashSet<>();
+		objectsToSave = new HashSet<>();
+		objectsToDelete = new HashSet<>();
 	}
 
-	@Override
-    public Collection<Object> query() {
+	public String getBlobDirectory() {
+		return directory;
+	}
+
+	public Collection<Object> query() {
 		try {
 			if (new File(filename).exists()) {
 				XStream xstream = new XStream(new DomDriver());
 				xstream.setMode(XStream.ID_REFERENCES);
 				FileReader reader = new FileReader(filename);
-				Object r = xstream.fromXML(reader);
-				clearObjects();
-				if (r instanceof Collection) {
-				    @SuppressWarnings("unchecked")
-                    Collection<Object> c = (Collection<Object>) r;
-				    objects.addAll(c);
-				} else {
-				    objects.add(r);
-				}
+				objects = (Set<Object>) xstream.fromXML(reader);
 				reader.close();
 			}
 			return objects;
@@ -87,52 +86,41 @@ public class PersistenceEngineXStream extends PersistenceEngineBase implements P
 		}
 	}
 
-	@Override
-    public void save(Object object) {
-	    if (objects.contains(object)) return;
-		objects.add(object);
-		added.add(object);
+	public void save(Object object) {
+		objectsToSave.add(object);
 	}
 
-	@Override
-    public void delete(Object object) {
-	    if (objects.contains(object)) {
-	        objects.remove(object);
-	        if (added.contains(object)) added.remove(object);
-	        else deleted.add(object);
-	    }
+	public void delete(Object object) {
+		objectsToDelete.add(object);
 	}
 
-	@Override
-    public void begin() {
+	public void begin() {
 		// Empty as XStream has no concept of transactions at all.
 	}
 
-	@Override
-    public void commit() {
-	    added.clear();
-        deleted.clear();
+	public void commit() {
+		objects.addAll(objectsToSave);
+		objects.removeAll(objectsToDelete);
+		objectsToSave.clear();
+		objectsToDelete.clear();
 	}
 
-	@Override
-    public void rollback() {
-	    if (!added.isEmpty()) {
-            for (Object i : added) objects.remove(i);
-        }
-        if (!deleted.isEmpty()) {
-            for (Object i : deleted) objects.add(i);
-        }
-        added.clear();
-        deleted.clear();
+	public void rollback() {
+		objectsToSave.clear();
+		objectsToDelete.clear();
 	}
 
-	@Override
-    public void backup() {
-        backupAsCopyFile();
+	public void backup() {
+		try {
+			String backupFilename = filename
+					+ new SimpleDateFormat("-yyyyMMdd").format(new Date());
+			FileUtils.copyFile(new File(filename), new File(backupFilename));
+		} catch (IOException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
 	}
 
-	@Override
-    public void close() {
+	public void close() {
 		try {
 			XStream xstream = new XStream(new DomDriver());
 			xstream.setMode(XStream.ID_REFERENCES);
@@ -144,4 +132,7 @@ public class PersistenceEngineXStream extends PersistenceEngineBase implements P
 		}
 	}
 
+	public String toString() {
+		return filename;
+	}
 }

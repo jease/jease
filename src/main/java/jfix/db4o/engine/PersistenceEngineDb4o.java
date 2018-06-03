@@ -16,8 +16,11 @@
  */
 package jfix.db4o.engine;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import com.db4o.Db4oEmbedded;
@@ -26,24 +29,27 @@ import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.io.FileStorage;
 import com.db4o.io.NonFlushingStorage;
 
-public class PersistenceEngineDb4o extends PersistenceEngineBase implements PersistenceEngine {
+public class PersistenceEngineDb4o implements PersistenceEngine {
 
+	protected String directory;
+	protected String filename;
 	protected ObjectContainer db;
 
-	@Override
-    protected String getEngineName() {
-        return "db4o";
-    }
-
-    @Override
-    protected String getEngineFileName() {
-        return "db4o.yap";
-    }
-
-	@Override
-    public void open(String database) {
+	public void open(String database) {
 		initDirectory(database);
 		openEngine();
+	}
+
+	protected void initDirectory(String database) {
+		if (database.contains(File.separator)) {
+			directory = database.endsWith(File.separator) ? database : database
+					+ File.separator;
+		} else {
+			directory = System.getProperty("user.home") + File.separator
+					+ "db4o" + File.separator + database + File.separator;
+		}
+		filename = directory + "db4o.yap";
+		new File(directory).mkdirs();
 	}
 
 	protected void openEngine() {
@@ -62,8 +68,11 @@ public class PersistenceEngineDb4o extends PersistenceEngineBase implements Pers
 		return config;
 	}
 
-	@Override
-    public Collection<Object> query() {
+	public String getBlobDirectory() {
+		return directory;
+	}
+
+	public Collection<Object> query() {
 		List<Object> objects = new ArrayList<>();
 		for (Object obj : db.queryByExample(null)) {
 			db.ext().refresh(obj, 1);
@@ -72,40 +81,37 @@ public class PersistenceEngineDb4o extends PersistenceEngineBase implements Pers
 		return objects;
 	}
 
-	@Override
-    public void save(Object object) {
+	public void save(Object object) {
 		db.store(object);
 	}
 
-	@Override
-    public void delete(Object object) {
+	public void delete(Object object) {
 		db.delete(object);
 	}
 
-	@Override
-    public void begin() {
+	public void begin() {
 		// Empty as db4o don't needs an explicit transaction begin.
 	}
 
-	@Override
-    public void commit() {
+	public void commit() {
 		db.commit();
 	}
 
-	@Override
-    public void rollback() {
+	public void rollback() {
 		db.rollback();
 	}
 
-	@Override
-    public void backup() {
-		String backupFilename = getBackupFileName();
+	public void backup() {
+		String backupFilename = filename
+				+ new SimpleDateFormat("-yyyyMMdd").format(new Date());
 		db.ext().backup(backupFilename);
 	}
 
-	@Override
-    public void close() {
+	public void close() {
 		db.close();
 	}
 
+	public String toString() {
+		return filename;
+	}
 }

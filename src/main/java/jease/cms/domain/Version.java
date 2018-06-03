@@ -30,11 +30,7 @@ public class Version extends Persistent implements Persistent.Value {
 	private String info;
 	private Blob blob;
 
-	private Version() {
-	}
-
 	public Version(String info, Blob blob) {
-	    this();
 		this.info = info;
 		this.blob = blob;
 	}
@@ -47,8 +43,7 @@ public class Version extends Persistent implements Persistent.Value {
 		return blob;
 	}
 
-	@Override
-    public String toString() {
+	public String toString() {
 		String lastModified = String.format("%1$tF %1$tT", new Date(blob
 				.getFile().lastModified()));
 		if (info != null) {
