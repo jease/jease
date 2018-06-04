@@ -19,10 +19,6 @@
             <id>zk-ce</id>
             <url>http://mavensync.zkoss.org/maven2</url>
         </repository>
-        <!-- repository>
-            <id>bintray-jmini-maven</id>
-            <url>http://dl.bintray.com/jmini/maven</url>
-        </repository -->
     </repositories>
     <dependencies>
         <dependency>
@@ -65,22 +61,22 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>6.5.1</version>
+            <version>7.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queries</artifactId>
-            <version>6.5.1</version>
+            <version>7.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-common</artifactId>
-            <version>6.5.1</version>
+            <version>7.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
-            <version>6.5.1</version>
+            <version>7.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tika</groupId>
@@ -137,15 +133,10 @@
             <artifactId>imgscalr-lib</artifactId>
             <version>4.2</version>
         </dependency>
-        <!-- dependency>
-            <groupId>org.zkoss.codemirror</groupId>
-            <artifactId>zk-codemirror</artifactId>
-            <version>1.0.1</version>
-        </dependency-->
         <dependency>
             <groupId>org.zkoss.zk</groupId>
             <artifactId>zhtml</artifactId>
-            <version>8.0.2.2</version>
+            <version>8.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.zkoss.zkforge</groupId>
@@ -155,7 +146,7 @@
         <dependency>
           <groupId>org.zkoss.zk</groupId>
           <artifactId>zul</artifactId>
-          <version>8.0.2.2</version>
+          <version>8.5.0</version>
         </dependency>
         
         <!-- Logging -->
