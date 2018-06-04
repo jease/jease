@@ -29,10 +29,10 @@ Any feedback is welcome, and I will incorporate useful pull requests.
 Technologies
 ------------
 
-* [DB4O](http://db4o.com)db4o or Perst as object-oriented persistence engines
+* [DB4O](http://db4o.com) db4o or Perst or ZooDB as object-oriented persistence engines
 * [Lucene](http://lucene.apache.org/) Lucene as high performance indexing and search technology.
 * [Bootstrap](http://getbootstrap.com/)
-* [ZK](https://zkoss.org/)ZK as component- & event-driven Ajax-Web-Framework.
+* [ZK](https://zkoss.org/) ZK as component- & event-driven Ajax-Web-Framework.
 
 User Levels
 ------------
@@ -59,7 +59,7 @@ RoadMap
 License
 -------
 
-[The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+[GPL 3](http://jease.org/gpl3)
 
 
 
