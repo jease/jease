@@ -19,6 +19,8 @@ package jease.cms.web;
 import java.util.Date;
 import java.util.stream.Stream;
 
+import org.zkoss.zk.ui.event.Events;
+
 import jease.Names;
 import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
@@ -30,6 +32,8 @@ import jease.cms.domain.Script;
 import jease.cms.domain.Text;
 import jease.cms.domain.Transit;
 import jease.cms.domain.User;
+import jease.cms.domain.property.Property;
+import jease.cms.domain.property.StringProperty;
 import jease.cms.service.Contents;
 import jease.cms.service.Users;
 import jease.cms.web.user.Editor;
@@ -38,8 +42,6 @@ import jfix.util.I18N;
 import jfix.zk.Div;
 import jfix.zk.Window;
 import jfix.zk.ZK;
-
-import org.zkoss.zk.ui.event.Events;
 
 /**
  * Initial setup and upgrade for JeaseCMS.
@@ -75,6 +77,7 @@ public class Setup extends Div {
 			folder.setTitle(I18N.get("JeaseCMS"));
 			folder.setLastModified(new Date());
 			folder.setVisible(true);
+			folder.setProperties(new Property[] { new StringProperty("root") }); // workaround for ZooDb bug: https://github.com/tzaeschke/zoodb/issues/98
 			Nodes.setRoot(folder);
 			Nodes.save(folder);
 
