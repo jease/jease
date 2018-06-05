@@ -2,7 +2,7 @@
 ===========================
 
 [![Build Status](https://travis-ci.org/jease/jease.svg?branch=master)](https://travis-ci.org/jease/jease)
-[![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Coverage Status](https://coveralls.io/repos/github/jease/jease/badge.svg)](https://coveralls.io/github/jease/jease)
 
 
