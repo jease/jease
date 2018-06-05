@@ -170,8 +170,6 @@
                 <version>4.3.0</version>
                 <configuration>
                     <repoToken>Pf7MxCV2ePyLduCKdvwZFB8BDZ0miN6Lj</repoToken>
-                    <format>xml</format>
-                    <aggregate>true</aggregate>
                 </configuration>
             </plugin>
             <plugin>
