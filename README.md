@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/jease/jease.svg?branch=master)](https://travis-ci.org/jease/jease)
 [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Coverage Status](https://coveralls.io/repos/github/jease/jease/badge.svg?branch=master)](https://coveralls.io/github/jease/jease?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/jease/jease/badge.svg)](https://coveralls.io/github/jease/jease)
 
 
 Jease eases the development of content- & database-driven web-applications with Java.
