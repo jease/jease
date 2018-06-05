@@ -8,11 +8,20 @@
 
 Jease eases the development of content- & database-driven web-applications with Java.
 
-Admin panel + Home pages
 
-[Demo Admin panel](http://demo.jease.org) => http://demo.jease.org username/password=demo
+[Home Page](http://jease.org)
 
-[Home Page](http://jease.org)  
+========
+
+Demo
+
+[Demo](http://demo.jease.org)
+
+Demo Admin panel
+
+[Demo Admin panel](http://demo.jease.org/login?file&login=demo&password=Demo123$)
+
+========
 
 About
 -----
