@@ -24,9 +24,18 @@ package jease.cms.domain;
 public class Text extends Content {
 
 	private String content;
+	private String[] tags;
 	private boolean plain;
 
 	public Text() {
+	}
+
+	public String[] getTags() {
+		return tags;
+	}
+
+	public void setTags(String[] tags) {
+		this.tags = tags;
 	}
 
 	public void setContent(String content) {
