@@ -11,7 +11,7 @@
 <%@page import="java.util.Random"%>
 <%@page import="java.util.Properties"%>
 <%@page import="java.io.StringReader"%>
-
+<%@page import="java.util.Enumeration"%>
 
 <%
     Content content = (Content) request.getAttribute("Node");

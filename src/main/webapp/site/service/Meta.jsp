@@ -13,7 +13,12 @@
 String meta=jease.Registry.getParameter(jease.Names.JEASE_SITE_META,"description \nauthor \nkeywords ");
 Properties properties = new Properties();
 properties.load(new StringReader(meta));
+Enumeration e=properties.propertyNames();
+		while (e.hasMoreElements()) {
+			String key = (String) e.nextElement();
+			String value=properties.getProperty(key);
+            %>
+            <meta name="<%=key%>" content="<%=value%>">
+            <%
+		}
 %>
-<meta name="description" content="<%=properties.get("description")%>">
-<meta name="author" content="<%=properties.get("author")%>">
-<meta name="keywords" content="<%=properties.get("keywords")%>">
