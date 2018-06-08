@@ -63,7 +63,7 @@ public class Setup extends Div {
 		if (Database.query(Parameter.class).isEmpty()) {
 			for (Parameter parameter : new Parameter[] {
 					new Parameter(Names.JEASE_SITE_DESIGN, "simple"),
-					new Parameter(Names.JEASE_SITE_META, "keywords= java cms,jease, java portal, zk admin, zk dashboard\ndescription=Jease means Java with Ease, so Jease promises to keep simple things simple and the hard things easy. \nauthor jease"),
+					new Parameter(Names.JEASE_SITE_META, "keywords java cms,jease, java portal, zk admin, zk dashboard\ndescription Jease means Java with Ease, so Jease promises to keep simple things simple and the hard things easy. \nauthor jease"),
 					new Parameter(Names.JEASE_REVISION_COUNT, "10"),
 					new Parameter(Names.JEASE_REVISION_DAYS, "30") }) {
 				Database.save(parameter);

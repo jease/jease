@@ -9,7 +9,7 @@
 <%@page import="jease.site.Navigations"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Random"%>
-<%@page import="java.util.Propertie"%>
+<%@page import="java.util.Properties"%>
 <%@page import="java.io.StringReader"%>
 
 
