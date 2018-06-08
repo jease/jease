@@ -33,9 +33,7 @@
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="description" content="Jease means Java with Ease, so Jease promises to keep simple things simple and the hard things easy. ">
-        <meta name="author" content="jease">
-        <meta name="keywords" content="java cms,jease, java portal, zk admin, zk dashboard">
+        <%@include file="/site/service/Meta.jsp" %>
         <link rel="icon" href="<%=request.getContextPath()%>/site/web/tabler/assets/favicon.ico" type="image/x-icon"/>
         <link rel="shortcut icon" type="image/x-icon" href="<%=request.getContextPath()%>/site/web/tabler/assets/favicon.ico" />
         <title><%=Navigations.getPageTitle(content)%></title>
