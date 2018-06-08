@@ -14,6 +14,6 @@ String meta=jease.Registry.getParameter(jease.Names.JEASE_SITE_META,"description
 Properties properties = new Properties();
 properties.load(new StringReader(meta));
 %>
-<meta name="description" content="<%=properties.get('description')%>">
-<meta name="author" content="<%=properties.get('author')%>">
-<meta name="keywords" content="<%=properties.get('keywords')%>">
+<meta name="description" content="<%=properties.get("description")%>">
+<meta name="author" content="<%=properties.get("author")%>">
+<meta name="keywords" content="<%=properties.get("keywords")%>">
