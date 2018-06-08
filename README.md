@@ -13,15 +13,20 @@ Jease eases the development of content- & database-driven web-applications with 
 
 ========
 
-Demo
 
 [Demo](http://demo.jease.org)
 
-Demo Admin panel
 
 [Demo Admin panel](http://demo.jease.org/login?file&login=demo&password=Demo123$)
 
 ========
+
+# Getting Started
+## Installation
+Download last version from http://jease.org/download/current
+Unzip jease-version.zip
+Go to bin directiry and run start.sh file in command prompt ro terminal
+
 
 About
 -----
