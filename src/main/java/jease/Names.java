@@ -50,6 +50,7 @@ public class Names {
 	public static String JEASE_SITE_DESIGN;
 	public static String JEASE_SITE_DISPATCHER;
 	public static String JEASE_SITE_ERROR;
+	public static String JEASE_SITE_META;
 	public static String JEASE_SITE_REWRITER;
 	public static String JEASE_SITE_SERVLETS;
 	public static String JEASE_SMTP_PROPERTIES;

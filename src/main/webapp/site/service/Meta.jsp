@@ -9,6 +9,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="HandheldFriendly" content="True">
 <meta name="MobileOptimized" content="320">
-<meta name="description" content="Jease means Java with Ease, so Jease promises to keep simple things simple and the hard things easy. ">
-<meta name="author" content="jease">
-<meta name="keywords" content="java cms,jease, java portal, zk admin, zk dashboard">
+<%
+String meta=jease.Registry.getParameter(jease.Names.JEASE_SITE_META,"description \nauthor \nkeywords ");
+Properties properties = new Properties();
+properties.load(new StringReader(meta));
+%>
+<meta name="description" content="<%=properties.get('description')%>">
+<meta name="author" content="<%=properties.get('author')%>">
+<meta name="keywords" content="<%=properties.get('keywords')%>">
