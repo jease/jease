@@ -23,38 +23,42 @@ Jease eases the development of content- & database-driven web-applications with 
 
 # Getting Started
 
-## 1) Prerequisites
+1) Prerequisites
+----------------
 
-    Download and install a recent Java SE Development Kit (Java SE JDK) or OpenJDK. Please note: You'll need a full Java Development Kit (JDK), a simple Java Runtime Environment (JRE) won't work.
-    Check your environment-variables: JAVA_HOME needs to point to the root-directory of your JDK.
+*   Download and install a recent [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (Java SE JDK) or [OpenJDK](http://openjdk.java.net/).  **Please note:** You'll need a full Java Development Kit (JDK), a simple Java Runtime Environment (JRE) won't work.
+*   Check your [environment-variables](http://en.wikipedia.org/wiki/Environment_variable): _JAVA_HOME_ needs to point to the root-directory of your JDK.
 
-## 2) Install
+2) Install
+----------
 
-    Download the latest binary release bundle.
-    Unzip the downloaded package.
+*   Download the [latest binary release bundle](./~/download/latest).
+*   Unzip the downloaded package.
 
-## 3) Start
+3) Start
+--------
 
-    Linux: Open a terminal and enter:
-    jease/bin/catalina.sh run
-    Windows: Navigate to "jease -> bin" and double-click:
-    startup (= startup.bat)
+*   **Linux:** Open a terminal and enter:  
+    _jease/bin/catalina.sh run_
+*   **Windows:** Navigate to "jease -> bin" and double-click:  
+    _startup (= startup.bat)_
 
-## 4) Setup
+4) Setup
+--------
 
-    Open your browser and call:
-    http://localhost:8080/cms/setup
-    Choose a name, login and password for the administration account. The password must contain at minimum 8 characters with mixed case, digits and symbols.
-    Now you're redirected to the login-page. Enter the login and password for the newly created administrator.
-    Have fun...
+*   Open your browser and call:  
+    [http://localhost:8080/cms/setup](http://localhost:8080/cms/setup)
+*   Choose a name, login and password for the administration account. The password must contain at minimum 8 characters with mixed case, digits and symbols.
+*   Now you're redirected to the login-page. Enter the login and password for the newly created administrator.
+*   Have fun...
 
-## 5) Login
+5) Login
+--------
 
-    To login later on, simply call:
-    http://localhost:8080/cms
-    To view the public page:
-    http://localhost:8080/
-
+*   To login later on, simply call:  
+    [http://localhost:8080/cms](http://localhost:8080/cms)
+*   To view the public page:  
+    [http://localhost:8080/](http://localhost:8080/)
 
 
 
