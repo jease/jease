@@ -22,13 +22,40 @@ Jease eases the development of content- & database-driven web-applications with 
 ========
 
 # Getting Started
-## Run from last build
 
-* Download last version from http://jease.org/download/latest
+## 1) Prerequisites
 
-* Unzip jease-version.zip
+    Download and install a recent Java SE Development Kit (Java SE JDK) or OpenJDK. Please note: You'll need a full Java Development Kit (JDK), a simple Java Runtime Environment (JRE) won't work.
+    Check your environment-variables: JAVA_HOME needs to point to the root-directory of your JDK.
 
-* Go to bin directiry and run start.sh file in command prompt ro terminal
+## 2) Install
+
+    Download the latest binary release bundle.
+    Unzip the downloaded package.
+
+## 3) Start
+
+    Linux: Open a terminal and enter:
+    jease/bin/catalina.sh run
+    Windows: Navigate to "jease -> bin" and double-click:
+    startup (= startup.bat)
+
+## 4) Setup
+
+    Open your browser and call:
+    http://localhost:8080/cms/setup
+    Choose a name, login and password for the administration account. The password must contain at minimum 8 characters with mixed case, digits and symbols.
+    Now you're redirected to the login-page. Enter the login and password for the newly created administrator.
+    Have fun...
+
+## 5) Login
+
+    To login later on, simply call:
+    http://localhost:8080/cms
+    To view the public page:
+    http://localhost:8080/
+
+
 
 
 About
