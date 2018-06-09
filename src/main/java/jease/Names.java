@@ -53,6 +53,7 @@ public class Names {
 	public static String JEASE_SITE_META;
 	public static String JEASE_SITE_REWRITER;
 	public static String JEASE_SITE_SERVLETS;
+	public static String JEASE_SOLR_URL;
 	public static String JEASE_SMTP_PROPERTIES;
 	public static String JEASE_TEMPLATE_RESOLVER;
 	public static String JEASE_TIMER_TASK;

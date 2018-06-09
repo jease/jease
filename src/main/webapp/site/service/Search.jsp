@@ -1,3 +1,7 @@
+<%
+String solrurl=jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL,"");
+if(solrurl.equals("")){//use jease result
+%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.function.Predicate"%>
 <%@page import="java.util.Collection"%>
@@ -39,3 +43,6 @@
 %>
 <p><%=I18N.get("No_results")%>.</p>
 <% } %>
+<%}else{//use solr result%>
+<%@include file="/site/service/Solr.jsp" %>
+<%}%>
