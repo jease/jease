@@ -17,7 +17,9 @@
 package jease.cms.web.content.editor;
 
 import java.rmi.server.ExportException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
@@ -169,8 +171,8 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	@Override
     protected void doSave() throws Exception {
 		saveEditorToObject();
-		persist();
 		insertToSolr();
+		persist();
 	}
 
 	public void insertToSolr(){
@@ -180,6 +182,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
 			SolrInputDocument doc = new SolrInputDocument();
+			doc.addField("id",UUID.randomUUID().toString());
 			doc.addField("tags",tags.getValue() );
 			doc.addField("title", title.getValue());
 			doc.addField("author", getNode().getEditor().getName());
