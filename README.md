@@ -22,10 +22,13 @@ Jease eases the development of content- & database-driven web-applications with 
 ========
 
 # Getting Started
-## Installation
-Download last version from http://jease.org/download/current
-Unzip jease-version.zip
-Go to bin directiry and run start.sh file in command prompt ro terminal
+## Run from last build
+
+* Download last version from http://jease.org/download/latest
+
+* Unzip jease-version.zip
+
+* Go to bin directiry and run start.sh file in command prompt ro terminal
 
 
 About
