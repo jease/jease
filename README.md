@@ -32,7 +32,7 @@ Jease eases the development of content- & database-driven web-applications with 
 ## 2) Install
 
 
-*   Download the [latest binary release bundle](./~/download/latest).
+*   Download the [latest binary release bundle](http://jease.org/download/latest).
 *   Unzip the downloaded package.
 
 ## 3) Start
