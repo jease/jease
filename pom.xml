@@ -159,7 +159,13 @@
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-classic</artifactId>
         <version>1.1.7</version>
-</dependency>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>7.3.1</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>ROOT</finalName>

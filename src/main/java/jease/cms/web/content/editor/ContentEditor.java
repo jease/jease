@@ -16,9 +16,13 @@
  */
 package jease.cms.web.content.editor;
 
+import java.rmi.server.ExportException;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.common.SolrInputDocument;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
@@ -52,6 +56,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	protected Date lastNodeModification;
 	protected Textbox title = new Textbox();
+	protected Textbox tags = new Textbox();
 	protected Selectfield revisionSelection = new Selectfield();
 	protected PropertyManager propertyManager = new PropertyManager();
 	protected Button editProperties = new Button(I18N.get("Properties"),
@@ -107,6 +112,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		}
 		super.doInit();
 		add(I18N.get("Title"), title);
+		add(I18N.get("Tags"), tags);
 		init();
 		add(propertyManager);
 	}
@@ -118,6 +124,9 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		lastNodeModification = getNode().getLastModified();
 		if (title.getParent() != null) {
 			title.setText(getNode().getTitle());
+		}
+		if (tags.getParent() != null) {
+			tags.setText(getNode().getTages());
 		}
 		if (revisionSelection.getParent() != null) {
 			revisionSelection.setValues(getNode().getRevisions());
@@ -148,6 +157,9 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		if (title.getParent() != null) {
 			getNode().setTitle(title.getText());
 		}
+		if (tags.getParent() != null) {
+			getNode().setTitle(tags.getText());
+		}
 		if (propertyManager.getParent() != null) {
 			getNode().setProperties(propertyManager.getProperties());
 		}
@@ -158,6 +170,28 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
     protected void doSave() throws Exception {
 		saveEditorToObject();
 		persist();
+		insertToSolr();
+	}
+
+	public void insertToSolr(){
+		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+		if(solrurl.equals(""))return;
+		try {
+
+			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
+			SolrInputDocument doc = new SolrInputDocument();
+			doc.addField("tags",tags.getValue() );
+			doc.addField("title", title.getValue());
+			doc.addField("author", getNode().getEditor().getName());
+			doc.addField("type", getNode().getType());
+			doc.addField("text", getNode().getFulltext().toString());
+			doc.addField("last_modified",new Date() );
+			doc.addField("category",getNode().getParent().getPath() );
+			client.add(doc);
+			client.commit();
+		}catch (Exception s){
+			s.printStackTrace();
+		}
 	}
 
 	protected void saveLastModification() {

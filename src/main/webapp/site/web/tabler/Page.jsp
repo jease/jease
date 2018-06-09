@@ -111,7 +111,11 @@
                     <div class="container">
                         <div class="page-header">
                             <h1 class="page-title">
-                                <%=((Content) content.getParent()).getTitle()%>
+                                <p id="breadcrumb">
+                                    <% for (Content parent : Navigations.getBreadcrumb(root, content)) {%>
+                                    &raquo; <a href="<%=request.getContextPath()%><%=parent.getPath()%>"><%=parent.getTitle()%></a>
+                                    <% } %>
+                                </p>
                             </h1>
                         </div>
                         <div class="row">
@@ -125,16 +129,16 @@
                                             <% for (Content item : Navigations.getItems((Content) content.getParent())) { %>
                                             <% if (item instanceof Topic) {%>
                                             <span  class="list-group-item list-group-item-action active"><span class="icon mr-3"><i class="fe fe-flag"></i></span><%=item.getTitle()%></span>
-                                            <% } else {%>
+                                                    <% } else {%>
                                             <a class="list-group-item list-group-item-action" href="<%=request.getContextPath()%><%=item.getPath()%>"><%=item.getTitle()%></a>
                                             <% } %>
-                                            <% } %>                  
+                                            <% } %>
 
                                         </div>
                                     </div>
                                 </div><!--end card-->
                                 <%
-                                    String[] color = new String[]{"red", "blue", "yellow", "orange", "green","teal","purple"};
+                                    String[] color = new String[]{"red", "blue", "yellow", "orange", "green", "teal", "purple"};
                                     if (ArrayUtils.isNotEmpty(news)) {
                                         for (News item : news) {
                                 %>
@@ -146,7 +150,7 @@
                                             <div class="col-auto">
                                                 <% if (item.getDate() != null) {%>
                                                 <div class="text-muted-dark"><i class="mdi mdi-calendar mr-1 text-muted w-4 text-center"></i> <%=String.format("%tF", item.getDate())%></div>
-                                                <%} %>	
+                                                <%} %>
                                             </div>
                                             <div class="col-auto">
                                                 <div class="text-muted-dark"><i class="mdi mdi-map-marker mr-1 text-muted w-4 text-center"></i> <% if (StringUtils.isBlank(item.getTeaser())) {%>
@@ -164,24 +168,15 @@
                                 <% }%>
                             </div>
                             <div class="col-lg-9">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p id="breadcrumb">
-                                            <% for (Content parent : Navigations.getBreadcrumb(root, content)) {%>
-                                            &raquo; <a href="<%=request.getContextPath()%><%=parent.getPath()%>"><%=parent.getTitle()%></a>
-                                            <% } %>
-                                        </p>
-                                        <% pageContext.include((String) request.getAttribute("Page.Template")); %>
-                                        <div style="clear: both"></div>
-                                        <p id="editorial">
-                                            <% Content latestChange = Navigations.getLatestContribution(content);%>
-                                            Last modified on <%=String.format("%tF", latestChange.getLastModified())%>
-                                            <% if (latestChange.getEditor() != null) {%>
-                                            by <%=latestChange.getEditor().getName()%>
-                                            <% }%>
-                                        </p>
-                                    </div>
-                                </div>
+                                <% pageContext.include((String) request.getAttribute("Page.Template")); %>
+                                <div style="clear: both"></div>
+                                <p id="editorial">
+                                    <% Content latestChange = Navigations.getLatestContribution(content);%>
+                                    Last modified on <%=String.format("%tF", latestChange.getLastModified())%>
+                                    <% if (latestChange.getEditor() != null) {%>
+                                    by <%=latestChange.getEditor().getName()%>
+                                    <% }%>
+                                </p>
                             </div>
                         </div>
                     </div>

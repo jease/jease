@@ -53,6 +53,7 @@ public abstract class Content extends Node {
 	@NotSerialized
 	private String uuid;
 	private String title;
+	private String tages;
 	private Date lastModified;
 	private Date creationDate;
 	private boolean visible;
@@ -74,6 +75,14 @@ public abstract class Content extends Node {
 
 	public String getUUID() {
 		return uuid;
+	}
+
+	public String getTages() {
+		return tages;
+	}
+
+	public void setTages(String tages) {
+		this.tages = tages;
 	}
 
 	public String getTitle() {
