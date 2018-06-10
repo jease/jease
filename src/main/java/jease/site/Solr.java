@@ -21,14 +21,17 @@ import java.util.Map;
 
 public class Solr {
     public String SOLR_URL;
-    private int pagesize=10;
+    private int pagesize=10,start;
+    long total,time;
     public boolean hasnext,hasprev;
     public List<FacetField> fflist;
     public Solr() {
         this.SOLR_URL = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+        this.hasnext=false;
+        this.hasprev=false;
     }
 
-    public List<items> getresult(String q, String p,String fq) {
+    public List<items> getresult(String q, String p,String fq,String sort) {
         List<items> result = new ArrayList<>();
         try {
             SolrClient client = new HttpSolrClient.Builder(SOLR_URL).build();
@@ -45,35 +48,31 @@ public class Solr {
             } catch (Exception s) {
                 p = "0";
             }
-            int start = Integer.parseInt(p);
+            start = Integer.parseInt(p);
             query.setStart(start);
             query.setHighlight(true);
             query.setFacet(true);
 
             query.addFacetField("tags");
-            //query.addFacetField("last_modified");
             query.addFacetField("type");
             query.addFacetField("author");
+            query.addFacetField("yearmon");
             query.addHighlightField("title,text,tags");
             if(null!=fq&&!fq.equals(""))
                 query.addFilterQuery(fq);
-//          query.setHighlightSimplePost("</b>");
-//          query.setHighlightSimplePre("<b>");
-//          query.setSort("last_modified", SolrQuery.ORDER.desc);
+            query.setHighlightSimplePost("</b>");
+            query.setHighlightSimplePre("<b>");
+            if(sort.equals("0"))
+                query.setSort("last_modified", SolrQuery.ORDER.asc);
+            if(sort.equals("1"))
+                query.setSort("last_modified", SolrQuery.ORDER.desc);
+            if(sort.equals("2"))
+                query.setSort("title", SolrQuery.ORDER.asc);
             query.set("defType", "edismax");
             QueryResponse response = client.query(query);
             fflist = response.getFacetFields();
-            for(FacetField ff : fflist){
-                String ffname = ff.getName();
-                int ffcount = ff.getValueCount();
-                List<FacetField.Count> counts = ff.getValues();
-                for(FacetField.Count c : counts){
-                    String facetLabel = c.getName();
-                    long facetCount = c.getCount();
-                }
-            }
             SolrDocumentList results = response.getResults();
-            long total = results.getNumFound();
+            total = results.getNumFound();
             if (start * pagesize + pagesize < total) {
                 hasnext = true;
             }
@@ -86,7 +85,7 @@ public class Solr {
             if (start == 0) {
                 hasprev = false;
             }
-            long time = response.getQTime();
+            time = response.getQTime();
             Map<String, Map<String, List<String>>> hitHighlightedMap = response.getHighlighting();
 
             for (int i = 0; i < results.size(); ++i) {

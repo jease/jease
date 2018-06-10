@@ -17,10 +17,8 @@
 package jease.cms.web.content.editor;
 
 import java.rmi.server.ExportException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
@@ -181,6 +179,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 		System.out.println(solrurl);
 		if(solrurl.equals(""))return;
+		SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
 		try {
 			ArrayList<String> tagslist = new ArrayList<String>(Arrays.asList(tags.getValue().split(",")));
 			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
@@ -192,6 +191,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			doc.addField("type", getNode().getType());
 			doc.addField("text", getNode().getFulltext().toString());
 			doc.addField("last_modified",new Date() );
+			doc.addField("yearmon", month_date.format(new Date()));
 			doc.addField("category",getNode().getParent().getPath() );
 			client.add(doc);
 			client.commit();

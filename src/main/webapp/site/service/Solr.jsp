@@ -11,13 +11,18 @@
 
 <%
     Solr s = new Solr();
-    String q = "", p = "", page2 = "", fq = "";
+    String q = "", p = "", page2 = "", fq = "",sort="";
     q = request.getParameter("query");
     p = request.getParameter("p");
     fq = request.getParameter("fq");
     page2 = request.getParameter("page");
+    sort = request.getParameter("sort");
+    if(null==q)q="";
+    if(null==fq)fq="";
+    if(null==p)p="0";
+    if(null==sort)sort="0";
+    if(null==page2)page2="/site/service/search.jsp";
     List<jease.site.Solr.items> result = s.getresult(q, p, fq);
-//QueryResponse response=s.getresult(q,p);
 %>
 <div class="row">
 
@@ -31,6 +36,8 @@
                     <i class="fe fe-search"></i>
                 </span>
             </div>
+
+
         </div>
         <%
             for (jease.site.Solr.items item : result) {
@@ -43,15 +50,30 @@
         <hr/>
         <%}%>
 
-
+<%@include file="/site/service/pager/SolrPagination.jsp" %>
 
 
     </div>
     <div class="col-md-4">
+
         <div class="card">
+<div class="container">
             <div class="card-header">
                 <h3 class="card-title">Filter your result:</h3>
             </div>
+            <div class="container ">
+<div class="dropdown">
+  <button type="button" class="btn btn-secondary btn-block dropdown-toggle" data-toggle="dropdown">
+     Sort
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="<%=request.getContextPath()%>/?query=<%=q%>&page=<%=page2%>&p=<%=p%>&fq=<%=fq%>&sort=0">Based on Date (ASC)</a>
+    <a class="dropdown-item" href="<%=request.getContextPath()%>/?query=<%=q%>&page=<%=page2%>&p=<%=p%>&fq=<%=fq%>&sort=1">Based on Date (DESC)</a>
+    <a class="dropdown-item" href="<%=request.getContextPath()%>/?query=<%=q%>&page=<%=page2%>&p=<%=p%>&fq=<%=fq%>&sort=2">Based on Title (ASC)</a>
+
+  </div>
+</div>
+</div>
             <div class="list-group list-group-transparent mb-0">
                 <%
 
@@ -72,7 +94,7 @@
                         }
                 %>
                 <div class="list-group-item list-group-item-action d-flex align-items-center ">
-                    <a href="<%=request.getContextPath()%>/?query=<%=q%>&page=<%=page2%>&p=<%=p%>&fq=<%=ffname%>:<%=facetLabel%>" class="tag tag-blue">
+                    <a href="<%=request.getContextPath()%>/?query=<%=q%>&page=<%=page2%>&p=<%=p%>&fq=<%=ffname%>:<%=facetLabel%>&sort=0" class="tag tag-blue">
                         <%=facetLabel%>(<%=facetCount%>)
 
                     </a></div>
@@ -80,8 +102,11 @@
                             }
                         }
                     %>
-
+<div class="list-group-item list-group-item-action d-flex align-items-center ">
+<a href="<%=request.getContextPath()%>/?query=&page=<%=page2%>" class="btn btn-danger">Remove all fillter</a>
+</div>
             </div>
         </div>
+    </div>
     </div>
 </div>
