@@ -84,13 +84,12 @@
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col-lg-3 ml-auto">
-                                <form action="<%=request.getContextPath()%>/" method="get" >
-                                        <div class="form-group">
-                                            <div class="input-icon mb-3">
-                                                <input type="search" name="query" <% if (request.getParameter("query") != null) {%>value="<%= StringEscapeUtils.escapeHtml4(request.getParameter("query"))%>"<% } else { %>value="Enter your search..." onfocus="this.value = '';"<% } %>  class="form-control" tabindex="1" placeholder="Search for..."/>
-                                                <input type="hidden" name="page" value="/site/service/Search.jsp" />
-                                            </div>
-                                        </div>
+                                <form class="input-icon my-3 my-lg-0" action="<%=request.getContextPath()%>/" method="get">
+                                    <input type="search" class="form-control header-search" name="query" <% if (request.getParameter("query") != null) {%>value="<%= StringEscapeUtils.escapeHtml4(request.getParameter("query"))%>"<% } else { %>value="Enter your search..." onfocus="this.value = '';"<% } %> placeholder="Search&hellip;" tabindex="1">
+                                    <input type="hidden" name="page" value="/site/service/Search.jsp" />
+                                    <div class="input-icon-addon">
+                                        <i class="fe fe-search"></i>
+                                    </div>
                                 </form>
                             </div>
                             <div class="col-lg order-lg-first">
@@ -108,9 +107,9 @@
                 <div class="my-3 my-md-5">
                     <div class="container">
                         <div class="">
-                                    <% for (Content parent : Navigations.getBreadcrumb(root, content)) {%>
-                                    &raquo; <a href="<%=request.getContextPath()%><%=parent.getPath()%>"><%=parent.getTitle()%></a>
-                                    <% } %>
+                            <% for (Content parent : Navigations.getBreadcrumb(root, content)) {%>
+                            &raquo; <a href="<%=request.getContextPath()%><%=parent.getPath()%>"><%=parent.getTitle()%></a>
+                            <% } %>
                         </div>
                         <div class="row">
                             <div class="col-lg-3">

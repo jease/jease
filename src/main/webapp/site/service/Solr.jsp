@@ -34,18 +34,21 @@
 %>
 <div class="row">
     <div class="col-md-8">
-        <div class="form-group">
+        <form class="form-group" action="<%=request.getContextPath()%>/" method="get">
             <div class="input-icon mb-3">
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="search" name="query" <% if (request.getParameter("query") != null) {%>value="<%= StringEscapeUtils.escapeHtml4(request.getParameter("query"))%>"<% } else { %>value="Enter your search..." onfocus="this.value = '';"<% } %>  class="form-control" placeholder="Search for...">
+                <input type="hidden" name="page" value="/site/service/Search.jsp" />
                 <span class="input-icon-addon">
                     <i class="fe fe-search"></i>
                 </span>
             </div>
-        </div>
+        </form>
         <%
             for (jease.site.Solr.items item : result) {
-		String url=item.url;
-		if(null!=url && url.startsWith("/")){url=url.substring(1);}
+                String url = item.url;
+                if (null != url && url.startsWith("/")) {
+                    url = url.substring(1);
+                }
         %>
         <a href="<%=url%>"><%=item.title%></a><br/>
         <span ><%=item.snip%></span><br/>
@@ -96,7 +99,7 @@
                             <%=facetLabel%>(<%=facetCount%>)
                         </a></div>
                         <%}
-                        }%>
+                            }%>
                     <div class="list-group-item list-group-item-action d-flex align-items-center ">
                         <a href="<%=request.getContextPath()%>/?query=&page=<%=page2%>" class="btn btn-danger">Remove all fillter</a>
                     </div>
