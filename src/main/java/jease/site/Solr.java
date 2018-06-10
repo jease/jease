@@ -105,7 +105,7 @@ public class Solr {
                         main = highlightedList.get(0);
                     }
                 }
-                bi.url = rs.getFieldValue("jeasepath")+"/"+rs.getFieldValue("jeaseid");
+                bi.url = rs.getFieldValue("jeasepath").toString();//+"/"+rs.getFieldValue("jeaseid");
                 bi.snip = main;
                 bi.d= (Date) rs.getFieldValue("last_modified");
 

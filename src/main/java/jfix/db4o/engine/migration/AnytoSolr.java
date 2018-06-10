@@ -1,16 +1,16 @@
-package jease.site;
+package jfix.db4o.engine.migration;
+import jease.cms.domain.Folder;
 import jfix.db4o.Database;
 import jease.cms.domain.Content;
 import jease.cmf.service.Nodes;
 import java.util.*;
 import java.lang.Exception;
-import jease.Names;
-import jease.Registry;
-import jease.site.Navigations;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.common.SolrInputDocument;
 import java.text.SimpleDateFormat;
+import java.util.stream.Stream;
+
 /**
  * Created by mnm
  * User: mnm
@@ -18,17 +18,44 @@ import java.text.SimpleDateFormat;
  * Time: 18:43
  * http://github.com/ghaseminya
  */
-public class DbtoSolr {
+public class AnytoSolr {
 
 
-    String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
-    public void start(){
+    String solrurl = "";//jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+    int count=0;
+
+    public static void main(String a[]){
+        AnytoSolr d=new AnytoSolr();
+        d.initDatabase();
+        d.start(a[0]);
+    }
+    public void start(String solr){
+        solrurl=solr;
         Content root = (Content)Nodes.getRoot();
-        for (Content tab1 : Navigations.getTabs(root)) {
-            for (Content c : Navigations.getItems(tab1)) {
-                insertToSolr(c.getId(),c.getPath(),c.getTitle(),c.getEditor().getName(),c.getFulltext().toString(),c.getTages(),c.getLastModified(),"","");
-            }
-//alert("finish"+tab1.getTitle());
+        recursiveloop(root);
+    }
+    protected void initDatabase() {
+        String engine = "jfix.db4o.engine.PersistenceEnginePerst";//for other engine must be change
+        if (engine != null && !engine.isEmpty()) {
+            Database.setPersistenceEngine(engine);
+        }
+        String databaseName = "jease";
+        if (databaseName != null) {
+            Database.open(databaseName);
+        } else {
+            throw new RuntimeException();
+        }
+    }
+    public void recursiveloop(Content root){
+
+        for (Content c : Stream.of(
+                root.getChildren(Content.class))
+                .filter(content ->  content.isVisible())
+                .toArray(Content[]::new)) {
+                System.out.println("item "+count++);
+                insertToSolr(c.getId(),c.getPath(),c.getTitle(),c.getEditor().getName(),c.getFulltext().toString(),c.getType(),c.getLastModified(),"","");
+                if(c instanceof Folder )
+                    recursiveloop(c);
         }
     }
     public void insertToSolr(String id,String path,String title,String author,String text,String type,Date lastmodif,String categ,String tags){
