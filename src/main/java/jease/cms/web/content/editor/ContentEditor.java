@@ -18,6 +18,7 @@ package jease.cms.web.content.editor;
 
 import java.rmi.server.ExportException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -160,7 +161,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			getNode().setTitle(title.getText());
 		}
 		if (tags.getParent() != null) {
-			getNode().setTitle(tags.getText());
+			getNode().setTages(tags.getText());
 		}
 		if (propertyManager.getParent() != null) {
 			getNode().setProperties(propertyManager.getProperties());
@@ -176,14 +177,16 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	public void insertToSolr(){
+
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+		System.out.println(solrurl);
 		if(solrurl.equals(""))return;
 		try {
-
+			ArrayList<String> tagslist = new ArrayList<String>(Arrays.asList(tags.getValue().split(",")));
 			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
 			SolrInputDocument doc = new SolrInputDocument();
-			doc.addField("id",UUID.randomUUID().toString());
-			doc.addField("tags",tags.getValue() );
+			doc.addField("id", UUID.randomUUID().toString());
+			doc.addField("tags",  tagslist);
 			doc.addField("title", title.getValue());
 			doc.addField("author", getNode().getEditor().getName());
 			doc.addField("type", getNode().getType());

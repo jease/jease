@@ -1,64 +1,86 @@
+<%@page import="jease.site.Solr"%>
+<%@page import="org.apache.solr.client.solrj.response.FacetField"%>
+<%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.List"%>
+<%@page import="org.apache.solr.common.SolrDocument"%>
+<%@page import="org.apache.solr.common.SolrDocumentList"%>
+
+<%@page import="java.util.Map"%>
+
+<%
+    Solr s = new Solr();
+    String q = "", p = "", page2 = "", fq = "";
+    q = request.getParameter("query");
+    p = request.getParameter("p");
+    fq = request.getParameter("fq");
+    page2 = request.getParameter("page");
+    List<jease.site.Solr.items> result = s.getresult(q, p, fq);
+//QueryResponse response=s.getresult(q,p);
+%>
 <div class="row">
 
     <div class="col-md-8">
-        <form action="">
-            <div class="form-group">
-                <div class="row align-items-center">
-                    <label class="col-sm-2">To:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
+
+        <div class="form-group">
+            <label class="form-label">Search in all content on jease!</label>
+            <div class="input-icon mb-3">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-icon-addon">
+                    <i class="fe fe-search"></i>
+                </span>
             </div>
-            <div class="form-group">
-                <div class="row align-items-center">
-                    <label class="col-sm-2">Subject:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-            <textarea rows="10" class="form-control"></textarea>
-            <div class="btn-list mt-4 text-right">
-                <button type="button" class="btn btn-secondary btn-space">Cancel</button>
-                <button type="submit" class="btn btn-primary btn-space">Send message</button>
-            </div>
-        </form>
+        </div>
+        <%
+            for (jease.site.Solr.items item : result) {
+
+        %>
+
+        <a href="#"><%=item.title%></a><br/>
+        <span ><%=item.snip%></span><br/>
+        <span ><%=item.d%></span><br/>
+        <hr/>
+        <%}%>
+
+
+
 
     </div>
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Compose new message</h3>
+                <h3 class="card-title">Filter your result:</h3>
             </div>
-            <h3 class="page-title mb-5">Mail Service</h3>
-            <div>
-                <div class="list-group list-group-transparent mb-0">
-                    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center active">
-                        <span class="icon mr-3"><i class="fe fe-inbox"></i></span>Inbox <span class="ml-auto badge badge-primary">14</span>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                        <span class="icon mr-3"><i class="fe fe-send"></i></span>Sent Mail
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                        <span class="icon mr-3"><i class="fe fe-alert-circle"></i></span>Important <span class="ml-auto badge badge-secondary">3</span>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                        <span class="icon mr-3"><i class="fe fe-star"></i></span>Starred
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                        <span class="icon mr-3"><i class="fe fe-file"></i></span>Drafts
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                        <span class="icon mr-3"><i class="fe fe-tag"></i></span>Tags
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                        <span class="icon mr-3"><i class="fe fe-trash-2"></i></span>Trash
-                    </a>
+            <div class="list-group list-group-transparent mb-0">
+                <%
+
+                    for (FacetField ff : s.fflist) {
+                        String ffname = ff.getName();
+                        int ffcount = ff.getValueCount();
+                %>
+                <div class="card-header">
+                    <h3 class="card-title"><%=ffname%></h3>
                 </div>
-                <div class="mt-6">
-                    <a href="#" class="btn btn-secondary btn-block">Compose new Email</a>
-                </div>
+                <%
+                    List<FacetField.Count> counts = ff.getValues();
+                    for (FacetField.Count c : counts) {
+                        String facetLabel = c.getName();
+                        long facetCount = c.getCount();
+                        if (facetCount == 0) {
+                            continue;
+                        }
+                %>
+                <div class="list-group-item list-group-item-action d-flex align-items-center ">
+                    <a href="<%=request.getContextPath()%>/?query=<%=q%>&page=<%=page2%>&p=<%=p%>&fq=<%=ffname%>:<%=facetLabel%>" class="tag tag-blue">
+                        <%=facetLabel%>(<%=facetCount%>)
+
+                    </a></div>
+                    <%
+                            }
+                        }
+                    %>
+
             </div>
         </div>
     </div>

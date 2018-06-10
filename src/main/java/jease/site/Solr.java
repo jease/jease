@@ -9,6 +9,7 @@ package jease.site;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -22,7 +23,12 @@ public class Solr {
     public String SOLR_URL;
     private int pagesize=10;
     public boolean hasnext,hasprev;
-    public List<items> getresult(String q,String p) {
+    public List<FacetField> fflist;
+    public Solr() {
+        this.SOLR_URL = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+    }
+
+    public List<items> getresult(String q, String p,String fq) {
         List<items> result = new ArrayList<>();
         try {
             SolrClient client = new HttpSolrClient.Builder(SOLR_URL).build();
@@ -42,12 +48,30 @@ public class Solr {
             int start = Integer.parseInt(p);
             query.setStart(start);
             query.setHighlight(true);
-            query.addHighlightField("title,maincontent,tags");
+            query.setFacet(true);
+
+            query.addFacetField("tags");
+            //query.addFacetField("last_modified");
+            query.addFacetField("type");
+            query.addFacetField("author");
+            query.addHighlightField("title,text,tags");
+            if(!fq.equals(""))
+                query.addFilterQuery(fq);
 //          query.setHighlightSimplePost("</b>");
 //          query.setHighlightSimplePre("<b>");
 //          query.setSort("last_modified", SolrQuery.ORDER.desc);
             query.set("defType", "edismax");
             QueryResponse response = client.query(query);
+            fflist = response.getFacetFields();
+            for(FacetField ff : fflist){
+                String ffname = ff.getName();
+                int ffcount = ff.getValueCount();
+                List<FacetField.Count> counts = ff.getValues();
+                for(FacetField.Count c : counts){
+                    String facetLabel = c.getName();
+                    long facetCount = c.getCount();
+                }
+            }
             SolrDocumentList results = response.getResults();
             long total = results.getNumFound();
             if (start * pagesize + pagesize < total) {
