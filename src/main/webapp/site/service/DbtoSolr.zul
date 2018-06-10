@@ -1,0 +1,10 @@
+<?page title="Jease - The Java CMS with Ease" ?>
+<zk>
+<button id="search" label="search" onClick="start()"/>
+<zscript>
+public void start(){
+jease.site.DbtoSolr.start();
+}
+</zscript>
+
+</zk>
