@@ -75,6 +75,7 @@ Technologies
 * [Lucene](http://lucene.apache.org/) Lucene as high performance indexing and search technology.
 * [Bootstrap](http://getbootstrap.com/)
 * [ZK](https://zkoss.org/) ZK as component- & event-driven Ajax-Web-Framework.
+* [Solr](http://lucene.apache.org/solr/) Apache  Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene™. 
 
 User Levels
 ------------
