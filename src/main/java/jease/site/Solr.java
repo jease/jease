@@ -21,8 +21,8 @@ import java.util.Map;
 
 public class Solr {
     public String SOLR_URL;
-    private int pagesize=10,start;
-    long total,time;
+    public int pagesize=10,start;
+    public long total,time;
     public boolean hasnext,hasprev;
     public List<FacetField> fflist;
     public Solr() {
@@ -40,7 +40,7 @@ public class Solr {
                 q = "*:*";
             }
             query.setQuery(q);
-            query.setFields("id","tags", "title", "author", "text", "last_modified", "type","category");
+            query.setFields("id","tags", "title", "author", "text", "last_modified", "type","category","jeaseid","jeasepath");
             try {
                 if (p.equals(null)) {
                     p = "0";
@@ -56,7 +56,7 @@ public class Solr {
             query.addFacetField("tags");
             query.addFacetField("type");
             query.addFacetField("author");
-            query.addFacetField("yearmon");
+            query.addFacetField("date");
             query.addHighlightField("title,text,tags");
             if(null!=fq&&!fq.equals(""))
                 query.addFilterQuery(fq);
@@ -105,7 +105,7 @@ public class Solr {
                         main = highlightedList.get(0);
                     }
                 }
-                bi.url = rs.getFieldValue("category")+"/"+rs.getFieldValue("id");
+                bi.url = rs.getFieldValue("jeasepath")+"/"+rs.getFieldValue("jeaseid");
                 bi.snip = main;
                 bi.d= (Date) rs.getFieldValue("last_modified");
 

@@ -22,7 +22,7 @@
     if(null==p)p="0";
     if(null==sort)sort="0";
     if(null==page2)page2="/site/service/search.jsp";
-    List<jease.site.Solr.items> result = s.getresult(q, p, fq);
+    List<jease.site.Solr.items> result = s.getresult(q, p, fq,sort);
 %>
 <div class="row">
 

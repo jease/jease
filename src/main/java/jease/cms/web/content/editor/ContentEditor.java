@@ -186,13 +186,15 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			SolrInputDocument doc = new SolrInputDocument();
 			doc.addField("id", UUID.randomUUID().toString());
 			doc.addField("tags",  tagslist);
+			doc.addField("jeaseid",  id.getValue());
+			doc.addField("jeasepath",  getNode().getParent().getPath());
 			doc.addField("title", title.getValue());
 			doc.addField("author", getNode().getEditor().getName());
 			doc.addField("type", getNode().getType());
 			doc.addField("text", getNode().getFulltext().toString());
 			doc.addField("last_modified",new Date() );
-			doc.addField("yearmon", month_date.format(new Date()));
-			doc.addField("category",getNode().getParent().getPath() );
+			doc.addField("date", month_date.format(new Date()));
+			doc.addField("category",getNode().getParent().getId() );
 			client.add(doc);
 			client.commit();
 		}catch (Exception s){
