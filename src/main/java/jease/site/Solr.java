@@ -63,9 +63,9 @@ public class Solr {
             query.setHighlightSimplePost("</b>");
             query.setHighlightSimplePre("<b>");
             if(sort.equals("0"))
-                query.setSort("last_modified", SolrQuery.ORDER.asc);
-            if(sort.equals("1"))
                 query.setSort("last_modified", SolrQuery.ORDER.desc);
+            if(sort.equals("1"))
+                query.setSort("last_modified", SolrQuery.ORDER.asc);
             if(sort.equals("2"))
                 query.setSort("title", SolrQuery.ORDER.asc);
             query.set("defType", "edismax");

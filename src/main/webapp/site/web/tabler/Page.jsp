@@ -86,7 +86,6 @@
                             <div class="col-lg-3 ml-auto">
                                 <form action="<%=request.getContextPath()%>/" method="get" >
                                         <div class="form-group">
-                                            <label class="form-label">Search in all content on jease!</label>
                                             <div class="input-icon mb-3">
                                                 <input type="search" name="query" <% if (request.getParameter("query") != null) {%>value="<%= StringEscapeUtils.escapeHtml4(request.getParameter("query"))%>"<% } else { %>value="Enter your search..." onfocus="this.value = '';"<% } %>  class="form-control" tabindex="1" placeholder="Search for..."/>
                                                 <input type="hidden" name="page" value="/site/service/Search.jsp" />
