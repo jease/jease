@@ -37,9 +37,9 @@
 
         %>
 
-        <a href="#"><%=item.title%></a><br/>
+        <a href="<%=request.getContextPath()%>/<%=item.url%>"><%=item.title%></a><br/>
         <span ><%=item.snip%></span><br/>
-        <span ><%=item.d%></span><br/>
+        <span ><%=String.format("%tF", item.d)%></span><br/>
         <hr/>
         <%}%>
 

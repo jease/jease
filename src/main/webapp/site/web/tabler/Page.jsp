@@ -84,12 +84,14 @@
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col-lg-3 ml-auto">
-                                <form action="<%=request.getContextPath()%><%=root.getPath()%>" method="get" class="input-icon my-3 my-lg-0">
-                                    <input type="search" name="query" <% if (request.getParameter("query") != null) {%>value="<%= StringEscapeUtils.escapeHtml4(request.getParameter("query"))%>"<% } else { %>value="Enter your search..." onfocus="this.value = '';"<% } %>  class="form-control header-search" placeholder="Search&hellip;" tabindex="1">
-                                    <input type="hidden" name="page" value="/site/service/Search.jsp" />
-                                    <div class="input-icon-addon">
-                                        <i class="fe fe-search"></i>
-                                    </div>
+                                <form action="<%=request.getContextPath()%>/" method="get" >
+                                        <div class="form-group">
+                                            <label class="form-label">Search in all content on jease!</label>
+                                            <div class="input-icon mb-3">
+                                                <input type="search" name="query" <% if (request.getParameter("query") != null) {%>value="<%= StringEscapeUtils.escapeHtml4(request.getParameter("query"))%>"<% } else { %>value="Enter your search..." onfocus="this.value = '';"<% } %>  class="form-control" tabindex="1" placeholder="Search for..."/>
+                                                <input type="hidden" name="page" value="/site/service/Search.jsp" />
+                                            </div>
+                                        </div>
                                 </form>
                             </div>
                             <div class="col-lg order-lg-first">
@@ -106,14 +108,10 @@
                 </div>
                 <div class="my-3 my-md-5">
                     <div class="container">
-                        <div class="page-header">
-                            <h1 class="page-title">
-                                <p id="breadcrumb">
+                        <div class="">
                                     <% for (Content parent : Navigations.getBreadcrumb(root, content)) {%>
                                     &raquo; <a href="<%=request.getContextPath()%><%=parent.getPath()%>"><%=parent.getTitle()%></a>
                                     <% } %>
-                                </p>
-                            </h1>
                         </div>
                         <div class="row">
                             <div class="col-lg-3">

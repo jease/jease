@@ -37,7 +37,7 @@ public class Solr {
                 q = "*:*";
             }
             query.setQuery(q);
-            query.setFields("tags", "title", "author", "text", "last_modified", "type","category");
+            query.setFields("id","tags", "title", "author", "text", "last_modified", "type","category");
             try {
                 if (p.equals(null)) {
                     p = "0";
@@ -55,7 +55,7 @@ public class Solr {
             query.addFacetField("type");
             query.addFacetField("author");
             query.addHighlightField("title,text,tags");
-            if(!fq.equals(""))
+            if(null!=fq&&!fq.equals(""))
                 query.addFilterQuery(fq);
 //          query.setHighlightSimplePost("</b>");
 //          query.setHighlightSimplePre("<b>");
@@ -100,17 +100,14 @@ public class Solr {
                     if (highlightedList != null) {
                         title = highlightedList.get(0);
                     }
-                    highlightedList = highlightedFieldMap.get("tags");
-                    if (highlightedList != null) {
-                        tag = highlightedList.get(0);
-                    }
+
                     highlightedList = highlightedFieldMap.get("text");
                     if (highlightedList != null) {
                         main = highlightedList.get(0);
                     }
                 }
-                bi.url = rs.getFieldValue("id") + "";
-                bi.snip = rs.getFieldValue("author") + "";
+                bi.url = rs.getFieldValue("category")+"/"+rs.getFieldValue("id");
+                bi.snip = main;
                 bi.d= (Date) rs.getFieldValue("last_modified");
 
                 if (title.length() != 0) {
