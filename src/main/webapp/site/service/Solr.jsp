@@ -7,6 +7,7 @@
 <%@page import="org.apache.solr.common.SolrDocument"%>
 <%@page import="org.apache.solr.common.SolrDocumentList"%>
 <%@page import="java.util.Map"%>
+<style> em{ background-color: yellow; font-weight: bold; } </style>
 <%
     Solr s = new Solr();
     String q = "", p = "", page2 = "", fq = "", sort = "";

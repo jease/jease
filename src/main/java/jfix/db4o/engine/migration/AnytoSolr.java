@@ -1,4 +1,4 @@
-package jfix.db4o.engine.migration;
+    package jfix.db4o.engine.migration;
 import jease.cms.domain.Folder;
 import jfix.db4o.Database;
 import jease.cms.domain.Content;
@@ -53,7 +53,7 @@ public class AnytoSolr {
                 .filter(content ->  content.isVisible())
                 .toArray(Content[]::new)) {
                 System.out.println("item "+count++);
-                insertToSolr(c.getId(),c.getPath(),c.getTitle(),c.getEditor().getName(),c.getFulltext().toString(),c.getType(),c.getLastModified(),"","");
+                insertToSolr(c.getId(),c.getPath(),c.getTitle(),c.getEditor().getName(),c.getFulltext().toString(),c.getType(),c.getLastModified(),c.getParent().getId(),"");
                 if(c instanceof Folder )
                     recursiveloop(c);
         }

@@ -187,7 +187,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			doc.addField("id", UUID.randomUUID().toString());
 			doc.addField("tags",  tagslist);
 			doc.addField("jeaseid",  id.getValue());
-			doc.addField("jeasepath",  getNode().getParent().getPath());
+			doc.addField("jeasepath",  getNode().getPath());
 			doc.addField("title", title.getValue());
 			doc.addField("author", getNode().getEditor().getName());
 			doc.addField("type", getNode().getType());
