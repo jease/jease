@@ -167,7 +167,7 @@
                                     <% Content latestChange = Navigations.getLatestContribution(content);%>
                                     Last modified on <%=String.format("%tF", latestChange.getLastModified())%>
                                     <% if (latestChange.getEditor() != null) {%>
-                                    by <%=latestChange.getEditor().getName()%>
+                                    by <a href="http://jease.org/?query=&page=/site/service/Search.jsp&p=0&fq=author:<%=latestChange.getEditor().getName()%>&sort=0"><%=latestChange.getEditor().getName()%></a>
                                     <% }%>
                                 </p>
                             </div>

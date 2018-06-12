@@ -58,8 +58,11 @@ public class Solr {
             query.addFacetField("author");
             query.addFacetField("date");
             query.addHighlightField("title,text,tags");
-            if(null!=fq&&!fq.equals(""))
+            if(null!=fq&&!fq.equals("")){
+                fq=fq.replaceAll(":",":\"")+"\"";
                 query.addFilterQuery(fq);
+            }
+
             //query.setHighlightSimplePost("</em>");
             //query.setHighlightSimplePre("<em>");
             if(sort.equals("0"))
