@@ -49,7 +49,7 @@ public class Solr {
                 p = "0";
             }
             start = Integer.parseInt(p);
-            query.setStart(start);
+            query.setStart(start*pagesize);
             query.setHighlight(true);
             query.setFacet(true);
 
@@ -60,8 +60,8 @@ public class Solr {
             query.addHighlightField("title,text,tags");
             if(null!=fq&&!fq.equals(""))
                 query.addFilterQuery(fq);
-            query.setHighlightSimplePost("</b>");
-            query.setHighlightSimplePre("<b>");
+            //query.setHighlightSimplePost("</em>");
+            //query.setHighlightSimplePre("<em>");
             if(sort.equals("0"))
                 query.setSort("last_modified", SolrQuery.ORDER.desc);
             if(sort.equals("1"))
