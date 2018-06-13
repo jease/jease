@@ -77,6 +77,9 @@ Technologies
 * [ZK](https://zkoss.org/) ZK as component- & event-driven Ajax-Web-Framework.
 * [Solr](http://lucene.apache.org/solr/) Apache  Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene™. 
 
+For use solr in your environment please read this tutorial:
+https://github.com/jease/solr-core
+
 User Levels
 ------------
 * User Level = {View posts, Apply new Comment}
