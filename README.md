@@ -55,6 +55,11 @@ Jease eases the development of content- & database-driven web-applications with 
     [http://localhost:8080/](http://localhost:8080/)
 
 
+## 6) (Optional) Config Solr
+   
+   For use solr in your environment please read this tutorial: https://github.com/jease/solr-core
+
+
 
 About
 -----
@@ -76,6 +81,7 @@ Technologies
 * [Bootstrap](http://getbootstrap.com/)
 * [ZK](https://zkoss.org/) ZK as component- & event-driven Ajax-Web-Framework.
 * [Solr](http://lucene.apache.org/solr/) Apache  Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene™. 
+
 
 User Levels
 ------------
