@@ -96,7 +96,7 @@
                             }
                     %>
                     <div class="list-group-item list-group-item-action d-flex align-items-center ">
-                        <a href="<%=request.getContextPath()%>/?query=<%=q%>&page=<%=page2%>&p=<%=p%>&fq=<%=ffname%>:<%=facetLabel%>&sort=0" class="tag tag-blue">
+                        <a href="<%=request.getContextPath()%>/?query=<%=q%>&page=<%=page2%>&p=<%=p%>&fq=<%=fq%><%=ffname%>:<%=facetLabel%>&sort=0" class="tag tag-blue">
                             <%=facetLabel%>(<%=facetCount%>)
                         </a></div>
                         <%}

@@ -59,8 +59,10 @@ public class Solr {
             query.addFacetField("date");
             query.addHighlightField("title,text,tags");
             if(null!=fq&&!fq.equals("")){
-                fq=fq.replaceAll(":",":\"")+"\"";
-                query.addFilterQuery(fq);
+                for(String fq1:fq.split(",")) {
+                    fq1 = fq1.replaceAll(":", ":\"") + "\"";
+                    query.addFilterQuery(fq1);
+                }
             }
 
             //query.setHighlightSimplePost("</em>");
