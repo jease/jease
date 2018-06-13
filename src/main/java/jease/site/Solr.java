@@ -60,6 +60,7 @@ public class Solr {
             query.addHighlightField("title,text,tags");
             if(null!=fq&&!fq.equals("")){
                 for(String fq1:fq.split(",")) {
+                    if(fq1.length()==0)continue;
                     fq1 = fq1.replaceAll(":", ":\"") + "\"";
                     query.addFilterQuery(fq1);
                 }
