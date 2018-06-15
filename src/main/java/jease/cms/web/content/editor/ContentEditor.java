@@ -201,6 +201,9 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			s.printStackTrace();
 		}
 	}
+	public boolean checkDuplication(){
+		return false;
+	}
 
 	protected void saveLastModification() {
 		User lastEditor = getNode().getEditor();
