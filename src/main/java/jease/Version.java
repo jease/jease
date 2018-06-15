@@ -19,7 +19,7 @@ package jease;
 public class Version {
 
 	private static int MAJOR = 3;
-	private static int MINOR = 2;
+	private static int MINOR = 3;
 	private static int REVISION = 0;
 
 	public static String getName() {
