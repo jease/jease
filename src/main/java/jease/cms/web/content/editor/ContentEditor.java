@@ -175,8 +175,9 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	public void insertToSolr(){
-		if(closeCheckEnabled){
+		if(checkDuplication()){
 			updateToSolr();
+			return;
 		}
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 		System.out.println(solrurl);
@@ -209,7 +210,16 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	public void updateToSolr(){
+		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 
+		HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
+		try{
+		SolrInputDocument document = new SolrInputDocument();
+		document.addField("", null);
+		solr.commit();}
+		catch(Exception s){
+			s.printStackTrace();
+		}
 	}
 	protected void saveLastModification() {
 		User lastEditor = getNode().getEditor();
