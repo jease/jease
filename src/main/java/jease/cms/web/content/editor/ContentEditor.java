@@ -175,7 +175,9 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	public void insertToSolr(){
-
+		if(closeCheckEnabled){
+			updateToSolr();
+		}
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 		System.out.println(solrurl);
 		if(solrurl.equals(""))return;
@@ -202,9 +204,13 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		}
 	}
 	public boolean checkDuplication(){
+		//if(getNode().getPath()+id.getValue())
 		return false;
 	}
 
+	public void updateToSolr(){
+
+	}
 	protected void saveLastModification() {
 		User lastEditor = getNode().getEditor();
 		User currentUser = getSessionUser();
