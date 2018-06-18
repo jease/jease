@@ -22,7 +22,9 @@ import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
@@ -180,7 +182,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			return;
 		}
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
-		System.out.println(solrurl);
+
 		if(solrurl.equals(""))return;
 		SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
 		try {
@@ -205,7 +207,17 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		}
 	}
 	public boolean checkDuplication(){
-		//if(getNode().getPath()+id.getValue())
+		try{
+			String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
+
+			SolrQuery query = new SolrQuery();
+			query.setQuery("id:\""+getNode().getPath()+id.getValue()+"\"");
+			SolrDocumentList results = client.query(query).getResults();
+			if(results.size()>0)return true;
+		}catch(Exception s){
+			s.printStackTrace();
+		}
 		return false;
 	}
 
