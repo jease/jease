@@ -95,7 +95,7 @@ Running
 Make sure [Maven](http://maven.apache.org/) >= 2.2.1 is installed on your system. Go into the project dir and type `mvn clean package`, then deploy war file generated in target folder on a java webserver like tomcat and then point your browser to `http://localhost:8080`.
 
 
-##Contribution
+## Contribution
 Jease User Group at GoogleGroup
 https://groups.google.com/forum/#!forum/jease
 
