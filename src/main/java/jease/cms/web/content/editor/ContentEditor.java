@@ -229,12 +229,13 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		return "";
 	}
 
-	public void updateToSolr(String id) {
+	public void updateToSolr(String docid) {
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 
 		HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
 		try {
 			SolrInputDocument document = new SolrInputDocument();
+			document.addField("id",docid);
 			Map<String, Object> fieldModifier = new HashMap<>(1);
 			fieldModifier.put("set", this.getNode().getFulltext());
 			document.addField("text", fieldModifier);
@@ -254,6 +255,13 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			Map<String, Object> fieldModifier4 = new HashMap<>(1);
 			fieldModifier4.put("set", month_date.format(new Date()));
 			document.addField("date", fieldModifier4);
+
+			Map<String, Object> fieldModifier5 = new HashMap<>(1);
+			fieldModifier5.put("set", id.getValue());
+			document.addField("jeaseid", fieldModifier5);
+
+
+
 			solr.add(document);
 			solr.commit();
 		} catch (Exception s) {
