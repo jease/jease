@@ -16,7 +16,6 @@
  */
 package jease.cms.web.content.editor;
 
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -67,6 +66,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	protected Button viewContent = new Button(I18N.get("View"),
 			Images.InternetWebBrowser);
 	protected boolean closeCheckEnabled;
+	protected SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
 
 	public ContentEditor() {
 		if (getSessionUser().isAdministrator()) {
@@ -95,7 +95,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	@Override
-    public void refresh() {
+	public void refresh() {
 		super.refresh();
 		notifyAboutMaintenance();
 	}
@@ -109,7 +109,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	@Override
-    protected void doInit() throws Exception {
+	protected void doInit() throws Exception {
 		if (Revisions.isConfigured()) {
 			add(I18N.get("Revision"), revisionSelection);
 		}
@@ -121,7 +121,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	@Override
-    protected void doLoad() throws Exception {
+	protected void doLoad() throws Exception {
 		super.doLoad();
 		viewContent.setVisible(Nodes.isRooted(getNode()));
 		lastNodeModification = getNode().getLastModified();
@@ -170,69 +170,97 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	@Override
-    protected void doSave() throws Exception {
+	protected void doSave() throws Exception {
 		saveEditorToObject();
 		insertToSolr();
 		persist();
 	}
 
-	public void insertToSolr(){
-		if(checkDuplication()){
-			updateToSolr();
+	public void insertToSolr() {
+		String oid = checkDuplication();
+		if (oid.length() > 0) {
+			updateToSolr(oid);
 			return;
 		}
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 
-		if(solrurl.equals(""))return;
-		SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+		if (solrurl.equals("")) {
+			return;
+		}
+
 		try {
 			ArrayList<String> tagslist = new ArrayList<String>(Arrays.asList(tags.getValue().split(",")));
 			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
 			SolrInputDocument doc = new SolrInputDocument();
 			doc.addField("id", UUID.randomUUID().toString());
-			doc.addField("tags",  tagslist);
-			doc.addField("jeaseid",  id.getValue());
-			doc.addField("jeasepath",  getNode().getPath());
+			doc.addField("tags", tagslist);
+			doc.addField("jeaseid", id.getValue());
+			doc.addField("jeasepath", getNode().getPath());
 			doc.addField("title", title.getValue());
 			doc.addField("author", getNode().getEditor().getName());
 			doc.addField("type", getNode().getType());
 			doc.addField("text", getNode().getFulltext().toString());
-			doc.addField("last_modified",new Date() );
+			doc.addField("last_modified", new Date());
 			doc.addField("date", month_date.format(new Date()));
-			doc.addField("category",getNode().getParent().getId() );
+			doc.addField("category", getNode().getParent().getId());
 			client.add(doc);
 			client.commit();
-		}catch (Exception s){
+		} catch (Exception s) {
 			s.printStackTrace();
 		}
 	}
-	public boolean checkDuplication(){
-		try{
+
+	public String checkDuplication() {
+		try {
 			String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
 
 			SolrQuery query = new SolrQuery();
-			query.setQuery("id:\""+getNode().getPath()+id.getValue()+"\"");
+			query.setQuery("*:*");
+			query.setFilterQueries("jeaseid:\"" + id.getValue() + "\" ");
+			query.setFilterQueries("jeasepath:\"" + getNode().getPath() + "\"");
 			SolrDocumentList results = client.query(query).getResults();
-			if(results.size()>0)return true;
-		}catch(Exception s){
+			if (results.size() > 0) {
+				return results.get(0).getFieldValue("id").toString();
+			}
+		} catch (Exception s) {
 			s.printStackTrace();
 		}
-		return false;
+		return "";
 	}
 
-	public void updateToSolr(){
+	public void updateToSolr(String id) {
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 
 		HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
-		try{
-		SolrInputDocument document = new SolrInputDocument();
-		document.addField("", null);
-		solr.commit();}
-		catch(Exception s){
+		try {
+			SolrInputDocument document = new SolrInputDocument();
+			Map<String, Object> fieldModifier = new HashMap<>(1);
+			fieldModifier.put("set", this.getNode().getFulltext());
+			document.addField("text", fieldModifier);
+
+			Map<String, Object> fieldModifier1 = new HashMap<>(1);
+			fieldModifier1.put("set", this.getNode().getTitle());
+			document.addField("title", fieldModifier1);
+
+			Map<String, Object> fieldModifier2 = new HashMap<>(1);
+			fieldModifier2.put("set", this.getNode().getTages());
+			document.addField("tags", fieldModifier2);
+
+			Map<String, Object> fieldModifier3 = new HashMap<>(1);
+			fieldModifier3.put("set", new Date());
+			document.addField("last_modified", fieldModifier3);
+
+			Map<String, Object> fieldModifier4 = new HashMap<>(1);
+			fieldModifier4.put("set", month_date.format(new Date()));
+			document.addField("date", fieldModifier4);
+			solr.add(document);
+			solr.commit();
+		} catch (Exception s) {
 			s.printStackTrace();
 		}
 	}
+
 	protected void saveLastModification() {
 		User lastEditor = getNode().getEditor();
 		User currentUser = getSessionUser();
@@ -251,7 +279,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	@Override
-    protected void doValidate() throws Exception {
+	protected void doValidate() throws Exception {
 		if (StringUtils.isEmpty(id.getValue()) && id.isVisible()
 				&& !id.isDisabled()) {
 			id.setValue(title.getValue());
@@ -263,23 +291,23 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 						I18N.get("Title_is_required"));
 			}
 			validate(lastNodeModification != null
-					&& lastNodeModification != getNode().getLastModified(),
+							&& lastNodeModification != getNode().getLastModified(),
 					I18N.get("Content_is_stale"));
 			validate();
 		}
 	}
 
 	@Override
-    public void doCopy() throws Exception {
+	public void doCopy() throws Exception {
 		super.doCopy();
 		if (revisionSelection.getParent() != null) {
-			revisionSelection.setValues(new Object[] {});
+			revisionSelection.setValues(new Object[]{});
 		}
 		viewContent.setVisible(false);
 	}
 
 	@Override
-    public void delete() {
+	public void delete() {
 		closeCheckEnabled = false;
 		getNode().setEditor(getSessionUser());
 		getNode().setLastModified(new Date());
@@ -291,7 +319,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	@Override
-    public void hideButtons() {
+	public void hideButtons() {
 		super.hideButtons();
 		viewContent.setVisible(false);
 		editProperties.setVisible(false);
