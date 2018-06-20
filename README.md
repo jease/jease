@@ -103,11 +103,11 @@ RoadMap
 -------
 * Add configuration properties file
 * Change admin UI framework from zk to jsf based ui
-* Update lucene and use solr based search
+* Update lucene and use solr based search (Completed [#141](https://github.com/jease/jease/issues/141))
 * Add Shopping service and shopping cart
 * Add Email support
-* Add seo Setting
-* Add new responsive themes
+* Add seo Setting (Completed [#140](https://github.com/jease/jease/issues/140) )
+* Add new responsive themes (Completed [#133](https://github.com/jease/jease/issues/133))
 
 License
 -------
