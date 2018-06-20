@@ -40,6 +40,7 @@ public class Solr {
                 q = "*:*";
             }
             query.setQuery(q);
+            query.setRows(pagesize);
             query.setFields("id","tags", "title", "author", "text", "last_modified", "type","category","jeaseid","jeasepath");
             try {
                 if (p.equals(null)) {
