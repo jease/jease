@@ -42,6 +42,7 @@ public class Solr {
             query.setQuery(q);
             query.setRows(pagesize);
             query.setFields("id","tags", "title", "author", "text", "last_modified", "type","category","jeaseid","jeasepath");
+            query.setMoreLikeThisQF("title^20 tags^10 text^9");
             try {
                 if (p.equals(null)) {
                     p = "0";
