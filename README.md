@@ -96,7 +96,7 @@ Make sure [Maven](http://maven.apache.org/) >= 2.2.1 is installed on your system
 
 
 ## Contribution
-Jease User Group at GoogleGroup
+Please Join us Jease User Group at GoogleGroup
 https://groups.google.com/forum/#!forum/jease
 
 RoadMap
