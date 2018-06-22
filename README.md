@@ -109,6 +109,15 @@ RoadMap
 * Add seo Setting (Completed [#140](https://github.com/jease/jease/issues/140) )
 * Add new responsive themes (Completed [#133](https://github.com/jease/jease/issues/133))
 
+
+## Twitter
+@jease18
+
+## Facebook
+[Jease on facebook](https://www.facebook.com/java.ease.7)
+
+
+
 License
 -------
 
