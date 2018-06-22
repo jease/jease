@@ -177,17 +177,18 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	public void insertToSolr() {
-		String oid = checkDuplication();
-		if (oid.length() > 0) {
-			updateToSolr(oid);
-			return;
-		}
+
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 
 		if (solrurl.equals("")) {
 			return;
 		}
 
+		String oid = checkDuplication();
+		if (oid.length() > 0) {
+			updateToSolr(oid);
+			return;
+		}
 		try {
 			ArrayList<String> tagslist = new ArrayList<String>(Arrays.asList(tags.getValue().split(",")));
 			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
@@ -229,6 +230,17 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		return "";
 	}
 
+	public void deleteToSolr(String docid) {
+		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+
+		HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
+		try {
+			solr.deleteById(docid);
+			solr.commit();
+		}catch(Exception d){
+			d.printStackTrace();
+		}
+	}
 	public void updateToSolr(String docid) {
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
 
@@ -319,6 +331,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		closeCheckEnabled = false;
 		getNode().setEditor(getSessionUser());
 		getNode().setLastModified(new Date());
+		deleteToSolr(checkDuplication());
 		Contents.delete(getNode());
 	}
 
