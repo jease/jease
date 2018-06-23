@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/jease/jease.svg?branch=master)](https://travis-ci.org/jease/jease)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![Coverage Status](https://coveralls.io/repos/github/jease/jease/badge.svg)](https://coveralls.io/github/jease/jease)
+
 
 Jease eases the development of content- & database-driven web-applications with Java.
 
@@ -108,6 +108,15 @@ RoadMap
 * Add Email support
 * Add seo Setting (Completed [#140](https://github.com/jease/jease/issues/140) )
 * Add new responsive themes (Completed [#133](https://github.com/jease/jease/issues/133))
+
+
+## Twitter
+@jease18
+
+## Facebook
+[Jease on facebook](https://www.facebook.com/java.ease.7)
+
+
 
 License
 -------
