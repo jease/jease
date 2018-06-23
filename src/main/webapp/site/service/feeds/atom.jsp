@@ -5,9 +5,9 @@
 <%@page import="java.text.DateFormat"%>
 <%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
 <%@page import="jfix.servlet.Servlets"%>
-<%@page import="jease.cms.domain.Content"%>
-<%@page import="jease.cms.domain.News"%>
-<%@page import="jease.site.Navigations"%>
+<%@page import="org.jease.cms.domain.Content"%>
+<%@page import="org.jease.cms.domain.News"%>
+<%@page import="org.jease.site.Navigations"%>
 <%
 	String contextURL = Servlets.getContextURL(request);
 	String zone = new SimpleDateFormat("Z").format(new Date());

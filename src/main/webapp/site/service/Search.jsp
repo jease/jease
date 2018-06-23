@@ -1,5 +1,5 @@
 <%
-String solrurl=jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL,"");
+String solrurl=org.jease.Registry.getParameter(org.jease.Names.JEASE_SOLR_URL,"");
 if(solrurl.equals("")){//use jease result
 %>
 <%@page import="java.util.ArrayList"%>
@@ -9,12 +9,12 @@ if(solrurl.equals("")){//use jease result
 <%@page import="org.apache.commons.lang3.ArrayUtils"%>
 <%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
 <%@page import="jfix.util.I18N"%>
-<%@page import="jease.Names"%>
-<%@page import="jease.cms.domain.Access"%>
-<%@page import="jease.cms.domain.Content"%>
-<%@page import="jease.cms.domain.User"%>
-<%@page import="jease.site.Authorizations"%>
-<%@page import="jease.site.Fulltexts"%>
+<%@page import="org.jease.Names"%>
+<%@page import="org.jease.cms.domain.Access"%>
+<%@page import="org.jease.cms.domain.Content"%>
+<%@page import="org.jease.cms.domain.User"%>
+<%@page import="org.jease.site.Authorizations"%>
+<%@page import="org.jease.site.Fulltexts"%>
 <h1><%=I18N.get("Search_results_for")%> &quot;<%=StringEscapeUtils.escapeHtml4(request.getParameter("query"))%>&quot;</h1>
 <%
 	final Collection<Access> authorizations = (Collection<Access>) session.getAttribute(Names.JEASE_SITE_AUTHORIZATIONS);

@@ -1,7 +1,7 @@
-<%@page import="jease.Names"%>
-<%@page import="jease.Registry"%>
-<%@page import="jease.cms.domain.Wiki"%>
-<%@page import="jease.site.Markups"%>
+<%@page import="org.jease.Names"%>
+<%@page import="org.jease.Registry"%>
+<%@page import="org.jease.cms.domain.Wiki"%>
+<%@page import="org.jease.site.Markups"%>
 <%
 	Wiki wiki = (Wiki) request.getAttribute("Node");
 	if (session.getAttribute(wiki.getPath()) != null) {

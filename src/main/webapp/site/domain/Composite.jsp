@@ -1,7 +1,7 @@
-<%@page import="jease.cms.domain.Content"%>
-<%@page import="jease.cms.domain.Composite"%>
-<%@page import="jease.site.Templates"%>
-<%@page import="jease.site.Navigations"%>
+<%@page import="org.jease.cms.domain.Content"%>
+<%@page import="org.jease.cms.domain.Composite"%>
+<%@page import="org.jease.site.Templates"%>
+<%@page import="org.jease.site.Navigations"%>
 <%
 	Composite composite = (Composite) request.getAttribute("Node");
 %>

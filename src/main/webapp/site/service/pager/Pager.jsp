@@ -1,6 +1,6 @@
 <%@page import="org.apache.commons.lang3.math.NumberUtils"%>
 <%@page import="java.util.List"%>
-<%@page import="jease.cms.domain.Content"%>
+<%@page import="org.jease.cms.domain.Content"%>
 <%
 	String pagerScope = (String) request.getAttribute("Pager.Scope");
 	String pagerRenderer = (String) request.getAttribute("Pager.Renderer");

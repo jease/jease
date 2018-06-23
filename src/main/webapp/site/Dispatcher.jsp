@@ -2,13 +2,13 @@
 <%@page import="java.util.HashSet"%>
 <%@page import="org.apache.commons.lang3.ArrayUtils"%>
 <%@page import="jfix.servlet.Cookies"%>
-<%@page import="jease.Registry"%>
-<%@page import="jease.Names"%>
-<%@page import="jease.cms.domain.Access"%>
-<%@page import="jease.cms.domain.Content"%>
-<%@page import="jease.cms.domain.User"%>
-<%@page import="jease.site.Authorizations"%>
-<%@page import="jease.site.Templates"%>
+<%@page import="org.jease.Registry"%>
+<%@page import="org.jease.Names"%>
+<%@page import="org.jease.cms.domain.Access"%>
+<%@page import="org.jease.cms.domain.Content"%>
+<%@page import="org.jease.cms.domain.User"%>
+<%@page import="org.jease.site.Authorizations"%>
+<%@page import="org.jease.site.Templates"%>
 <%
 	// The current node is stored in request-attribute by JeaseServletFilter.
 	Content node = (Content) request.getAttribute("Node");

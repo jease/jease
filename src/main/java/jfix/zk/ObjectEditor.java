@@ -22,8 +22,8 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Hbox;
 
-import jease.Names;
-import jease.cmf.web.JeaseSession;
+import org.jease.Names;
+import org.jease.cmf.web.JeaseSession;
 import jfix.util.I18N;
 
 public abstract class ObjectEditor<E> extends Formbox implements Objectable<E>,

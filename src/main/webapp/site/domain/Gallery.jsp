@@ -1,5 +1,5 @@
-<%@page import="jease.cms.domain.Image"%>
-<%@page import="jease.cms.domain.Gallery"%>
+<%@page import="org.jease.cms.domain.Image"%>
+<%@page import="org.jease.cms.domain.Gallery"%>
 <%
 	Gallery gallery = (Gallery) request.getAttribute("Node");
 	if (session.getAttribute(gallery.getPath()) != null) {
