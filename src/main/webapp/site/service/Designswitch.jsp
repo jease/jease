@@ -1,4 +1,4 @@
-<% if (!org.jease.Registry.getParameter(org.jease.Names.JEASE_SITE_DESIGN,"").startsWith("/")) { %>
+<% if (!jease.Registry.getParameter(jease.Names.JEASE_SITE_DESIGN,"").startsWith("/")) { %>
 <div class="btn-list text-center">
 Design
 <% for (String design : new String[] { "bright", "cool", "loop", "photo", "robot", "simple" ,"tabler"}) { %>

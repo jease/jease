@@ -1,6 +1,6 @@
 <%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
 <%@page import="org.apache.commons.io.FileUtils"%>
-<%@page import="org.jease.cms.domain.Script"%>
+<%@page import="jease.cms.domain.Script"%>
 <%!
 	final String SCRIPT_DEFAULT_EXTENSION = ".jsp";
 	final String SCRIPT_WEBINF_FOLDER = "/WEB-INF/tmp/";

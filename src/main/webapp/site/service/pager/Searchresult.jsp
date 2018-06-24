@@ -1,6 +1,6 @@
 <%@page import="org.apache.commons.lang3.ArrayUtils"%>
-<%@page import="org.jease.cms.domain.Content"%>
-<%@page import="org.jease.site.Navigations"%>
+<%@page import="jease.cms.domain.Content"%>
+<%@page import="jease.site.Navigations"%>
 <%
 	Content content = (Content) request.getAttribute("Node"); 
 	Content root = (Content) request.getAttribute("Root");

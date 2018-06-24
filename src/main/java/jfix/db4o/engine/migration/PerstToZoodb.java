@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.apache.commons.io.FileUtils;
 
-import org.jease.cms.domain.property.Property;
+import jease.cms.domain.property.Property;
 import jfix.db4o.ObjectDatabase;
 import jfix.db4o.Persistent;
 import jfix.db4o.engine.PersistenceEngine;

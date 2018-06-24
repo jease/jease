@@ -1,6 +1,6 @@
-<%@page import="org.jease.cms.domain.Content"%>
+<%@page import="jease.cms.domain.Content"%>
 <%
-	String errorPage = org.jease.Registry.getParameter(org.jease.Names.JEASE_SITE_ERROR);
+	String errorPage = jease.Registry.getParameter(jease.Names.JEASE_SITE_ERROR);
 	if (errorPage != null) {
 		if (errorPage.startsWith("/")) {
 			pageContext.forward(errorPage);

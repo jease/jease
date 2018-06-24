@@ -1,4 +1,4 @@
-<%@page import="org.jease.site.Solr"%>
+<%@page import="jease.site.Solr"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
 <%@page import="java.util.ArrayList"%>
@@ -31,7 +31,7 @@
     if (null == page2) {
         page2 = "/site/service/search.jsp";
     }
-    List<org.jease.site.Solr.items> result = s.getresult(q, p, fq, sort);
+    List<jease.site.Solr.items> result = s.getresult(q, p, fq, sort);
 %>
 <div class="row">
     <div class="col-md-8">
@@ -45,7 +45,7 @@
             </div>
         </form>
         <%
-            for (org.jease.site.Solr.items item : result) {
+            for (jease.site.Solr.items item : result) {
                 String url = item.url;
                 if (null != url && url.startsWith("/")) {
                     url = url.substring(1);

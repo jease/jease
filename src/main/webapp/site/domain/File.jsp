@@ -1,5 +1,5 @@
-<%@page import="org.jease.cms.domain.File"%>
-<%@page import="org.jease.site.Streams"%>
+<%@page import="jease.cms.domain.File"%>
+<%@page import="jease.site.Streams"%>
 <%
 	File file = (File) request.getAttribute("Node");
 	if (session.getAttribute(file.getPath()) != null) {

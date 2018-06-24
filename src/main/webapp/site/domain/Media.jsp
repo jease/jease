@@ -1,7 +1,7 @@
 <%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="jfix.util.Images"%>
-<%@page import="org.jease.cms.domain.Media"%>
-<%@page import="org.jease.site.Streams"%>
+<%@page import="jease.cms.domain.Media"%>
+<%@page import="jease.site.Streams"%>
 <%
 	Media media = (Media) request.getAttribute("Node");
 	String mediaPath = media.getPath();

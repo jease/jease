@@ -5,12 +5,12 @@
 <%@page import="jfix.util.I18N"%>
 <%@page import="jfix.util.Regexps"%>
 <%@page import="jfix.util.Urls" %>
-<%@page import="org.jease.cms.domain.User"%>
-<%@page import="org.jease.cms.domain.Discussion"%>
-<%@page import="org.jease.site.Templates"%>
-<%@page import="org.jease.site.Discussions"%>
-<%@page import="org.jease.Registry"%>
-<%@page import="org.jease.Names"%>
+<%@page import="jease.cms.domain.User"%>
+<%@page import="jease.cms.domain.Discussion"%>
+<%@page import="jease.site.Templates"%>
+<%@page import="jease.site.Discussions"%>
+<%@page import="jease.Registry"%>
+<%@page import="jease.Names"%>
 <%!
 	final String JEASE_DISCUSSION_RECURSION = "Jease.Discussion.Recursion";
 %>

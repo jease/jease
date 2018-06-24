@@ -1,4 +1,4 @@
-<%@page import="org.jease.cms.domain.Text"%>
+<%@page import="jease.cms.domain.Text"%>
 <%
 	Text text = (Text) request.getAttribute("Node");
 	if (session.getAttribute(text.getPath()) != null) {

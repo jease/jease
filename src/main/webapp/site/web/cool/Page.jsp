@@ -2,11 +2,11 @@
 <%@page import="org.apache.commons.lang3.ArrayUtils"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
-<%@page import="org.jease.cms.domain.Content"%>
-<%@page import="org.jease.cms.domain.News"%>
-<%@page import="org.jease.cms.domain.Topic"%>
-<%@page import="org.jease.cms.domain.Folder"%>
-<%@page import="org.jease.site.Navigations"%>
+<%@page import="jease.cms.domain.Content"%>
+<%@page import="jease.cms.domain.News"%>
+<%@page import="jease.cms.domain.Topic"%>
+<%@page import="jease.cms.domain.Folder"%>
+<%@page import="jease.site.Navigations"%>
 <%
 	Content content = (Content) request.getAttribute("Node"); 
 	Content root = (Content) request.getAttribute("Root");

@@ -1,8 +1,8 @@
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashSet"%>
-<%@page import="org.jease.cms.domain.Content"%>
-<%@page import="org.jease.cms.domain.Reference"%>
-<%@page import="org.jease.site.Templates"%>
+<%@page import="jease.cms.domain.Content"%>
+<%@page import="jease.cms.domain.Reference"%>
+<%@page import="jease.site.Templates"%>
 <%!
 	final String JEASE_REFERENCE_RECURSION = "Jease.Reference.Recursion"; 
 %>

@@ -1,8 +1,8 @@
     package jfix.db4o.engine.migration;
-import org.jease.cms.domain.Folder;
+import jease.cms.domain.Folder;
 import jfix.db4o.Database;
-import org.jease.cms.domain.Content;
-import org.jease.cmf.service.Nodes;
+import jease.cms.domain.Content;
+import jease.cmf.service.Nodes;
 import java.util.*;
 import java.lang.Exception;
 import org.apache.solr.client.solrj.SolrClient;

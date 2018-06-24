@@ -1,4 +1,4 @@
-<%@page import="org.jease.cms.domain.Topic"%>
+<%@page import="jease.cms.domain.Topic"%>
 <%
 	Topic topic = (Topic) request.getAttribute("Node");
 	if (session.getAttribute(topic.getPath()) != null) {

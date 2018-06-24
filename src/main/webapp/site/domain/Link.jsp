@@ -1,4 +1,4 @@
-<%@page import="org.jease.cms.domain.Link"%>
+<%@page import="jease.cms.domain.Link"%>
 <%
 	Link link = (Link) request.getAttribute("Node");
 	if (session.getAttribute(link.getPath()) != null) {

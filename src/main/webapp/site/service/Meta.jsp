@@ -13,7 +13,7 @@
 <meta name="HandheldFriendly" content="True">
 <meta name="MobileOptimized" content="320">
 <%
-String meta=org.jease.Registry.getParameter(org.jease.Names.JEASE_SITE_META,"description \nauthor \nkeywords ");
+String meta=jease.Registry.getParameter(jease.Names.JEASE_SITE_META,"description \nauthor \nkeywords ");
 Properties properties = new Properties();
 properties.load(new StringReader(meta));
 Enumeration e=properties.propertyNames();

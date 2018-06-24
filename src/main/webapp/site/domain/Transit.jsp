@@ -1,6 +1,6 @@
 <%@page import="java.io.File"%>
-<%@page import="org.jease.cms.domain.Transit"%>
-<%@page import="org.jease.site.Streams"%>
+<%@page import="jease.cms.domain.Transit"%>
+<%@page import="jease.site.Streams"%>
 <%
 	Transit transit = (Transit) request.getAttribute("Node");
 	String contextURI = new File(pageContext.getServletContext().getRealPath("/")).toURI().toString();

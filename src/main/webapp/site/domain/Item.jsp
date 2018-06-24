@@ -1,10 +1,10 @@
 <%@page import="jfix.util.I18N"%>
 <%@page import="jfix.util.Images"%>
-<%@page import="org.jease.cms.domain.Item"%>
-<%@page import="org.jease.cms.domain.property.Property"%>
-<%@page import="org.jease.cms.domain.property.HtmlProperty"%>
-<%@page import="org.jease.cms.domain.property.FileProperty"%>
-<%@page import="org.jease.site.Streams"%>
+<%@page import="jease.cms.domain.Item"%>
+<%@page import="jease.cms.domain.property.Property"%>
+<%@page import="jease.cms.domain.property.HtmlProperty"%>
+<%@page import="jease.cms.domain.property.FileProperty"%>
+<%@page import="jease.site.Streams"%>
 <%
 	Item item = (Item) request.getAttribute("Node");
 	if (session.getAttribute(item.getPath()) != null) {

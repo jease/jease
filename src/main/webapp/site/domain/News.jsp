@@ -1,5 +1,5 @@
 <%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="org.jease.cms.domain.News"%>
+<%@page import="jease.cms.domain.News"%>
 <%
 	News news = (News) request.getAttribute("Node");
 	if (session.getAttribute(news.getPath()) != null) {
