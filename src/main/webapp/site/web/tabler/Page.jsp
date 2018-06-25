@@ -23,6 +23,7 @@
     <head>
         <%@include file="/site/service/Meta.jsp" %>
         <link rel="alternate" href="http://jease.org" hreflang="en-us" />
+        <meta name="wot-verification" content="d7294c35a31e77a1c6fe"/>
         <link rel="icon" href="<%=request.getContextPath()%>/site/web/tabler/assets/favicon.ico" type="image/x-icon"/>
         <link rel="shortcut icon" type="image/x-icon" href="<%=request.getContextPath()%>/site/web/tabler/assets/favicon.ico" />
         <title><%=Navigations.getPageTitle(content)%></title>
