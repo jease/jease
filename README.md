@@ -7,6 +7,8 @@
 
 Jease eases the development of content- & database-driven web-applications with Java.
 
+New branch of Jesae with Relational Database released with name [JeasePlus](https://github.com/jease/jeasePlus)
+
 [Home Page](http://jease.org)
 
 [Demo](http://demo.jease.org)
