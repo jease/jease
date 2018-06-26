@@ -2,7 +2,7 @@
 ===========================
 
 [![Build Status](https://travis-ci.org/jease/jease.svg?branch=master)](https://travis-ci.org/jease/jease)
-[![License](https://img.shields.io/badge/License-GPL-3-blue.svg)](https://opensource.org/licenses/GPL-3)
+ [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
 Jease eases the development of content- & database-driven web-applications with Java.
