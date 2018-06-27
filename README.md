@@ -85,12 +85,6 @@ Technologies
 * [Solr](http://lucene.apache.org/solr/) Apache  Solr is the popular, blazing-fast, open source enterprise search platform built on Apache Lucene™. 
 
 
-User Levels
-------------
-* User Level = {View posts, Apply new Comment}
-* Editor Level = {Add new Post,Edit posts,Delete posts}
-* Admin Level = {Manage Users, Posts, Comments, Files, Categories}
-
 Running
 -------
 
