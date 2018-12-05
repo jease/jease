@@ -36,7 +36,7 @@ public class CodeMirror extends Textbox {
     public static final String TEXT_PLAIN = "text/plain";
 
 	public static final String TEXT_HTML = "text/html";
-
+	
 	public static final String JAVA = "text/x-java";
 
 	public static final String JAVASCRIPT = "text/javascript";
@@ -76,14 +76,14 @@ public class CodeMirror extends Textbox {
 	/**
 	 * Based on codemirror\mode\meta.js
 	 */
-	private static final Map<String, Set<String>> modeExtensions = new HashMap<>();
+	private static final Map<String, Set<String>> modeExtensions = new HashMap<String, Set<String>>();
 
 	private String _mode = TEXT_HTML; // as in CodeMirrorWidget.js
 
 	private boolean _lineNumbers = false; // as in CodeMirrorWidget.js
 
 	static {
-	    Set<String> clikeExts = new HashSet<>();
+	    Set<String> clikeExts = new HashSet<String>();
 	    clikeExts.addAll(Arrays.asList(
 	            /* C           */  "c", "h",
 	            /* C++         */  "cpp", "c++", "cc", "cxx", "hpp", "h++", "hh", "hxx",
@@ -97,7 +97,7 @@ public class CodeMirror extends Textbox {
 	    modeExtensions.put("clike", clikeExts);
 
 
-	    Set<String> cssExts = new HashSet<>();
+	    Set<String> cssExts = new HashSet<String>();
 	    cssExts.addAll(Arrays.asList(
         	    /* Closure Stylesheets (GSS) */  "gss",
         	    /* CSS                       */  "css",
@@ -106,7 +106,7 @@ public class CodeMirror extends Textbox {
         ));
 	    modeExtensions.put("css", cssExts);
 
-	    Set<String> jsExts = new HashSet<>();
+	    Set<String> jsExts = new HashSet<String>();
 	    jsExts.addAll(Arrays.asList(
 	            /* JavaScript */  "js",
 	            /* JSON       */  "json", "map",
@@ -115,24 +115,24 @@ public class CodeMirror extends Textbox {
 	    ));
 	    modeExtensions.put("javascript", jsExts);
 
-	    Set<String> xmlExts = new HashSet<>();
+	    Set<String> xmlExts = new HashSet<String>();
 	    xmlExts.addAll(Arrays.asList(
 	            /* XML */  "xml", "xsl", "xsd", "svg"
 	    ));
 	    modeExtensions.put("xml", xmlExts);
 
 
-	    Set<String> htmlExts = new HashSet<>();
+	    Set<String> htmlExts = new HashSet<String>();
         htmlExts.addAll(Arrays.asList(
                 /* HTML */  "html", "htm"
         ));
         modeExtensions.put("htmlmixed", htmlExts);
 
-        Set<String> tiddlywikiExts = new HashSet<>();
+        Set<String> tiddlywikiExts = new HashSet<String>();
         tiddlywikiExts.add("tiddlywiki");
         modeExtensions.put("tiddlywiki", tiddlywikiExts);
 
-        Set<String> tikiExts = new HashSet<>();
+        Set<String> tikiExts = new HashSet<String>();
         tikiExts.addAll(Arrays.asList("tiki", "wiki"));
         modeExtensions.put("tiki", tikiExts);
 
