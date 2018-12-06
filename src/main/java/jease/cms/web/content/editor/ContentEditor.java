@@ -179,10 +179,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	public void insertToSolr() {
 
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
-
-		if (solrurl.equals("")) {
-			return;
-		}
+		if (solrurl.equals("")) return;
 
 		String oid = checkDuplication();
 		if (oid.length() > 0) {
@@ -211,9 +208,10 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		}
 	}
 
-	public String checkDuplication() {
+	private String checkDuplication() {
 		try {
 			String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+			if (solrurl.equals("")) return "";
 			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
 
 			SolrQuery query = new SolrQuery();
@@ -232,6 +230,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	public void deleteToSolr(String docid) {
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+		if (solrurl.equals("")) return;
 
 		HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
 		try {
@@ -243,6 +242,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 	public void updateToSolr(String docid) {
 		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+		if (solrurl.equals("")) return;
 
 		HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
 		try {
