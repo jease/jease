@@ -36,7 +36,7 @@ public class Blob extends Persistent implements Persistent.Value {
 			.getProperty("java.io.tmpdir") + File.separator;
 
 	protected transient String path;
-	protected final String id = UUID.randomUUID().toString();
+	protected String id = UUID.randomUUID().toString(); // should not be final, JDO usually ignores static and final fields
 
 	public String getId() {
 		return id;
