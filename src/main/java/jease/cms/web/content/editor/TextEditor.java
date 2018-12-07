@@ -23,7 +23,7 @@ import org.zkoss.zul.Checkbox;
 import jease.cms.domain.Text;
 import jease.cms.web.component.RichTextarea;
 import jfix.util.I18N;
-import jfix.zk.Div;
+import jfix.zk.Row;
 import jfix.zk.ZK;
 
 public class TextEditor extends ContentEditor<Text> {
@@ -43,13 +43,17 @@ public class TextEditor extends ContentEditor<Text> {
 		    boolean v = plainText.getLineNumbers();
             plainText.setLineNumbers(!v);
 		});
+		compactHeader = true;
 	}
 
 	@Override
     public void init() {
-		add(I18N.get("Content"), richText);
+		add(I18N.get("Content"));
+		add(richText);
 		showLineNums.setStyle("margin-right: 15px");
-		add("", new Div("text-align: right;", showLineNums, plainMode));
+		Row r = new Row(showLineNums, plainMode);
+		r.setPack("end");
+		add(r);
 	}
 
 	@Override

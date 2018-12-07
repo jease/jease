@@ -16,6 +16,10 @@
  */
 package jease.cmf.web.node;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zul.Textbox;
+
 import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
 import jease.cmf.service.Filenames;
@@ -23,10 +27,6 @@ import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
 import jfix.util.I18N;
 import jfix.zk.ObjectEditor;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.zkoss.zul.Textbox;
 
 public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 
@@ -36,14 +36,20 @@ public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 		return getObject();
 	}
 
-	protected void doInit() throws Exception {
-		if (ArrayUtils.contains(JeaseSession.getRoots(), getNode())) {
-			getDeleteButton().setVisible(false);
-		}
+	protected void doInitButtons() {
+	    if (ArrayUtils.contains(JeaseSession.getRoots(), getNode())) {
+            getDeleteButton().setVisible(false);
+        }
+	}
+
+	@Override
+    protected void doInit() throws Exception {
+	    doInitButtons();
 		add(I18N.get("Id"), id);
 	}
 
-	protected void doLoad() throws Exception {
+	@Override
+    protected void doLoad() throws Exception {
 		if (id.getParent() != null) {
 			if (getNode() == Nodes.getRoot()) {
 				id.setDisabled(true);
@@ -52,7 +58,8 @@ public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 		}
 	}
 
-	protected void doSave() throws Exception {
+	@Override
+    protected void doSave() throws Exception {
 		if (getNode().getParent() == null && getNode() != Nodes.getRoot()) {
 			getNode().setParent(JeaseSession.getContainer());
 		}
@@ -61,7 +68,8 @@ public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 		}
 	}
 
-	protected void doValidate() throws Exception {
+	@Override
+    protected void doValidate() throws Exception {
 		if (id.getParent() != null) {
 			if (getNode() != Nodes.getRoot()) {
 				if (StringUtils.isEmpty(id.getValue())) {
@@ -82,7 +90,8 @@ public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 		}
 	}
 
-	protected void doDelete() throws Exception {
+	@Override
+    protected void doDelete() throws Exception {
 		Node parent = getNode().getParent();
 		delete();
 		if (parent != null && !parent.isDescendant(JeaseSession.getContainer())) {
@@ -90,7 +99,8 @@ public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 		}
 	}
 
-	public void delete() {
+	@Override
+    public void delete() {
 		Nodes.delete(getNode());
 	}
 
@@ -100,7 +110,8 @@ public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 		getObject().setId(null);
 	}
 
-	protected void copyObject() {
+	@Override
+    protected void copyObject() {
 		copyObject(true);
 	}
 

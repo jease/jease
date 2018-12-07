@@ -28,19 +28,19 @@ public class Formbox extends Grid {
 		setOddRowSclass("none");
 	}
 
-	public void add(String name) {
-		add(name, null, null);
+	public org.zkoss.zul.Row add(String name) {
+		return add(name, null, null);
 	}
 
-	public void add(String name, Component component) {
-		add(name, component, null);
+	public org.zkoss.zul.Row add(String name, Component component) {
+		return add(name, component, null);
 	}
 
-	public void add(Component component) {
-		add(null, component, null);
+	public org.zkoss.zul.Row add(Component component) {
+		return add(null, component, null);
 	}
 
-	public void add(String name, Component component, String description) {
+	public org.zkoss.zul.Row add(String name, Component component, String description) {
 		org.zkoss.zul.Row row = new org.zkoss.zul.Row();
 		if (description != null) {
 			row.setTooltiptext(description);
@@ -74,6 +74,7 @@ public class Formbox extends Grid {
 		}
 
 		getRows().appendChild(row);
+		return row;
 	}
 
 	public boolean contains(Component comp) {

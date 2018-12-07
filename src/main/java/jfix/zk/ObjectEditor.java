@@ -81,7 +81,8 @@ public abstract class ObjectEditor<E> extends Formbox implements Objectable<E>,
 		try {
 			if (!initialized) {
 				doInit();
-				add("", buttons);
+				//buttons.setStyle("margin:auto"); // for centering
+				add(buttons);
 				initialized = true;
 			}
 		} catch (Exception e) {

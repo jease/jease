@@ -28,11 +28,13 @@ public class WikiEditor extends ContentEditor<Wiki> {
 	public WikiEditor() {
 		content.setHeight(getPlainEditorHeight());
 		content.setSyntax("wiki");
+		compactHeader = true;
 	}
 
 	@Override
     public void init() {
-		add(I18N.get("Content"), content);
+		add(I18N.get("Content"));
+		add(content);
 	}
 
 	@Override

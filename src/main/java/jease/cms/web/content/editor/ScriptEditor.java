@@ -24,11 +24,12 @@ import org.zkoss.zul.Checkbox;
 
 import jease.cms.domain.Script;
 import jfix.util.I18N;
+import jfix.zk.Row;
 
 public class ScriptEditor extends ContentEditor<Script> {
 
 	CodeMirror code = new CodeMirror();
-	Checkbox forward = new Checkbox();
+	Checkbox forward = new Checkbox(I18N.get("Forward"));
 
 	public ScriptEditor() {
 		code.setHeight(getPlainEditorHeight());
@@ -36,12 +37,18 @@ public class ScriptEditor extends ContentEditor<Script> {
 		id.addEventListener(Events.ON_CHANGING, event -> {
 		    code.setSyntax(FilenameUtils.getExtension(((InputEvent) event).getValue()));
 		});
+		compactHeader = true;
 	}
 
 	@Override
     public void init() {
-		add(I18N.get("Code"), code);
-		add(I18N.get("Forward"), forward);
+		add(I18N.get("Code"));
+		add(code);
+		forward.setStyle("margin-right: 15px");
+        Row r = new Row(forward);
+        r.setPack("end");
+        r.setAlign("center");
+        add(r);
 	}
 
 	@Override

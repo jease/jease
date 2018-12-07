@@ -39,11 +39,13 @@ public class FileEditor<E extends File> extends ContentEditor<E> {
 			}
 		});
 		media.setUploadLimit(Registry.getParameter(Names.JEASE_UPLOAD_LIMIT));
+		compactHeader = true;
 	}
 
 	@Override
     public void init() {
-		add(I18N.get("File"), media);
+		add(I18N.get("File"));
+		add(media);
 	}
 
 	@Override

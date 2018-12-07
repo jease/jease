@@ -17,7 +17,13 @@
 package jease.cms.web.content.editor;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
@@ -25,10 +31,13 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.impl.InputElement;
 
 import jease.Names;
 import jease.Registry;
@@ -44,11 +53,14 @@ import jease.cms.service.Revisions;
 import jease.cms.service.Sequences;
 import jease.cms.web.content.editor.property.PropertyManager;
 import jfix.util.I18N;
+import jfix.zk.Cell;
+import jfix.zk.Grid;
 import jfix.zk.Images;
 import jfix.zk.Modal;
 import jfix.zk.Selectfield;
 import jfix.zk.Sessions;
 import jfix.zk.WebBrowser;
+import jfix.zk.ZK;
 
 /**
  * Base class for all content editors. All common fields for Content should be
@@ -61,12 +73,13 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	protected Textbox tags = new Textbox();
 	protected Selectfield revisionSelection = new Selectfield();
 	protected PropertyManager propertyManager = new PropertyManager();
-	protected Button editProperties = new Button(I18N.get("Properties"),
-			Images.DocumentProperties);
-	protected Button viewContent = new Button(I18N.get("View"),
-			Images.InternetWebBrowser);
+	protected Button editProperties = new Button(I18N.get("Properties"), Images.DocumentProperties);
+	protected Button viewContent = new Button(I18N.get("View"),	Images.InternetWebBrowser);
 	protected boolean closeCheckEnabled;
 	protected SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+
+	/** true - Id, Revision, Title, Tags will be placed in two columns to save some vertical space. */
+	protected boolean compactHeader = false;
 
 	public ContentEditor() {
 		if (getSessionUser().isAdministrator()) {
@@ -108,14 +121,48 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		}
 	}
 
+	protected void addToRow(org.zkoss.zul.Row row, String name, Component component) {
+	    Label label = new Label(name);
+        Cell cell0 = new Cell(label);
+        cell0.setHflex("1");
+        row.appendChild(cell0);
+
+        for (Component child : ZK.getDescendants(component)) {
+            if (child instanceof Textbox) {
+                ((InputElement) child).setHflex("1");
+            }
+        }
+        Cell cell1 = new Cell(component);
+        cell1.setHflex("6");
+        row.appendChild(cell1);
+	}
+
 	@Override
 	protected void doInit() throws Exception {
-		if (Revisions.isConfigured()) {
-			add(I18N.get("Revision"), revisionSelection);
-		}
-		super.doInit();
-		add(I18N.get("Title"), title);
-		add(I18N.get("Tags"), tags);
+        if (!compactHeader) {
+            if (Revisions.isConfigured()) {
+                add(I18N.get("Revision"), revisionSelection);
+            }
+            super.doInit();
+            add(I18N.get("Title"), title);
+            add(I18N.get("Tags"), tags);
+        } else {
+    	    doInitButtons();
+
+            Grid grid = new Grid(); // needed to have one combined cell in header row
+            org.zkoss.zul.Row row0 = new org.zkoss.zul.Row();
+            addToRow(row0, I18N.get("Id"), id);
+    	    if (Revisions.isConfigured()) {
+    			addToRow(row0, I18N.get("Revision"), revisionSelection);
+    		}
+    	    grid.getRows().appendChild(row0);
+
+    	    org.zkoss.zul.Row row1 = new org.zkoss.zul.Row();
+    		addToRow(row1, I18N.get("Title"), title);
+    		addToRow(row1, I18N.get("Tags"), tags);
+    		grid.getRows().appendChild(row1);
+    		add(grid);
+        }
 		init();
 		add(propertyManager);
 	}
@@ -271,8 +318,6 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			Map<String, Object> fieldModifier5 = new HashMap<>(1);
 			fieldModifier5.put("set", id.getValue());
 			document.addField("jeaseid", fieldModifier5);
-
-
 
 			solr.add(document);
 			solr.commit();

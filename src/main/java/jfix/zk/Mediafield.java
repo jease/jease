@@ -123,7 +123,10 @@ public class Mediafield extends Vlayout {
 
         appendChild(codemirror);
         appendChild(imagePreview);
-        appendChild(new Row(download, upload, showLineNums));
+        Row r = new Row(download, upload, showLineNums);
+        r.setPack("end");
+        r.setAlign("center");
+        appendChild(r);
     }
 
     @Override
