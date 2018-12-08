@@ -50,9 +50,8 @@ public class Mediafield extends Vlayout {
     private Button rotateImage = new Button(I18N.get("Rotate"), Images.EditRedo);
     private Spinner width = new Spinner();
     private Spinner height = new Spinner();
-    private Checkbox aspectRatioLock = new Checkbox();
-    private Column imagePreview = new Column(image, new Row(width,
-            aspectRatioLock, height, rotateImage));
+    private Checkbox aspectRatioLock = new Checkbox(I18N.get("Lock_aspect_ratio"));
+    private Column imagePreview = new Column(image);
     private Fileupload upload = new Fileupload();
     private Button download = new Button();
     private Dimension originalDimension = null;
@@ -107,26 +106,42 @@ public class Mediafield extends Vlayout {
         setPreview(true);
 
         codemirror.setVisible(false);
+        imagePreview.setVisible(false);
+        imageControlsVisible(false);
+
+        appendChild(codemirror);
+        appendChild(imagePreview);
+
+        width.setStep(10);
+        height.setStep(10);
+        width.setStyle("width: 105px; margin-right: 5px");
+        height.setStyle("width: 105px; margin-right: 5px");
+        aspectRatioLock.setStyle("margin-right: 5px");
+        rotateImage.setStyle("margin-right: 40px");
+        Div l = new Div("float: left; width: auto !important; padding-top: 7px",
+                width, aspectRatioLock, height, rotateImage);
+
         showLineNums.setVisible(false);
         showLineNums.setStyle("margin-left: 50px");
         showLineNums.addEventListener(Events.ON_CHECK, evt -> {
             boolean v = codemirror.getLineNumbers();
             codemirror.setLineNumbers(!v);
         });
-
-        imagePreview.setVisible(false);
-        width.setStep(10);
-        height.setStep(10);
-
         download.setImage(Images.DriveRemovableMedia);
         download.setVisible(false);
+        download.setStyle("margin-right: 5px");
+        upload.setStyle("margin-right: 5px");
+        Div r = new Div("float: right; width: auto !important; padding-top: 7px",
+                download, upload, showLineNums);
 
-        appendChild(codemirror);
-        appendChild(imagePreview);
-        Row r = new Row(download, upload, showLineNums);
-        r.setPack("end");
-        r.setAlign("center");
-        appendChild(r);
+        appendChild(new Div(l, r));
+    }
+
+    private void imageControlsVisible(boolean value) {
+        width.setVisible(value);
+        aspectRatioLock.setVisible(value);
+        height.setVisible(value);
+        rotateImage.setVisible(value);
     }
 
     @Override
@@ -172,6 +187,7 @@ public class Mediafield extends Vlayout {
         try {
             download.setVisible(media != null);
             imagePreview.setVisible(false);
+            imageControlsVisible(false);
             codemirror.setVisible(false);
             showLineNums.setVisible(false);
             download.setLabel(I18N.get("Download") + " (" + getContentType() + ")");
@@ -180,6 +196,7 @@ public class Mediafield extends Vlayout {
                     if (getContentType().startsWith("image")) {
                         InputStream input = Medias.asStream(media);
                         imagePreview.setVisible(true);
+                        imageControlsVisible(true);
                         image.setContent(new AImage(getName(), input));
                         input.close();
                         adjustImage();
