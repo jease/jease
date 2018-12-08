@@ -33,58 +33,58 @@ import jfix.util.I18N;
 @WebListener
 public class JeaseServletListener implements ServletContextListener {
 
-	@Override
+    @Override
     public void contextInitialized(ServletContextEvent sce) {
-		ServletContext context = sce.getServletContext();
-		initSystemProperties(context);
-		initLocale(context);
-		initDatabase(context);
-		initTimer(context);
-	}
+        ServletContext context = sce.getServletContext();
+        initSystemProperties(context);
+        initLocale(context);
+        initDatabase(context);
+        initTimer(context);
+    }
 
-	@Override
+    @Override
     public void contextDestroyed(ServletContextEvent sce) {
-		stopTimer();
-		closeDatabase();
-	}
+        stopTimer();
+        closeDatabase();
+    }
 
-	protected void initSystemProperties(ServletContext context) {
-		System.setProperty("networkaddress.cache.ttl", "500");
-	}
+    protected void initSystemProperties(ServletContext context) {
+        System.setProperty("networkaddress.cache.ttl", "500");
+    }
 
-	protected void initLocale(ServletContext context) {
-		String localeCode = context
-				.getInitParameter(Names.JEASE_DEFAULT_LOCALE);
-		if (StringUtils.isNotBlank(localeCode)) {
-			Locale locale = new Locale(localeCode);
-			I18N.load(locale);
-			context.setAttribute("org.zkoss.web.preferred.locale", locale);
-		}
-	}
+    protected void initLocale(ServletContext context) {
+        String localeCode = context
+                .getInitParameter(Names.JEASE_DEFAULT_LOCALE);
+        if (StringUtils.isNotBlank(localeCode)) {
+            Locale locale = new Locale(localeCode);
+            I18N.load(locale);
+            context.setAttribute("org.zkoss.web.preferred.locale", locale);
+        }
+    }
 
-	protected void initDatabase(ServletContext context) {
-	    String engine = context.getInitParameter(Names.JEASE_DATABASE_ENGINE);
-	    if (engine != null && !engine.isEmpty()) {
-	        Database.setPersistenceEngine(engine);
-	    }
-	    String databaseName = context.getInitParameter(Names.JEASE_DATABASE_NAME);
-		if (databaseName != null) {
-			Database.open(databaseName);
-		} else {
-			throw new RuntimeException();
-		}
-	}
+    protected void initDatabase(ServletContext context) {
+        String engine = context.getInitParameter(Names.JEASE_DATABASE_ENGINE);
+        if (engine != null && !engine.isEmpty()) {
+            Database.setPersistenceEngine(engine);
+        }
+        String databaseName = context.getInitParameter(Names.JEASE_DATABASE_NAME);
+        if (databaseName != null) {
+            Database.open(databaseName);
+        } else {
+            throw new RuntimeException();
+        }
+    }
 
-	protected void closeDatabase() {
-		Database.close();
-	}
+    protected void closeDatabase() {
+        Database.close();
+    }
 
-	protected void initTimer(ServletContext context) {
-		Timers.start();
-	}
+    protected void initTimer(ServletContext context) {
+        Timers.start();
+    }
 
-	protected void stopTimer() {
-		Timers.stop();
-	}
+    protected void stopTimer() {
+        Timers.stop();
+    }
 
 }

@@ -23,32 +23,32 @@ package jease.cms.domain;
  */
 public class Folder extends Content {
 
-	public Folder() {
-	}
+    public Folder() {
+    }
 
-	public boolean isContainer() {
-		return true;
-	}
+    public boolean isContainer() {
+        return true;
+    }
 
-	public boolean isPage() {
-		return false;
-	}
+    public boolean isPage() {
+        return false;
+    }
 
-	/**
-	 * Returns the content which should be used to render the folder. At the
-	 * moment the first page-like child of the folder (regardless if visible or
-	 * not) is used.
-	 */
-	public Content getContent() {
-		for (Content child : getChildren(Content.class)) {
-			if (child.isPage()) {
-				return child;
-			}
-		}
-		return null;
-	}
+    /**
+     * Returns the content which should be used to render the folder. At the
+     * moment the first page-like child of the folder (regardless if visible or
+     * not) is used.
+     */
+    public Content getContent() {
+        for (Content child : getChildren(Content.class)) {
+            if (child.isPage()) {
+                return child;
+            }
+        }
+        return null;
+    }
 
-	public Folder copy(boolean recursive) {
-		return (Folder) super.copy(recursive);
-	}
+    public Folder copy(boolean recursive) {
+        return (Folder) super.copy(recursive);
+    }
 }

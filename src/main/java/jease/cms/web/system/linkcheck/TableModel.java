@@ -31,49 +31,49 @@ import jfix.zk.ObjectTableModel;
 
 public class TableModel extends ObjectTableModel<Linkcheck> {
 
-	public Linkcheck newObject() {
-		return null;
-	}
+    public Linkcheck newObject() {
+        return null;
+    }
 
-	public String[] getColumns() {
-		return new String[] { I18N.get("Path"), I18N.get("Link"),
-				I18N.get("Status") };
-	}
+    public String[] getColumns() {
+        return new String[] { I18N.get("Path"), I18N.get("Link"),
+                I18N.get("Status") };
+    }
 
-	public int[] getProportions() {
-		return new int[] { 6, 8, 1 };
-	}
+    public int[] getProportions() {
+        return new int[] { 6, 8, 1 };
+    }
 
-	public List<Linkcheck> getList() {
-		final Set<String> rootPaths = new HashSet<String>();
-		for (Node root : JeaseSession.getRoots()) {
-			rootPaths.add(root.getPath());
-		}
-		return Database.query(Linkcheck.class, new Predicate<Linkcheck>() {
-			public boolean test(Linkcheck linkcheck) {
-				if (Nodes.getByPath(linkcheck.getPath()) == null) {
-					return false;
-				}
-				for (String rootPath : rootPaths) {
-					if (linkcheck.getPath().startsWith(rootPath)) {
-						return true;
-					}
-				}
-				return false;
-			}
-		});
-	}
+    public List<Linkcheck> getList() {
+        final Set<String> rootPaths = new HashSet<String>();
+        for (Node root : JeaseSession.getRoots()) {
+            rootPaths.add(root.getPath());
+        }
+        return Database.query(Linkcheck.class, new Predicate<Linkcheck>() {
+            public boolean test(Linkcheck linkcheck) {
+                if (Nodes.getByPath(linkcheck.getPath()) == null) {
+                    return false;
+                }
+                for (String rootPath : rootPaths) {
+                    if (linkcheck.getPath().startsWith(rootPath)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 
-	public Object getValue(Linkcheck linkcheck, int column) {
-		switch (column) {
-		case 0:
-			return linkcheck.getPath();
-		case 1:
-			return linkcheck.getUrl();
-		case 2:
-			return linkcheck.getStatus();
-		}
-		return "";
-	}
+    public Object getValue(Linkcheck linkcheck, int column) {
+        switch (column) {
+        case 0:
+            return linkcheck.getPath();
+        case 1:
+            return linkcheck.getUrl();
+        case 2:
+            return linkcheck.getStatus();
+        }
+        return "";
+    }
 
 }

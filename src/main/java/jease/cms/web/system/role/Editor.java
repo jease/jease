@@ -31,46 +31,46 @@ import org.zkoss.zul.Textbox;
 
 public class Editor extends ObjectEditor<Role> {
 
-	Textbox name = new Textbox();
-	Checkbox administrator = new Checkbox();
-	Checklist types = new Checklist();
+    Textbox name = new Textbox();
+    Checkbox administrator = new Checkbox();
+    Checklist types = new Checklist();
 
-	public Editor() {
-		types.setItemRenderer(new ItemRenderer() {
-			public String render(Object value) {
-				return I18N.get(((String) value).substring(((String) value)
-						.lastIndexOf(".") + 1));
-			}
-		});
-	}
+    public Editor() {
+        types.setItemRenderer(new ItemRenderer() {
+            public String render(Object value) {
+                return I18N.get(((String) value).substring(((String) value)
+                        .lastIndexOf(".") + 1));
+            }
+        });
+    }
 
-	public void init() {
-		add(I18N.get("Name"), name);
-		add(I18N.get("Type"), new Scrollbox(types));
-		add(I18N.get("Administrator"), administrator);
-	}
+    public void init() {
+        add(I18N.get("Name"), name);
+        add(I18N.get("Type"), new Scrollbox(types));
+        add(I18N.get("Administrator"), administrator);
+    }
 
-	public void load() {
-		name.setText(getObject().getName());
-		administrator.setChecked(getObject().isAdministrator());
-		types.setSelection(Contents.getClassNamesForAvailableTypes(),
-				getObject().getTypes());
-	}
+    public void load() {
+        name.setText(getObject().getName());
+        administrator.setChecked(getObject().isAdministrator());
+        types.setSelection(Contents.getClassNamesForAvailableTypes(),
+                getObject().getTypes());
+    }
 
-	public void save() {
-		getObject().setName(name.getText());
-		getObject().setAdministrator(administrator.isChecked());
-		getObject().setTypes((String[]) types.getSelected());
-		Database.save(getObject());
-	}
+    public void save() {
+        getObject().setName(name.getText());
+        getObject().setAdministrator(administrator.isChecked());
+        getObject().setTypes((String[]) types.getSelected());
+        Database.save(getObject());
+    }
 
-	public void delete() {
-		Database.delete(getObject());
-	}
+    public void delete() {
+        Database.delete(getObject());
+    }
 
-	public void validate() {
-		validate(StringUtils.isEmpty(name.getValue()),
-				I18N.get("Name_is_required"));
-	}
+    public void validate() {
+        validate(StringUtils.isEmpty(name.getValue()),
+                I18N.get("Name_is_required"));
+    }
 
 }

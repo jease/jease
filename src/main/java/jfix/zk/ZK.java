@@ -32,120 +32,120 @@ import org.zkoss.zk.ui.util.Clients;
 
 public class ZK {
 
-	/**
-	 * Sets a cookie with given name and value.
-	 */
-	public static void setCookie(String name, String value) {
-		Cookies.set((HttpServletResponse) Executions.getCurrent()
-				.getNativeResponse(), name, value);
-	}
+    /**
+     * Sets a cookie with given name and value.
+     */
+    public static void setCookie(String name, String value) {
+        Cookies.set((HttpServletResponse) Executions.getCurrent()
+                .getNativeResponse(), name, value);
+    }
 
-	/**
-	 * Sets a cookie with given name and value which expires in given seconds.
-	 */
-	public static void setCookie(String name, String value, int expires) {
-		Cookies.set((HttpServletResponse) Executions.getCurrent()
-				.getNativeResponse(), name, value, expires);
-	}
+    /**
+     * Sets a cookie with given name and value which expires in given seconds.
+     */
+    public static void setCookie(String name, String value, int expires) {
+        Cookies.set((HttpServletResponse) Executions.getCurrent()
+                .getNativeResponse(), name, value, expires);
+    }
 
-	/**
-	 * Reads a cookie with given name.
-	 */
-	public static String getCookie(String name) {
-		return Cookies.get(((HttpServletRequest) Executions.getCurrent()
-				.getNativeRequest()), name);
-	}
+    /**
+     * Reads a cookie with given name.
+     */
+    public static String getCookie(String name) {
+        return Cookies.get(((HttpServletRequest) Executions.getCurrent()
+                .getNativeRequest()), name);
+    }
 
-	/**
-	 * Clears all cookies by writing a null value for existing cookie names.
-	 */
-	public static void clearCookies() {
-		for (Cookie cookie : ((HttpServletRequest) Executions.getCurrent()
-				.getNativeRequest()).getCookies()) {
-			ZK.setCookie(cookie.getName(), null);
-		}
-	}
+    /**
+     * Clears all cookies by writing a null value for existing cookie names.
+     */
+    public static void clearCookies() {
+        for (Cookie cookie : ((HttpServletRequest) Executions.getCurrent()
+                .getNativeRequest()).getCookies()) {
+            ZK.setCookie(cookie.getName(), null);
+        }
+    }
 
-	/**
-	 * Replaces source-component with target-component.
-	 */
-	public static void replace(Component source, Component target) {
-		Components.replace(source, target);
-	}
+    /**
+     * Replaces source-component with target-component.
+     */
+    public static void replace(Component source, Component target) {
+        Components.replace(source, target);
+    }
 
-	/**
-	 * Redirect to given url.
-	 */
-	public static void redirect(String url) {
-		Executions.getCurrent().sendRedirect(url);
-	}
+    /**
+     * Redirect to given url.
+     */
+    public static void redirect(String url) {
+        Executions.getCurrent().sendRedirect(url);
+    }
 
-	/**
-	 * Redirect to given url in given target window.
-	 */
-	public static void redirect(String url, String target) {
-		Executions.getCurrent().sendRedirect(url, target);
-	}
+    /**
+     * Redirect to given url in given target window.
+     */
+    public static void redirect(String url, String target) {
+        Executions.getCurrent().sendRedirect(url, target);
+    }
 
-	/**
-	 * Show busy indicator.
-	 */
-	public static void showBusy() {
-		Clients.showBusy(null);
-	}
+    /**
+     * Show busy indicator.
+     */
+    public static void showBusy() {
+        Clients.showBusy(null);
+    }
 
-	/**
-	 * Clear busy indicator.
-	 */
-	public static void clearBusy() {
-		Clients.clearBusy();
-	}
+    /**
+     * Clear busy indicator.
+     */
+    public static void clearBusy() {
+        Clients.clearBusy();
+    }
 
-	/**
-	 * Retrieves the file-based path for given path of web-app-ressource. Very
-	 * useful to retrieve the base folder of a web-application by using "/" as
-	 * parameter.
-	 */
-	public static String getRealPath(String path) {
-		return Executions.getCurrent().getDesktop().getWebApp()
-				.getRealPath(path);
-	}
+    /**
+     * Retrieves the file-based path for given path of web-app-ressource. Very
+     * useful to retrieve the base folder of a web-application by using "/" as
+     * parameter.
+     */
+    public static String getRealPath(String path) {
+        return Executions.getCurrent().getDesktop().getWebApp()
+                .getRealPath(path);
+    }
 
-	/**
-	 * Returns the content-path of the web-application.
-	 */
-	public static String getContextPath() {
-		return Executions.getCurrent().getContextPath();
-	}
+    /**
+     * Returns the content-path of the web-application.
+     */
+    public static String getContextPath() {
+        return Executions.getCurrent().getContextPath();
+    }
 
-	/**
-	 * Returns all descendants (children of children of...) for given component.
-	 */
-	public static List<Component> getDescendants(Component component) {
-		List<Component> components = new ArrayList<>();
-		components.add(component);
-		for (Object child : component.getChildren()) {
-			if (child instanceof Component) {
-				components.addAll(getDescendants((Component) child));
-			}
-		}
-		return components;
-	}
+    /**
+     * Returns all descendants (children of children of...) for given component.
+     */
+    public static List<Component> getDescendants(Component component) {
+        List<Component> components = new ArrayList<>();
+        components.add(component);
+        for (Object child : component.getChildren()) {
+            if (child instanceof Component) {
+                components.addAll(getDescendants((Component) child));
+            }
+        }
+        return components;
+    }
 
-	/**
-	 * Returns the init parameter with given name set in web.xml.
-	 */
-	public static String getInitParameter(String name) {
-		return Executions.getCurrent().getDesktop().getWebApp()
-				.getInitParameter(name);
-	}
+    /**
+     * Returns the init parameter with given name set in web.xml.
+     */
+    public static String getInitParameter(String name) {
+        return Executions.getCurrent().getDesktop().getWebApp()
+                .getInitParameter(name);
+    }
 
-	/**
-	 * Returns the query string from the current request.
-	 */
-	public static String getQueryString() {
-		return ((HttpServletRequest) Executions.getCurrent().getNativeRequest())
-				.getQueryString();
-	}
+    /**
+     * Returns the query string from the current request.
+     */
+    public static String getQueryString() {
+        return ((HttpServletRequest) Executions.getCurrent().getNativeRequest())
+                .getQueryString();
+    }
 
 }

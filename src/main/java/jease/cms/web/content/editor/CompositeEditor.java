@@ -20,16 +20,16 @@ import jease.cms.domain.Composite;
 
 public class CompositeEditor extends ContentEditor<Composite> {
 
-	public void init() {
-	}
+    public void init() {
+    }
 
-	public void load() {
-	}
+    public void load() {
+    }
 
-	public void save() {
-	}
+    public void save() {
+    }
 
-	public void validate() {
-	}
+    public void validate() {
+    }
 
 }

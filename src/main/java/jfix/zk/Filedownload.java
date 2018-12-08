@@ -24,16 +24,16 @@ import jfix.util.Urls;
 
 public class Filedownload extends org.zkoss.zul.Filedownload {
 
-	public static void save(File file) {
-		try {
-			save(file, MimeTypes.guessContentTypeFromName(file.getName()));
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    public static void save(File file) {
+        try {
+            save(file, MimeTypes.guessContentTypeFromName(file.getName()));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
-	public static void save(String filename, byte[] content) {
-		save(content, MimeTypes.guessContentTypeFromName(filename), filename);
-	}
+    public static void save(String filename, byte[] content) {
+        save(content, MimeTypes.guessContentTypeFromName(filename), filename);
+    }
 
 }

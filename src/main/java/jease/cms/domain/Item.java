@@ -21,14 +21,14 @@ package jease.cms.domain;
  */
 public class Item extends Content {
 
-	public Item() {
-	}
+    public Item() {
+    }
 
-	public boolean isPage() {
-		return true;
-	}
+    public boolean isPage() {
+        return true;
+    }
 
-	public Item copy(boolean recursive) {
-		return (Item) super.copy(recursive);
-	}
+    public Item copy(boolean recursive) {
+        return (Item) super.copy(recursive);
+    }
 }

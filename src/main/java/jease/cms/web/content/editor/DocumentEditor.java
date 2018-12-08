@@ -28,40 +28,40 @@ import org.zkoss.zul.Textbox;
 
 public class DocumentEditor extends FileEditor<Document> {
 
-	Button showText = new Button(I18N.get("Text"), Images.EditFind);
+    Button showText = new Button(I18N.get("Text"), Images.EditFind);
 
-	public DocumentEditor() {
-		showText.addEventListener(Events.ON_CLICK, event -> showText());
-		getButtons().appendChild(showText);
-	}
+    public DocumentEditor() {
+        showText.addEventListener(Events.ON_CLICK, event -> showText());
+        getButtons().appendChild(showText);
+    }
 
-	private void showText() {
-		Document currentNode = getNode();
-		try {
-			copyObject();
-			saveEditorToObject();
-			getNode().setParent(null);
-			Textbox textarea = new Textbox();
-			textarea.setRows(3);
-			textarea.setVflex("1");
-			textarea.setHflex("1");
-			textarea.setValue(getObject().getText());
-			Window window = new Window(getObject().getPath());
-			window.setHeight("75%");
-			window.appendChild(textarea);
-			window.doModal();
-			getRoot().appendChild(window);
-		} catch (Exception e) {
-			Modal.exception(e);
-			return;
-		} finally {
-			setObject(currentNode);
-		}
-	}
+    private void showText() {
+        Document currentNode = getNode();
+        try {
+            copyObject();
+            saveEditorToObject();
+            getNode().setParent(null);
+            Textbox textarea = new Textbox();
+            textarea.setRows(3);
+            textarea.setVflex("1");
+            textarea.setHflex("1");
+            textarea.setValue(getObject().getText());
+            Window window = new Window(getObject().getPath());
+            window.setHeight("75%");
+            window.appendChild(textarea);
+            window.doModal();
+            getRoot().appendChild(window);
+        } catch (Exception e) {
+            Modal.exception(e);
+            return;
+        } finally {
+            setObject(currentNode);
+        }
+    }
 
-	public void save() {
-		super.save();
-		// Trigger conversion to plain text
-		getObject().getText();
-	}
+    public void save() {
+        super.save();
+        // Trigger conversion to plain text
+        getObject().getText();
+    }
 }

@@ -68,61 +68,61 @@ import jfix.zk.ZK;
  */
 public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
-	protected Date lastNodeModification;
-	protected Textbox title = new Textbox();
-	protected Textbox tags = new Textbox();
-	protected Selectfield revisionSelection = new Selectfield();
-	protected PropertyManager propertyManager = new PropertyManager();
-	protected Button editProperties = new Button(I18N.get("Properties"), Images.DocumentProperties);
-	protected Button viewContent = new Button(I18N.get("View"),	Images.InternetWebBrowser);
-	protected boolean closeCheckEnabled;
-	protected SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+    protected Date lastNodeModification;
+    protected Textbox title = new Textbox();
+    protected Textbox tags = new Textbox();
+    protected Selectfield revisionSelection = new Selectfield();
+    protected PropertyManager propertyManager = new PropertyManager();
+    protected Button editProperties = new Button(I18N.get("Properties"), Images.DocumentProperties);
+    protected Button viewContent = new Button(I18N.get("View"),    Images.InternetWebBrowser);
+    protected boolean closeCheckEnabled;
+    protected SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
 
-	/** true - Id, Revision, Title, Tags will be placed in two columns to save some vertical space. */
-	protected boolean compactHeader = false;
+    /** true - Id, Revision, Title, Tags will be placed in two columns to save some vertical space. */
+    protected boolean compactHeader = false;
 
-	public ContentEditor() {
-		if (getSessionUser().isAdministrator()) {
-			editProperties.addEventListener(Events.ON_CLICK,
-					event -> propertyManager.toogleEdit());
-			getButtons().appendChild(editProperties);
-		}
+    public ContentEditor() {
+        if (getSessionUser().isAdministrator()) {
+            editProperties.addEventListener(Events.ON_CLICK,
+                    event -> propertyManager.toogleEdit());
+            getButtons().appendChild(editProperties);
+        }
 
-		if (Registry.getParameter(Names.JEASE_SITE_DESIGN) != null) {
-			viewContent.addEventListener(Events.ON_CLICK,
-					event -> viewContent());
-			getButtons().appendChild(viewContent);
-		}
+        if (Registry.getParameter(Names.JEASE_SITE_DESIGN) != null) {
+            viewContent.addEventListener(Events.ON_CLICK,
+                    event -> viewContent());
+            getButtons().appendChild(viewContent);
+        }
 
-		revisionSelection.addEventListener(
-				Events.ON_SELECT,
-				event -> {
-					peek(Revisions.checkout(getNode(),
-							revisionSelection.getSelectedIndex()));
-					viewContent.setVisible(true);
-					lastNodeModification = null;
-				});
+        revisionSelection.addEventListener(
+                Events.ON_SELECT,
+                event -> {
+                    peek(Revisions.checkout(getNode(),
+                            revisionSelection.getSelectedIndex()));
+                    viewContent.setVisible(true);
+                    lastNodeModification = null;
+                });
 
-		addEventListener(Events.ON_CLOSE, event -> closePerformed(event));
-		closeCheckEnabled = true;
-	}
+        addEventListener(Events.ON_CLOSE, event -> closePerformed(event));
+        closeCheckEnabled = true;
+    }
 
-	@Override
-	public void refresh() {
-		super.refresh();
-		notifyAboutMaintenance();
-	}
+    @Override
+    public void refresh() {
+        super.refresh();
+        notifyAboutMaintenance();
+    }
 
-	protected void notifyAboutMaintenance() {
-		String message = Registry.getParameter(Names.JEASE_CMS_MAINTENANCE);
-		if (StringUtils.isNotBlank(message)
-				&& !getSessionUser().isAdministrator()) {
-			Modal.info(message, event -> Sessions.invalidate());
-		}
-	}
+    protected void notifyAboutMaintenance() {
+        String message = Registry.getParameter(Names.JEASE_CMS_MAINTENANCE);
+        if (StringUtils.isNotBlank(message)
+                && !getSessionUser().isAdministrator()) {
+            Modal.info(message, event -> Sessions.invalidate());
+        }
+    }
 
-	protected void addToRow(org.zkoss.zul.Row row, String name, Component component) {
-	    Label label = new Label(name);
+    protected void addToRow(org.zkoss.zul.Row row, String name, Component component) {
+        Label label = new Label(name);
         Cell cell0 = new Cell(label);
         cell0.setHflex("1");
         row.appendChild(cell0);
@@ -135,10 +135,10 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
         Cell cell1 = new Cell(component);
         cell1.setHflex("6");
         row.appendChild(cell1);
-	}
+    }
 
-	@Override
-	protected void doInit() throws Exception {
+    @Override
+    protected void doInit() throws Exception {
         if (!compactHeader) {
             if (Revisions.isConfigured()) {
                 add(I18N.get("Revision"), revisionSelection);
@@ -147,297 +147,297 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
             add(I18N.get("Title"), title);
             add(I18N.get("Tags"), tags);
         } else {
-    	    doInitButtons();
+            doInitButtons();
 
             Grid grid = new Grid(); // needed to have one combined cell in header row
             org.zkoss.zul.Row row0 = new org.zkoss.zul.Row();
             addToRow(row0, I18N.get("Id"), id);
-    	    if (Revisions.isConfigured()) {
-    			addToRow(row0, I18N.get("Revision"), revisionSelection);
-    		}
-    	    grid.getRows().appendChild(row0);
+            if (Revisions.isConfigured()) {
+                addToRow(row0, I18N.get("Revision"), revisionSelection);
+            }
+            grid.getRows().appendChild(row0);
 
-    	    org.zkoss.zul.Row row1 = new org.zkoss.zul.Row();
-    		addToRow(row1, I18N.get("Title"), title);
-    		addToRow(row1, I18N.get("Tags"), tags);
-    		grid.getRows().appendChild(row1);
-    		add(grid);
+            org.zkoss.zul.Row row1 = new org.zkoss.zul.Row();
+            addToRow(row1, I18N.get("Title"), title);
+            addToRow(row1, I18N.get("Tags"), tags);
+            grid.getRows().appendChild(row1);
+            add(grid);
         }
-		init();
-		add(propertyManager);
-	}
+        init();
+        add(propertyManager);
+    }
 
-	@Override
-	protected void doLoad() throws Exception {
-		super.doLoad();
-		viewContent.setVisible(Nodes.isRooted(getNode()));
-		lastNodeModification = getNode().getLastModified();
-		if (title.getParent() != null) {
-			title.setText(getNode().getTitle());
-		}
-		if (tags.getParent() != null) {
-			tags.setText(getNode().getTages());
-		}
-		if (revisionSelection.getParent() != null) {
-			revisionSelection.setValues(getNode().getRevisions());
-		}
-		if (propertyManager.getParent() != null) {
-			Factory factory = Properties.getFactory(
-					(Content) JeaseSession.getContainer(), getNode());
-			if (factory != null && factory != JeaseSession.getContainer()) {
-				if (StringUtils.isEmpty(id.getValue())
-						&& StringUtils.isNotBlank(factory.getSequence())) {
-					id.setText(String.valueOf(Sequences.getNext(factory
-							.getSequence())));
-				}
-				propertyManager.setProperties(factory.getProperties(getNode()));
-			} else {
-				propertyManager.setProperties(getNode().getProperties());
-			}
-		}
-		load();
-	}
+    @Override
+    protected void doLoad() throws Exception {
+        super.doLoad();
+        viewContent.setVisible(Nodes.isRooted(getNode()));
+        lastNodeModification = getNode().getLastModified();
+        if (title.getParent() != null) {
+            title.setText(getNode().getTitle());
+        }
+        if (tags.getParent() != null) {
+            tags.setText(getNode().getTages());
+        }
+        if (revisionSelection.getParent() != null) {
+            revisionSelection.setValues(getNode().getRevisions());
+        }
+        if (propertyManager.getParent() != null) {
+            Factory factory = Properties.getFactory(
+                    (Content) JeaseSession.getContainer(), getNode());
+            if (factory != null && factory != JeaseSession.getContainer()) {
+                if (StringUtils.isEmpty(id.getValue())
+                        && StringUtils.isNotBlank(factory.getSequence())) {
+                    id.setText(String.valueOf(Sequences.getNext(factory
+                            .getSequence())));
+                }
+                propertyManager.setProperties(factory.getProperties(getNode()));
+            } else {
+                propertyManager.setProperties(getNode().getProperties());
+            }
+        }
+        load();
+    }
 
-	protected void saveEditorToObject() throws Exception {
-		super.doSave();
-		if (getNode().getCreationDate() == null) {
-			getNode().setCreationDate(new Date());
-		}
-		saveLastModification();
-		if (title.getParent() != null) {
-			getNode().setTitle(title.getText());
-		}
-		if (tags.getParent() != null) {
-			getNode().setTages(tags.getText());
-		}
-		if (propertyManager.getParent() != null) {
-			getNode().setProperties(propertyManager.getProperties());
-		}
-		save();
-	}
+    protected void saveEditorToObject() throws Exception {
+        super.doSave();
+        if (getNode().getCreationDate() == null) {
+            getNode().setCreationDate(new Date());
+        }
+        saveLastModification();
+        if (title.getParent() != null) {
+            getNode().setTitle(title.getText());
+        }
+        if (tags.getParent() != null) {
+            getNode().setTages(tags.getText());
+        }
+        if (propertyManager.getParent() != null) {
+            getNode().setProperties(propertyManager.getProperties());
+        }
+        save();
+    }
 
-	@Override
-	protected void doSave() throws Exception {
-		saveEditorToObject();
-		insertToSolr();
-		persist();
-	}
+    @Override
+    protected void doSave() throws Exception {
+        saveEditorToObject();
+        insertToSolr();
+        persist();
+    }
 
-	public void insertToSolr() {
+    public void insertToSolr() {
 
-		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
-		if (solrurl.equals("")) return;
+        String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+        if (solrurl.equals("")) return;
 
-		String oid = checkDuplication();
-		if (oid.length() > 0) {
-			updateToSolr(oid);
-			return;
-		}
-		try {
-			ArrayList<String> tagslist = new ArrayList<String>(Arrays.asList(tags.getValue().split(",")));
-			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
-			SolrInputDocument doc = new SolrInputDocument();
-			doc.addField("id", UUID.randomUUID().toString());
-			doc.addField("tags", tagslist);
-			doc.addField("jeaseid", id.getValue());
-			doc.addField("jeasepath", getNode().getPath());
-			doc.addField("title", title.getValue());
-			doc.addField("author", getNode().getEditor().getName());
-			doc.addField("type", getNode().getType());
-			doc.addField("text", getNode().getFulltext().toString());
-			doc.addField("last_modified", new Date());
-			doc.addField("date", month_date.format(new Date()));
-			doc.addField("category", getNode().getParent().getId());
-			client.add(doc);
-			client.commit();
-		} catch (Exception s) {
-			s.printStackTrace();
-		}
-	}
+        String oid = checkDuplication();
+        if (oid.length() > 0) {
+            updateToSolr(oid);
+            return;
+        }
+        try {
+            ArrayList<String> tagslist = new ArrayList<String>(Arrays.asList(tags.getValue().split(",")));
+            SolrClient client = new HttpSolrClient.Builder(solrurl).build();
+            SolrInputDocument doc = new SolrInputDocument();
+            doc.addField("id", UUID.randomUUID().toString());
+            doc.addField("tags", tagslist);
+            doc.addField("jeaseid", id.getValue());
+            doc.addField("jeasepath", getNode().getPath());
+            doc.addField("title", title.getValue());
+            doc.addField("author", getNode().getEditor().getName());
+            doc.addField("type", getNode().getType());
+            doc.addField("text", getNode().getFulltext().toString());
+            doc.addField("last_modified", new Date());
+            doc.addField("date", month_date.format(new Date()));
+            doc.addField("category", getNode().getParent().getId());
+            client.add(doc);
+            client.commit();
+        } catch (Exception s) {
+            s.printStackTrace();
+        }
+    }
 
-	private String checkDuplication() {
-		try {
-			String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
-			if (solrurl.equals("")) return "";
-			SolrClient client = new HttpSolrClient.Builder(solrurl).build();
+    private String checkDuplication() {
+        try {
+            String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+            if (solrurl.equals("")) return "";
+            SolrClient client = new HttpSolrClient.Builder(solrurl).build();
 
-			SolrQuery query = new SolrQuery();
-			query.setQuery("*:*");
-			query.setFilterQueries("jeaseid:\"" + id.getValue() + "\" ");
-			query.setFilterQueries("jeasepath:\"" + getNode().getPath() + "\"");
-			SolrDocumentList results = client.query(query).getResults();
-			if (results.size() > 0) {
-				return results.get(0).getFieldValue("id").toString();
-			}
-		} catch (Exception s) {
-			s.printStackTrace();
-		}
-		return "";
-	}
+            SolrQuery query = new SolrQuery();
+            query.setQuery("*:*");
+            query.setFilterQueries("jeaseid:\"" + id.getValue() + "\" ");
+            query.setFilterQueries("jeasepath:\"" + getNode().getPath() + "\"");
+            SolrDocumentList results = client.query(query).getResults();
+            if (results.size() > 0) {
+                return results.get(0).getFieldValue("id").toString();
+            }
+        } catch (Exception s) {
+            s.printStackTrace();
+        }
+        return "";
+    }
 
-	public void deleteToSolr(String docid) {
-		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
-		if (solrurl.equals("")) return;
+    public void deleteToSolr(String docid) {
+        String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+        if (solrurl.equals("")) return;
 
-		HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
-		try {
-			solr.deleteById(docid);
-			solr.commit();
-		}catch(Exception d){
-			d.printStackTrace();
-		}
-	}
-	public void updateToSolr(String docid) {
-		String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
-		if (solrurl.equals("")) return;
+        HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
+        try {
+            solr.deleteById(docid);
+            solr.commit();
+        }catch(Exception d){
+            d.printStackTrace();
+        }
+    }
+    public void updateToSolr(String docid) {
+        String solrurl = jease.Registry.getParameter(jease.Names.JEASE_SOLR_URL, "");
+        if (solrurl.equals("")) return;
 
-		HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
-		try {
-			SolrInputDocument document = new SolrInputDocument();
-			document.addField("id",docid);
-			Map<String, Object> fieldModifier = new HashMap<>(1);
-			fieldModifier.put("set", this.getNode().getFulltext());
-			document.addField("text", fieldModifier);
+        HttpSolrClient solr = new HttpSolrClient.Builder(solrurl).build();
+        try {
+            SolrInputDocument document = new SolrInputDocument();
+            document.addField("id",docid);
+            Map<String, Object> fieldModifier = new HashMap<>(1);
+            fieldModifier.put("set", this.getNode().getFulltext());
+            document.addField("text", fieldModifier);
 
-			Map<String, Object> fieldModifier1 = new HashMap<>(1);
-			fieldModifier1.put("set", this.getNode().getTitle());
-			document.addField("title", fieldModifier1);
+            Map<String, Object> fieldModifier1 = new HashMap<>(1);
+            fieldModifier1.put("set", this.getNode().getTitle());
+            document.addField("title", fieldModifier1);
 
-			Map<String, Object> fieldModifier2 = new HashMap<>(1);
-			fieldModifier2.put("set", this.getNode().getTages());
-			document.addField("tags", fieldModifier2);
+            Map<String, Object> fieldModifier2 = new HashMap<>(1);
+            fieldModifier2.put("set", this.getNode().getTages());
+            document.addField("tags", fieldModifier2);
 
-			Map<String, Object> fieldModifier3 = new HashMap<>(1);
-			fieldModifier3.put("set", new Date());
-			document.addField("last_modified", fieldModifier3);
+            Map<String, Object> fieldModifier3 = new HashMap<>(1);
+            fieldModifier3.put("set", new Date());
+            document.addField("last_modified", fieldModifier3);
 
-			Map<String, Object> fieldModifier4 = new HashMap<>(1);
-			fieldModifier4.put("set", month_date.format(new Date()));
-			document.addField("date", fieldModifier4);
+            Map<String, Object> fieldModifier4 = new HashMap<>(1);
+            fieldModifier4.put("set", month_date.format(new Date()));
+            document.addField("date", fieldModifier4);
 
-			Map<String, Object> fieldModifier5 = new HashMap<>(1);
-			fieldModifier5.put("set", id.getValue());
-			document.addField("jeaseid", fieldModifier5);
+            Map<String, Object> fieldModifier5 = new HashMap<>(1);
+            fieldModifier5.put("set", id.getValue());
+            document.addField("jeaseid", fieldModifier5);
 
-			solr.add(document);
-			solr.commit();
-		} catch (Exception s) {
-			s.printStackTrace();
-		}
-	}
+            solr.add(document);
+            solr.commit();
+        } catch (Exception s) {
+            s.printStackTrace();
+        }
+    }
 
-	protected void saveLastModification() {
-		User lastEditor = getNode().getEditor();
-		User currentUser = getSessionUser();
-		if (lastEditor == null || lastEditor.isAdministrator()
-				|| !currentUser.isAdministrator()) {
-			getNode().setEditor(currentUser);
-			getNode().setLastModified(new Date());
-		}
-	}
+    protected void saveLastModification() {
+        User lastEditor = getNode().getEditor();
+        User currentUser = getSessionUser();
+        if (lastEditor == null || lastEditor.isAdministrator()
+                || !currentUser.isAdministrator()) {
+            getNode().setEditor(currentUser);
+            getNode().setLastModified(new Date());
+        }
+    }
 
-	protected void persist() {
-		if (Revisions.isConfigured()) {
-			Revisions.checkin(getSessionUser().getLogin(), getNode());
-		}
-		Nodes.save(Contents.customize(getNode()));
-	}
+    protected void persist() {
+        if (Revisions.isConfigured()) {
+            Revisions.checkin(getSessionUser().getLogin(), getNode());
+        }
+        Nodes.save(Contents.customize(getNode()));
+    }
 
-	@Override
-	protected void doValidate() throws Exception {
-		if (StringUtils.isEmpty(id.getValue()) && id.isVisible()
-				&& !id.isDisabled()) {
-			id.setValue(title.getValue());
-		}
-		super.doValidate();
-		if (!isFactoryMode()) {
-			if (title.getParent() != null) {
-				validate(StringUtils.isEmpty(title.getValue()),
-						I18N.get("Title_is_required"));
-			}
-			validate(lastNodeModification != null
-							&& lastNodeModification != getNode().getLastModified(),
-					I18N.get("Content_is_stale"));
-			validate();
-		}
-	}
+    @Override
+    protected void doValidate() throws Exception {
+        if (StringUtils.isEmpty(id.getValue()) && id.isVisible()
+                && !id.isDisabled()) {
+            id.setValue(title.getValue());
+        }
+        super.doValidate();
+        if (!isFactoryMode()) {
+            if (title.getParent() != null) {
+                validate(StringUtils.isEmpty(title.getValue()),
+                        I18N.get("Title_is_required"));
+            }
+            validate(lastNodeModification != null
+                            && lastNodeModification != getNode().getLastModified(),
+                    I18N.get("Content_is_stale"));
+            validate();
+        }
+    }
 
-	@Override
-	public void doCopy() throws Exception {
-		super.doCopy();
-		if (revisionSelection.getParent() != null) {
-			revisionSelection.setValues(new Object[]{});
-		}
-		viewContent.setVisible(false);
-	}
+    @Override
+    public void doCopy() throws Exception {
+        super.doCopy();
+        if (revisionSelection.getParent() != null) {
+            revisionSelection.setValues(new Object[]{});
+        }
+        viewContent.setVisible(false);
+    }
 
-	@Override
-	public void delete() {
-		closeCheckEnabled = false;
-		getNode().setEditor(getSessionUser());
-		getNode().setLastModified(new Date());
-		deleteToSolr(checkDuplication());
-		Contents.delete(getNode());
-	}
+    @Override
+    public void delete() {
+        closeCheckEnabled = false;
+        getNode().setEditor(getSessionUser());
+        getNode().setLastModified(new Date());
+        deleteToSolr(checkDuplication());
+        Contents.delete(getNode());
+    }
 
-	protected User getSessionUser() {
-		return JeaseSession.get(User.class);
-	}
+    protected User getSessionUser() {
+        return JeaseSession.get(User.class);
+    }
 
-	@Override
-	public void hideButtons() {
-		super.hideButtons();
-		viewContent.setVisible(false);
-		editProperties.setVisible(false);
-	}
+    @Override
+    public void hideButtons() {
+        super.hideButtons();
+        viewContent.setVisible(false);
+        editProperties.setVisible(false);
+    }
 
-	protected boolean isFactoryMode() {
-		return JeaseSession.getContainer() instanceof Factory;
-	}
+    protected boolean isFactoryMode() {
+        return JeaseSession.getContainer() instanceof Factory;
+    }
 
-	protected void closePerformed(final Event event) {
-		if (closeCheckEnabled) {
-			final E currentNode = getNode();
-			String currentFulltext = getNode().getFulltext().toString();
-			try {
-				copyObject(false);
-				saveEditorToObject();
-				getNode().setParent(null);
-				String newFulltext = getNode().getFulltext().toString();
-				if (!StringUtils.equals(currentFulltext, newFulltext)) {
-					event.stopPropagation();
-					Modal.confirm(I18N.get("Are_you_sure"), evt -> {
-						closeCheckEnabled = false;
-						refresh();
-						fireClose();
-					});
-				}
-			} catch (Exception e) {
-				Modal.exception(e);
-				return;
-			} finally {
-				setObject(currentNode);
-			}
-		}
-	}
+    protected void closePerformed(final Event event) {
+        if (closeCheckEnabled) {
+            final E currentNode = getNode();
+            String currentFulltext = getNode().getFulltext().toString();
+            try {
+                copyObject(false);
+                saveEditorToObject();
+                getNode().setParent(null);
+                String newFulltext = getNode().getFulltext().toString();
+                if (!StringUtils.equals(currentFulltext, newFulltext)) {
+                    event.stopPropagation();
+                    Modal.confirm(I18N.get("Are_you_sure"), evt -> {
+                        closeCheckEnabled = false;
+                        refresh();
+                        fireClose();
+                    });
+                }
+            } catch (Exception e) {
+                Modal.exception(e);
+                return;
+            } finally {
+                setObject(currentNode);
+            }
+        }
+    }
 
-	protected void viewContent() {
-		final E currentNode = getNode();
-		try {
-			copyObject(false);
-			saveEditorToObject();
-			getNode().setParent(null);
-			Sessions.set(currentNode.getPath(), getNode());
-		} catch (Exception e) {
-			Modal.exception(e);
-			return;
-		} finally {
-			setObject(currentNode);
-		}
-		WebBrowser browser = new WebBrowser(getNode().getPath());
-		browser.addEventListener(Events.ON_CLOSE,
-				event -> Sessions.remove(currentNode.getPath()));
-		getRoot().appendChild(browser);
-	}
+    protected void viewContent() {
+        final E currentNode = getNode();
+        try {
+            copyObject(false);
+            saveEditorToObject();
+            getNode().setParent(null);
+            Sessions.set(currentNode.getPath(), getNode());
+        } catch (Exception e) {
+            Modal.exception(e);
+            return;
+        } finally {
+            setObject(currentNode);
+        }
+        WebBrowser browser = new WebBrowser(getNode().getPath());
+        browser.addEventListener(Events.ON_CLOSE,
+                event -> Sessions.remove(currentNode.getPath()));
+        getRoot().appendChild(browser);
+    }
 
 }

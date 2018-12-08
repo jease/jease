@@ -52,107 +52,107 @@ import org.zkoss.zk.ui.event.Events;
  */
 public class Application extends LoginWindow {
 
-	private String queryString = ZK.getQueryString();
-	private String navigationClassName = Navigation.class.getName();
-	private String configurationClassName = Configuration.class.getName();
+    private String queryString = ZK.getQueryString();
+    private String navigationClassName = Navigation.class.getName();
+    private String configurationClassName = Configuration.class.getName();
 
-	public Application() {
-		loginUser(JeaseSession.get(User.class));
-	}
+    public Application() {
+        loginUser(JeaseSession.get(User.class));
+    }
 
-	public String getTitle() {
-		return Executions.getCurrent().getDesktop().getFirstPage().getTitle();
-	}
+    public String getTitle() {
+        return Executions.getCurrent().getDesktop().getFirstPage().getTitle();
+    }
 
-	public void doLogin(String login, String password) {
-		loginUser(getAuthenticator().identify(login, password));
-	}
+    public void doLogin(String login, String password) {
+        loginUser(getAuthenticator().identify(login, password));
+    }
 
-	private void loginUser(User user) {
-		if (user != null && !user.isDisabled() && Users.isStored(user)) {
-			notifyAboutMaintenance(user);
-			initSession(user);
-		}
-	}
+    private void loginUser(User user) {
+        if (user != null && !user.isDisabled() && Users.isStored(user)) {
+            notifyAboutMaintenance(user);
+            initSession(user);
+        }
+    }
 
-	private Authenticator getAuthenticator() {
-		try {
-			String authenticator = Registry
-					.getParameter(Names.JEASE_CMS_AUTHENTICATOR);
-			if (StringUtils.isNotBlank(authenticator)) {
-				return (Authenticator) Reflections.newInstance(authenticator);
-			}
-		} catch (RuntimeException e) {
-			Modal.exception(e);
-		}
-		return new Authenticator();
-	}
+    private Authenticator getAuthenticator() {
+        try {
+            String authenticator = Registry
+                    .getParameter(Names.JEASE_CMS_AUTHENTICATOR);
+            if (StringUtils.isNotBlank(authenticator)) {
+                return (Authenticator) Reflections.newInstance(authenticator);
+            }
+        } catch (RuntimeException e) {
+            Modal.exception(e);
+        }
+        return new Authenticator();
+    }
 
-	private void initSession(User user) {
-		initBrowserInfo();
-		storeLastSession(user);
-		JeaseSession.set(user);
-		if (ArrayUtils.isNotEmpty(user.getRoots())) {
-			JeaseSession.setConfig((JeaseConfig) Reflections
-					.newInstance(configurationClassName));
-			JeaseSession.setFilter(new NodeFilter(JeaseSession.getConfig()
-					.newNodes()));
-			JeaseSession.setRoots(user.getRoots());
-			if (queryString != null) {
-				Node node = Nodes.getByPath(queryString);
-				if (JeaseSession.getFilter().isAccepted(node)) {
-					JeaseSession.setContainer(node);
-				}
-			}
-			if (JeaseSession.getContainer() == null
-					|| !JeaseSession.getContainer().isDescendant(
-							user.getRoots())) {
-				JeaseSession.setContainer(user.getRoots()[0]);
-			}
-		}
-		updatePageTitle(user);
-		showNavigation();
-	}
+    private void initSession(User user) {
+        initBrowserInfo();
+        storeLastSession(user);
+        JeaseSession.set(user);
+        if (ArrayUtils.isNotEmpty(user.getRoots())) {
+            JeaseSession.setConfig((JeaseConfig) Reflections
+                    .newInstance(configurationClassName));
+            JeaseSession.setFilter(new NodeFilter(JeaseSession.getConfig()
+                    .newNodes()));
+            JeaseSession.setRoots(user.getRoots());
+            if (queryString != null) {
+                Node node = Nodes.getByPath(queryString);
+                if (JeaseSession.getFilter().isAccepted(node)) {
+                    JeaseSession.setContainer(node);
+                }
+            }
+            if (JeaseSession.getContainer() == null
+                    || !JeaseSession.getContainer().isDescendant(
+                            user.getRoots())) {
+                JeaseSession.setContainer(user.getRoots()[0]);
+            }
+        }
+        updatePageTitle(user);
+        showNavigation();
+    }
 
-	private void showNavigation() {
-		show((Tabbox<Object>) Reflections.newInstance(navigationClassName));
-	}
+    private void showNavigation() {
+        show((Tabbox<Object>) Reflections.newInstance(navigationClassName));
+    }
 
-	private void storeLastSession(User user) {
-		user.setLastSession(new Date());
-		Database.ext().persist(user);
-	}
+    private void storeLastSession(User user) {
+        user.setLastSession(new Date());
+        Database.ext().persist(user);
+    }
 
-	private void initBrowserInfo() {
-		getRoot().addEventListener(Events.ON_CLIENT_INFO, event -> {
-			ClientInfoEvent ce = (ClientInfoEvent) event;
-			JeaseSession.set(Names.JEASE_CMS_HEIGHT, ce.getDesktopHeight());
-			JeaseSession.set(Names.JEASE_CMS_WIDTH, ce.getDesktopWidth());
-		});
-	}
+    private void initBrowserInfo() {
+        getRoot().addEventListener(Events.ON_CLIENT_INFO, event -> {
+            ClientInfoEvent ce = (ClientInfoEvent) event;
+            JeaseSession.set(Names.JEASE_CMS_HEIGHT, ce.getDesktopHeight());
+            JeaseSession.set(Names.JEASE_CMS_WIDTH, ce.getDesktopWidth());
+        });
+    }
 
-	private void notifyAboutMaintenance(User user) {
-		String message = Registry.getParameter(Names.JEASE_CMS_MAINTENANCE);
-		if (StringUtils.isNotBlank(message)) {
-			if (user.isAdministrator()) {
-				Modal.info(message);
-			} else {
-				Modal.info(message, event -> Sessions.invalidate());
-			}
-		}
-	}
+    private void notifyAboutMaintenance(User user) {
+        String message = Registry.getParameter(Names.JEASE_CMS_MAINTENANCE);
+        if (StringUtils.isNotBlank(message)) {
+            if (user.isAdministrator()) {
+                Modal.info(message);
+            } else {
+                Modal.info(message, event -> Sessions.invalidate());
+            }
+        }
+    }
 
-	private void updatePageTitle(User user) {
-		String status = String.format("%s@%s", user.getLogin(), getTitle());
-		Executions.getCurrent().getDesktop().getFirstPage().setTitle(status);
-	}
+    private void updatePageTitle(User user) {
+        String status = String.format("%s@%s", user.getLogin(), getTitle());
+        Executions.getCurrent().getDesktop().getFirstPage().setTitle(status);
+    }
 
-	public void setNavigation(String classname) {
-		this.navigationClassName = classname;
-	}
+    public void setNavigation(String classname) {
+        this.navigationClassName = classname;
+    }
 
-	public void setConfiguration(String classname) {
-		this.configurationClassName = classname;
-	}
+    public void setConfiguration(String classname) {
+        this.configurationClassName = classname;
+    }
 
 }

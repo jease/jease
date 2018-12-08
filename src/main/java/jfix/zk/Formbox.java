@@ -23,78 +23,78 @@ import org.zkoss.zul.impl.InputElement;
 
 public class Formbox extends Grid {
 
-	public Formbox() {
-		setStyle("border: none;");
-		setOddRowSclass("none");
-	}
+    public Formbox() {
+        setStyle("border: none;");
+        setOddRowSclass("none");
+    }
 
-	public org.zkoss.zul.Row add(String name) {
-		return add(name, null, null);
-	}
+    public org.zkoss.zul.Row add(String name) {
+        return add(name, null, null);
+    }
 
-	public org.zkoss.zul.Row add(String name, Component component) {
-		return add(name, component, null);
-	}
+    public org.zkoss.zul.Row add(String name, Component component) {
+        return add(name, component, null);
+    }
 
-	public org.zkoss.zul.Row add(Component component) {
-		return add(null, component, null);
-	}
+    public org.zkoss.zul.Row add(Component component) {
+        return add(null, component, null);
+    }
 
-	public org.zkoss.zul.Row add(String name, Component component, String description) {
-		org.zkoss.zul.Row row = new org.zkoss.zul.Row();
-		if (description != null) {
-			row.setTooltiptext(description);
-		}
+    public org.zkoss.zul.Row add(String name, Component component, String description) {
+        org.zkoss.zul.Row row = new org.zkoss.zul.Row();
+        if (description != null) {
+            row.setTooltiptext(description);
+        }
 
-		if (name != null) {
-			Label label = newLabel(name, component);
-			if (component == null) {
-				label.setStyle("font-weight: bold");
-			}
-			Cell cell = new Cell(label);
-			cell.setHflex("1");
-			if (component == null) {
-				cell.setColspan(2);
-			}
-			row.appendChild(cell);
-		}
+        if (name != null) {
+            Label label = newLabel(name, component);
+            if (component == null) {
+                label.setStyle("font-weight: bold");
+            }
+            Cell cell = new Cell(label);
+            cell.setHflex("1");
+            if (component == null) {
+                cell.setColspan(2);
+            }
+            row.appendChild(cell);
+        }
 
-		if (component != null) {
-			for (Component child : ZK.getDescendants(component)) {
-				if (child instanceof Textbox) {
-					((InputElement) child).setHflex("1");
-				}
-			}
-			Cell cell = new Cell(component);
-			cell.setHflex("6");
-			if (name == null) {
-				cell.setColspan(2);
-			}
-			row.appendChild(cell);
-		}
+        if (component != null) {
+            for (Component child : ZK.getDescendants(component)) {
+                if (child instanceof Textbox) {
+                    ((InputElement) child).setHflex("1");
+                }
+            }
+            Cell cell = new Cell(component);
+            cell.setHflex("6");
+            if (name == null) {
+                cell.setColspan(2);
+            }
+            row.appendChild(cell);
+        }
 
-		getRows().appendChild(row);
-		return row;
-	}
+        getRows().appendChild(row);
+        return row;
+    }
 
-	public boolean contains(Component comp) {
-		return ZK.getDescendants(this).contains(comp);
-	}
+    public boolean contains(Component comp) {
+        return ZK.getDescendants(this).contains(comp);
+    }
 
-	public void remove(Component comp) {
-		if (contains(comp)) {
-			comp.getParent().getParent().setParent(null);
-			comp.getParent().setParent(null);
-			comp.setParent(null);
-		}
-	}
+    public void remove(Component comp) {
+        if (contains(comp)) {
+            comp.getParent().getParent().setParent(null);
+            comp.getParent().setParent(null);
+            comp.setParent(null);
+        }
+    }
 
-	public void setLabel(String name, Component comp) {
-		((Label) comp.getParent().getParent().getFirstChild().getFirstChild())
-				.setValue(name);
-	}
+    public void setLabel(String name, Component comp) {
+        ((Label) comp.getParent().getParent().getFirstChild().getFirstChild())
+                .setValue(name);
+    }
 
-	protected Label newLabel(String name, Component component) {
-		return new Label(name);
-	}
+    protected Label newLabel(String name, Component component) {
+        return new Label(name);
+    }
 }

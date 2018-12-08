@@ -48,99 +48,99 @@ import jfix.zk.ZK;
  */
 public class Setup extends Div {
 
-	public Setup() {
-		init();
-	}
+    public Setup() {
+        init();
+    }
 
-	public void init() {
-		setupParameter();
-		setupContent();
-		setupRoles();
-		setupAdministrator();
-	}
+    public void init() {
+        setupParameter();
+        setupContent();
+        setupRoles();
+        setupAdministrator();
+    }
 
-	public void setupParameter() {
-		if (Database.query(Parameter.class).isEmpty()) {
-			for (Parameter parameter : new Parameter[] {
-					new Parameter(Names.JEASE_SITE_DESIGN, "simple"),
-					new Parameter(Names.JEASE_SITE_META, "keywords java cms,jease, java portal, zk admin, zk dashboard\ndescription Jease means Java with Ease, so Jease promises to keep simple things simple and the hard things easy. \nauthor jease"),
-					new Parameter(Names.JEASE_REVISION_COUNT, "10"),
-					new Parameter(Names.JEASE_REVISION_DAYS, "30") }) {
-				Database.save(parameter);
-			}
-		}
-	}
+    public void setupParameter() {
+        if (Database.query(Parameter.class).isEmpty()) {
+            for (Parameter parameter : new Parameter[] {
+                    new Parameter(Names.JEASE_SITE_DESIGN, "simple"),
+                    new Parameter(Names.JEASE_SITE_META, "keywords java cms,jease, java portal, zk admin, zk dashboard\ndescription Jease means Java with Ease, so Jease promises to keep simple things simple and the hard things easy. \nauthor jease"),
+                    new Parameter(Names.JEASE_REVISION_COUNT, "10"),
+                    new Parameter(Names.JEASE_REVISION_DAYS, "30") }) {
+                Database.save(parameter);
+            }
+        }
+    }
 
-	public void setupContent() {
-		if (Nodes.getRoot() == null) {
-			Folder folder = new Folder();
-			folder.setId("");
-			folder.setTitle(I18N.get("JeaseCMS"));
-			folder.setLastModified(new Date());
-			folder.setVisible(true);
-			folder.setProperties(new Property[] { new StringProperty("root") }); // workaround for ZooDb bug: https://github.com/tzaeschke/zoodb/issues/98
-			Nodes.setRoot(folder);
-			Nodes.save(folder);
+    public void setupContent() {
+        if (Nodes.getRoot() == null) {
+            Folder folder = new Folder();
+            folder.setId("");
+            folder.setTitle(I18N.get("JeaseCMS"));
+            folder.setLastModified(new Date());
+            folder.setVisible(true);
+            folder.setProperties(new Property[] { new StringProperty("root") }); // workaround for ZooDb bug: https://github.com/tzaeschke/zoodb/issues/98
+            Nodes.setRoot(folder);
+            Nodes.save(folder);
 
-			Text text = new Text();
-			text.setId("index.html");
-			text.setTitle("Welcome to Jease!");
-			text.setContent("<h2>This page was automatically created by the setup process.</h2><p>Feel free to <i>edit</i> or <b>delete</b> it.</p>");
-			text.setLastModified(new Date());
-			text.setParent(folder);
-			Nodes.save(text);
-		}
-	}
+            Text text = new Text();
+            text.setId("index.html");
+            text.setTitle("Welcome to Jease!");
+            text.setContent("<h2>This page was automatically created by the setup process.</h2><p>Feel free to <i>edit</i> or <b>delete</b> it.</p>");
+            text.setLastModified(new Date());
+            text.setParent(folder);
+            Nodes.save(text);
+        }
+    }
 
-	public void setupRoles() {
-		if (Database.query(Role.class).isEmpty()) {
-			Role administrator = new Role();
-			administrator.setName(I18N.get("Administrator"));
-			administrator.setAdministrator(true);
-			administrator.setTypes(Contents.getClassNamesForAvailableTypes());
-			Database.save(administrator);
+    public void setupRoles() {
+        if (Database.query(Role.class).isEmpty()) {
+            Role administrator = new Role();
+            administrator.setName(I18N.get("Administrator"));
+            administrator.setAdministrator(true);
+            administrator.setTypes(Contents.getClassNamesForAvailableTypes());
+            Database.save(administrator);
 
-			Role editor = new Role();
-			editor.setName(I18N.get("Editor"));
-			editor.setTypes(Stream
-					.of(Contents.getClassNamesForAvailableTypes())
-					.filter(type ->
-							!(type.equals(Factory.class.getName())
-							|| type.equals(Script.class.getName())
-							|| type.equals(Transit.class.getName()))
-					)
-					.toArray(String[]::new));
-			Database.save(editor);
-		}
-	}
+            Role editor = new Role();
+            editor.setName(I18N.get("Editor"));
+            editor.setTypes(Stream
+                    .of(Contents.getClassNamesForAvailableTypes())
+                    .filter(type ->
+                            !(type.equals(Factory.class.getName())
+                            || type.equals(Script.class.getName())
+                            || type.equals(Transit.class.getName()))
+                    )
+                    .toArray(String[]::new));
+            Database.save(editor);
+        }
+    }
 
-	public void setupAdministrator() {
-		if (Users.queryAdministrators().isEmpty()) {
-			Role admin = Database.queryUnique(Role.class, role -> role
-					.getName().equals(I18N.get("Administrator")));
-			final User administrator = new User();
-			administrator.setRole(admin);
-			administrator.setRoots(new Folder[] { (Folder) Nodes.getRoot() });
+    public void setupAdministrator() {
+        if (Users.queryAdministrators().isEmpty()) {
+            Role admin = Database.queryUnique(Role.class, role -> role
+                    .getName().equals(I18N.get("Administrator")));
+            final User administrator = new User();
+            administrator.setRole(admin);
+            administrator.setRoots(new Folder[] { (Folder) Nodes.getRoot() });
 
-			final Window window = new Window(I18N.get("Setup_Administrator"));
-			window.setClosable(false);
-			window.setParent(getRoot());
+            final Window window = new Window(I18N.get("Setup_Administrator"));
+            window.setClosable(false);
+            window.setParent(getRoot());
 
-			final Editor editor = new Editor();
-			editor.setObject(administrator);
-			editor.addEventListener(Events.ON_CHANGE, event -> {
-				window.close();
-				JeaseSession.set(administrator);
-				redirectToLogin();
-			});
-			editor.refresh();
-			editor.setParent(window);
-		} else {
-			redirectToLogin();
-		}
-	}
+            final Editor editor = new Editor();
+            editor.setObject(administrator);
+            editor.addEventListener(Events.ON_CHANGE, event -> {
+                window.close();
+                JeaseSession.set(administrator);
+                redirectToLogin();
+            });
+            editor.refresh();
+            editor.setParent(window);
+        } else {
+            redirectToLogin();
+        }
+    }
 
-	public void redirectToLogin() {
-		ZK.redirect("/cms");
-	}
+    public void redirectToLogin() {
+        ZK.redirect("/cms");
+    }
 }

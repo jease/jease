@@ -29,56 +29,56 @@ import jfix.zk.Modal;
 
 public class FileEditor<E extends File> extends ContentEditor<E> {
 
-	Mediafield media = new Mediafield();
+    Mediafield media = new Mediafield();
 
-	public FileEditor() {
-		media.setHeight(getPlainEditorHeight());
-		media.addEventListener(Events.ON_UPLOAD, evt -> {
-			if (media.getMedia() != null) {
-				uploadPerformed();
-			}
-		});
-		media.setUploadLimit(Registry.getParameter(Names.JEASE_UPLOAD_LIMIT));
-		compactHeader = true;
-	}
+    public FileEditor() {
+        media.setHeight(getPlainEditorHeight());
+        media.addEventListener(Events.ON_UPLOAD, evt -> {
+            if (media.getMedia() != null) {
+                uploadPerformed();
+            }
+        });
+        media.setUploadLimit(Registry.getParameter(Names.JEASE_UPLOAD_LIMIT));
+        compactHeader = true;
+    }
 
-	@Override
+    @Override
     public void init() {
-		add(I18N.get("File"));
-		add(media);
-	}
+        add(I18N.get("File"));
+        add(media);
+    }
 
-	@Override
+    @Override
     public void load() {
-		media.setMedia(getNode().getId(), getNode().getContentType(), getNode()
-				.getFile());
-	}
+        media.setMedia(getNode().getId(), getNode().getContentType(), getNode()
+                .getFile());
+    }
 
-	@Override
+    @Override
     public void save() {
-		getNode().setContentType(media.getContentType());
-		media.copyToFile(getNode().getFile());
-	}
+        getNode().setContentType(media.getContentType());
+        media.copyToFile(getNode().getFile());
+    }
 
-	@Override
+    @Override
     public void validate() {
-		validate(media.isEmpty(), I18N.get("File_is_required"));
-	}
+        validate(media.isEmpty(), I18N.get("File_is_required"));
+    }
 
-	protected void uploadPerformed() {
-		if (getObject().isValidContentType(media.getContentType())) {
-			String filename = media.getName();
-			if (StringUtils.isEmpty(id.getValue())) {
-				id.setText(filename);
-			}
-			if (StringUtils.isEmpty(title.getValue())) {
-				title.setText(FilenameUtils.removeExtension(filename));
-			}
-		} else {
-			Modal.error(I18N.get("Content_is_not_valid"));
-			media.setMedia(null);
-			refresh();
-		}
-	}
+    protected void uploadPerformed() {
+        if (getObject().isValidContentType(media.getContentType())) {
+            String filename = media.getName();
+            if (StringUtils.isEmpty(id.getValue())) {
+                id.setText(filename);
+            }
+            if (StringUtils.isEmpty(title.getValue())) {
+                title.setText(FilenameUtils.removeExtension(filename));
+            }
+        } else {
+            Modal.error(I18N.get("Content_is_not_valid"));
+            media.setMedia(null);
+            refresh();
+        }
+    }
 
 }

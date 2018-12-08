@@ -21,22 +21,22 @@ import jease.cms.domain.property.TextProperty;
 import org.zkoss.zul.Textbox;
 
 public class TextPropertyEditor extends Textbox implements
-		PropertyEditor<TextProperty> {
+        PropertyEditor<TextProperty> {
 
-	private TextProperty property;
+    private TextProperty property;
 
-	public TextPropertyEditor() {
-		setHeight("150px");
-	}
+    public TextPropertyEditor() {
+        setHeight("150px");
+    }
 
-	public TextProperty getProperty() {
-		property.setValue(getValue());
-		return property;
-	}
+    public TextProperty getProperty() {
+        property.setValue(getValue());
+        return property;
+    }
 
-	public void setProperty(TextProperty property) {
-		this.property = property;
-		setValue(property.getValue());
-	}
+    public void setProperty(TextProperty property) {
+        this.property = property;
+        setValue(property.getValue());
+    }
 
 }

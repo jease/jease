@@ -23,11 +23,11 @@ import jease.cms.domain.User;
  */
 public class Authenticator {
 
-	/**
-	 * Returns user for given login and password or null.
-	 */
-	public User identify(String login, String password) {
-		return Users.queryByLogin(login, password);
-	}
+    /**
+     * Returns user for given login and password or null.
+     */
+    public User identify(String login, String password) {
+        return Users.queryByLogin(login, password);
+    }
 
 }

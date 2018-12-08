@@ -20,30 +20,30 @@ import jfix.util.I18N;
 
 public class NodeException extends Exception {
 
-	/**
-	 * IllegalId is thrown when an id hasn't the correct format (e.g. by using
-	 * illegal characters).
-	 */
-	public static class IllegalId extends NodeException {
-	}
+    /**
+     * IllegalId is thrown when an id hasn't the correct format (e.g. by using
+     * illegal characters).
+     */
+    public static class IllegalId extends NodeException {
+    }
 
-	/**
-	 * IllegalDuplicate is thrown when a Node with the same id already exists in
-	 * a container.
-	 */
-	public static class IllegalDuplicate extends NodeException {
-	}
+    /**
+     * IllegalDuplicate is thrown when a Node with the same id already exists in
+     * a container.
+     */
+    public static class IllegalDuplicate extends NodeException {
+    }
 
-	/**
-	 * IllegalNesting is thrown when a Node is not allowed to be attached as a
-	 * child of a container. Most common reason: the possibility of an endless
-	 * recursion. It can also thrown when a container doesn't accept certain
-	 * types of Nodes.
-	 */
-	public static class IllegalNesting extends NodeException {
-	}
+    /**
+     * IllegalNesting is thrown when a Node is not allowed to be attached as a
+     * child of a container. Most common reason: the possibility of an endless
+     * recursion. It can also thrown when a container doesn't accept certain
+     * types of Nodes.
+     */
+    public static class IllegalNesting extends NodeException {
+    }
 
-	public String getMessage() {
-		return I18N.get(getClass().getSimpleName());
-	}
+    public String getMessage() {
+        return I18N.get(getClass().getSimpleName());
+    }
 }

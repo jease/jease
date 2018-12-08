@@ -23,64 +23,64 @@ import java.util.Date;
  */
 public class News extends Content {
 
-	private String teaser;
-	private String story;
-	private Date date;
+    private String teaser;
+    private String story;
+    private Date date;
 
-	public News() {
-	}
+    public News() {
+    }
 
-	public String getTeaser() {
-		return teaser;
-	}
+    public String getTeaser() {
+        return teaser;
+    }
 
-	public void setTeaser(String teaser) {
-		this.teaser = teaser;
-	}
+    public void setTeaser(String teaser) {
+        this.teaser = teaser;
+    }
 
-	public String getStory() {
-		return story;
-	}
+    public String getStory() {
+        return story;
+    }
 
-	public void setStory(String story) {
-		this.story = story;
-	}
+    public void setStory(String story) {
+        this.story = story;
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public StringBuilder getFulltext() {
-		return super
-				.getFulltext()
-				.append("\n")
-				.append(getTeaser())
-				.append("\n")
-				.append(getStory())
-				.append("\n")
-				.append(getDate() != null ? String.format("%tF", getDate())
-						: "");
-	}
+    public StringBuilder getFulltext() {
+        return super
+                .getFulltext()
+                .append("\n")
+                .append(getTeaser())
+                .append("\n")
+                .append(getStory())
+                .append("\n")
+                .append(getDate() != null ? String.format("%tF", getDate())
+                        : "");
+    }
 
-	public long getSize() {
-		return super.getSize() + getTeaser().length() + getStory().length();
-	}
+    public long getSize() {
+        return super.getSize() + getTeaser().length() + getStory().length();
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		setTeaser(getTeaser().replace(target, replacement));
-		setStory(getStory().replace(target, replacement));
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        setTeaser(getTeaser().replace(target, replacement));
+        setStory(getStory().replace(target, replacement));
+    }
 
-	public News copy(boolean recursive) {
-		News news = (News) super.copy(recursive);
-		news.setTeaser(getTeaser());
-		news.setStory(getStory());
-		news.setDate(getDate());
-		return news;
-	}
+    public News copy(boolean recursive) {
+        News news = (News) super.copy(recursive);
+        news.setTeaser(getTeaser());
+        news.setStory(getStory());
+        news.setDate(getDate());
+        return news;
+    }
 }

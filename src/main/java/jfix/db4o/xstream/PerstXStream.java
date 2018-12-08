@@ -23,30 +23,30 @@ import org.garret.perst.StorageFactory;
 
 public class PerstXStream {
 
-	private String databaseFile;
-	private String xstreamFile;
+    private String databaseFile;
+    private String xstreamFile;
 
-	public PerstXStream(String databaseFile, String xstreamFile) {
-		this.databaseFile = databaseFile;
-		this.xstreamFile = xstreamFile;
-	}
+    public PerstXStream(String databaseFile, String xstreamFile) {
+        this.databaseFile = databaseFile;
+        this.xstreamFile = xstreamFile;
+    }
 
-	public void toXML() {
-		Storage db = StorageFactory.getInstance().createStorage();
-		db.open(databaseFile);
-		new XStreamFile(xstreamFile).write((Set<Object>) db.getRoot());
-		db.close();
-	}
+    public void toXML() {
+        Storage db = StorageFactory.getInstance().createStorage();
+        db.open(databaseFile);
+        new XStreamFile(xstreamFile).write((Set<Object>) db.getRoot());
+        db.close();
+    }
 
-	public void fromXML() {
-		Storage db = StorageFactory.getInstance().createStorage();
-		db.open(databaseFile);
-		db.setRoot(db.createSet());
-		for (Object obj : new XStreamFile(xstreamFile).read()) {
-			((Set<Object>) db.getRoot()).add(obj);
-			db.store(obj);
-		}
-		db.commit();
-		db.close();
-	}
+    public void fromXML() {
+        Storage db = StorageFactory.getInstance().createStorage();
+        db.open(databaseFile);
+        db.setRoot(db.createSet());
+        for (Object obj : new XStreamFile(xstreamFile).read()) {
+            ((Set<Object>) db.getRoot()).add(obj);
+            db.store(obj);
+        }
+        db.commit();
+        db.close();
+    }
 }

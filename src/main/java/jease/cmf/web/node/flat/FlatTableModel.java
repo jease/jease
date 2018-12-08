@@ -26,53 +26,53 @@ import jfix.zk.ObjectTableModel;
 
 public class FlatTableModel extends ObjectTableModel<Node> {
 
-	private NodeTableModel<Node> nodeTableModel;
+    private NodeTableModel<Node> nodeTableModel;
 
-	public FlatTableModel(NodeTableModel<Node> nodeTableModel) {
-		this.nodeTableModel = nodeTableModel;
-	}
+    public FlatTableModel(NodeTableModel<Node> nodeTableModel) {
+        this.nodeTableModel = nodeTableModel;
+    }
 
-	public Node newObject() {
-		return null;
-	}
+    public Node newObject() {
+        return null;
+    }
 
-	public List<Node> getList() {
-		return Arrays.asList(nodeTableModel.getFilter().apply(
-				nodeTableModel.getContainer().getDescendants()));
-	}
+    public List<Node> getList() {
+        return Arrays.asList(nodeTableModel.getFilter().apply(
+                nodeTableModel.getContainer().getDescendants()));
+    }
 
-	public String[] getColumns() {
-		String[] oldCols = nodeTableModel.getColumns();
-		String[] newCols = new String[oldCols.length + 1];
-		newCols[0] = I18N.get("Path");
-		for (int i = 0; i < oldCols.length; i++) {
-			newCols[i + 1] = oldCols[i];
-		}
-		return newCols;
-	}
+    public String[] getColumns() {
+        String[] oldCols = nodeTableModel.getColumns();
+        String[] newCols = new String[oldCols.length + 1];
+        newCols[0] = I18N.get("Path");
+        for (int i = 0; i < oldCols.length; i++) {
+            newCols[i + 1] = oldCols[i];
+        }
+        return newCols;
+    }
 
-	public int[] getProportions() {
-		int[] oldProps = nodeTableModel.getProportions();
-		int[] newProps = new int[oldProps.length + 1];
-		newProps[0] = 1;
-		for (int i = 0; i < oldProps.length; i++) {
-			newProps[i + 1] = oldProps[i];
-			if (oldProps[i] > newProps[0]) {
-				newProps[0] = oldProps[i];
-			}
-		}
-		return newProps;
-	}
+    public int[] getProportions() {
+        int[] oldProps = nodeTableModel.getProportions();
+        int[] newProps = new int[oldProps.length + 1];
+        newProps[0] = 1;
+        for (int i = 0; i < oldProps.length; i++) {
+            newProps[i + 1] = oldProps[i];
+            if (oldProps[i] > newProps[0]) {
+                newProps[0] = oldProps[i];
+            }
+        }
+        return newProps;
+    }
 
-	public Object getValue(final Node content, int column) {
-		if (column == 0) {
-			return content.getPath();
-		} else {
-			return nodeTableModel.getValue(content, column - 1);
-		}
-	}
+    public Object getValue(final Node content, int column) {
+        if (column == 0) {
+            return content.getPath();
+        } else {
+            return nodeTableModel.getValue(content, column - 1);
+        }
+    }
 
-	public Object[] getSearchValues(Node content) {
-		return nodeTableModel.getSearchValues(content);
-	}
+    public Object[] getSearchValues(Node content) {
+        return nodeTableModel.getSearchValues(content);
+    }
 }

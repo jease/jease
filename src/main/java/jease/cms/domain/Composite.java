@@ -24,14 +24,14 @@ package jease.cms.domain;
  */
 public class Composite extends Content {
 
-	public Composite() {
-	}
+    public Composite() {
+    }
 
-	public boolean isContainer() {
-		return true;
-	}
+    public boolean isContainer() {
+        return true;
+    }
 
-	public Composite copy(boolean recursive) {
-		return (Composite) super.copy(recursive);
-	}
+    public Composite copy(boolean recursive) {
+        return (Composite) super.copy(recursive);
+    }
 }

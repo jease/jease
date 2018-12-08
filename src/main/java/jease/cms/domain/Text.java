@@ -23,54 +23,54 @@ package jease.cms.domain;
  */
 public class Text extends Content {
 
-	private String content;
-	private String tags;
-	private boolean plain;
+    private String content;
+    private String tags;
+    private boolean plain;
 
-	public Text() {
-	}
+    public Text() {
+    }
 
-	public String getTags() {
-		return tags;
-	}
+    public String getTags() {
+        return tags;
+    }
 
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public boolean isPlain() {
-		return plain;
-	}
+    public boolean isPlain() {
+        return plain;
+    }
 
-	public void setPlain(boolean plain) {
-		this.plain = plain;
-	}
+    public void setPlain(boolean plain) {
+        this.plain = plain;
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(getContent());
-	}
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n").append(getContent());
+    }
 
-	public long getSize() {
-		return super.getSize() + getContent().length();
-	}
+    public long getSize() {
+        return super.getSize() + getContent().length();
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		setContent(getContent().replace(target, replacement));
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        setContent(getContent().replace(target, replacement));
+    }
 
-	public Text copy(boolean recursive) {
-		Text text = (Text) super.copy(recursive);
-		text.setContent(getContent());
-		text.setPlain(isPlain());
-		return text;
-	}
+    public Text copy(boolean recursive) {
+        Text text = (Text) super.copy(recursive);
+        text.setContent(getContent());
+        text.setPlain(isPlain());
+        return text;
+    }
 }

@@ -29,51 +29,51 @@ import org.apache.commons.lang3.ArrayUtils;
  */
 public class Role extends Persistent {
 
-	private String name;
-	private String[] types;
-	private boolean administrator;
+    private String name;
+    private String[] types;
+    private boolean administrator;
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String[] getTypes() {
-		return types;
-	}
+    public String[] getTypes() {
+        return types;
+    }
 
-	public void setTypes(String[] types) {
-		this.types = types;
-	}
+    public void setTypes(String[] types) {
+        this.types = types;
+    }
 
-	public boolean containsType(Class<? extends Node> clazz) {
-		return ArrayUtils.contains(types, clazz.getName());
-	}
+    public boolean containsType(Class<? extends Node> clazz) {
+        return ArrayUtils.contains(types, clazz.getName());
+    }
 
-	public boolean isAdministrator() {
-		return administrator;
-	}
+    public boolean isAdministrator() {
+        return administrator;
+    }
 
-	public void setAdministrator(boolean administrator) {
-		this.administrator = administrator;
-	}
+    public void setAdministrator(boolean administrator) {
+        this.administrator = administrator;
+    }
 
-	/**
-	 * Returns an array of freshly instantiated Nodes from types belonging to
-	 * this role.
-	 */
-	public Node[] getNodes() {
-		Node[] nodes = new Node[types.length];
-		for (int i = 0; i < nodes.length; i++) {
-			nodes[i] = (Node) Reflections.newInstance(types[i]);
-		}
-		return nodes;
-	}
+    /**
+     * Returns an array of freshly instantiated Nodes from types belonging to
+     * this role.
+     */
+    public Node[] getNodes() {
+        Node[] nodes = new Node[types.length];
+        for (int i = 0; i < nodes.length; i++) {
+            nodes[i] = (Node) Reflections.newInstance(types[i]);
+        }
+        return nodes;
+    }
 
-	public String toString() {
-		return "" + name;
-	}
+    public String toString() {
+        return "" + name;
+    }
 }

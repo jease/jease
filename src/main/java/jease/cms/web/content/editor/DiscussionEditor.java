@@ -23,29 +23,29 @@ import org.zkoss.zul.Textbox;
 
 public class DiscussionEditor extends ContentEditor<Discussion> {
 
-	Textbox author = new Textbox();
-	Textbox comment = new Textbox();
+    Textbox author = new Textbox();
+    Textbox comment = new Textbox();
 
-	public DiscussionEditor() {
-		comment.setRows(10);
-	}
+    public DiscussionEditor() {
+        comment.setRows(10);
+    }
 
-	public void init() {
-		add(I18N.get("Author"), author);
-		add(I18N.get("Comment"), comment);
-	}
+    public void init() {
+        add(I18N.get("Author"), author);
+        add(I18N.get("Comment"), comment);
+    }
 
-	public void load() {
-		author.setText(getNode().getAuthor());
-		comment.setText(getNode().getComment());
-	}
+    public void load() {
+        author.setText(getNode().getAuthor());
+        comment.setText(getNode().getComment());
+    }
 
-	public void save() {
-		getNode().setAuthor(author.getText());
-		getNode().setComment(comment.getText());
-	}
+    public void save() {
+        getNode().setAuthor(author.getText());
+        getNode().setComment(comment.getText());
+    }
 
-	public void validate() {
-	}
+    public void validate() {
+    }
 
 }

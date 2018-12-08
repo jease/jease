@@ -22,18 +22,18 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Fileupload extends org.zkoss.zul.Button {
 
-	public Fileupload() {
-		this(I18N.get("Upload"), Images.UserHome);
-	}
+    public Fileupload() {
+        this(I18N.get("Upload"), Images.UserHome);
+    }
 
-	public Fileupload(String label, String image) {
-		super(label, image);
-		setUpload("true");
-	}
+    public Fileupload(String label, String image) {
+        super(label, image);
+        setUpload("true");
+    }
 
-	public void setUploadLimit(String limit) {
-		if (StringUtils.isNotBlank(limit)) {
-			setUpload("true,maxsize=" + limit);
-		}
-	}
+    public void setUploadLimit(String limit) {
+        if (StringUtils.isNotBlank(limit)) {
+            setUpload("true,maxsize=" + limit);
+        }
+    }
 }

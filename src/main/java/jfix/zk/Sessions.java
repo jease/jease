@@ -24,52 +24,52 @@ import org.zkoss.zk.ui.Executions;
 
 public class Sessions {
 
-	public static void set(Object object) {
-		if (object != null) {
-			getSession().setAttribute(object.getClass().toString(), object);
-		}
-	}
+    public static void set(Object object) {
+        if (object != null) {
+            getSession().setAttribute(object.getClass().toString(), object);
+        }
+    }
 
-	public static void set(String key, Object value) {
-		getSession().setAttribute(key, value);
-	}
+    public static void set(String key, Object value) {
+        getSession().setAttribute(key, value);
+    }
 
-	public static <E> E get(Class<E> clazz) {
-		return (E) getSession().getAttribute(clazz.toString());
-	}
+    public static <E> E get(Class<E> clazz) {
+        return (E) getSession().getAttribute(clazz.toString());
+    }
 
-	public static Object get(String key) {
-		return getSession().getAttribute(key);
-	}
+    public static Object get(String key) {
+        return getSession().getAttribute(key);
+    }
 
-	public static <E> E get(String key, E defaultValue) {
-		Object value = get(key);
-		if (value == null) {
-			return defaultValue;
-		} else {
-			return (E) value;
-		}
-	}
+    public static <E> E get(String key, E defaultValue) {
+        Object value = get(key);
+        if (value == null) {
+            return defaultValue;
+        } else {
+            return (E) value;
+        }
+    }
 
-	public static void remove(Class<?> clazz) {
-		remove(clazz.toString());
-	}
+    public static void remove(Class<?> clazz) {
+        remove(clazz.toString());
+    }
 
-	public static void remove(String key) {
-		getSession().removeAttribute(key);
-	}
+    public static void remove(String key) {
+        getSession().removeAttribute(key);
+    }
 
-	public static void invalidate() {
-		HttpSession session = getSession();
-		for (Object name : Collections.list(session.getAttributeNames())) {
-			session.removeAttribute((String) name);
-		}
-		Executions.getCurrent().sendRedirect("");
-	}
+    public static void invalidate() {
+        HttpSession session = getSession();
+        for (Object name : Collections.list(session.getAttributeNames())) {
+            session.removeAttribute((String) name);
+        }
+        Executions.getCurrent().sendRedirect("");
+    }
 
-	public static HttpSession getSession() {
-		return (HttpSession) Executions.getCurrent().getSession()
-				.getNativeSession();
-	}
+    public static HttpSession getSession() {
+        return (HttpSession) Executions.getCurrent().getSession()
+                .getNativeSession();
+    }
 
 }

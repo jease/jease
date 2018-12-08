@@ -32,43 +32,43 @@ import java.util.UUID;
  */
 public class Blob extends Persistent implements Persistent.Value {
 
-	protected static transient String JAVA_IO_TMPDIR = System
-			.getProperty("java.io.tmpdir") + File.separator;
+    protected static transient String JAVA_IO_TMPDIR = System
+            .getProperty("java.io.tmpdir") + File.separator;
 
-	protected transient String path;
-	protected String id = UUID.randomUUID().toString(); // should not be final, JDO usually ignores static and final fields
+    protected transient String path;
+    protected String id = UUID.randomUUID().toString(); // should not be final, JDO usually ignores static and final fields
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public File getFile() {
-		return new File(path != null ? path : (JAVA_IO_TMPDIR + id));
-	}
+    public File getFile() {
+        return new File(path != null ? path : (JAVA_IO_TMPDIR + id));
+    }
 
-	public String toString() {
-		return id;
-	}
+    public String toString() {
+        return id;
+    }
 
-	protected void initPath(String blobDirectory) {
-		if (path == null) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(blobDirectory).append("blob").append(File.separator);
-			sb.append(id.substring(0, 2)).append(File.separator);
-			sb.append(id.substring(2, 4)).append(File.separator);
-			new File(sb.toString()).mkdirs();
-			File source = getFile();
-			path = sb.append(id).toString();
-			File target = getFile();
-			if (source.exists() && !target.exists()) {
-				try {
-					Files.move(source.toPath(), target.toPath(),
-							StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
-	}
+    protected void initPath(String blobDirectory) {
+        if (path == null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(blobDirectory).append("blob").append(File.separator);
+            sb.append(id.substring(0, 2)).append(File.separator);
+            sb.append(id.substring(2, 4)).append(File.separator);
+            new File(sb.toString()).mkdirs();
+            File source = getFile();
+            path = sb.append(id).toString();
+            File target = getFile();
+            if (source.exists() && !target.exists()) {
+                try {
+                    Files.move(source.toPath(), target.toPath(),
+                            StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
 
 }

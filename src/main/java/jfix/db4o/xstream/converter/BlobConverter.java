@@ -27,33 +27,33 @@ import com.thoughtworks.xstream.core.util.Base64Encoder;
 
 public class BlobConverter implements SingleValueConverter {
 
-	public boolean canConvert(Class clazz) {
-		return Blob.class.isAssignableFrom(clazz);
-	}
+    public boolean canConvert(Class clazz) {
+        return Blob.class.isAssignableFrom(clazz);
+    }
 
-	public String toString(Object obj) {
-		try {
-			File file = ((Blob) obj).getFile();
-			if (file.exists()) {
-				return new Base64Encoder().encode(FileUtils
-						.readFileToByteArray(file));
-			} else {
-				return "";
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    public String toString(Object obj) {
+        try {
+            File file = ((Blob) obj).getFile();
+            if (file.exists()) {
+                return new Base64Encoder().encode(FileUtils
+                        .readFileToByteArray(file));
+            } else {
+                return "";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
-	public Object fromString(String str) {
-		Blob blob = new Blob();
-		try {
-			FileUtils.writeByteArrayToFile(blob.getFile(),
-					new Base64Encoder().decode(str));
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-		return blob;
-	}
+    public Object fromString(String str) {
+        Blob blob = new Blob();
+        try {
+            FileUtils.writeByteArrayToFile(blob.getFile(),
+                    new Base64Encoder().decode(str));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        return blob;
+    }
 
 }

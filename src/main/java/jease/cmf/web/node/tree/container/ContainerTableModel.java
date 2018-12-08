@@ -25,38 +25,38 @@ import jfix.zk.ObjectTableModel;
 
 public class ContainerTableModel extends ObjectTableModel<Node> {
 
-	private NodeTableModel<Node> nodeTableModel;
+    private NodeTableModel<Node> nodeTableModel;
 
-	public ContainerTableModel(NodeTableModel<Node> nodeTableModel) {
-		this.nodeTableModel = nodeTableModel;
-	}
+    public ContainerTableModel(NodeTableModel<Node> nodeTableModel) {
+        this.nodeTableModel = nodeTableModel;
+    }
 
-	public Node newObject() {
-		return null;
-	}
+    public Node newObject() {
+        return null;
+    }
 
-	public List<Node> getList() {
-		return Arrays.asList(nodeTableModel.getFilter().apply(
-				nodeTableModel.getContainer().getChildren()));
-	}
+    public List<Node> getList() {
+        return Arrays.asList(nodeTableModel.getFilter().apply(
+                nodeTableModel.getContainer().getChildren()));
+    }
 
-	public String[] getColumns() {
-		return nodeTableModel.getColumns();
-	}
+    public String[] getColumns() {
+        return nodeTableModel.getColumns();
+    }
 
-	public int[] getProportions() {
-		return nodeTableModel.getProportions();
-	}
+    public int[] getProportions() {
+        return nodeTableModel.getProportions();
+    }
 
-	public Object getValue(Node content, int column) {
-		return nodeTableModel.getValue(content, column);
-	}
+    public Object getValue(Node content, int column) {
+        return nodeTableModel.getValue(content, column);
+    }
 
-	public Object[] getSearchValues(Node content) {
-		return nodeTableModel.getSearchValues(content);
-	}
+    public Object[] getSearchValues(Node content) {
+        return nodeTableModel.getSearchValues(content);
+    }
 
-	public boolean isSortable() {
-		return false;
-	}
+    public boolean isSortable() {
+        return false;
+    }
 }

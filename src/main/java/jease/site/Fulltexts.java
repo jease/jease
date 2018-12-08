@@ -37,66 +37,66 @@ import jfix.search.FullTextIndex;
  */
 public class Fulltexts {
 
-	private static Supplier<FullTextIndex<Content>> fullTextIndex = () -> {
-		FullTextIndex<Content> index = new FullTextIndex<>();
-		for (Content content : getContents()) {
-			index.add(content, Zsoup.parseBodyFragment(content.getFulltext().toString()).text());
-		}
-		index.commit();
-		return index;
-	};
+    private static Supplier<FullTextIndex<Content>> fullTextIndex = () -> {
+        FullTextIndex<Content> index = new FullTextIndex<>();
+        for (Content content : getContents()) {
+            index.add(content, Zsoup.parseBodyFragment(content.getFulltext().toString()).text());
+        }
+        index.commit();
+        return index;
+    };
 
-	private static Collection<Content> getContents() {
-		return Database.query(Content.class, $content -> isDefault($content) || isPublic($content));
-	}
+    private static Collection<Content> getContents() {
+        return Database.query(Content.class, $content -> isDefault($content) || isPublic($content));
+    }
 
-	/**
-	 * Checks if given content is default content of Folder or Reference.
-	 */
-	private static boolean isDefault(Content content) {
-		if (content.getParent() != null) {
-			Content parent = (Content) content.getParent();
-			if (isPublic(parent) && (((parent instanceof Folder) && ((Folder) parent).getContent() == content)
-					|| (((parent instanceof Reference) && ((Reference) parent).getContent() == content)))) {
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Checks if given content is default content of Folder or Reference.
+     */
+    private static boolean isDefault(Content content) {
+        if (content.getParent() != null) {
+            Content parent = (Content) content.getParent();
+            if (isPublic(parent) && (((parent instanceof Folder) && ((Folder) parent).getContent() == content)
+                    || (((parent instanceof Reference) && ((Reference) parent).getContent() == content)))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Checks if given content is available for public access.
-	 */
-	private static boolean isPublic(Content content) {
-		return content.isVisible() && ArrayUtils.isEmpty(content.getParents(Trash.class));
-	}
+    /**
+     * Checks if given content is available for public access.
+     */
+    private static boolean isPublic(Content content) {
+        return content.isVisible() && ArrayUtils.isEmpty(content.getParents(Trash.class));
+    }
 
-	/**
-	 * Returns all visible content which descends from given context and matches
-	 * the given query.
-	 */
-	public static List<Content> query(Content context, String query) {
-		try {
-			List<Content> result = new ArrayList<>();
-			for (Content content : Database.query(fullTextIndex).search(query)) {
-				// When content is child of a "paged container" (e.g.
-				// Composite), traverse upwards to the top-level container.
-				Content target = content;
-				while (target.getParent() != null && ((Content) target.getParent()).isPage()
-						&& target.getParent().isContainer()) {
-					target = (Content) target.getParent();
-				}
-				if (!result.contains(target) && (context == null || target.isDescendant(context))) {
-					result.add(target);
-				}
-			}
-			return result;
-		} catch (Exception e) {
-			return Collections.EMPTY_LIST;
-		}
-	}
+    /**
+     * Returns all visible content which descends from given context and matches
+     * the given query.
+     */
+    public static List<Content> query(Content context, String query) {
+        try {
+            List<Content> result = new ArrayList<>();
+            for (Content content : Database.query(fullTextIndex).search(query)) {
+                // When content is child of a "paged container" (e.g.
+                // Composite), traverse upwards to the top-level container.
+                Content target = content;
+                while (target.getParent() != null && ((Content) target.getParent()).isPage()
+                        && target.getParent().isContainer()) {
+                    target = (Content) target.getParent();
+                }
+                if (!result.contains(target) && (context == null || target.isDescendant(context))) {
+                    result.add(target);
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            return Collections.EMPTY_LIST;
+        }
+    }
 
-	public static List<Content> query(String query) {
-		return query(null, query);
-	}
+    public static List<Content> query(String query) {
+        return query(null, query);
+    }
 }

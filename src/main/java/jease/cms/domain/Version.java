@@ -27,35 +27,35 @@ import jfix.db4o.Persistent;
  */
 public class Version extends Persistent implements Persistent.Value {
 
-	private String info;
-	private Blob blob;
+    private String info;
+    private Blob blob;
 
-	private Version() {
-	}
+    private Version() {
+    }
 
-	public Version(String info, Blob blob) {
-	    this();
-		this.info = info;
-		this.blob = blob;
-	}
+    public Version(String info, Blob blob) {
+        this();
+        this.info = info;
+        this.blob = blob;
+    }
 
-	public String getInfo() {
-		return info;
-	}
+    public String getInfo() {
+        return info;
+    }
 
-	public Blob getBlob() {
-		return blob;
-	}
+    public Blob getBlob() {
+        return blob;
+    }
 
-	@Override
+    @Override
     public String toString() {
-		String lastModified = String.format("%1$tF %1$tT", new Date(blob
-				.getFile().lastModified()));
-		if (info != null) {
-			return String.format("%s (%s)", lastModified, info);
-		} else {
-			return lastModified;
-		}
-	}
+        String lastModified = String.format("%1$tF %1$tT", new Date(blob
+                .getFile().lastModified()));
+        if (info != null) {
+            return String.format("%s (%s)", lastModified, info);
+        } else {
+            return lastModified;
+        }
+    }
 
 }

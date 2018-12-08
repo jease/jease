@@ -33,69 +33,69 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Backup extends Serializer {
 
-	/**
-	 * Create a new Backup-Service. The service needs to know about all nodes
-	 * which exist to configure the serializer properly.
-	 */
-	public Backup(Node... nodes) {
-		for (Node node : nodes) {
-			for (Field field : getFields(node)) {
-				if (isNotSerialized(field)) {
-					omitField(field);
-					continue;
-				}
-				if (!isNodeDeclaringClass(field) && isNode(field)) {
-					registerConverter(field);
-				}
-			}
-		}
-	}
+    /**
+     * Create a new Backup-Service. The service needs to know about all nodes
+     * which exist to configure the serializer properly.
+     */
+    public Backup(Node... nodes) {
+        for (Node node : nodes) {
+            for (Field field : getFields(node)) {
+                if (isNotSerialized(field)) {
+                    omitField(field);
+                    continue;
+                }
+                if (!isNodeDeclaringClass(field) && isNode(field)) {
+                    registerConverter(field);
+                }
+            }
+        }
+    }
 
-	/**
-	 * Dump contents of node (and all children) into a file.
-	 */
-	public File dump(Node node) {
-		if (node == null) {
-			return null;
-		}
-		try {
-			Node nodeCopy = node.copy(true);
-			nodeCopy.setParent(null);
-			String filename = (StringUtils.isEmpty(nodeCopy.getId()) ? nodeCopy
-					.getType() : nodeCopy.getId()) + ".xml";
-			File tmpDirectory = Files.createTempDirectory("jease-backup")
-					.toFile();
-			tmpDirectory.deleteOnExit();
-			File dumpFile = new File(tmpDirectory, filename);
-			dumpFile.deleteOnExit();
-			Writer writer = Files.newBufferedWriter(dumpFile.toPath());
-			toXML(nodeCopy, writer);
-			writer.close();
-			File zipFile = Zipfiles.zip(dumpFile);
-			zipFile.deleteOnExit();
-			return zipFile;
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    /**
+     * Dump contents of node (and all children) into a file.
+     */
+    public File dump(Node node) {
+        if (node == null) {
+            return null;
+        }
+        try {
+            Node nodeCopy = node.copy(true);
+            nodeCopy.setParent(null);
+            String filename = (StringUtils.isEmpty(nodeCopy.getId()) ? nodeCopy
+                    .getType() : nodeCopy.getId()) + ".xml";
+            File tmpDirectory = Files.createTempDirectory("jease-backup")
+                    .toFile();
+            tmpDirectory.deleteOnExit();
+            File dumpFile = new File(tmpDirectory, filename);
+            dumpFile.deleteOnExit();
+            Writer writer = Files.newBufferedWriter(dumpFile.toPath());
+            toXML(nodeCopy, writer);
+            writer.close();
+            File zipFile = Zipfiles.zip(dumpFile);
+            zipFile.deleteOnExit();
+            return zipFile;
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
-	/**
-	 * Restore node-graph from file dump.
-	 */
-	public Node restore(File dumpFile) {
-		if (dumpFile == null) {
-			return null;
-		}
-		try {
-			Reader reader = Files.newBufferedReader(Zipfiles.unzip(dumpFile)
-					.toPath());
-			Node node = fromXML(reader);
-			node.setId(Filenames.asId(dumpFile.getName()).replace(".xml.zip",
-					""));
-			reader.close();
-			return node;
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    /**
+     * Restore node-graph from file dump.
+     */
+    public Node restore(File dumpFile) {
+        if (dumpFile == null) {
+            return null;
+        }
+        try {
+            Reader reader = Files.newBufferedReader(Zipfiles.unzip(dumpFile)
+                    .toPath());
+            Node node = fromXML(reader);
+            node.setId(Filenames.asId(dumpFile.getName()).replace(".xml.zip",
+                    ""));
+            reader.close();
+            return node;
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 }

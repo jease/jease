@@ -36,82 +36,82 @@ import com.thoughtworks.xstream.converters.SingleValueConverterWrapper;
 
 public class Serializer {
 
-	private XStream xstream;
-	private Converter nodeConverter;
-	private Converter nodeArrayConverter;
+    private XStream xstream;
+    private Converter nodeConverter;
+    private Converter nodeArrayConverter;
 
-	public Serializer() {
-		xstream = new XStream();
-		xstream.registerConverter(new BlobConverter());
-		nodeConverter = new SingleValueConverterWrapper(new NodeConverter());
-		nodeArrayConverter = new DelegateArrayConverter(nodeConverter,
-				xstream.getMapper());
-	}
+    public Serializer() {
+        xstream = new XStream();
+        xstream.registerConverter(new BlobConverter());
+        nodeConverter = new SingleValueConverterWrapper(new NodeConverter());
+        nodeArrayConverter = new DelegateArrayConverter(nodeConverter,
+                xstream.getMapper());
+    }
 
-	public Set<Field> getFields(Node node) {
-		return Reflections.getFields(node.getClass());
-	}
-	
-	public void omitField(Field field) {
-		xstream.omitField(field.getDeclaringClass(), field.getName());
-	}
+    public Set<Field> getFields(Node node) {
+        return Reflections.getFields(node.getClass());
+    }
+    
+    public void omitField(Field field) {
+        xstream.omitField(field.getDeclaringClass(), field.getName());
+    }
 
-	public void registerConverter(Field field) {
-		xstream.registerLocalConverter(field.getDeclaringClass(), field
-				.getName(), field.getType().isArray() ? nodeArrayConverter
-				: nodeConverter);
-	}
+    public void registerConverter(Field field) {
+        xstream.registerLocalConverter(field.getDeclaringClass(), field
+                .getName(), field.getType().isArray() ? nodeArrayConverter
+                : nodeConverter);
+    }
 
-	public boolean isBlob(Field field) {
-		return Reflections.isAssignable(Blob.class, field);
-	}
+    public boolean isBlob(Field field) {
+        return Reflections.isAssignable(Blob.class, field);
+    }
 
-	public boolean isNode(Field field) {
-		return Reflections.isAssignable(Node.class, field);
-	}
+    public boolean isNode(Field field) {
+        return Reflections.isAssignable(Node.class, field);
+    }
 
-	public boolean isPersistent(Field field) {
-		return Reflections.isAssignable(Persistent.class, field);
-	}
+    public boolean isPersistent(Field field) {
+        return Reflections.isAssignable(Persistent.class, field);
+    }
 
-	public boolean isPersistentEntity(Field field) {
-		return Reflections.isAssignable(Persistent.class, field)
-				&& !(Reflections.isAssignable(Persistent.Value.class, field));
-	}
+    public boolean isPersistentEntity(Field field) {
+        return Reflections.isAssignable(Persistent.class, field)
+                && !(Reflections.isAssignable(Persistent.Value.class, field));
+    }
 
-	public boolean isPersistentValue(Field field) {
-		return Reflections.isAssignable(Persistent.class, field)
-				&& Reflections.isAssignable(Persistent.Value.class, field);
-	}
+    public boolean isPersistentValue(Field field) {
+        return Reflections.isAssignable(Persistent.class, field)
+                && Reflections.isAssignable(Persistent.Value.class, field);
+    }
 
-	public boolean isNodeDeclaringClass(Field field) {
-		return field.getDeclaringClass() == Node.class;
-	}
+    public boolean isNodeDeclaringClass(Field field) {
+        return field.getDeclaringClass() == Node.class;
+    }
 
-	public boolean isNotSerialized(Field field) {
-		return field.getAnnotation(NotSerialized.class) != null;
-	}
-	
-	public void toXML(Node node, Writer writer) {
-		xstream.toXML(node, writer);
-	}
+    public boolean isNotSerialized(Field field) {
+        return field.getAnnotation(NotSerialized.class) != null;
+    }
+    
+    public void toXML(Node node, Writer writer) {
+        xstream.toXML(node, writer);
+    }
 
-	public Node fromXML(Reader reader) {
-		return (Node) xstream.fromXML(reader);
-	}
+    public Node fromXML(Reader reader) {
+        return (Node) xstream.fromXML(reader);
+    }
 
-	private static class NodeConverter implements SingleValueConverter {
+    private static class NodeConverter implements SingleValueConverter {
 
-		public boolean canConvert(Class clazz) {
-			return Node.class.isAssignableFrom(clazz);
-		}
+        public boolean canConvert(Class clazz) {
+            return Node.class.isAssignableFrom(clazz);
+        }
 
-		public String toString(Object obj) {
-			return ((Node) obj).getPath();
-		}
+        public String toString(Object obj) {
+            return ((Node) obj).getPath();
+        }
 
-		public Object fromString(String str) {
-			return Nodes.getByPath(str);
-		}
-	}
+        public Object fromString(String str) {
+            return Nodes.getByPath(str);
+        }
+    }
 }

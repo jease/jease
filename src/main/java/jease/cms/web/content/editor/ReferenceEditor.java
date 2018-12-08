@@ -32,56 +32,56 @@ import org.zkoss.zul.Button;
 
 public class ReferenceEditor extends ContentEditor<Reference> {
 
-	Selectbutton content = new Selectbutton();
-	Button browse = new Button(I18N.get("Browser"), Images.UserHome);
+    Selectbutton content = new Selectbutton();
+    Button browse = new Button(I18N.get("Browser"), Images.UserHome);
 
-	public ReferenceEditor() {
-		content.addEventListener(Events.ON_SELECT,
-				event -> contentSelected((Content) content.getSelectedValue()));
-		browse.addEventListener(Events.ON_CLICK, event -> browsePerformed());
-	}
+    public ReferenceEditor() {
+        content.addEventListener(Events.ON_SELECT,
+                event -> contentSelected((Content) content.getSelectedValue()));
+        browse.addEventListener(Events.ON_CLICK, event -> browsePerformed());
+    }
 
-	public void init() {
-		add(I18N.get("Content"), content);
-		add("", browse);
-	}
+    public void init() {
+        add(I18N.get("Content"), content);
+        add("", browse);
+    }
 
-	public void load() {
-		content.setModel(
-				JeaseSession.getFilter().apply(
-						Contents.getDescendants(getSessionUser().getRoots())),
-				getNode().getContent());
-	}
+    public void load() {
+        content.setModel(
+                JeaseSession.getFilter().apply(
+                        Contents.getDescendants(getSessionUser().getRoots())),
+                getNode().getContent());
+    }
 
-	public void save() {
-		getNode().setContent((Content) content.getSelectedValue());
-	}
+    public void save() {
+        getNode().setContent((Content) content.getSelectedValue());
+    }
 
-	public void validate() {
-		validate(content.isEmpty(), I18N.get("Content_is_required"));
-	}
+    public void validate() {
+        validate(content.isEmpty(), I18N.get("Content_is_required"));
+    }
 
-	private void contentSelected(Content content) {
-		if (content != null) {
-			if (StringUtils.isEmpty(id.getValue())) {
-				id.setText(content.getId());
-			}
-			if (StringUtils.isEmpty(title.getValue())) {
-				title.setText(content.getTitle());
-			}
-		}
-	}
+    private void contentSelected(Content content) {
+        if (content != null) {
+            if (StringUtils.isEmpty(id.getValue())) {
+                id.setText(content.getId());
+            }
+            if (StringUtils.isEmpty(title.getValue())) {
+                title.setText(content.getTitle());
+            }
+        }
+    }
 
-	private void browsePerformed() {
-		final NodeBrowserWindow nodeBrowserWindow = new NodeBrowserWindow(
-				(Node) content.getSelectedValue());
-		nodeBrowserWindow.addEventListener(Events.ON_CLOSE, evt -> {
-			if (nodeBrowserWindow.getSelectedNode() != null) {
-				content.setSelectedValue(nodeBrowserWindow.getSelectedNode());
-				contentSelected((Content) content.getSelectedValue());
-			}
-		});
-		getRoot().appendChild(nodeBrowserWindow);
-	}
+    private void browsePerformed() {
+        final NodeBrowserWindow nodeBrowserWindow = new NodeBrowserWindow(
+                (Node) content.getSelectedValue());
+        nodeBrowserWindow.addEventListener(Events.ON_CLOSE, evt -> {
+            if (nodeBrowserWindow.getSelectedNode() != null) {
+                content.setSelectedValue(nodeBrowserWindow.getSelectedNode());
+                contentSelected((Content) content.getSelectedValue());
+            }
+        });
+        getRoot().appendChild(nodeBrowserWindow);
+    }
 
 }

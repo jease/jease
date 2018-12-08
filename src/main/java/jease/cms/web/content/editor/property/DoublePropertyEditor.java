@@ -21,18 +21,18 @@ import jease.cms.domain.property.DoubleProperty;
 import org.zkoss.zul.Doublebox;
 
 public class DoublePropertyEditor extends Doublebox implements
-		PropertyEditor<DoubleProperty> {
+        PropertyEditor<DoubleProperty> {
 
-	private DoubleProperty property;
+    private DoubleProperty property;
 
-	public DoubleProperty getProperty() {
-		property.setValue(doubleValue());
-		return property;
-	}
+    public DoubleProperty getProperty() {
+        property.setValue(doubleValue());
+        return property;
+    }
 
-	public void setProperty(DoubleProperty property) {
-		this.property = property;
-		setValue(property.getValue());
-	}
+    public void setProperty(DoubleProperty property) {
+        this.property = property;
+        setValue(property.getValue());
+    }
 
 }

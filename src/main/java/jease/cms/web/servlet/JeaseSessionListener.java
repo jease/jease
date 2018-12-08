@@ -28,19 +28,19 @@ import javax.servlet.http.HttpSessionListener;
 @WebListener
 public class JeaseSessionListener implements HttpSessionListener {
 
-	private static Set<HttpSession> sessions = Collections
-			.synchronizedSet(new HashSet<HttpSession>());
+    private static Set<HttpSession> sessions = Collections
+            .synchronizedSet(new HashSet<HttpSession>());
 
-	public void sessionCreated(HttpSessionEvent se) {
-		sessions.add(se.getSession());
-	}
+    public void sessionCreated(HttpSessionEvent se) {
+        sessions.add(se.getSession());
+    }
 
-	public void sessionDestroyed(HttpSessionEvent se) {
-		sessions.remove(se.getSession());
-	}
+    public void sessionDestroyed(HttpSessionEvent se) {
+        sessions.remove(se.getSession());
+    }
 
-	public static Set<HttpSession> getSessions() {
-		return new HashSet<HttpSession>(sessions);
-	}
+    public static Set<HttpSession> getSessions() {
+        return new HashSet<HttpSession>(sessions);
+    }
 
 }

@@ -32,40 +32,40 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class XStreamFile {
 
-	private String filename;
+    private String filename;
 
-	public XStreamFile(String filename) {
-		this.filename = filename;
-	}
+    public XStreamFile(String filename) {
+        this.filename = filename;
+    }
 
-	/**
-	 * Writes objects to XML-File.
-	 */
-	public void write(Collection<Object> objects) {
-		try {
-			XStream xstream = new XStream(new DomDriver());
-			xstream.setMode(XStream.ID_REFERENCES);
-			FileWriter writer = new FileWriter(filename);
-			xstream.toXML(new ArrayList<>(objects), writer);
-			writer.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    /**
+     * Writes objects to XML-File.
+     */
+    public void write(Collection<Object> objects) {
+        try {
+            XStream xstream = new XStream(new DomDriver());
+            xstream.setMode(XStream.ID_REFERENCES);
+            FileWriter writer = new FileWriter(filename);
+            xstream.toXML(new ArrayList<>(objects), writer);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
-	/**
-	 * Reads collection from XML-File.
-	 */
-	public Collection<Object> read() {
-		try {
-			XStream xstream = new XStream(new DomDriver());
-			xstream.setMode(XStream.ID_REFERENCES);
-			FileReader reader = new FileReader(filename);
-			List<Object> objects = (List<Object>) xstream.fromXML(reader);
-			reader.close();
-			return objects;
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    /**
+     * Reads collection from XML-File.
+     */
+    public Collection<Object> read() {
+        try {
+            XStream xstream = new XStream(new DomDriver());
+            xstream.setMode(XStream.ID_REFERENCES);
+            FileReader reader = new FileReader(filename);
+            List<Object> objects = (List<Object>) xstream.fromXML(reader);
+            reader.close();
+            return objects;
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 }

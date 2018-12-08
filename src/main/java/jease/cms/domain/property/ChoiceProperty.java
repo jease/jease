@@ -20,68 +20,68 @@ import org.apache.commons.lang3.StringUtils;
 
 public class ChoiceProperty extends Property {
 
-	private String[] value;
-	private String provider;
+    private String[] value;
+    private String provider;
 
-	public ChoiceProperty() {
-	}
+    public ChoiceProperty() {
+    }
 
-	public ChoiceProperty(String name) {
-		super(name);
-	}
+    public ChoiceProperty(String name) {
+        super(name);
+    }
 
-	public ChoiceProperty(String name, String[] value) {
-		this(name);
-		setValue(value);
-	}
+    public ChoiceProperty(String name, String[] value) {
+        this(name);
+        setValue(value);
+    }
 
-	public ChoiceProperty(String name, String[] value, String provider) {
-		this(name);
-		setValue(value);
-		setProvider(provider);
-	}
+    public ChoiceProperty(String name, String[] value, String provider) {
+        this(name);
+        setValue(value);
+        setProvider(provider);
+    }
 
-	public String[] getValue() {
-		return value;
-	}
+    public String[] getValue() {
+        return value;
+    }
 
-	public void setValue(String[] value) {
-		this.value = value;
-	}
+    public void setValue(String[] value) {
+        this.value = value;
+    }
 
-	public String getProvider() {
-		return provider;
-	}
+    public String getProvider() {
+        return provider;
+    }
 
-	public void setProvider(String path) {
-		this.provider = path;
-	}
+    public void setProvider(String path) {
+        this.provider = path;
+    }
 
-	public void cloneTo(Property clone) {
-		super.cloneTo(clone);
-		((ChoiceProperty) clone).setProvider(getProvider());
-	}
+    public void cloneTo(Property clone) {
+        super.cloneTo(clone);
+        ((ChoiceProperty) clone).setProvider(getProvider());
+    }
 
-	public ChoiceProperty copy() {
-		ChoiceProperty property = (ChoiceProperty) super.copy();
-		property.setValue(getValue());
-		property.setProvider(getProvider());
-		return property;
-	}
+    public ChoiceProperty copy() {
+        ChoiceProperty property = (ChoiceProperty) super.copy();
+        property.setValue(getValue());
+        property.setProvider(getProvider());
+        return property;
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		if (value != null) {
-			for (int i = 0; i < value.length; i++) {
-				if (value[i] != null) {
-					value[i] = value[i].replace(target, replacement);
-				}
-			}
-		}
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        if (value != null) {
+            for (int i = 0; i < value.length; i++) {
+                if (value[i] != null) {
+                    value[i] = value[i].replace(target, replacement);
+                }
+            }
+        }
+    }
 
-	public String toString() {
-		return StringUtils.join(value, "\n");
-	}
+    public String toString() {
+        return StringUtils.join(value, "\n");
+    }
 
 }

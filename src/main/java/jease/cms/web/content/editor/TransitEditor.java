@@ -36,77 +36,77 @@ import jfix.zk.ZK;
 
 public class TransitEditor extends ContentEditor<Transit> {
 
-	Combobox uri = new Combobox();
-	Mediafield file = new Mediafield();
-	Checkbox forward = new Checkbox();
+    Combobox uri = new Combobox();
+    Mediafield file = new Mediafield();
+    Checkbox forward = new Checkbox();
 
-	public TransitEditor() {
-		file.setHeight(getPlainEditorHeight());
-		uri.addEventListener(Events.ON_SELECT, event -> pathSelected());
-	}
+    public TransitEditor() {
+        file.setHeight(getPlainEditorHeight());
+        uri.addEventListener(Events.ON_SELECT, event -> pathSelected());
+    }
 
-	@Override
+    @Override
     public void init() {
-		add(I18N.get("Path"), uri);
-		add(I18N.get("File"), file);
-		add(I18N.get("Forward"), forward);
-	}
+        add(I18N.get("Path"), uri);
+        add(I18N.get("File"), file);
+        add(I18N.get("Forward"), forward);
+    }
 
-	@Override
+    @Override
     public void load() {
-		uri.setSelection(getPathnames(ZK.getRealPath("/")), getObject()
-				.getURI());
-		if (getNode().getURI() != null) {
-			file.setMedia(getNode().getId(), getNode().getContentType(),
-					getNode().getFile());
-		}
-		forward.setChecked(getNode().isForward());
-	}
+        uri.setSelection(getPathnames(ZK.getRealPath("/")), getObject()
+                .getURI());
+        if (getNode().getURI() != null) {
+            file.setMedia(getNode().getId(), getNode().getContentType(),
+                    getNode().getFile());
+        }
+        forward.setChecked(getNode().isForward());
+    }
 
-	@Override
+    @Override
     public void save() {
-		getNode().setURI(uri.getValue());
-		getNode().setForward(forward.isChecked());
-	}
+        getNode().setURI(uri.getValue());
+        getNode().setForward(forward.isChecked());
+    }
 
-	@Override
+    @Override
     protected void persist() {
-		super.persist();
-		file.copyToFile(getNode().getFile());
-	}
+        super.persist();
+        file.copyToFile(getNode().getFile());
+    }
 
-	@Override
+    @Override
     public void validate() {
-		validate(uri.isEmpty(), I18N.get("Path_is_required"));
-		validate(!URI.create(uri.getText()).isAbsolute(),
-				I18N.get("Path_is_required"));
-	}
+        validate(uri.isEmpty(), I18N.get("Path_is_required"));
+        validate(!URI.create(uri.getText()).isAbsolute(),
+                I18N.get("Path_is_required"));
+    }
 
-	private void pathSelected() {
-		String pathname = uri.getValue();
-		if (StringUtils.isNotBlank(pathname)) {
-			String name = FilenameUtils.getName(pathname);
-			if (StringUtils.isEmpty(id.getValue())) {
-				id.setText(name);
-			}
-			if (StringUtils.isEmpty(title.getValue())) {
-				title.setText(FilenameUtils.removeExtension(name));
-			}
-		}
-	}
+    private void pathSelected() {
+        String pathname = uri.getValue();
+        if (StringUtils.isNotBlank(pathname)) {
+            String name = FilenameUtils.getName(pathname);
+            if (StringUtils.isEmpty(id.getValue())) {
+                id.setText(name);
+            }
+            if (StringUtils.isEmpty(title.getValue())) {
+                title.setText(FilenameUtils.removeExtension(name));
+            }
+        }
+    }
 
-	/**
-	 * Returns a recursive list of URIs (pathnames) for all files contained in
-	 * given directory.
-	 */
-	private List<String> getPathnames(String directory) {
-		try {
-			return Files.walk(new File(directory).toPath())
-					.filter(path -> path.toFile().isFile())
-					.map(path -> path.toUri().toString())
-					.collect(Collectors.toList());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    /**
+     * Returns a recursive list of URIs (pathnames) for all files contained in
+     * given directory.
+     */
+    private List<String> getPathnames(String directory) {
+        try {
+            return Files.walk(new File(directory).toPath())
+                    .filter(path -> path.toFile().isFile())
+                    .map(path -> path.toUri().toString())
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

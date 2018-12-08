@@ -21,8 +21,8 @@ import jease.cmf.web.node.NodeTable;
 
 public class FlatTable extends NodeTable {
 
-	public FlatTable() {
-		init(new FlatTableModel(JeaseSession.getConfig().newTableModel()));
-	}
+    public FlatTable() {
+        init(new FlatTableModel(JeaseSession.getConfig().newTableModel()));
+    }
 
 }

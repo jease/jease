@@ -31,54 +31,54 @@ import jease.cms.service.Relocator;
  */
 public class Configuration implements JeaseConfig {
 
-	static {
-		Content.setPathChangeProcessor(new Relocator());
-	}
+    static {
+        Content.setPathChangeProcessor(new Relocator());
+    }
 
-	/**
-	 * Which type of nodes can be created by the user? If you want maximum
-	 * control, you can also create a config by hand:
-	 * 
-	 * <code> 
-	 * return new Node[] { new Folder(), new Text(), new File(), ... };
-	 * </code>
-	 */
-	public Node[] newNodes() {
-		if (JeaseSession.get(User.class).getRole() != null) {
-			return JeaseSession.get(User.class).getRole().getNodes();
-		} else {
-			return new Node[] {};
-		}
-	}
+    /**
+     * Which type of nodes can be created by the user? If you want maximum
+     * control, you can also create a config by hand:
+     * 
+     * <code> 
+     * return new Node[] { new Folder(), new Text(), new File(), ... };
+     * </code>
+     */
+    public Node[] newNodes() {
+        if (JeaseSession.get(User.class).getRole() != null) {
+            return JeaseSession.get(User.class).getRole().getNodes();
+        } else {
+            return new Node[] {};
+        }
+    }
 
-	/**
-	 * Which editor should be used to edit a given node? If you want maximum
-	 * control, you can also create a config by hand:
-	 * 
-	 * <code> 
-	 * if (node instanceof Folder) return new FolderEditor();
-	 * if (node instanceof Text) return new TextEditor();
-	 * if (node instanceof File) return new FileEditor();
-	 * ...
-	 * </code>
-	 */
-	public NodeEditor<Node> newEditor(Node node) {
-		return Registry.getEditor(node);
-	}
+    /**
+     * Which editor should be used to edit a given node? If you want maximum
+     * control, you can also create a config by hand:
+     * 
+     * <code> 
+     * if (node instanceof Folder) return new FolderEditor();
+     * if (node instanceof Text) return new TextEditor();
+     * if (node instanceof File) return new FileEditor();
+     * ...
+     * </code>
+     */
+    public NodeEditor<Node> newEditor(Node node) {
+        return Registry.getEditor(node);
+    }
 
-	/**
-	 * Which TableModel should be used to render the contents of a container
-	 * node?
-	 */
-	public NodeTableModel<Node> newTableModel() {
-		return new ContentTableModel();
-	}
+    /**
+     * Which TableModel should be used to render the contents of a container
+     * node?
+     */
+    public NodeTableModel<Node> newTableModel() {
+        return new ContentTableModel();
+    }
 
-	/**
-	 * Which icon should be displayed in front of a given node?
-	 */
-	public String getIcon(Node node) {
-		return Registry.getIcon(node);
-	}
+    /**
+     * Which icon should be displayed in front of a given node?
+     */
+    public String getIcon(Node node) {
+        return Registry.getIcon(node);
+    }
 
 }

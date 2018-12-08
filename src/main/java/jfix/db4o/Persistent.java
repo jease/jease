@@ -26,13 +26,13 @@ import org.zoodb.api.impl.ZooPC;
  */
 public class Persistent extends ZooPC {
 
-	/**
-	 * Marker interface for value-objects. Whereas an entity (first class
-	 * citizen) has a lifecycle on its own, the lifecycle of a value-object is
-	 * dependent on enclosing entity. Therefore value-objects will be updated or
-	 * deleted with enclosing entity.
-	 */
-	public interface Value {
-	}
+    /**
+     * Marker interface for value-objects. Whereas an entity (first class
+     * citizen) has a lifecycle on its own, the lifecycle of a value-object is
+     * dependent on enclosing entity. Therefore value-objects will be updated or
+     * deleted with enclosing entity.
+     */
+    public interface Value {
+    }
 
 }

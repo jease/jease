@@ -27,63 +27,63 @@ import jease.cmf.domain.NodeException;
  */
 public class Gallery extends Content {
 
-	private String preface;
-	private int scale;
-	private boolean labeled;
+    private String preface;
+    private int scale;
+    private boolean labeled;
 
-	public Gallery() {
-	}
+    public Gallery() {
+    }
 
-	public String getPreface() {
-		return preface;
-	}
+    public String getPreface() {
+        return preface;
+    }
 
-	public void setPreface(String text) {
-		this.preface = text;
-	}
+    public void setPreface(String text) {
+        this.preface = text;
+    }
 
-	public int getScale() {
-		return scale;
-	}
+    public int getScale() {
+        return scale;
+    }
 
-	public void setScale(int scale) {
-		this.scale = scale;
-	}
+    public void setScale(int scale) {
+        this.scale = scale;
+    }
 
-	public boolean isLabeled() {
-		return labeled;
-	}
+    public boolean isLabeled() {
+        return labeled;
+    }
 
-	public void setLabeled(boolean labeled) {
-		this.labeled = labeled;
-	}
+    public void setLabeled(boolean labeled) {
+        this.labeled = labeled;
+    }
 
-	public boolean isContainer() {
-		return true;
-	}
+    public boolean isContainer() {
+        return true;
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(getPreface());
-	}
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n").append(getPreface());
+    }
 
-	public Gallery copy(boolean recursive) {
-		Gallery gallery = (Gallery) super.copy(recursive);
-		gallery.setPreface(getPreface());
-		gallery.setScale(getScale());
-		gallery.setLabeled(isLabeled());
-		return gallery;
-	}
+    public Gallery copy(boolean recursive) {
+        Gallery gallery = (Gallery) super.copy(recursive);
+        gallery.setPreface(getPreface());
+        gallery.setScale(getScale());
+        gallery.setLabeled(isLabeled());
+        return gallery;
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		setPreface(getPreface().replace(target, replacement));
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        setPreface(getPreface().replace(target, replacement));
+    }
 
-	protected void validateNesting(Node potentialChild, String potentialChildId)
-			throws NodeException {
-		super.validateNesting(potentialChild, potentialChildId);
-		if (!(potentialChild instanceof Image)) {
-			throw new NodeException.IllegalNesting();
-		}
-	}
+    protected void validateNesting(Node potentialChild, String potentialChildId)
+            throws NodeException {
+        super.validateNesting(potentialChild, potentialChildId);
+        if (!(potentialChild instanceof Image)) {
+            throw new NodeException.IllegalNesting();
+        }
+    }
 }

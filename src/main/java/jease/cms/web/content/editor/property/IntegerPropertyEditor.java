@@ -20,22 +20,22 @@ import jease.cms.domain.property.IntegerProperty;
 import jfix.zk.Spinner;
 
 public class IntegerPropertyEditor extends Spinner implements
-		PropertyEditor<IntegerProperty> {
+        PropertyEditor<IntegerProperty> {
 
-	private IntegerProperty property;
+    private IntegerProperty property;
 
-	public IntegerPropertyEditor() {
-		setConstraint("");
-	}
+    public IntegerPropertyEditor() {
+        setConstraint("");
+    }
 
-	public IntegerProperty getProperty() {
-		property.setValue(intValue());
-		return property;
-	}
+    public IntegerProperty getProperty() {
+        property.setValue(intValue());
+        return property;
+    }
 
-	public void setProperty(IntegerProperty property) {
-		this.property = property;
-		setValue(property.getValue());
-	}
+    public void setProperty(IntegerProperty property) {
+        this.property = property;
+        setValue(property.getValue());
+    }
 
 }

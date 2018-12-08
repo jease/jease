@@ -18,64 +18,64 @@ package jease.cms.domain.property;
 
 public class SelectionProperty extends Property {
 
-	private String value;
-	private String provider;
+    private String value;
+    private String provider;
 
-	public SelectionProperty() {
-	}
+    public SelectionProperty() {
+    }
 
-	public SelectionProperty(String name) {
-		super(name);
-	}
+    public SelectionProperty(String name) {
+        super(name);
+    }
 
-	public SelectionProperty(String name, String value) {
-		this(name);
-		setValue(value);
-	}
+    public SelectionProperty(String name, String value) {
+        this(name);
+        setValue(value);
+    }
 
-	public SelectionProperty(String name, String value, String provider) {
-		this(name);
-		setValue(value);
-		setProvider(provider);
-	}
+    public SelectionProperty(String name, String value, String provider) {
+        this(name);
+        setValue(value);
+        setProvider(provider);
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public String getProvider() {
-		return provider;
-	}
+    public String getProvider() {
+        return provider;
+    }
 
-	public void setProvider(String path) {
-		this.provider = path;
-	}
+    public void setProvider(String path) {
+        this.provider = path;
+    }
 
-	public void cloneTo(Property clone) {
-		super.cloneTo(clone);
-		((SelectionProperty) clone).setProvider(getProvider());
-	}
+    public void cloneTo(Property clone) {
+        super.cloneTo(clone);
+        ((SelectionProperty) clone).setProvider(getProvider());
+    }
 
-	public SelectionProperty copy() {
-		SelectionProperty property = (SelectionProperty) super.copy();
-		property.setValue(getValue());
-		property.setProvider(getProvider());
-		return property;
-	}
+    public SelectionProperty copy() {
+        SelectionProperty property = (SelectionProperty) super.copy();
+        property.setValue(getValue());
+        property.setProvider(getProvider());
+        return property;
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		if (getValue() != null) {
-			setValue(getValue().replace(target, replacement));
-		}
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        if (getValue() != null) {
+            setValue(getValue().replace(target, replacement));
+        }
+    }
 
-	public String toString() {
-		return value;
-	}
+    public String toString() {
+        return value;
+    }
 
 }

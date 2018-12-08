@@ -22,8 +22,8 @@ import org.zkoss.zk.ui.Component;
 
 public interface PropertyEditor<E extends Property> extends Component {
 
-	public E getProperty();
+    public E getProperty();
 
-	public void setProperty(E property);
+    public void setProperty(E property);
 
 }

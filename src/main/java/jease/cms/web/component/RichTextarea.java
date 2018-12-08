@@ -24,39 +24,39 @@ import org.zkforge.ckez.CKeditor;
 
 public class RichTextarea extends CKeditor {
 
-	public static String FILEBROWSER_BROWSE_URL = "~./jfix/ckez/browse.zul";
+    public static String FILEBROWSER_BROWSE_URL = "~./jfix/ckez/browse.zul";
 
-	public RichTextarea() {
-		super();
-		if (FILEBROWSER_BROWSE_URL != null) {
-			setFilebrowserBrowseUrl(FILEBROWSER_BROWSE_URL);
-		}
-		setWidth("100%");
-		setHeight("300px");
-		setFileBrowserTemplate("~./jease/ckez/browse.zul");
-		String path = Registry.getParameter(Names.JEASE_CKEDITOR_PATH);
-		if (path != null) {
-			setCustomConfigurationsPath(path);
-		} else {
-			setCustomConfigurationsPath("/cms/config/ckeditor.js");
-		}
+    public RichTextarea() {
+        super();
+        if (FILEBROWSER_BROWSE_URL != null) {
+            setFilebrowserBrowseUrl(FILEBROWSER_BROWSE_URL);
+        }
+        setWidth("100%");
+        setHeight("300px");
+        setFileBrowserTemplate("~./jease/ckez/browse.zul");
+        String path = Registry.getParameter(Names.JEASE_CKEDITOR_PATH);
+        if (path != null) {
+            setCustomConfigurationsPath(path);
+        } else {
+            setCustomConfigurationsPath("/cms/config/ckeditor.js");
+        }
 
-	}
+    }
 
-	public void setText(Object text) {
-		if (text == null) {
-			super.setValue("");
-		} else {
-			super.setValue(String.valueOf(text));
-		}
-	}
+    public void setText(Object text) {
+        if (text == null) {
+            super.setValue("");
+        } else {
+            super.setValue(String.valueOf(text));
+        }
+    }
 
-	public String getText() {
-		return getValue();
-	}
+    public String getText() {
+        return getValue();
+    }
 
-	public boolean isEmpty() {
-		return "".equals(getValue().trim());
-	}
+    public boolean isEmpty() {
+        return "".equals(getValue().trim());
+    }
 
 }

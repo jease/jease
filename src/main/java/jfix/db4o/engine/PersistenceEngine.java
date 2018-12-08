@@ -20,54 +20,54 @@ import java.util.Collection;
 
 public interface PersistenceEngine {
 
-	/**
-	 * Open the specified database.
-	 */
-	void open(String database);
+    /**
+     * Open the specified database.
+     */
+    void open(String database);
 
-	/**
-	 * Close the database.
-	 */
-	void close();
+    /**
+     * Close the database.
+     */
+    void close();
 
-	/**
-	 * Create a backup of the database.
-	 */
-	void backup();
+    /**
+     * Create a backup of the database.
+     */
+    void backup();
 
-	/**
-	 * Save/Update the specified object in database.
-	 */
-	void save(Object object);
+    /**
+     * Save/Update the specified object in database.
+     */
+    void save(Object object);
 
-	/**
-	 * Delete specified object from database.
-	 */
-	void delete(Object object);
+    /**
+     * Delete specified object from database.
+     */
+    void delete(Object object);
 
-	/**
-	 * Begin transaction.
-	 */
-	void begin();
+    /**
+     * Begin transaction.
+     */
+    void begin();
 
-	/**
-	 * Commit transaction.
-	 */
-	void commit();
+    /**
+     * Commit transaction.
+     */
+    void commit();
 
-	/**
-	 * Rollback transaction.
-	 */
-	void rollback();
+    /**
+     * Rollback transaction.
+     */
+    void rollback();
 
-	/**
-	 * Deliver all objects stored within database.
-	 */
-	Collection<Object> query();
+    /**
+     * Deliver all objects stored within database.
+     */
+    Collection<Object> query();
 
-	/**
-	 * Return a directory where BLOBs should be stored.
-	 */
-	String getBlobDirectory();
+    /**
+     * Return a directory where BLOBs should be stored.
+     */
+    String getBlobDirectory();
 
 }
