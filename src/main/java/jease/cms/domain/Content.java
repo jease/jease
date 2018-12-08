@@ -20,24 +20,24 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import jease.cmf.annotation.NotSerialized;
 import jease.cmf.domain.Node;
 import jease.cms.domain.property.Property;
 import jfix.util.I18N;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 /**
  * Abstract base class for building up a Content-Management-System.
- * 
+ *
  * This class stores a title, the date and the user of the last modification and
  * a flag which denotes if the content should be displayed in automatic
  * generated lists when displayed in the public site.
- * 
+ *
  * In order to revision content, an array of Versions is maintained where each
  * Version stores one revision of content. The newest revision is the first
  * entry of array.
- * 
+ *
  * In order to support adding attributes at runtime, the class can store an
  * array of properties.
  */
@@ -53,7 +53,7 @@ public abstract class Content extends Node {
     @NotSerialized
     private String uuid;
     private String title;
-    private String tages;
+    private String tags;
     private Date lastModified;
     private Date creationDate;
     private boolean visible;
@@ -77,12 +77,12 @@ public abstract class Content extends Node {
         return uuid;
     }
 
-    public String getTages() {
-        return tages;
+    public String getTags() {
+        return tags;
     }
 
-    public void setTages(String tages) {
-        this.tages = tages;
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
     public String getTitle() {
@@ -211,6 +211,7 @@ public abstract class Content extends Node {
     /**
      * Returns localized type.
      */
+    @Override
     public String getType() {
         return I18N.get(super.getType());
     }
@@ -219,6 +220,7 @@ public abstract class Content extends Node {
      * If true, the content-type is a container and can hold other nodes as
      * children.
      */
+    @Override
     public boolean isContainer() {
         return false;
     }
@@ -227,6 +229,7 @@ public abstract class Content extends Node {
      * Returns the size of the content in bytes. Derived implementations should
      * add additional size information to super.getSize().
      */
+    @Override
     public long getSize() {
         long size = super.getSize() + getTitle().length();
         if (properties != null) {
@@ -289,6 +292,7 @@ public abstract class Content extends Node {
      * super.copy() should be called and then additional fields should be
      * copied. Elements of a container will copied automatically.
      */
+    @Override
     public Content copy(boolean recursive) {
         Content content = (Content) super.copy(recursive);
         content.setTitle(getTitle());
@@ -320,6 +324,7 @@ public abstract class Content extends Node {
         }
     }
 
+    @Override
     protected void onPathChange(String oldPath) {
         if (pathChangeProcessor != null) {
             pathChangeProcessor.process(oldPath, this.getPath());

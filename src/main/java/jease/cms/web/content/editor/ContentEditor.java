@@ -176,7 +176,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
             title.setText(getNode().getTitle());
         }
         if (tags.getParent() != null) {
-            tags.setText(getNode().getTages());
+            tags.setText(getNode().getTags());
         }
         if (revisionSelection.getParent() != null) {
             revisionSelection.setValues(getNode().getRevisions());
@@ -208,7 +208,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
             getNode().setTitle(title.getText());
         }
         if (tags.getParent() != null) {
-            getNode().setTages(tags.getText());
+            getNode().setTags(tags.getText());
         }
         if (propertyManager.getParent() != null) {
             getNode().setProperties(propertyManager.getProperties());
@@ -304,7 +304,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
             document.addField("title", fieldModifier1);
 
             Map<String, Object> fieldModifier2 = new HashMap<>(1);
-            fieldModifier2.put("set", this.getNode().getTages());
+            fieldModifier2.put("set", this.getNode().getTags());
             document.addField("tags", fieldModifier2);
 
             Map<String, Object> fieldModifier3 = new HashMap<>(1);

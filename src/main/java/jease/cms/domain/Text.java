@@ -24,18 +24,9 @@ package jease.cms.domain;
 public class Text extends Content {
 
     private String content;
-    private String tags;
     private boolean plain;
 
     public Text() {
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
     }
 
     public void setContent(String content) {
@@ -54,19 +45,23 @@ public class Text extends Content {
         this.plain = plain;
     }
 
+    @Override
     public StringBuilder getFulltext() {
         return super.getFulltext().append("\n").append(getContent());
     }
 
+    @Override
     public long getSize() {
         return super.getSize() + getContent().length();
     }
 
+    @Override
     public void replace(String target, String replacement) {
         super.replace(target, replacement);
         setContent(getContent().replace(target, replacement));
     }
 
+    @Override
     public Text copy(boolean recursive) {
         Text text = (Text) super.copy(recursive);
         text.setContent(getContent());
