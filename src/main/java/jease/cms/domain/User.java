@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jfix.db4o.Persistent;
-import jfix.util.Crypts;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import jfix.db4o.Persistent;
+import jfix.util.Crypts;
 
 /**
  * Users can create, update and delete content within the CMS. A user has a role
@@ -70,15 +70,19 @@ public class User extends Persistent {
         return StringUtils.equals(this.password, encrypt(password));
     }
 
+    /** Supposed to be called for raw password, e.g. entered from UI */
     public void setPassword(String password) {
         if (!StringUtils.equals(this.password, password)) {
             this.password = encrypt(password);
         }
     }
 
+    public void setEncryptedPassword(String password) {
+        this.password = password;
+    }
+
     protected String encrypt(String input) {
-        return StringUtils.isBlank(input) ? input : Crypts
-                .md5(input.getBytes());
+        return StringUtils.isBlank(input) ? input : Crypts.md5(input.getBytes());
     }
 
     public void setRoots(Content[] roots) {
@@ -144,7 +148,22 @@ public class User extends Persistent {
         return ArrayUtils.isNotEmpty(roots) && role != null;
     }
 
+    @Override
     public String toString() {
         return "" + login;
     }
+
+    public User shallowClone() {
+        User rslt = new User();
+        rslt.setName(getName());
+        rslt.setLogin(getLogin());
+        rslt.setEncryptedPassword(getPassword());
+        rslt.setEmail(getEmail());
+        rslt.setRole(getRole());
+        rslt.setLastSession(getLastSession());
+        rslt.setDisabled(isDisabled());
+        rslt.setRoots(getRoots()); // getRoots() creates copy
+        return rslt;
+    }
+
 }

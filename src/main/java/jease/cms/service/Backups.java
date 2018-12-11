@@ -54,4 +54,12 @@ public class Backups {
         });
         Nodes.append(container, node);
     }
+
+    public static File dumpUsers() {
+        return backup.dumpUsers();
+    }
+
+    public static boolean restoreUsers(File backupFile) {
+        return backup.restoreUsers(backupFile);
+    }
 }

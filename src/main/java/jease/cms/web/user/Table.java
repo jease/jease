@@ -16,12 +16,54 @@
  */
 package jease.cms.web.user;
 
+import java.io.File;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.zkoss.util.media.Media;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zul.Button;
+
 import jease.cms.domain.User;
+import jease.cms.service.Backups;
+import jfix.util.I18N;
+import jfix.zk.Filedownload;
+import jfix.zk.Fileupload;
+import jfix.zk.Images;
+import jfix.zk.Medias;
+import jfix.zk.Modal;
 import jfix.zk.ObjectTable;
 
 public class Table extends ObjectTable<User> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Table.class);
+
     public Table() {
         init(new TableModel(), new Editor());
+
+        Button dump = new Button(I18N.get("Dump"), Images.DriveCdrom);
+        dump.setStyle("margin-left: 20px");
+        dump.addEventListener(Events.ON_CLICK, event -> Filedownload.save(Backups.dumpUsers()));
+        getLeftbox().appendChild(dump);
+
+        Fileupload restore = new Fileupload(I18N.get("Restore"), Images.MediaCdrom);
+        restore.addEventListener(Events.ON_UPLOAD, event -> {
+            Media media = ((UploadEvent) event).getMedia();
+            if (media != null) {
+                boolean restored = false;
+                try {
+                    File backupFile = Medias.asFile(media);
+                    backupFile.deleteOnExit();
+                    restored = Backups.restoreUsers(backupFile);
+                } catch (Exception e) {
+                    LOGGER.error("Restore users failed", e);
+                    Modal.error(e.getMessage());
+                } finally {
+                    if (restored) refresh();
+                }
+            }
+        });
+        getLeftbox().appendChild(restore);
     }
 }

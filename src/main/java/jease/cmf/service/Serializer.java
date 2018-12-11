@@ -21,6 +21,11 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Set;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.SingleValueConverter;
+import com.thoughtworks.xstream.converters.SingleValueConverterWrapper;
+
 import jease.cmf.annotation.NotSerialized;
 import jease.cmf.domain.Node;
 import jfix.db4o.Blob;
@@ -28,11 +33,6 @@ import jfix.db4o.Persistent;
 import jfix.db4o.xstream.converter.BlobConverter;
 import jfix.db4o.xstream.converter.DelegateArrayConverter;
 import jfix.util.Reflections;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.SingleValueConverter;
-import com.thoughtworks.xstream.converters.SingleValueConverterWrapper;
 
 public class Serializer {
 
@@ -51,7 +51,7 @@ public class Serializer {
     public Set<Field> getFields(Node node) {
         return Reflections.getFields(node.getClass());
     }
-    
+
     public void omitField(Field field) {
         xstream.omitField(field.getDeclaringClass(), field.getName());
     }
@@ -91,7 +91,7 @@ public class Serializer {
     public boolean isNotSerialized(Field field) {
         return field.getAnnotation(NotSerialized.class) != null;
     }
-    
+
     public void toXML(Node node, Writer writer) {
         xstream.toXML(node, writer);
     }
@@ -100,16 +100,27 @@ public class Serializer {
         return (Node) xstream.fromXML(reader);
     }
 
+    public void objToXML(Object obj, Writer writer) {
+        xstream.toXML(obj, writer);
+    }
+
+    public Object objFromXML(Reader reader) {
+        return xstream.fromXML(reader);
+    }
+
     private static class NodeConverter implements SingleValueConverter {
 
+        @Override
         public boolean canConvert(Class clazz) {
             return Node.class.isAssignableFrom(clazz);
         }
 
+        @Override
         public String toString(Object obj) {
             return ((Node) obj).getPath();
         }
 
+        @Override
         public Object fromString(String str) {
             return Nodes.getByPath(str);
         }
