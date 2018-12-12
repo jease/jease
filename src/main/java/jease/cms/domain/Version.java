@@ -25,7 +25,7 @@ import jfix.db4o.Persistent;
  * A Version stores a content-revision within a blob. Additionally an info about
  * the version can be stored (e.g. the username who created the version).
  */
-public class Version extends Persistent implements Persistent.Value {
+public class Version extends Persistent implements Persistent.ValueWithBlob {
 
     private String info;
     private Blob blob;
@@ -43,6 +43,7 @@ public class Version extends Persistent implements Persistent.Value {
         return info;
     }
 
+    @Override
     public Blob getBlob() {
         return blob;
     }

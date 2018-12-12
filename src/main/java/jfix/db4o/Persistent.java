@@ -35,4 +35,11 @@ public class Persistent extends ZooPC {
     public interface Value {
     }
 
+    /** Marker interface for value-objects with own blob content,
+     *  so when value-object is deleted its blob must be deleted as well.
+     */
+    public interface ValueWithBlob extends Value {
+        Blob getBlob();
+    }
+
 }

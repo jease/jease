@@ -25,7 +25,7 @@ import java.util.UUID;
 /**
  * Persistent class which can be used to store binary content directly in
  * file-system. You can get access to the file by calling #getFile().
- * 
+ *
  * Initially the blob is stored in #JAVA_IO_TMPDIR. When the blob is persisted
  * in database for the first time, the file will be moved to a directory
  * dependent on the database by calling #initPath().
@@ -35,8 +35,13 @@ public class Blob extends Persistent implements Persistent.Value {
     protected static transient String JAVA_IO_TMPDIR = System
             .getProperty("java.io.tmpdir") + File.separator;
 
+    protected transient String dir0;
+    protected transient String dir1;
     protected transient String path;
     protected String id = UUID.randomUUID().toString(); // should not be final, JDO usually ignores static and final fields
+
+    public Blob() {
+    }
 
     public String getId() {
         return id;
@@ -46,6 +51,12 @@ public class Blob extends Persistent implements Persistent.Value {
         return new File(path != null ? path : (JAVA_IO_TMPDIR + id));
     }
 
+    public void deleteDirs() {
+        if (dir1 != null) new File(dir1).delete();
+        if (dir0 != null) new File(dir0).delete();
+    }
+
+    @Override
     public String toString() {
         return id;
     }
@@ -55,8 +66,10 @@ public class Blob extends Persistent implements Persistent.Value {
             StringBuilder sb = new StringBuilder();
             sb.append(blobDirectory).append("blob").append(File.separator);
             sb.append(id.substring(0, 2)).append(File.separator);
+            dir0 = sb.toString();
             sb.append(id.substring(2, 4)).append(File.separator);
-            new File(sb.toString()).mkdirs();
+            dir1 = sb.toString();
+            new File(dir1).mkdirs();
             File source = getFile();
             path = sb.append(id).toString();
             File target = getFile();

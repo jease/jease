@@ -89,6 +89,7 @@ public class ObjectDatabase {
     private void startMaintenanceTimer(int period) {
         maintenanceTimer = new Timer(true);
         maintenanceTimer.schedule(new TimerTask() {
+            @Override
             public void run() {
                 lock.writeLock().lock();
                 try {
@@ -266,6 +267,7 @@ public class ObjectDatabase {
             if (blobsToDelete != null) {
                 for (Blob blob : blobsToDelete) {
                     blob.getFile().delete();
+                    blob.deleteDirs();
                 }
             }
             persistenceEngine.commit();
@@ -297,6 +299,7 @@ public class ObjectDatabase {
                 traverseAndSave(persistent);
             } else {
                 write(new Runnable() {
+                    @Override
                     public void run() {
                         save(persistent);
                     }
@@ -341,6 +344,7 @@ public class ObjectDatabase {
                 traverseAndDelete(persistent);
             } else {
                 write(new Runnable() {
+                    @Override
                     public void run() {
                         delete(persistent);
                     }
@@ -358,6 +362,7 @@ public class ObjectDatabase {
                 traverseAndDelete(persistent);
             } else {
                 write(new Runnable() {
+                    @Override
                     public void run() {
                         deleteDeliberately(persistent);
                     }
@@ -371,6 +376,7 @@ public class ObjectDatabase {
     private void traverseAndSave(Object candidate) {
         if (candidate != null) {
             traverseAndExecute(candidate, new Consumer<Object>() {
+                @Override
                 public void accept(Object object) {
                     traverseAndSave(object);
                 }
@@ -394,6 +400,7 @@ public class ObjectDatabase {
             // Don't cascade delete on values.
             if (!(candidate instanceof Persistent.Value)) {
                 traverseAndExecute(candidate, new Consumer<Object>() {
+                    @Override
                     public void accept(Object object) {
                         traverseAndDelete(object);
                     }
@@ -403,10 +410,11 @@ public class ObjectDatabase {
                 objectRepository.remove(candidate);
                 persistenceEngine.delete(candidate);
                 if (candidate instanceof Blob) {
-                    if (blobsToDelete == null) {
-                        blobsToDelete = new ArrayList<>();
-                    }
+                    if (blobsToDelete == null) blobsToDelete = new ArrayList<>();
                     blobsToDelete.add((Blob) candidate);
+                } else if (candidate instanceof Persistent.ValueWithBlob) {
+                    if (blobsToDelete == null) blobsToDelete = new ArrayList<>();
+                    blobsToDelete.add(((Persistent.ValueWithBlob) candidate).getBlob());
                 }
             }
         }
@@ -430,8 +438,7 @@ public class ObjectDatabase {
             consumer.accept(candidate);
             return;
         }
-        if (candidate instanceof Persistent.Value[]
-                || candidate instanceof Blob[]) {
+        if (candidate instanceof Persistent.Value[] || candidate instanceof Blob[]) {
             for (Object arrayItem : (Object[]) candidate) {
                 executeOnValues(arrayItem, consumer);
             }
