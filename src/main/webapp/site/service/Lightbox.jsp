@@ -14,8 +14,8 @@ $(document).ready(function(){
 			social_tools: ''
 	};
 	$("a.Image").attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
-	$("a[href$=.jpg] img,a[href$=.gif] img,a[href$=.png] img").parent().attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
-	$("a[href$=?print]").attr({"rel" : "prettyPhoto[iframe]"}).each(function() { this.href += "&iframe=true";}).prettyPhoto(config);
+	$("a[href$='.jpg'] img,a[href$='.gif'] img,a[href$='.png'] img").parent().attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
+	$("a[href$='?print']").attr({"rel" : "prettyPhoto[iframe]"}).each(function() { this.href += "&iframe=true";}).prettyPhoto(config);
 	<% if (request.getParameter("print") != null) { %>
 		$("a").click(function(evt) {
 			if(!this.target) {
