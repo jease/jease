@@ -25,6 +25,7 @@ public class Names {
     }
 
     public static String JEASE_CMS_AUTHENTICATOR;
+    public static String JEASE_CMS_NO_ADMIN_UI; // if true - means /cms and /cms/setup paths are both completely unavailable.
     public static String JEASE_CMS_HEIGHT;
     public static String JEASE_CMS_MAINTENANCE;
     public static String JEASE_CMS_WIDTH;

@@ -18,6 +18,13 @@ package jease.cms.web;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.lang.SystemException;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.ClientInfoEvent;
+import org.zkoss.zk.ui.event.Events;
+
 import jease.Names;
 import jease.Registry;
 import jease.cmf.domain.Node;
@@ -30,6 +37,7 @@ import jease.cms.service.Authenticator;
 import jease.cms.service.Users;
 import jease.cms.web.content.Configuration;
 import jfix.db4o.Database;
+import jfix.util.I18N;
 import jfix.util.Reflections;
 import jfix.zk.LoginWindow;
 import jfix.zk.Modal;
@@ -37,33 +45,32 @@ import jfix.zk.Sessions;
 import jfix.zk.Tabbox;
 import jfix.zk.ZK;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.ClientInfoEvent;
-import org.zkoss.zk.ui.event.Events;
-
 /**
  * Login into JeaseCMS: init user session and display tab-navigation.
- * 
+ *
  * If a user is already stored within the session, we don't reinforce a login,
  * but recreate the desktop from scratch. This avoids showing the login page
  * when the users refreshes the browser.
  */
 public class Application extends LoginWindow {
 
+    public static boolean noAdminUi = false;
+
     private String queryString = ZK.getQueryString();
     private String navigationClassName = Navigation.class.getName();
     private String configurationClassName = Configuration.class.getName();
 
     public Application() {
+        if (noAdminUi) throw new SystemException(I18N.get("Forbidden"));
         loginUser(JeaseSession.get(User.class));
     }
 
+    @Override
     public String getTitle() {
         return Executions.getCurrent().getDesktop().getFirstPage().getTitle();
     }
 
+    @Override
     public void doLogin(String login, String password) {
         loginUser(getAuthenticator().identify(login, password));
     }

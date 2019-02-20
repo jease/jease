@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import jease.Names;
 import jease.cms.service.Timers;
+import jease.cms.web.Application;
 import jfix.db4o.Database;
 import jfix.util.I18N;
 
@@ -39,6 +40,7 @@ public class JeaseServletListener implements ServletContextListener {
         initSystemProperties(context);
         initLocale(context);
         initDatabase(context);
+        initAppParams(context);
         initTimer(context);
     }
 
@@ -85,6 +87,11 @@ public class JeaseServletListener implements ServletContextListener {
 
     protected void stopTimer() {
         Timers.stop();
+    }
+
+    protected void initAppParams(ServletContext context) {
+        String s = context.getInitParameter(Names.JEASE_CMS_NO_ADMIN_UI);
+        if ("true".equals(s)) Application.noAdminUi = true;
     }
 
 }

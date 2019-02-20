@@ -19,6 +19,7 @@ package jease.cms.web;
 import java.util.Date;
 import java.util.stream.Stream;
 
+import org.zkoss.lang.SystemException;
 import org.zkoss.zk.ui.event.Events;
 
 import jease.Names;
@@ -49,6 +50,7 @@ import jfix.zk.ZK;
 public class Setup extends Div {
 
     public Setup() {
+        if (Application.noAdminUi) throw new SystemException(I18N.get("Forbidden"));
         init();
     }
 
