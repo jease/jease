@@ -30,68 +30,68 @@ import jfix.util.Urls;
  */
 public class Transit extends Content {
 
-	private String uri;
-	private boolean forward;
+    private String uri;
+    private boolean forward;
 
-	public Transit() {
-	}
+    public Transit() {
+    }
 
-	public String getURI() {
-		return uri;
-	}
+    public String getURI() {
+        return uri;
+    }
 
-	public void setURI(String uri) {
-		this.uri = uri;
-	}
+    public void setURI(String uri) {
+        this.uri = uri;
+    }
 
-	public java.io.File getFile() {
-		if (uri != null) {
-			java.io.File file = new java.io.File(URI.create(uri));
-			try {
-				if (!file.exists()) {
-					try {
-						file.getParentFile().mkdirs();
-						file.createNewFile();
-					} catch (IOException e) {
-						throw new RuntimeException(e.getMessage(), e);
-					}
-				}
-			} catch (RuntimeException e) {
-				return null;
-			}
-			return file;
-		} else {
-			return null;
-		}
-	}
+    public java.io.File getFile() {
+        if (uri != null) {
+            java.io.File file = new java.io.File(URI.create(uri));
+            try {
+                if (!file.exists()) {
+                    try {
+                        file.getParentFile().mkdirs();
+                        file.createNewFile();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e.getMessage(), e);
+                    }
+                }
+            } catch (RuntimeException e) {
+                return null;
+            }
+            return file;
+        } else {
+            return null;
+        }
+    }
 
-	public String getContentType() {
-		return MimeTypes.guessContentTypeFromName(uri);
-	}
+    public String getContentType() {
+        return MimeTypes.guessContentTypeFromName(uri);
+    }
 
-	public void setForward(boolean forward) {
-		this.forward = forward;
-	}
+    public void setForward(boolean forward) {
+        this.forward = forward;
+    }
 
-	public boolean isForward() {
-		return forward;
-	}
+    public boolean isForward() {
+        return forward;
+    }
 
-	public boolean isPage() {
-		return !isForward();
-	}
+    public boolean isPage() {
+        return !isForward();
+    }
 
-	public long getSize() {
-		if (getFile() != null) {
-			return super.getSize() + getFile().length();
-		} else {
-			return super.getSize();
-		}
-	}
+    public long getSize() {
+        if (getFile() != null) {
+            return super.getSize() + getFile().length();
+        } else {
+            return super.getSize();
+        }
+    }
 
-	public Transit copy(boolean recursive) {
-		Transit transit = (Transit) super.copy(recursive);
-		transit.setURI(getURI());
-		return transit;
-	}
+    public Transit copy(boolean recursive) {
+        Transit transit = (Transit) super.copy(recursive);
+        transit.setURI(getURI());
+        return transit;
+    }
 }

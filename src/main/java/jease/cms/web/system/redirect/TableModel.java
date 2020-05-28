@@ -25,32 +25,32 @@ import jfix.zk.ObjectTableModel;
 
 public class TableModel extends ObjectTableModel<Redirect> {
 
-	public Redirect newObject() {
-		return new Redirect();
-	}
+    public Redirect newObject() {
+        return new Redirect();
+    }
 
-	public String[] getColumns() {
-		return new String[] { I18N.get("Date"), I18N.get("Source"),
-				I18N.get("Target") };
-	}
+    public String[] getColumns() {
+        return new String[] { I18N.get("Date"), I18N.get("Source"),
+                I18N.get("Target") };
+    }
 
-	public int[] getProportions() {
-		return new int[] { 1, 3, 3 };
-	}
+    public int[] getProportions() {
+        return new int[] { 1, 3, 3 };
+    }
 
-	public List<Redirect> getList() {
-		return Database.query(Redirect.class);
-	}
+    public List<Redirect> getList() {
+        return Database.query(Redirect.class);
+    }
 
-	public Object getValue(Redirect redirect, int column) {
-		switch (column) {
-		case 0:
-			return redirect.getTimestamp();
-		case 1:
-			return redirect.getSource();
-		case 2:
-			return redirect.getTarget();
-		}
-		return "";
-	}
+    public Object getValue(Redirect redirect, int column) {
+        switch (column) {
+        case 0:
+            return redirect.getTimestamp();
+        case 1:
+            return redirect.getSource();
+        case 2:
+            return redirect.getTarget();
+        }
+        return "";
+    }
 }

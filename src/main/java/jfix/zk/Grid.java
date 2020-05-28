@@ -22,30 +22,30 @@ import org.zkoss.zul.Rows;
 
 public class Grid extends org.zkoss.zul.Grid {
 
-	public Grid() {
-		super();
-		setHflex("1");
-		appendChild(new Rows());
-	}
+    public Grid() {
+        super();
+        setHflex("1");
+        appendChild(new Rows());
+    }
 
-	public Grid(String... columns) {
-		super();
-		setHflex("1");
-		Columns header = new Columns();
-		for (String col : columns) {
-			org.zkoss.zul.Column column = new org.zkoss.zul.Column(col);
-			header.appendChild(column);
-		}
-		appendChild(header);
-		appendChild(new Rows());
-	}
+    public Grid(String... columns) {
+        super();
+        setHflex("1");
+        Columns header = new Columns();
+        for (String col : columns) {
+            org.zkoss.zul.Column column = new org.zkoss.zul.Column(col);
+            header.appendChild(column);
+        }
+        appendChild(header);
+        appendChild(new Rows());
+    }
 
-	public void add(Component... comps) {
-		org.zkoss.zul.Row row = new org.zkoss.zul.Row();
-		for (Component comp : comps) {
-			row.appendChild(comp);
-		}
-		getRows().appendChild(row);
-	}
+    public void add(Component... comps) {
+        org.zkoss.zul.Row row = new org.zkoss.zul.Row();
+        for (Component comp : comps) {
+            row.appendChild(comp);
+        }
+        getRows().appendChild(row);
+    }
 
 }

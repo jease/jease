@@ -29,52 +29,52 @@ import jfix.zk.Column;
 
 public class NewsEditor extends ContentEditor<News> {
 
-	Textbox teaser = new Textbox();
-	RichTextarea story = new RichTextarea();
-	Checkbox emptyTeaser = new Checkbox(I18N.get("Empty_Teaser"));
-	Datebox date = new Datebox();
+    Textbox teaser = new Textbox();
+    RichTextarea story = new RichTextarea();
+    Checkbox emptyTeaser = new Checkbox(I18N.get("Empty_Teaser"));
+    Datebox date = new Datebox();
 
-	public NewsEditor() {
-		teaser.setRows(3);
-		story.setHeight(getVeryRichEditorHeight());
-		emptyTeaser.addEventListener(Events.ON_CHECK,
-				event -> emptyTeaserChecked(emptyTeaser.isChecked()));
-		date.setLenient(false);
-		date.setFormat("short");
-	}
+    public NewsEditor() {
+        teaser.setRows(3);
+        story.setHeight(getVeryRichEditorHeight());
+        emptyTeaser.addEventListener(Events.ON_CHECK,
+                event -> emptyTeaserChecked(emptyTeaser.isChecked()));
+        date.setLenient(false);
+        date.setFormat("short");
+    }
 
-	@Override
+    @Override
     public void init() {
-		add(I18N.get("Teaser"), new Column(teaser, emptyTeaser));
-		add(I18N.get("Story"), story);
-		add(I18N.get("Date"), date);
-	}
+        add(I18N.get("Teaser"), new Column(teaser, emptyTeaser));
+        add(I18N.get("Story"), story);
+        add(I18N.get("Date"), date);
+    }
 
-	@Override
+    @Override
     public void load() {
-		teaser.setText(getNode().getTeaser());
-		story.setText(getNode().getStory());
-		date.setValue(getNode().getDate());
-		emptyTeaserChecked(StringUtils.isEmpty(teaser.getValue()));
-	}
+        teaser.setText(getNode().getTeaser());
+        story.setText(getNode().getStory());
+        date.setValue(getNode().getDate());
+        emptyTeaserChecked(StringUtils.isEmpty(teaser.getValue()));
+    }
 
-	@Override
+    @Override
     public void save() {
-		getNode().setTeaser(teaser.getText());
-		getNode().setStory(story.getText());
-		getNode().setDate(date.getValue());
-	}
+        getNode().setTeaser(teaser.getText());
+        getNode().setStory(story.getText());
+        getNode().setDate(date.getValue());
+    }
 
-	@Override
+    @Override
     public void validate() {
-		validate(story.isEmpty(), I18N.get("Story_is_required"));
-	}
+        validate(story.isEmpty(), I18N.get("Story_is_required"));
+    }
 
-	private void emptyTeaserChecked(boolean empty) {
-		if (empty) {
-			teaser.setText("");
-		}
-		teaser.setVisible(!empty);
-		emptyTeaser.setChecked(empty);
-	}
+    private void emptyTeaserChecked(boolean empty) {
+        if (empty) {
+            teaser.setText("");
+        }
+        teaser.setVisible(!empty);
+        emptyTeaser.setChecked(empty);
+    }
 }

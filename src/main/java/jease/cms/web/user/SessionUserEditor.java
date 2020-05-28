@@ -21,14 +21,14 @@ import jfix.zk.Modal;
 
 public class SessionUserEditor extends Editor {
 
-	public SessionUserEditor() {
-		super();
-		getSaveButton().setTooltiptext("");
-		setObject(getSessionUser());
-	}
+    public SessionUserEditor() {
+        super();
+        getSaveButton().setTooltiptext("");
+        setObject(getSessionUser());
+    }
 
-	public void save() {
-		super.save();
-		Modal.info(I18N.get("Action_performed"));
-	}
+    public void save() {
+        super.save();
+        Modal.info(I18N.get("Action_performed"));
+    }
 }

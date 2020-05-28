@@ -26,38 +26,38 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class NodeConstructor extends Selectfield implements Refreshable {
 
-	public NodeConstructor() {
-		setItemRenderer(new NodeConstructorRenderer());
-		setValues(ArrayUtils.add(JeaseSession.getConfig().newNodes(), 0, null));
-	}
+    public NodeConstructor() {
+        setItemRenderer(new NodeConstructorRenderer());
+        setValues(ArrayUtils.add(JeaseSession.getConfig().newNodes(), 0, null));
+    }
 
-	public Node getSelectedNode() {
-		Node node = (Node) getSelectedValue();
-		if (node != null) {
-			return node.copy(false);
-		} else {
-			return null;
-		}
-	}
+    public Node getSelectedNode() {
+        Node node = (Node) getSelectedValue();
+        if (node != null) {
+            return node.copy(false);
+        } else {
+            return null;
+        }
+    }
 
-	public void refresh() {
-		int selectedIndex = getSelectedIndex();
-		setSelectedIndex(0);
-		for (int i = 1; i < getModel().getSize(); i++) {
-			boolean valid = isValidChild((Node) getModel().getElementAt(i));
-			getItemAtIndex(i).setDisabled(!valid);
-			if (valid && i == selectedIndex) {
-				getItemAtIndex(i).setSelected(true);
-			}
-		}
-	}
+    public void refresh() {
+        int selectedIndex = getSelectedIndex();
+        setSelectedIndex(0);
+        for (int i = 1; i < getModel().getSize(); i++) {
+            boolean valid = isValidChild((Node) getModel().getElementAt(i));
+            getItemAtIndex(i).setDisabled(!valid);
+            if (valid && i == selectedIndex) {
+                getItemAtIndex(i).setSelected(true);
+            }
+        }
+    }
 
-	private boolean isValidChild(Node node) {
-		try {
-			JeaseSession.getContainer().validateChild(node, null);
-			return true;
-		} catch (NodeException e) {
-			return false;
-		}
-	}
+    private boolean isValidChild(Node node) {
+        try {
+            JeaseSession.getContainer().validateChild(node, null);
+            return true;
+        } catch (NodeException e) {
+            return false;
+        }
+    }
 }

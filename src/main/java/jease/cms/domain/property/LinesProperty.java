@@ -20,46 +20,46 @@ import org.apache.commons.lang3.StringUtils;
 
 public class LinesProperty extends Property implements Provider {
 
-	private String[] value;
+    private String[] value;
 
-	public LinesProperty() {
-	}
+    public LinesProperty() {
+    }
 
-	public LinesProperty(String name) {
-		super(name);
-	}
+    public LinesProperty(String name) {
+        super(name);
+    }
 
-	public LinesProperty(String name, String[] value) {
-		this(name);
-		setValue(value);
-	}
+    public LinesProperty(String name, String[] value) {
+        this(name);
+        setValue(value);
+    }
 
-	public String[] getValue() {
-		return value;
-	}
+    public String[] getValue() {
+        return value;
+    }
 
-	public void setValue(String[] value) {
-		this.value = value;
-	}
+    public void setValue(String[] value) {
+        this.value = value;
+    }
 
-	public LinesProperty copy() {
-		LinesProperty property = (LinesProperty) super.copy();
-		property.setValue(getValue());
-		return property;
-	}
+    public LinesProperty copy() {
+        LinesProperty property = (LinesProperty) super.copy();
+        property.setValue(getValue());
+        return property;
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		if (value != null) {
-			for (int i = 0; i < value.length; i++) {
-				if (value[i] != null) {
-					value[i] = value[i].replace(target, replacement);
-				}
-			}
-		}
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        if (value != null) {
+            for (int i = 0; i < value.length; i++) {
+                if (value[i] != null) {
+                    value[i] = value[i].replace(target, replacement);
+                }
+            }
+        }
+    }
 
-	public String toString() {
-		return StringUtils.join(value, "\n");
-	}
+    public String toString() {
+        return StringUtils.join(value, "\n");
+    }
 }

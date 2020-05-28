@@ -30,64 +30,64 @@ import jfix.zk.ObjectEditor;
 
 public class Editor extends ObjectEditor<Parameter> {
 
-	Textbox key = new Textbox();
-	Textbox singleValue = new Textbox();
-	CodeMirror multiValue = new CodeMirror();
+    Textbox key = new Textbox();
+    Textbox singleValue = new Textbox();
+    CodeMirror multiValue = new CodeMirror();
 
-	public Editor() {
-		multiValue.setHeight(getPlainEditorHeight());
-	}
+    public Editor() {
+        multiValue.setHeight(getPlainEditorHeight());
+    }
 
-	@Override
+    @Override
     public void init() {
-		add(I18N.get("Key"), key);
-		add(I18N.get("Value"), new Div(singleValue, multiValue));
-	}
+        add(I18N.get("Key"), key);
+        add(I18N.get("Value"), new Div(singleValue, multiValue));
+    }
 
-	@Override
+    @Override
     public void load() {
-		boolean multiline = StringUtils.isBlank(getObject().getValue())
-				|| getObject().getValue().contains("\n");
-		key.setText(getObject().getKey());
-		singleValue.setText(getObject().getValue());
-		singleValue.setVisible(!multiline);
-		multiValue.setValue(getObject().getValue());
-		multiValue.setVisible(multiline);
-		adjustSyntax();
-	}
+        boolean multiline = StringUtils.isBlank(getObject().getValue())
+                || getObject().getValue().contains("\n");
+        key.setText(getObject().getKey());
+        singleValue.setText(getObject().getValue());
+        singleValue.setVisible(!multiline);
+        multiValue.setValue(getObject().getValue());
+        multiValue.setVisible(multiline);
+        adjustSyntax();
+    }
 
-	private void adjustSyntax() {
-		if (multiValue.getValue().startsWith("<")) {
-			multiValue.setMode(CodeMirror.TEXT_HTML);
-			return;
-		}
-		multiValue.setMode(CodeMirror.TEXT_PLAIN);
-	}
+    private void adjustSyntax() {
+        if (multiValue.getValue().startsWith("<")) {
+            multiValue.setMode(CodeMirror.TEXT_HTML);
+            return;
+        }
+        multiValue.setMode(CodeMirror.TEXT_PLAIN);
+    }
 
-	@Override
+    @Override
     public void save() {
-		getObject().setKey(key.getText());
-		if (singleValue.isVisible()) {
-			getObject().setValue(singleValue.getText());
-		} else {
-			getObject().setValue(multiValue.getValue());
-		}
-		Database.save(getObject());
-	}
+        getObject().setKey(key.getText());
+        if (singleValue.isVisible()) {
+            getObject().setValue(singleValue.getText());
+        } else {
+            getObject().setValue(multiValue.getValue());
+        }
+        Database.save(getObject());
+    }
 
-	@Override
+    @Override
     public void delete() {
-		Database.delete(getObject());
-	}
+        Database.delete(getObject());
+    }
 
-	@Override
+    @Override
     public void validate() {
-		validate(StringUtils.isEmpty(key.getValue()), I18N.get("Key_is_required"));
-		validate(!Database.isUnique(getObject(), new Predicate<Parameter>() {
-			@Override
+        validate(StringUtils.isEmpty(key.getValue()), I18N.get("Key_is_required"));
+        validate(!Database.isUnique(getObject(), new Predicate<Parameter>() {
+            @Override
             public boolean test(Parameter parameter) {
-				return parameter.getKey().equals(key.getText());
-			}
-		}), I18N.get("Key_must_be_unique"));
-	}
+                return parameter.getKey().equals(key.getText());
+            }
+        }), I18N.get("Key_must_be_unique"));
+    }
 }

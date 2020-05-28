@@ -20,18 +20,18 @@ import jease.cms.domain.property.LinkProperty;
 import jease.cms.web.component.Linkfield;
 
 public class LinkPropertyEditor extends Linkfield implements
-		PropertyEditor<LinkProperty> {
+        PropertyEditor<LinkProperty> {
 
-	private LinkProperty property;
+    private LinkProperty property;
 
-	public LinkProperty getProperty() {
-		property.setValue(getValue());
-		return property;
-	}
+    public LinkProperty getProperty() {
+        property.setValue(getValue());
+        return property;
+    }
 
-	public void setProperty(LinkProperty property) {
-		this.property = property;
-		setValue(property.getValue());
-	}
+    public void setProperty(LinkProperty property) {
+        this.property = property;
+        setValue(property.getValue());
+    }
 
 }

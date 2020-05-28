@@ -36,7 +36,7 @@
             jfix.db4o.engine.PersistenceEngineZoodb
         </description>
         <param-name>JEASE_DATABASE_ENGINE</param-name>
-        <param-value>jfix.db4o.engine.PersistenceEnginePerst</param-value>
+        <param-value>jfix.db4o.engine.PersistenceEngineZoodb</param-value>
     </context-param>
 
     <context-param>

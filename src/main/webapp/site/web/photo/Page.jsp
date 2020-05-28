@@ -27,10 +27,9 @@
 <%@include file="/site/service/Lightbox.jsp"%>
 <%@include file="/site/service/Prettify.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath() %>/site/web/photo/js/jquery.innerfade.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/site/web/photo/js/jquery.mediaqueries.js"></script>
 <script type="text/javascript">
 $(document).ready(function() { 
-	$("#photos").innerfade({speed: 2000, timeout: 8000, type: "random"});	
+	$("#photos").innerFade({speed: 2000, timeout: 8000, type: "random"});	
 });
 </script>
 </head>

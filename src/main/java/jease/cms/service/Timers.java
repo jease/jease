@@ -31,43 +31,43 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Timers {
 
-	private static Timer timer;
-	private static String timerTaskClass;
-	private static Runnable runnable;
+    private static Timer timer;
+    private static String timerTaskClass;
+    private static Runnable runnable;
 
-	public static void start() {
-		stop();
-		timer = new Timer();
-		timer.schedule(new TimerTask() {
-			public void run() {
-				try {
-					String newTimerTaskClass = Registry
-							.getParameter(Names.JEASE_TIMER_TASK);
-					if (StringUtils.isNotBlank(newTimerTaskClass)) {
-						if (!StringUtils.equals(timerTaskClass,
-								newTimerTaskClass)) {
-							timerTaskClass = newTimerTaskClass;
-							runnable = (Runnable) Reflections
-									.newInstance(timerTaskClass);
-						}
-						if (runnable != null) {
-							runnable.run();
-						}
-					}
-				} catch (Throwable e) {
-					timerTaskClass = null;
-					runnable = null;
-				}
-			}
-		}, 1000, 1000);
-	}
+    public static void start() {
+        stop();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                try {
+                    String newTimerTaskClass = Registry
+                            .getParameter(Names.JEASE_TIMER_TASK);
+                    if (StringUtils.isNotBlank(newTimerTaskClass)) {
+                        if (!StringUtils.equals(timerTaskClass,
+                                newTimerTaskClass)) {
+                            timerTaskClass = newTimerTaskClass;
+                            runnable = (Runnable) Reflections
+                                    .newInstance(timerTaskClass);
+                        }
+                        if (runnable != null) {
+                            runnable.run();
+                        }
+                    }
+                } catch (Throwable e) {
+                    timerTaskClass = null;
+                    runnable = null;
+                }
+            }
+        }, 1000, 1000);
+    }
 
-	public static void stop() {
-		if (timer != null) {
-			timer.cancel();
-			timerTaskClass = null;
-			runnable = null;
-		}
-	}
+    public static void stop() {
+        if (timer != null) {
+            timer.cancel();
+            timerTaskClass = null;
+            runnable = null;
+        }
+    }
 
 }

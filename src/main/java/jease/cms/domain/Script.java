@@ -22,49 +22,49 @@ package jease.cms.domain;
  */
 public class Script extends Content {
 
-	private String code;
-	private boolean forward;
+    private String code;
+    private boolean forward;
 
-	public Script() {
-	}
+    public Script() {
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public boolean isForward() {
-		return forward;
-	}
+    public boolean isForward() {
+        return forward;
+    }
 
-	public void setForward(boolean forward) {
-		this.forward = forward;
-	}
+    public void setForward(boolean forward) {
+        this.forward = forward;
+    }
 
-	public boolean isPage() {
-		return !isForward();
-	}
+    public boolean isPage() {
+        return !isForward();
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(getCode());
-	}
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n").append(getCode());
+    }
 
-	public long getSize() {
-		return super.getSize() + getCode().length();
-	}
+    public long getSize() {
+        return super.getSize() + getCode().length();
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		setCode(getCode().replace(target, replacement));
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        setCode(getCode().replace(target, replacement));
+    }
 
-	public Script copy(boolean recursive) {
-		Script script = (Script) super.copy(recursive);
-		script.setCode(getCode());
-		script.setForward(isForward());
-		return script;
-	}
+    public Script copy(boolean recursive) {
+        Script script = (Script) super.copy(recursive);
+        script.setCode(getCode());
+        script.setForward(isForward());
+        return script;
+    }
 }

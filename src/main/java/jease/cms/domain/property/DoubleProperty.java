@@ -18,36 +18,36 @@ package jease.cms.domain.property;
 
 public class DoubleProperty extends Property {
 
-	private double value;
+    private double value;
 
-	public DoubleProperty() {
-	}
+    public DoubleProperty() {
+    }
 
-	public DoubleProperty(String name) {
-		super(name);
-	}
+    public DoubleProperty(String name) {
+        super(name);
+    }
 
-	public DoubleProperty(String name, double value) {
-		this(name);
-		setValue(value);
-	}
+    public DoubleProperty(String name, double value) {
+        this(name);
+        setValue(value);
+    }
 
-	public double getValue() {
-		return value;
-	}
+    public double getValue() {
+        return value;
+    }
 
-	public void setValue(double value) {
-		this.value = value;
-	}
+    public void setValue(double value) {
+        this.value = value;
+    }
 
-	public DoubleProperty copy() {
-		DoubleProperty property = (DoubleProperty) super.copy();
-		property.setValue(getValue());
-		return property;
-	}
+    public DoubleProperty copy() {
+        DoubleProperty property = (DoubleProperty) super.copy();
+        property.setValue(getValue());
+        return property;
+    }
 
-	public String toString() {
-		return String.valueOf(value);
-	}
+    public String toString() {
+        return String.valueOf(value);
+    }
 
 }

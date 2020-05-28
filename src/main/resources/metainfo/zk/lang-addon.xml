@@ -19,7 +19,7 @@
         then zk-version, the addon will be ignored -->
     <version>
         <version-class>org.sinnlabs.zk.codemirror.Version</version-class>
-        <version-uid>0.0.1</version-uid>
+        <version-uid>0.3</version-uid>
         <zk-version>7.0.0</zk-version><!-- or later -->
     </version> 
     

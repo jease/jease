@@ -21,15 +21,15 @@ import org.zkoss.zul.Vlayout;
 
 public class Column extends Vlayout {
 
-	public Column() {
-		setHflex("1");
-	}
+    public Column() {
+        setHflex("1");
+    }
 
-	public Column(Component... children) {
-		this();
+    public Column(Component... children) {
+        this();
         if (children != null) {
             for (Component child : children) appendChild(child);
-		}
-	}
+        }
+    }
 
 }

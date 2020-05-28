@@ -34,39 +34,39 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class Streams {
 
-	/**
-	 * Write given file to response.
-	 * 
-	 * If the given content type denotes a browser supported image, the image
-	 * will be automatically scaled if either "scale" is present as request
-	 * paramter or JEASE_IMAGE_LIMIT is set in Registry.
-	 */
-	public static void write(HttpServletRequest request, HttpServletResponse response, File file, String contentType)
-			throws IOException {
-		if (Images.isBrowserCompatible(contentType)) {
-			int scale = NumberUtils.toInt(request.getParameter("scale"));
-			if (scale > 0) {
-				java.io.File scaledImage = Images.scale(file, scale);
-				scaledImage.deleteOnExit();
-				response.setContentType(contentType);
-				response.setContentLength((int) scaledImage.length());
-				Files.copy(scaledImage.toPath(), response.getOutputStream());
-				return;
-			}
-			int limit = NumberUtils.toInt(Registry
-					.getParameter(Names.JEASE_IMAGE_LIMIT));
-			if (limit > 0) {
-				java.io.File scaledImage = Images.limit(file, limit);
-				scaledImage.deleteOnExit();
-				response.setContentType(contentType);
-				response.setContentLength((int) scaledImage.length());
-				Files.copy(scaledImage.toPath(), response.getOutputStream());
-				return;
-			}
+    /**
+     * Write given file to response.
+     * 
+     * If the given content type denotes a browser supported image, the image
+     * will be automatically scaled if either "scale" is present as request
+     * paramter or JEASE_IMAGE_LIMIT is set in Registry.
+     */
+    public static void write(HttpServletRequest request, HttpServletResponse response, File file, String contentType)
+            throws IOException {
+        if (Images.isBrowserCompatible(contentType)) {
+            int scale = NumberUtils.toInt(request.getParameter("scale"));
+            if (scale > 0) {
+                java.io.File scaledImage = Images.scale(file, scale);
+                scaledImage.deleteOnExit();
+                response.setContentType(contentType);
+                response.setContentLength((int) scaledImage.length());
+                Files.copy(scaledImage.toPath(), response.getOutputStream());
+                return;
+            }
+            int limit = NumberUtils.toInt(Registry
+                    .getParameter(Names.JEASE_IMAGE_LIMIT));
+            if (limit > 0) {
+                java.io.File scaledImage = Images.limit(file, limit);
+                scaledImage.deleteOnExit();
+                response.setContentType(contentType);
+                response.setContentLength((int) scaledImage.length());
+                Files.copy(scaledImage.toPath(), response.getOutputStream());
+                return;
+            }
 
-		}
-		response.setContentType(contentType);
-		response.setContentLength((int) file.length());
-		Files.copy(file.toPath(), response.getOutputStream());
-	}
+        }
+        response.setContentType(contentType);
+        response.setContentLength((int) file.length());
+        Files.copy(file.toPath(), response.getOutputStream());
+    }
 }

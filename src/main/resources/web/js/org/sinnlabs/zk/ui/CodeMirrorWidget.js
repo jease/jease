@@ -111,6 +111,14 @@ zk.$package('org.sinnlabs.zk.ui');
 				return this._mode;
 			},
 			
+			setValue: function(txt, fromserver) {
+				this.$supers('setValue', arguments);
+				if (this._codemirror) {
+					//if (fromserver) // Fix chrome browser bug
+					//	this._codemirror.setValue(this.getValue()); // breaks Chrome 71 !!!
+				}
+			},
+			
 			setLineNumbers: function (val) {
                 if (this._lineNumbers != val) {
                     this._lineNumbers = val;

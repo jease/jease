@@ -24,151 +24,151 @@ import org.zkoss.zul.Checkbox;
 
 public class Checklist extends Box {
 
-	private ItemRenderer itemRenderer;
+    private ItemRenderer itemRenderer;
 
-	public void setItemRenderer(ItemRenderer renderer) {
-		this.itemRenderer = renderer;
-	}
+    public void setItemRenderer(ItemRenderer renderer) {
+        this.itemRenderer = renderer;
+    }
 
-	public Checklist orientVertical() {
-		setOrient("vertical");
-		return this;
-	}
+    public Checklist orientVertical() {
+        setOrient("vertical");
+        return this;
+    }
 
-	public Checklist orientHorizontal() {
-		setOrient("horizontal");
-		return this;
-	}
+    public Checklist orientHorizontal() {
+        setOrient("horizontal");
+        return this;
+    }
 
-	public void clearSelection() {
-		for (int i = 0; i < getChildren().size(); i++) {
-			if (getChildren().get(i) instanceof ChecklistBox) {
-				ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
-				checkBox.setChecked(false);
-			}
-		}
-	}
+    public void clearSelection() {
+        for (int i = 0; i < getChildren().size(); i++) {
+            if (getChildren().get(i) instanceof ChecklistBox) {
+                ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
+                checkBox.setChecked(false);
+            }
+        }
+    }
 
-	public Object[] getChoices() {
-		List<Object> result = new ArrayList<>();
-		for (int i = 0; i < getChildren().size(); i++) {
-			if (getChildren().get(i) instanceof ChecklistBox) {
-				ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
-				result.add(checkBox.getObject());
-			}
-		}
-		return result.toArray();
-	}
+    public Object[] getChoices() {
+        List<Object> result = new ArrayList<>();
+        for (int i = 0; i < getChildren().size(); i++) {
+            if (getChildren().get(i) instanceof ChecklistBox) {
+                ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
+                result.add(checkBox.getObject());
+            }
+        }
+        return result.toArray();
+    }
 
-	public Object[] getSelected() {
-		List<Object> result = new ArrayList<>();
-		for (int i = 0; i < getChildren().size(); i++) {
-			if (getChildren().get(i) instanceof ChecklistBox) {
-				ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
-				if (checkBox.isChecked()) {
-					result.add(checkBox.getObject());
-				}
-			}
-		}
-		return result.toArray();
+    public Object[] getSelected() {
+        List<Object> result = new ArrayList<>();
+        for (int i = 0; i < getChildren().size(); i++) {
+            if (getChildren().get(i) instanceof ChecklistBox) {
+                ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
+                if (checkBox.isChecked()) {
+                    result.add(checkBox.getObject());
+                }
+            }
+        }
+        return result.toArray();
 
-	}
+    }
 
-	public void setChoices(List<Object> elements) {
-		setChoices(elements.toArray());
-	}
+    public void setChoices(List<Object> elements) {
+        setChoices(elements.toArray());
+    }
 
-	public void setChoices(Object[] elements) {
-		reset();
-		if (elements != null) {
-			for (int i = 0; i < elements.length; i++) {
-				ChecklistBox cb = new ChecklistBox(elements[i]);
-				if (itemRenderer != null) {
-					cb.setLabel(itemRenderer.render(cb.getObject()));
-				}
-				appendChild(cb);
-			}
-		}
-	}
+    public void setChoices(Object[] elements) {
+        reset();
+        if (elements != null) {
+            for (int i = 0; i < elements.length; i++) {
+                ChecklistBox cb = new ChecklistBox(elements[i]);
+                if (itemRenderer != null) {
+                    cb.setLabel(itemRenderer.render(cb.getObject()));
+                }
+                appendChild(cb);
+            }
+        }
+    }
 
-	public void setSelected(List<Object> elements) {
-		setSelected(elements.toArray());
-	}
+    public void setSelected(List<Object> elements) {
+        setSelected(elements.toArray());
+    }
 
-	public void setSelected(Object[] elements) {
-		clearSelection();
-		if (elements == null) {
-			return;
-		}
+    public void setSelected(Object[] elements) {
+        clearSelection();
+        if (elements == null) {
+            return;
+        }
 
-		for (int i = 0; i < getChildren().size(); i++) {
-			if (getChildren().get(i) instanceof ChecklistBox) {
-				ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
-				for (int j = 0; j < elements.length; j++) {
-					if (checkBox.getObject().equals(elements[j])) {
-						checkBox.setChecked(true);
-						break;
-					}
-				}
-			}
-		}
-	}
+        for (int i = 0; i < getChildren().size(); i++) {
+            if (getChildren().get(i) instanceof ChecklistBox) {
+                ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
+                for (int j = 0; j < elements.length; j++) {
+                    if (checkBox.getObject().equals(elements[j])) {
+                        checkBox.setChecked(true);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
-	public void setSelection(Object[] choices, Object[] elements) {
-		setChoices(choices);
-		setSelected(elements);
-	}
+    public void setSelection(Object[] choices, Object[] elements) {
+        setChoices(choices);
+        setSelected(elements);
+    }
 
-	public void setSelection(List<Object> choices, Object[] elements) {
-		setChoices(choices);
-		setSelected(elements);
-	}
+    public void setSelection(List<Object> choices, Object[] elements) {
+        setChoices(choices);
+        setSelected(elements);
+    }
 
-	public void setSelection(Object[] choices, List<Object> elements) {
-		setChoices(choices);
-		setSelected(elements);
-	}
+    public void setSelection(Object[] choices, List<Object> elements) {
+        setChoices(choices);
+        setSelected(elements);
+    }
 
-	public void setSelection(List<Object> choices, List<Object> elements) {
-		setChoices(choices);
-		setSelected(elements);
-	}
+    public void setSelection(List<Object> choices, List<Object> elements) {
+        setChoices(choices);
+        setSelected(elements);
+    }
 
-	public void reset() {
-		getChildren().clear();
-	}
+    public void reset() {
+        getChildren().clear();
+    }
 
-	public boolean isEmpty() {
-		if (getSelected() == null || getSelected().length == 0) {
-			return true;
-		}
-		return false;
-	}
+    public boolean isEmpty() {
+        if (getSelected() == null || getSelected().length == 0) {
+            return true;
+        }
+        return false;
+    }
 
-	public void setDisabled(boolean flag) {
-		for (int i = 0; i < getChildren().size(); i++) {
-			if (getChildren().get(i) instanceof ChecklistBox) {
-				ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
-				checkBox.setDisabled(flag);
-			}
-		}
-	}
+    public void setDisabled(boolean flag) {
+        for (int i = 0; i < getChildren().size(); i++) {
+            if (getChildren().get(i) instanceof ChecklistBox) {
+                ChecklistBox checkBox = (ChecklistBox) getChildren().get(i);
+                checkBox.setDisabled(flag);
+            }
+        }
+    }
 }
 
 class ChecklistBox extends Checkbox {
 
-	private Object object;
+    private Object object;
 
-	public ChecklistBox(Object object) {
-		super(String.valueOf(object));
-		setObject(object);
-	}
+    public ChecklistBox(Object object) {
+        super(String.valueOf(object));
+        setObject(object);
+    }
 
-	public Object getObject() {
-		return object;
-	}
+    public Object getObject() {
+        return object;
+    }
 
-	public void setObject(Object object) {
-		this.object = object;
-	}
+    public void setObject(Object object) {
+        this.object = object;
+    }
 }

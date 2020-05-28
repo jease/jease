@@ -23,31 +23,31 @@ import jease.cms.service.Properties;
 import jfix.zk.Selectfield;
 
 public class SelectionPropertyEditor extends Selectfield implements
-		PropertyEditor<SelectionProperty> {
+        PropertyEditor<SelectionProperty> {
 
-	private boolean setupProvider;
-	private SelectionProperty property;
+    private boolean setupProvider;
+    private SelectionProperty property;
 
-	public SelectionProperty getProperty() {
-		if (setupProvider) {
-			property.setProvider((String) getSelectedValue());
-		} else {
-			property.setValue((String) getSelectedValue());
-		}
-		return property;
-	}
+    public SelectionProperty getProperty() {
+        if (setupProvider) {
+            property.setProvider((String) getSelectedValue());
+        } else {
+            property.setValue((String) getSelectedValue());
+        }
+        return property;
+    }
 
-	public void setProperty(SelectionProperty property) {
-		this.property = property;
-		if (property.getProvider() != null) {
-			Property provider = Properties.getByPath(property.getProvider());
-			if (provider instanceof Provider) {
-				setModel(((Provider) provider).getValue(), property.getValue());
-				return;
-			}
-		}
-		setupProvider = true;
-		setValues(Properties.getProviderPaths());
-	}
+    public void setProperty(SelectionProperty property) {
+        this.property = property;
+        if (property.getProvider() != null) {
+            Property provider = Properties.getByPath(property.getProvider());
+            if (provider instanceof Provider) {
+                setModel(((Provider) provider).getValue(), property.getValue());
+                return;
+            }
+        }
+        setupProvider = true;
+        setValues(Properties.getProviderPaths());
+    }
 
 }

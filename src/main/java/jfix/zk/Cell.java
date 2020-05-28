@@ -20,14 +20,14 @@ import org.zkoss.zk.ui.Component;
 
 public class Cell extends org.zkoss.zul.Cell {
 
-	public Cell() {
-		super();
-	}
+    public Cell() {
+        super();
+    }
 
-	public Cell(Component... children) {
-		this();
-		for (Component child : children) {
-			appendChild(child);
-		}
-	}
+    public Cell(Component... children) {
+        this();
+        for (Component child : children) {
+            appendChild(child);
+        }
+    }
 }

@@ -22,10 +22,10 @@ package jease.cms.domain;
  */
 public class Topic extends Content {
 
-	public Topic() {
-	}
+    public Topic() {
+    }
 
-	public Topic copy(boolean recursive) {
-		return (Topic) super.copy(recursive);
-	}
+    public Topic copy(boolean recursive) {
+        return (Topic) super.copy(recursive);
+    }
 }
