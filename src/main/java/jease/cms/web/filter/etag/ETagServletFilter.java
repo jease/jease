@@ -27,6 +27,7 @@ public class ETagServletFilter implements Filter {
     private static final String IF_NONE_MATCH_HEADER = "If-None-Match";
     private static final String IF_MODIFIED_SINCE_HEADER = "If-Modified-Since";
     private static final String LAST_MODIFIED_HEADER = "Last-Modified";
+    private static final String CACHE_CONTROL_HEADER = "Cache-Control";
 
     private String contentTypeFilter;
     private Pattern contentTypePattern;
@@ -97,6 +98,10 @@ public class ETagServletFilter implements Filter {
             return;
         }
         resp.setHeader(ETAG_HEADER, token);
+        String s = req.getServletContext().getInitParameter("jease.etag.max.age");
+        if (s == null || s.isEmpty()) s = "900";
+        resp.setHeader(CACHE_CONTROL_HEADER, "max-age=" + s);
+        
         String previousToken = req.getHeader(IF_NONE_MATCH_HEADER);
         if (previousToken != null && previousToken.equals(token)) { // compare previous token with current one
             LOGGER.info(ETAG_HEADER + " match: returning '304 Not Modified'");

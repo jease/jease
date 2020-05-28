@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(urlPatterns = { "/*" }, dispatcherTypes = { DispatcherType.REQUEST,
@@ -21,14 +22,21 @@ public class SimpleCORSFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
             throws IOException, ServletException {
-        HttpServletResponse response = (HttpServletResponse) res;
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
-        chain.doFilter(req, res);
+        String s = req.getServletContext().getInitParameter("jease.cors.enabled");
+        if (s == null || s.isEmpty() || "true".equals(s)) {
+            HttpServletResponse response = (HttpServletResponse) resp;
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, DELETE, PUT, PATCH");
+            response.setHeader("Access-Control-Max-Age", "3600");
+            HttpServletRequest request = (HttpServletRequest) req;
+            s = request.getHeader("Access-Control-Request-Headers");
+            if (s != null && !s.isEmpty()) response.setHeader("Access-Control-Allow-Headers", s);
+            s = request.getHeader("Origin"); // see https://stackoverflow.com/a/45723981
+            if (s != null && !s.isEmpty()) response.setHeader("Access-Control-Allow-Origin", s);
+        }
+        chain.doFilter(req, resp);
     }
 
     @Override
