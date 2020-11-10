@@ -1,10 +1,13 @@
-<%@page import="jfix.util.*,jease.cms.domain.*,jease.site.*,jease.site.i18n.*"%>
+<%@page import="jfix.util.*,jease.cms.domain.*,jease.site.*,jease.*"%>
 <%! 
 	final String JEASE_DISCUSSION_RECURSION = "Jease.Discussion.Recursion";
 %>
 <%  
 	Discussion discussion = (Discussion) request.getAttribute("Node");
-	String id = String.valueOf(discussion.getPath().hashCode());	
+	String id = String.valueOf(discussion.getPath().hashCode());
+	if (session.getAttribute(discussion.getPath()) != null) {
+		discussion = (Discussion) session.getAttribute(discussion.getPath());
+	}
 	
 	// Is the template called recursively?
 	boolean toplevel = request.getAttribute(JEASE_DISCUSSION_RECURSION) == null ;
@@ -16,12 +19,12 @@
 
 	if (toplevel && captcha != null) {
 		if (Validations.equals(captcha, session.getAttribute("captcha" + id))) {
-			message = Discussions.addComment(discussion, author, subject, comment, true);
+			message = Discussions.addComment((Discussion) request.getAttribute("Node"), author, subject, comment, true);
 			if (message == null) {				
 				subject = author = comment = null;
 			}
 		} else {
-			message = Strings.Code_is_not_correct;	
+			message = I18N.get("Code_is_not_correct");	
 		}
 	}
 %>
@@ -32,20 +35,24 @@
 	<span class="Title">
 		<% if (toplevel) { %>
 			<strong><%=discussion.getTitle()%></strong>
-		<% } else { %>	
-			<a href="<%=discussion.getPath()%>"><%=discussion.getTitle()%></a>
+		<% } else { %>
+			<% if (Registry.getParameter(Names.JEASE_DISCUSSION_PRESENTATION, "").toLowerCase().startsWith("thread")) { %>
+				<a href="<%=request.getContextPath() %><%=((Discussion) request.getAttribute("Node")).getPath()%>"><%=discussion.getTitle()%></a>
+			<% } else { %>
+				<strong><%=discussion.getTitle()%></strong>
+			<% } %>
 		<% } %>
 	</span>
 	<% if (Validations.isNotEmpty(discussion.getAuthor())) {%>
-		<span class="Author"><%= Strings.By %><%= " " + discussion.getAuthor() + " " %></span>
+		<span class="Author"><%= I18N.get("By") %><%= " " + discussion.getAuthor() + " " %></span>
 		<span class="Date">(<%=String.format("%1$td %1$tb %1$tY", discussion.getLastModified())%>)</span>
 	<% } %>	
-	<p class="Text"><%=discussion.getComment().replace("\n","<br />")%></p>
+	<div class="Text"><%=Regexps.convertTextToHtml(discussion.getComment())%></div>
 </div>
 
 <%-- Create threaded view of discussion via recursion --%>
 <ul class="Thread">
-	<% for (Discussion child : discussion.getChildren(Discussion.class)) { %>
+	<% for (Discussion child : ((Discussion) request.getAttribute("Node")).getChildren(Discussion.class)) { %>
 		<% if (child.isVisible()) { %>	
 		<li>
 		<%
@@ -65,15 +72,15 @@
 	<a name="discussion<%= id %>"></a>	
 	<form class="Submission" action="#discussion<%= id %>" method="post">
 		<dl>
-		<dt><%= Strings.Name %>:</dt>
-		<dd><input type="text" name="author<%=id %>" maxlength="60" value="<%=author != null ? author : Strings.Anonymous %>"<%= author == null ? " onFocus=\"this.value=''\"" :"" %>/></dd>
-		<dt><%= Strings.Subject %>:</dt>
+		<dt><%= I18N.get("Name") %>:</dt>
+		<dd><input type="text" name="author<%=id %>" maxlength="60" value="<%=author != null ? author : I18N.get("Anonymous") %>"<%= author == null ? " onFocus=\"this.value=''\"" :"" %>/></dd>
+		<dt><%= I18N.get("Subject") %>:</dt>
 		<dd><input type="text" name="subject<%=id %>" maxlength="60" value="<%=subject != null ? subject : "" %>"/></dd>			
-		<dt><%= Strings.Comment %>:</dt>
+		<dt><%= I18N.get("Comment") %>:</dt>
 		<dd><textarea name="comment<%=id %>" rows="10"><%=comment != null ? comment : "" %></textarea></dd>			
-		<dt><%= Strings.Please_enter_the_code %>:</dt>
+		<dt><%= I18N.get("Please_enter_the_code") %>:</dt>
 		<dd>
-			<img src="/site/service/Captcha.jsp?id=captcha<%=id %>" /> 
+			<img src="<%=request.getContextPath() %>/site/service/Captcha.jsp?id=captcha<%=id %>" /> 
 			<br />
 			<input type="text" name="captcha<%=id %>" />
 		</dd>	
@@ -82,9 +89,9 @@
 		<% if (Validations.isNotEmpty(message)) { %>
 			<b><%=message %>!</b>	
 		<% } else if (captcha != null) { %>
-			<i><%=Strings.Thank_you_for_your_comment %>.</i>
+			<i><%=I18N.get("Thank_you_for_your_comment") %>.</i>
 		<% } %>			
-		<input type="submit" value="<%=Strings.Submit %>" />
+		<input type="submit" value="<%=I18N.get("Submit") %>" />
 		</p>					
 	</form>
 <% } %>

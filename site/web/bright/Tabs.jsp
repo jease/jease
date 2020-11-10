@@ -7,7 +7,7 @@
 			boolean current = contextPath.startsWith(contentPath + "/");
 	%>
 	<li<%=current ? " class=\"current\"" : ""%>>
-	 <a href="<%=contentPath%>"><span><%=content.getTitle()%></span></a>
+	 <a href="<%=request.getContextPath() %><%=contentPath%>"><span><%=content.getTitle()%></span></a>
 	</li>
 	<%
 		}

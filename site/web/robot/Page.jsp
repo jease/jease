@@ -5,17 +5,18 @@
 <head>
 <%@include file="/site/service/Pagebase.jsp"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><%= request.getAttribute("Page.Title") %></title>
-<link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Root") %>site/web/robot/style/screen.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Root") %>site/web/robot/style/print.css" media="<%= request.getParameter("print") == null ? "print" : "print,screen" %>" />
+<title><%=Navigations.getPageTitle(content) %></title>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/site/web/robot/style/screen.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/site/web/robot/style/print.css" media="<%= request.getParameter("print") == null ? "print" : "print,screen" %>" />
 <%@include file="/site/service/Feeds.jsp" %>
 <%@include file="/site/service/Jquery.jsp"%>
+<%@include file="/site/service/Rewrite.jsp"%>
 <%@include file="/site/service/Lightbox.jsp"%>
 <%@include file="/site/service/Prettify.jsp"%>
-<script type="text/javascript" src="<%=request.getAttribute("Page.Root") %>site/web/robot/js/maxheight.js"></script>
-<script type="text/javascript" src="<%=request.getAttribute("Page.Root") %>site/web/robot/js/cufon-yui.js"></script>
-<script type="text/javascript" src="<%=request.getAttribute("Page.Root") %>site/web/robot/js/Myriad_Pro_300.font.js"></script>
-<script type="text/javascript" src="<%=request.getAttribute("Page.Root") %>site/web/robot/js/Myriad_Pro_400.font.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/site/web/robot/js/maxheight.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/site/web/robot/js/cufon-yui.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/site/web/robot/js/Myriad_Pro_300.font.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/site/web/robot/js/Myriad_Pro_400.font.js"></script>
 <script type="text/javascript">//<![CDATA[
 Cufon.replace("#tabs", { fontFamily: 'Myriad Pro', hover:true });
 Cufon.replace("#logo", { fontFamily: 'Myriad Pro', hover:true });
@@ -33,14 +34,14 @@ $(document).ready(function(){
 					<div class="wrapper">
 						<div class="fleft">							
 							<div id="logo">
-								<img src="<%=request.getAttribute("Page.Root") %>site/web/robot/style/img/logo.jpg" alt="" />
-								<a href="<%=request.getAttribute("Page.Root") %>">								
+								<img src="<%=request.getContextPath() %>/site/web/robot/style/img/logo.jpg" alt="" />
+								<a href="<%=request.getContextPath() %>/">								
 									&nbsp;j<span style="color: white;">ease</span> &raquo; <span style="color: white;">java</span>&nbsp;with <span style="color: white;">ease</span>
 								</a>
 							</div>
 						</div>
 						<div class="fright">
-							<form action="<%=request.getAttribute("Page.Root") %>" id="search-form">
+							<form action="<%=request.getContextPath() %>/" id="search-form">
 							<fieldset>
 								<input type="text" class="text" name="query" value="<%=request.getParameter("query") != null ? request.getParameter("query") : ""%>" />
 								<input type="hidden" name="page" value="/site/service/Search.jsp" />
@@ -53,7 +54,7 @@ $(document).ready(function(){
 				<div id="tabs">					
 					<ul>
 					<% for (Content tab : Navigations.getTabs()) { %>
-						<li><a href="<%=tab.getPath()%>"><%=tab.getTitle()%></a></li>
+						<li><a href="<%=request.getContextPath() %><%=tab.getPath()%>"><%=tab.getTitle()%></a></li>
 					<% } %>
 					</ul>
 				</div>
@@ -61,7 +62,7 @@ $(document).ready(function(){
 					<ul>
 					<% for (News item : Navigations.getNews((Content) content.getParent())) { %>						
 						<li>
-							<a href="<%=item.getPath()%>?print">
+							<a href="<%=request.getContextPath() %><%=item.getPath()%>?print">
 								<% if (item.getDate() != null) { %><%=String.format("%1$td %1$tb %1$tY", item.getDate())%> - <% } %>
 								<%=item.getTitle()%>
 							</a>
@@ -82,7 +83,7 @@ $(document).ready(function(){
 						<div id="breadcrumb">
 							<% for (Content parent : content.getParents(Content.class)) { %>
 								<% if(parent != content.getParent()) { %>
-									&raquo; <a href="<%=parent.getPath()%>"><%=parent.getTitle()%></a> 
+									&raquo; <a href="<%=request.getContextPath() %><%=parent.getPath()%>"><%=parent.getTitle()%></a> 
 								<% } %>
 							<% } %>
 						</div>
@@ -92,7 +93,7 @@ $(document).ready(function(){
 							<% if (item instanceof Topic) { %>
 								</ul><h2><%=item.getTitle()%></h2><ul>
 							<% } else { %>
-								<li><a href="<%=item.getPath()%>" <%=item == content ? " class=\"current\"" : ""%>><%=item.getTitle()%></a></li>
+								<li><a href="<%=request.getContextPath() %><%=item.getPath()%>" <%=item == content ? " class=\"current\"" : ""%>><%=item.getTitle()%></a></li>
 							<% } %>
 						<% } %>
 						</ul>
@@ -102,6 +103,7 @@ $(document).ready(function(){
 					<div class="indent">
 						<div class="section">
 							<% pageContext.include((String) request.getAttribute("Page.Template")); %>
+							<div style="clear: both"></div>
 							<p class="editorial">
 								Last modified on <%=String.format("%tF", content.getLastModified())%>
 								<% if (content.getEditor() != null) { %>

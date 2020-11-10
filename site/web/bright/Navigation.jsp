@@ -2,7 +2,7 @@
 <%
 	Content navigationContext = (Content) request.getAttribute("Node");
 %>
-<h1><a href="<%=navigationContext.getParent().getPath()%>"><%=((Content) navigationContext.getParent()).getTitle()%></a></h1>
+<h1><a href="<%=request.getContextPath() %><%=navigationContext.getParent().getPath()%>"><%=((Content) navigationContext.getParent()).getTitle()%></a></h1>
 <ul>
 	<%
 		for (Content content : Navigations.getItems((Content) navigationContext.getParent())) {
@@ -15,7 +15,7 @@
 		} else {
 	%>
 	<li <%=content == navigationContext ? " class=\"current\"" : ""%>>
-		<a href="<%=content.getPath()%>"><%=content.getTitle()%></a>
+		<a href="<%=request.getContextPath() %><%=content.getPath()%>"><%=content.getTitle()%></a>
 	</li>
 	<%
 		}

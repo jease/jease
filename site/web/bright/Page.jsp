@@ -21,6 +21,7 @@
         <div id="main">
             <div id="breadcrumb"><%@include file="Breadcrumb.jsp"%></div>
             <% pageContext.include((String) request.getAttribute("Page.Template")); %>
+            <div style="clear: both"></div>
             <div id="editorial"><%@include file="Editorial.jsp"%></div>
         </div>
         <div id="rightbar">

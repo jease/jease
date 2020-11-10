@@ -1,7 +1,10 @@
 <%@page import="org.apache.commons.io.FileUtils,jfix.util.*,jfix.servlet.*,jease.cms.domain.*"%>
 <%
 	Media media = (Media) request.getAttribute("Node");
-
+	if (session.getAttribute(media.getPath()) != null) {
+		media = (Media) session.getAttribute(media.getPath());
+	}
+	
 	if (request.getParameter("file") != null) {
 		if (media.getContentType().startsWith("image") && request.getParameter("scale") != null) {
 			int scale = Integer.parseInt(request.getParameter("scale"));
@@ -17,10 +20,10 @@
 <%
 	if (media.getContentType().startsWith("image")) {
 %>
-<a href="<%=media.getPath() %>?file&<%=media.getContentType().replace("/",".") %>" class="Image"><img src="<%=media.getPath() %>?file" alt="<%=media.getTitle()%>" title="<%=media.getTitle()%>" /></a>
+<a href="<%=request.getContextPath() %><%=media.getPath() %>?file&<%=media.getContentType().replace("/",".") %>" class="Image"><img src="<%=request.getContextPath() %><%=media.getPath() %>?file" alt="<%=media.getTitle()%>" title="<%=media.getTitle()%>" /></a>
 <%
 	} else if (media.getContentType().equals("video/x-flv")) {
-		String movie = String.format("%ssite/service/videoplayer/OSplayer.swf?autoplay=on&movie=%s;file", request.getAttribute("Page.Root"), media.getPath()); 
+		String movie = String.format("%s/site/service/videoplayer/OSplayer.swf?autoplay=on&movie=%s%s;file", request.getContextPath(), request.getContextPath(), media.getPath()); 
 %>
 <object class="Video">
  <param name="allowFullScreen" value="true" />
@@ -31,8 +34,8 @@
 <%
 	} else if (media.getContentType().equals("application/x-shockwave-flash")) {
 %>
-<object class="Flash" data="<%=media.getPath() %>?file" type="application/x-shockwave-flash">
- <param name="movie" value="<%=media.getPath() %>?file" />
+<object class="Flash" data="<%=request.getContextPath() %><%=media.getPath() %>?file" type="application/x-shockwave-flash">
+ <param name="movie" value="<%=request.getContextPath() %><%=media.getPath() %>?file" />
 </object>
 <%
 	} else if (media.getContentType().startsWith("text/html")) {
@@ -45,6 +48,6 @@
 <%	
 	} else {
 %>
-<iframe class="File" src="<%=media.getPath() %>?file"></iframe>
+<iframe class="File" src="<%=request.getContextPath() %><%=media.getPath() %>?file"></iframe>
 <% } %>
 </div>

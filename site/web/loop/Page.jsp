@@ -5,11 +5,12 @@
 <head>
 <%@include file="/site/service/Pagebase.jsp"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><%= request.getAttribute("Page.Title") %></title>
-<link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Root") %>site/web/loop/style/screen.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Root") %>site/web/loop/style/print.css" media="<%= request.getParameter("print") == null ? "print" : "print,screen" %>" />
+<title><%=Navigations.getPageTitle(content)%></title>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/site/web/loop/style/screen.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/site/web/loop/style/print.css" media="<%= request.getParameter("print") == null ? "print" : "print,screen" %>" />
 <%@include file="/site/service/Feeds.jsp" %>
 <%@include file="/site/service/Jquery.jsp"%>
+<%@include file="/site/service/Rewrite.jsp"%>
 <%@include file="/site/service/Lightbox.jsp"%>
 <%@include file="/site/service/Prettify.jsp"%>
 </head>
@@ -18,12 +19,12 @@
   <div id="wrapper">
     
     <div id="header">
-      <h1><a href="<%=request.getAttribute("Page.Root") %>">JeaseCMS</a></h1> 
+      <h1><a href="<%=request.getContextPath() %>/">JeaseCMS</a></h1> 
       <div id="tabs">
         <ul>
         <% for (Content tab : Navigations.getTabs()) { %>
-			<li<%=content.getPath().startsWith(tab.getPath() + "/") ? " class=\"current\"" : ""%>>
- 				<a href="<%=tab.getPath()%>"><%=tab.getTitle()%></a>
+			<li<%=content.getPath().startsWith(tab.getPath()) ? " class=\"current\"" : ""%>>
+ 				<a href="<%=request.getContextPath() %><%=tab.getPath()%>"><%=tab.getTitle()%></a>
 			</li>
 		<% } %>
         </ul>        
@@ -36,10 +37,11 @@
       <div id="content">
 		<p id="breadcrumb">
 			<% for (Content parent : content.getParents(Content.class)) { %>
-				&raquo; <a href="<%=parent.getPath()%>"><%=parent.getTitle()%></a>
+				&raquo; <a href="<%=request.getContextPath() %><%=parent.getPath()%>"><%=parent.getTitle()%></a>
 			<% } %>
 		</p>
 		<% pageContext.include((String) request.getAttribute("Page.Template")); %>	
+		<div style="clear: both"></div>
 		<p id="editorial">
 			Last modified on <%=String.format("%tF", content.getLastModified())%>
 			<% if (content.getEditor() != null) { %>
@@ -55,7 +57,7 @@
 			<% if (item instanceof Topic) { %>
 				</ul><h2><%=item.getTitle()%></h2><ul>
 			<% } else { %>
-				<li<%=item == content ? " class=\"current\"" : ""%>><a href="<%=item.getPath()%>"><%=item.getTitle()%></a></li>
+				<li<%=item == content ? " class=\"current\"" : ""%>><a href="<%=request.getContextPath() %><%=item.getPath()%>"><%=item.getTitle()%></a></li>
 			<% } %>
 		<% } %>
 		</ul>		
@@ -75,14 +77,14 @@
 				<%=item.getStory()%>
 			<% } else { %>
 				<p><%=item.getTeaser()%><br />
-				<a href="<%=item.getPath()%>?print">More...</a>
+				<a href="<%=request.getContextPath() %><%=item.getPath()%>?print">More...</a>
 				</p>
 			<% } %>			
 		<% } %>
 	  <% } %>	  	  
 	  <div id="search">
 	   	<h2>Search this site</h2>			
-		<form action="<%=request.getAttribute("Page.Root") %>" method="get">
+		<form action="<%=request.getContextPath() %>/" method="get">
 			<input type="text" name="query" <% if(request.getParameter("query") != null) { %>value="<%= request.getParameter("query") %>"<% } else { %>value="Enter your search..." onfocus="this.value='';"<% } %> />
 			<input type="hidden" name="page" value="/site/service/Search.jsp" />
 		</form>

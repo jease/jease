@@ -1,7 +1,10 @@
 <%@page import="java.awt.*,org.apache.commons.io.FileUtils,jfix.util.*,jfix.servlet.*,jease.cms.domain.*,jease.cms.domain.property.*"%>
 <% 
 	Item item = (Item) request.getAttribute("Node");
-
+	if (session.getAttribute(item.getPath()) != null) {
+		item = (Item) session.getAttribute(item.getPath());
+	}
+	
 	if (request.getParameter("file") != null) {
 		FileProperty file = (FileProperty) item.getProperty(request.getParameter("file"));
 		if (file.getContentType().startsWith("image") && request.getParameter("scale") != null) {
@@ -17,7 +20,7 @@
 <h1 class="Title"><%=item.getTitle()%></h1>
 <dl>
 <% for (Property property : item.getProperties()) { %>
-	<dt class="Name"><%=property.getName() %></dt>
+	<dt class="Name"><%=I18N.get(property.getName()) %></dt>
 	<dd class="Property">
 	<% if (property instanceof FileProperty) { %>	
 		<%  if(((FileProperty) property).getContentType().startsWith("image")) { %>

@@ -1,5 +1,5 @@
 <%
-	String errorPage = jease.Registry.getParameter(jease.cms.Names.JEASE_SITE_ERROR);
+	String errorPage = jease.Registry.getParameter(jease.Names.JEASE_SITE_ERROR);
 	if (errorPage != null) {
 		pageContext.forward(errorPage);
 		return;

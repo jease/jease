@@ -12,8 +12,14 @@
 %>
 <%
 	Script script = (Script) request.getAttribute("Node");
-
 	String scriptParentPath = script.getParent().getPath();
+	if (session.getAttribute(script.getPath()) != null) {
+		script = (Script) session.getAttribute(script.getPath());
+	}
+	
+	if (script.getParent() == null) {
+		scriptParentPath = "tmp" + scriptParentPath;
+	}
 	java.io.File scriptDirectory = new java.io.File(workDirectory, scriptParentPath.replace("/", java.io.File.separator));
 	scriptDirectory.mkdirs();
 	

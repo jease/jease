@@ -6,9 +6,9 @@
  	if (Validations.isNotEmpty(parents)) {
 		for (Content parent : parents) {
 %> 	
-			<a href="<%=parent.getPath()%>"><%=parent.getTitle()%></a>&nbsp;&raquo; 
+			<a href="<%= request.getContextPath() %><%=parent.getPath()%>"><%=parent.getTitle()%></a>&nbsp;&raquo; 
 	<% } %>
 		<br />
 <% } %>	
-<a href="<%=content.getPath()%>"><b><%=content.getTitle()%></b></a>
+<a href="<%= request.getContextPath() %><%=content.getPath()%>"><b><%=content.getTitle()%></b></a>
 </p>

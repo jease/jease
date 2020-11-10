@@ -1,14 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <%@page import="java.util.*,java.text.*,jease.cmf.service.*,jease.cms.domain.*,jease.site.*" contentType="text/xml; charset=utf-8"%>
 <%
 	String host = jfix.servlet.Servlets.getHost(request);
-	String domain = "http://" + host;
+	String domain = (request.isSecure() ? "https://" : "http://") + host + request.getContextPath();
 	String zone = new SimpleDateFormat("Z").format(new Date());
 	DateFormat rssDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'" + zone.substring(0, 3) + ":" + zone.substring(3) + "'", Locale.ENGLISH);
 %>
-<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 <link rel="self" type="application/rss+xml" href="<%=domain%>/site/service/feeds/atom.jsp" />
-<title><%=((Content) Nodes.getRoot()).getTitle()%> Atom Feed</title>
+<title><%=Navigations.getRoot().getTitle()%> Atom Feed</title>
 <subtitle>News from <%=host%></subtitle>
 <id><%=domain%>/</id>
 <updated><%=rssDateFormat.format(new Date())%></updated>

@@ -4,6 +4,9 @@
 %>
 <%
 	Reference reference = (Reference) request.getAttribute("Node");
+	if (session.getAttribute(reference.getPath()) != null) {
+		reference = (Reference) session.getAttribute(reference.getPath());
+	}
 	
 	Set referenceRecursions = (Set) request.getAttribute(JEASE_REFERENCE_RECURSION);
 	if (referenceRecursions == null) {

@@ -1,6 +1,9 @@
 <%@page import="jfix.util.*,jease.cms.domain.*"%>
 <%
 	News news = (News) request.getAttribute("Node");
+	if (session.getAttribute(news.getPath()) != null) {
+		news = (News) session.getAttribute(news.getPath());
+	}
 %>
 <div class="News">
 <div class="Date"><%= news.getDate() != null ? String.format("%tF", news.getDate()) : "" %></div>

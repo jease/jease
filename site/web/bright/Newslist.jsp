@@ -3,7 +3,7 @@
 	Content newsContext = (Content) ((Content) request.getAttribute("Node")).getParent();
 	for (News news : Navigations.getNews(newsContext)) { 
 %>
-	<h1><a href="<%=news.getPath()%>"><%=news.getTitle()%></a></h1>
+	<h1><a href="<%=request.getContextPath() %><%=news.getPath()%>"><%=news.getTitle()%></a></h1>
 	<% if (news.getDate() != null) { %>
 		<p class="news-date"><%=String.format("%tF", news.getDate())%></p>
 	<% } %>	
@@ -13,7 +13,7 @@
 		<p>
 			<%=news.getTeaser()%>
 			<br />
-			<a href="<%=news.getPath()%>?print">More...</a>
+			<a href="<%=request.getContextPath() %><%=news.getPath()%>?print">More...</a>
 		</p>
 	<% } %>	
 <% } %>

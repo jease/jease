@@ -5,6 +5,14 @@
 
 	<context-param>
 		<description>
+			Two-letter code (cn,de,en,es,fr,it,ja,pl,pt,ru) for the default locale. Leave it empty to use the locale from environment.
+		</description>
+		<param-name>JEASE_DEFAULT_LOCALE</param-name>
+		<param-value></param-value>
+	</context-param>
+
+	<context-param>
+		<description>
 			The name of the database folder can be specified in two ways: 
 				- If param-value doesn't include a slash, the database folder will be created in user home (prefixed by "db4o" or "perst"). 
 				- If param-value includes a slash (java.io.File.separator), the value will be interpreted as path for the database folder.
@@ -32,33 +40,30 @@
 	<listener>
 		<listener-class>jease.cmf.web.servlet.JeaseSessionListener</listener-class>
 	</listener>
-	
+
 	<filter>
-		<filter-name>JeaseServletFilter</filter-name>
-		<filter-class>jease.cmf.web.servlet.JeaseServletFilter</filter-class>
+		<filter-name>jease.site.Controller</filter-name>
+		<filter-class>jease.site.Controller</filter-class>
 		<init-param>
-			<description>Path to front controller dispatching requests for Nodes.</description>
-			<param-name>JEASE_SITE_CONTROLLER</param-name>
-			<param-value>/site/Controller.jsp</param-value>
+			<description>Path to dispatcher for Nodes</description>
+			<param-name>JEASE_SITE_DISPATCHER</param-name>
+			<param-value>/site/Dispatcher.jsp</param-value>
 		</init-param>
-<!--
 		<init-param>
-			<description>
-				[Optional] Fully qualified class name for implementaton of jfix.functor.Function(String,String) 
-				which can be used to rewrite the response output of JEASE_SITE_CONTROLLER.
+			<description>Servlet paths separated by pipes (|) which should be ignored by redirection service.
 			</description>
-			<param-name>JEASE_SITE_REWRITER</param-name>
-			<param-value>jease.site.Rewriter</param-value>
+			<param-name>JEASE_SITE_SERVLETS</param-name> 
+			<param-value>cms|site|zkau</param-value>
 		</init-param>
---> 
 	</filter>
+	
 	<filter-mapping>
-		<filter-name>JeaseServletFilter</filter-name>
+		<filter-name>jease.site.Controller</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
-    	<dispatcher>ERROR</dispatcher>		
+		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
 
 	<servlet>
@@ -122,5 +127,5 @@
 		<error-code>404</error-code>
 		<location>/site/service/Error.jsp</location>
 	</error-page>
-	
+
 </web-app>
