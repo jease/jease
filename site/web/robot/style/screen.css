@@ -152,7 +152,11 @@ h6 {
 	font-weight: normal;
 	font-weight: 300;
 	letter-spacing: -2px;
-	margin-bottom: 14px;	
+	margin-top: 8px;	
+}
+
+#logo img {
+	margin-top: -10px;
 }
 
 #logo a:hover {
@@ -242,7 +246,7 @@ h6 {
 
 #tabs ul {
 	margin-left: 10px;
-	padding: 13px 0 0 18px;
+	padding: 16px 0 0 18px;
 }
 
 #tabs ul li {

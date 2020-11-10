@@ -16,13 +16,14 @@
  */
 package jease.cms.web.content.editor;
 
+import jease.cmf.service.Filenames;
 import jease.cms.domain.Script;
 import jease.cms.web.i18n.Strings;
-import jfix.zk.Textarea;
+import jfix.zk.Codearea;
 
 public class ScriptEditor extends ContentEditor<Script> {
 
-	Textarea code = new Textarea();
+	Codearea code = new Codearea();
 
 	public ScriptEditor() {
 		code.setHeight("350px");
@@ -33,6 +34,7 @@ public class ScriptEditor extends ContentEditor<Script> {
 	}
 
 	public void load() {
+		code.setSyntax(Filenames.asExtension(id.getValue()));
 		code.setText(getNode().getCode());
 	}
 

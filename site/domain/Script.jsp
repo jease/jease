@@ -25,7 +25,11 @@
 	}
 
 	try {
-		pageContext.include(SCRIPT_WEBINF_FOLDER + scriptId);
+		if(request.getParameter("file") != null) {
+			pageContext.forward(SCRIPT_WEBINF_FOLDER + scriptId);
+		} else {
+			pageContext.include(SCRIPT_WEBINF_FOLDER + scriptId);	
+		}
 	} catch (Exception e) {
 		response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		out.println("<pre>" + jfix.util.Regexps.quoteMarkup(e.getMessage()) + "</pre>");

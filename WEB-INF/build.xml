@@ -1,0 +1,28 @@
+<project default="build" basedir=".">
+
+	<property name="build.sysclasspath" value="last" />
+
+	<path id="classpath">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="build" depends="clean,compile"/>
+
+	<target name="clean">
+		<delete dir="classes"/>
+		<mkdir dir="classes"/>
+	</target>
+
+	<target name="compile">
+		<javac srcdir="src" destdir="classes" classpathref="classpath"/>
+		<copy todir="classes">
+			<fileset dir="src">
+				<exclude name="**/*.java" />
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>

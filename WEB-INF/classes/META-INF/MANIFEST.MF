@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Created-By: 1.6.0_20 (Sun Microsystems Inc.)
-Implementation-Title: Jease
-Implementation-URL: http://www.jease.org/
-Implementation-Version: 1.3
-Implementation-Vendor: maik.jablonski@gmail.com

@@ -27,11 +27,9 @@ import jease.cms.domain.User;
 import jease.cms.service.Contents;
 import jease.cms.service.Revisions;
 import jease.cms.web.i18n.Strings;
-import jfix.db4o.Blob;
 import jfix.zk.ActionListener;
 import jfix.zk.Button;
 import jfix.zk.Images;
-import jfix.zk.ItemRenderer;
 import jfix.zk.Modal;
 import jfix.zk.Selectfield;
 import jfix.zk.Textfield;
@@ -58,12 +56,6 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		getButtons().appendChild(view);
 
 		revisions.setNullable(false);
-		revisions.setItemRenderer(new ItemRenderer() {
-			public String render(Object value) {
-				return String.format("%1$tF %1$tT", new Date(((Blob) value)
-						.getFile().lastModified()));
-			}
-		});
 		revisions.addSelectListener(new ActionListener() {
 			public void actionPerformed(Event event) {
 				peek(Revisions.checkout(getNode(), revisions.getSelectedIndex()));
@@ -72,33 +64,31 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		});
 	}
 
-	protected void addRevisions() {
-		add(Strings.Revision, revisions);
-	}
-
-	protected void addTitle() {
-		add(Strings.Title, title);
-	}
-
 	protected void doInit() throws Exception {
-		addRevisions();
+		add(Strings.Revision, revisions);
 		super.doInit();
-		addTitle();
+		add(Strings.Title, title);
 		init();
 	}
 
 	protected void doLoad() throws Exception {
 		super.doLoad();
 		view.setVisible(Nodes.isRooted(getNode()));
-		title.setText(getNode().getTitle());
 		lastNodeModification = getNode().getLastModified();
-		revisions.setValues(getNode().getRevisions());
+		if (title.getParent() != null) {
+			title.setText(getNode().getTitle());
+		}
+		if (revisions.getParent() != null) {
+			revisions.setValues(getNode().getRevisions());
+		}
 		load();
 	}
 
 	protected void doSave() throws Exception {
 		super.doSave();
-		getNode().setTitle(title.getText());
+		if (title.getParent() != null) {
+			getNode().setTitle(title.getText());
+		}
 		getNode().setEditor(getSessionUser());
 		getNode().setLastModified(new Date());
 		save();
@@ -106,13 +96,15 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	}
 
 	protected void persist() {
-		Revisions.checkin(getNode());
+		Revisions.checkin(getSessionUser().getLogin(), getNode());
 		Nodes.save(getNode());
 	}
 
 	protected void doValidate() throws Exception {
 		super.doValidate();
-		validate(title.isEmpty(), Strings.Title_is_required);
+		if (title.getParent() != null) {
+			validate(title.isEmpty(), Strings.Title_is_required);
+		}
 		validate(lastNodeModification != null
 				&& lastNodeModification != getNode().getLastModified(),
 				Strings.Content_is_stale);
@@ -127,6 +119,13 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		}
 	}
 
+	public void doCopy() throws Exception {
+		super.doCopy();
+		if (revisions.getParent() != null) {
+			revisions.setValues(new Object[] {});
+		}
+	}
+
 	public void delete() {
 		getNode().setEditor(getSessionUser());
 		getNode().setLastModified(new Date());
@@ -137,13 +136,12 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		return JeaseSession.get(User.class);
 	}
 
-	protected Button getViewButton() {
+	public Button getViewButton() {
 		return view;
 	}
 
-	@Deprecated
-	protected String getViewUrl() {
-		return getNode().getPath() + "?" + System.currentTimeMillis();
+	public void hideButtons() {
+		super.hideButtons();
+		view.setVisible(false);
 	}
-
 }

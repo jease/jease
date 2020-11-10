@@ -1,6 +1,6 @@
 <%@page import="jease.cms.domain.*,jease.site.*" contentType="text/html; charset=UTF-8"%>
 <% Content content = (Content) request.getAttribute("Node"); %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <%@include file="/site/service/Pagebase.jsp"%>
@@ -8,27 +8,21 @@
 <title><%= request.getAttribute("Page.Title") %></title>
 <link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Root") %>site/web/robot/style/screen.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Root") %>site/web/robot/style/print.css" media="<%= request.getParameter("print") == null ? "print" : "print,screen" %>" />
+<%@include file="/site/service/Jquery.jsp"%>
+<%@include file="/site/service/Lightbox.jsp"%>
+<%@include file="/site/service/Prettify.jsp"%>
 <script type="text/javascript" src="<%=request.getAttribute("Page.Root") %>site/web/robot/js/maxheight.js"></script>
-<script type="text/javascript" src="<%=request.getAttribute("Page.Root") %>site/web/robot/js/jquery-min.js"></script>
 <script type="text/javascript" src="<%=request.getAttribute("Page.Root") %>site/web/robot/js/cufon-yui.js"></script>
 <script type="text/javascript" src="<%=request.getAttribute("Page.Root") %>site/web/robot/js/Myriad_Pro_300.font.js"></script>
 <script type="text/javascript" src="<%=request.getAttribute("Page.Root") %>site/web/robot/js/Myriad_Pro_400.font.js"></script>
 <script type="text/javascript">//<![CDATA[
 Cufon.replace("#tabs", { fontFamily: 'Myriad Pro', hover:true });
 Cufon.replace("#logo", { fontFamily: 'Myriad Pro', hover:true });
-(function() {
-	var onload = window.onload;
-	window.onload = function() {
-		if (typeof onload == "function") {
-			onload();
-		}
-		new ElementMaxHeight();
-		Cufon.now();
-	}
-}());
+$(document).ready(function(){
+	new ElementMaxHeight();
+	Cufon.now();
+});
 //]]></script>
-<%@include file="/site/service/Topup.jsp"%>
-<%@include file="/site/service/Prettify.jsp"%>
 </head>
 <body>
 	<div id="header">
@@ -36,10 +30,10 @@ Cufon.replace("#logo", { fontFamily: 'Myriad Pro', hover:true });
 			<div class="container">
 				<div id="top">
 					<div class="wrapper">
-						<div class="fleft">
+						<div class="fleft">							
 							<div id="logo">
-								<a href="<%=request.getAttribute("Page.Root") %>">
-									<img src="<%=request.getAttribute("Page.Root") %>site/web/robot/style/img/logo.jpg" alt="" />
+								<img src="<%=request.getAttribute("Page.Root") %>site/web/robot/style/img/logo.jpg" alt="" />
+								<a href="<%=request.getAttribute("Page.Root") %>">								
 									&nbsp;j<span style="color: white;">ease</span> &raquo; <span style="color: white;">java</span>&nbsp;with <span style="color: white;">ease</span>
 								</a>
 							</div>
@@ -65,7 +59,7 @@ Cufon.replace("#logo", { fontFamily: 'Myriad Pro', hover:true });
 					<ul>
 					<% for (News item : Navigations.getNews((Content) content.getParent())) { %>						
 						<li>
-							<a href="<%=item.getPath()%>?print" class="iframePopup">
+							<a href="<%=item.getPath()%>?print">
 								<% if (item.getDate() != null) { %><%=String.format("%1$td %1$tb %1$tY", item.getDate())%> - <% } %>
 								<%=item.getTitle()%>
 							</a>
@@ -110,7 +104,7 @@ Cufon.replace("#logo", { fontFamily: 'Myriad Pro', hover:true });
 								<ul>
 								<% for (Content item : Fulltexts.query(request.getParameter("query"))) { %>
 									<li>
-										<a href="<%=item.getPath()%>?print" <%= item instanceof Image ? " class=\"imagePopup\"" : " class=\"iframePopup\"" %>><%=item.getTitle()%></a>		
+										<a href="<%=item.getPath()%>?print"><%=item.getTitle()%></a>		
 									</li>
 								<% }%>
 								</ul>

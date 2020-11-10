@@ -29,9 +29,9 @@ import jfix.util.Arrays;
  * a flag which denotes if the content should be displayed in automatic
  * generated lists when displayed in the public site.
  * 
- * In order to revision content, an array of Blobs is maintained where each Blob
- * stores one revision of content. The newest revision is the first entry of
- * array.
+ * In order to revision content, an array of Versions is maintained where each
+ * Version stores one revision of content. The newest revision is the first
+ * entry of array.
  */
 public abstract class Content extends Node {
 
@@ -39,6 +39,8 @@ public abstract class Content extends Node {
 	private Date lastModified;
 	private User editor;
 	private boolean visible;
+	private Version[] versions;
+	@Deprecated
 	private Blob[] revisions;
 
 	public String getTitle() {
@@ -83,24 +85,24 @@ public abstract class Content extends Node {
 	/**
 	 * Returns array of content revisions which are contained within Blobs.
 	 */
-	public Blob[] getRevisions() {
-		return revisions;
+	public Version[] getRevisions() {
+		return versions;
 	}
 
 	/**
 	 * Sets array of content revisions. The first element in the array should be
 	 * the newest revision.
 	 */
-	public void setRevisions(Blob[] revisions) {
-		this.revisions = revisions;
+	public void setRevisions(Version[] versions) {
+		this.versions = versions;
 	}
 
 	/**
 	 * Adds a content revision contained in given Blob in first position of
 	 * array, so newest revision is always first element in array.
 	 */
-	public void addRevision(Blob revision) {
-		revisions = Arrays.prepend(revisions, revision, Blob.class);
+	public void addRevision(Version version) {
+		versions = Arrays.prepend(versions, version, Version.class);
 	}
 
 	/**
@@ -180,4 +182,5 @@ public abstract class Content extends Node {
 	public String toString() {
 		return super.toString() + " - " + getTitle();
 	}
+
 }

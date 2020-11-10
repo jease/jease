@@ -1,374 +1,483 @@
-/*
-Original design: andreas08 (v2.0 - June 01, 2010) - A free xhtml/css website template by Andreas Viklund.
-For more information, see http://andreasviklund.com/templates/andreas08/
+/* ---------------------------------------------------
 
-Some modifications made by Maik Jablonski for Jease (http://www.jease.org/).
-*/
+AUTHOR          :  	Erwin Aligam
+WEBSITE         :   http://www.styleshout.com/
+TEMPLATE NAME   :	CoolWater
+TEMPLATE CODE   : 	S-0019
+VERSION         :   1.1
+DATE            :	January 18, 2010
 
-/* Body and tag styles */
+---------------------------------------------------- */
+/* ---------------------------------------------------
+   HTML ELEMENTS
+---------------------------------------------------- */
+/* top elements */
 * {
 	margin: 0;
 	padding: 0;
+	outline: 0;
 }
 
 body {
-	font: 76% Verdana, Tahoma, Arial, sans-serif;
-	line-height: 1.4em;
+	background: #caced1;
+	font: 70%/1.5em Verdana, Tahoma, arial, sans-serif;
+	color: #777;
 	text-align: center;
-	color: #303030;
-	background: #e8eaec;
+	margin: 15px 0;
 }
 
-a {
-	color: #467aa7;
-	font-weight: bold;
+/* links */
+a,a:visited {
 	text-decoration: none;
-	background-color: inherit;
+	background: inherit;
+	color: #FB9233;
 }
 
 a:hover {
-	color: #2a5a8a;
 	text-decoration: underline;
-	background-color: inherit;
+	background: inherit;
+	color: #93C600;
 }
 
-a img {
-	border: none;
+/* headers */
+h1,h2,h3 {
+	font-family: 'Trebuchet MS', Tahoma, Sans-serif;
 }
 
-p {
-	padding: 0 0 1em 0;
+h1 {
+	font-size: 180%;
+	font-weight: normal;
+	color: #555;
 }
 
-p form {
-	margin-top: 0;
-	margin-bottom: 20px;
+h2 {
+	font-size: 160%;
+	color: #88ac0b;
+	font-weight: normal;
 }
 
-img.left,img.center,img.right {
-	padding: 4px;
-	border: 1px solid #a0a0a0;
+h3 {
+	font-size: 135%;
+	color: #666666;
 }
 
-img.left {
-	float: left;
-	margin: 0 12px 5px 0;
+/* images */
+img {
+	background: #fff;
+	border: 1px solid #E5E5E5;
 }
 
-img.center {
-	display: block;
-	margin: 0 auto 5px auto;
+img.float-right {
+	margin: 5px 0px 10px 10px;
 }
 
-img.right {
-	float: right;
-	margin: 0 0 5px 12px;
+img.float-left {
+	margin: 5px 10px 10px 0px;
 }
 
-code,pre {
+h1,h2,h3,p {
+	margin-bottom: 10px;
+	padding: 0;
+}
+
+ul,ol {
+	margin: 5px 15px;
+	padding: 0 25px;
+}
+
+pre,code {
 	margin: 5px 0;
-	padding: 10px;
+	padding: 15px;
 	text-align: left;
 	display: block;
 	overflow: auto;
-	font: 500 1em/ 1.5em 'Lucida Console', 'courier new', monospace;
-	white-space: pre;
-	background: #FAFAFA;
-	border: 1px solid #578bb8;
+	font: 500 1em/1.5em 'Lucida Console', 'courier new', monospace;
+	/* white-space: pre; */
+	border: 1px solid #E5F0FB;
+	background: #F4F8FD;
 }
 
-/* Header and tab styles */
+acronym {
+	cursor: help;
+	border-bottom: 1px dotted #777;
+}
 
-#container {
-	width: 760px;
-	margin: 20px auto;
-	padding: 1px 0;
+blockquote {
+	margin: 10px 15px;
+	padding: 0 0 0 25px;
+	font: bold 1.3em/1.5em "Trebuchet MS", Tahoma, arial, Sans-serif;
+	color: #2361BA;
+	border: 1px solid #E5F0FB;
+	background: #F4F8FD url(img/quote.jpg) no-repeat 8px 6px;
+}
+
+/* form elements */
+form {
+	margin: 10px 15px;
+	padding: 10px 0;
+	border: 1px solid #E5F0FB;
+	background: #F4F8FD;
+}
+
+fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+label {
+	font-weight: bold;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+input {
+	padding: 3px;
+	border: 1px solid #E5F0FB;
+	font: normal 1em Verdana, sans-serif;
+	color: #777;
+}
+
+textarea {
+	padding: 3px;
+	font: normal 1em Verdana, sans-serif;
+	border: 1px solid #E5F0FB;
+	color: #777;
+}
+
+input.button {
+	font: bold 12px Arial, Sans-serif;
+	height: 28px;
+	margin: 0;
+	padding: 2px 3px;
+	color: #fff;
+	background: #306bc1 url(img/button-bg.jpg) repeat-x 0 0;
+	border: 1px solid #306bc1;
+}
+
+/* search form */
+.searchform {
+	background-color: transparent;
+	border: none;
+	margin: 0;
+	padding: 5px 0 5px 0;
+	width: 180px;
+}
+
+.searchform p {
+	margin: 0;
+	padding: 0;
+}
+
+.searchform input.textbox {
+	width: 110px;
+	color: #777;
+	height: 20px;
+	padding: 2px;
+	border: 1px solid #D2E8F7;
+	vertical-align: top;
+}
+
+.searchform input.button {
+	width: 55px;
+	height: 26px;
+	padding: 2px 5px;
+	vertical-align: top;
+}
+
+/********************************************
+   LAYOUT
+********************************************/
+#wrap {
+	width: 790px;
+	background: #CCC url(img/content.jpg) repeat-y center top;
+	margin: 0 auto;
 	text-align: left;
-	background: #ffffff;
-	color: #303030;
-	border: 2px solid #a0a0a0;
+}
+
+#content-wrap {
+	clear: both;
+	width: 760px;
+	margin: 5px auto;
+	padding: 0;
 }
 
 #header {
-	height: 85px;
-	width: 758px;
-	margin: 0 1px 1px 1px;
-	background: #467aa7;
-	color: #ffffff;
-	background-image: url("img/gradient.png");
+	position: relative;
+	height: 131px;
+	background: #caced1 url(img/header.jpg) no-repeat center top;
+	padding: 0;
+	color: #fff;
 }
 
-#header h1 {
-	padding: 35px 0px 0px 25px;
-	font-size: 24px;
-	background-color: transparent;
-	color: #ffffff;	
+#header h1#logo-text a {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	font: bolder 55px 'Trebuchet MS', Arial, Sans-serif;
+	letter-spacing: -3px;
+	color: #fff;
+	text-transform: none;
+	text-decoration: none;
+	background: transparent;
+	/* change the values of top and left to adjust the position of the logo*/
+	top: 18px;
+	left: 35px;
 }
 
-#header h1 a {
-	color: #ffffff;
+#header p#slogan {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	font: bold 13px 'Trebuchet MS', Arial, Sans-serif;
+	text-transform: none;
+	color: #FFF;
+	/* change the values of top and left to adjust the position of the slogan*/
+	top: 80px;
+	left: 50px;
 }
 
-#header h1 a:hover {
+/* header links */
+#header #header-links {
+	position: absolute;
+	color: #C6DDEE;
+	font: bold 14px "Trebuchet MS", Arial, Tahoma, Sans-serif;
+	top: 20px;
+	right: 20px;
+}
+
+#header #header-links a {
+	color: #fff;
 	text-decoration: none;
 }
 
+#header #header-links a:hover {
+	color: #D4FF55;
+}
+
+/* navigation */
 #tabs {
-	height: 2.2em;
-	line-height: 2.2em;
-	width: 758px;
-	margin: 0 1px;
-	background: #578bb8;
-	color: #ffffff;
+	clear: both;
+	margin: 0 auto;
+	padding: 0;
+	background: #81C524 url(img/menu.jpg) no-repeat;
+	font: bold 16px/40px "trebuchet MS", Arial, Tahoma, Sans-serif;
+	height: 40px;
+	width: 790px;
 }
 
-#tabs li {
+#tabs ul {
 	float: left;
-	list-style-type: none;
-	border-right: 1px solid #ffffff;
-	white-space: nowrap;
+	list-style: none;
+	margin: 0;
+	padding: 0 0 0 20px;
 }
 
-#tabs li a {
+#tabs ul li {
+	display: inline;
+}
+
+#tabs ul li a {
 	display: block;
-	padding: 0 10px;
-	font-size: 0.8em;
-	font-weight: normal;
+	float: left;
+	padding: 0 12px;
+	color: #fff;
 	text-decoration: none;
-	background-color: inherit;
-	color: #ffffff;
+	background: url(img/sep.jpg) no-repeat 100% 100%;
 }
 
-* html #tabs a {
-	width: 1%;
+#tabs ul li a:hover {
+	color: #3b5e0b;
 }
 
-#tabs .current,#tabs a:hover {
-	background: #80b0da;
-	color: #ffffff;
+#tabs ul li.current a {
+	color: #3b5e0b;
+}
+
+/* Main Column */
+#main {
+	float: left;
+	width: 555px;
+	margin: 0;
+	padding: 20px 0 0 0;
+	display: inline;
+	background: url(img/box.jpg) no-repeat;
+}
+
+#main h2 {
+	font: normal 180% 'Trebuchet MS', Tahoma, Arial, Sans-serif;
+	padding: 0;
+	margin-bottom: 0;
+	color: #2666c3;
+}
+
+#main h2 a {
+	color: #2666c3;
 	text-decoration: none;
 }
-
-/* Content styles */
 
 #content {
-	float: left;
-	width: 530px;
-	font-size: 0.9em;
-	padding: 20px 0 0 20px;
+	margin-left: 20px;
+	margin-right: 25px;
 }
 
-#content h1 {
-	display: block;
-	margin: 0 0 16px 0;
-	font-size: 1.7em;
-	font-weight: normal;
-	letter-spacing: -1px;
-	color: #505050;
-	background-color: inherit;
+#main ul li {
+	list-style-image: url(img/bullet.gif);
 }
 
-#content h2 {
-	display: block;
-	margin: 0 0 16px 0;
-	font-size: 1.5em;
-	font-weight: normal;
-	letter-spacing: -1px;
-	color: #505050;
-	background-color: inherit;
-}
-
-#content h2 a {
-	font-weight: normal;
-}
-
-#content h3 {
-	margin: 0 0 5px 0;
-	font-size: 1.2em;
-	letter-spacing: -1px;
-}
-
-#content h4 {
-	margin: 0 0 5px 0;
-	font-size: 1.0em;
-	letter-spacing: -1px;
-}
-
-#content ul,#content ol {
-	margin: 0 5px 16px 35px;
-}
-
-#content dl {
-	margin: 0 5px 10px 25px;
-}
-
-#content dt {
-	font-weight: bold;
-	margin-bottom: 5px;
-}
-
-#content dd {
-	margin: 0 0 10px 15px;
-}
-
-/* Sidebar styles */
-
+/* Sidebar */
 #sidebar {
 	float: right;
-	width: 170px;
-	padding: 20px;
-	line-height: 1.4em;
+	width: 195px;
+	padding: 0;
+	margin: 10px 0 0 0;
+	color: #777;
 }
 
-#sidebar h1 {
-	display: block;
-	margin: 0 0 15px 0;
-	font-size: 1.5em;
-	font-weight: normal;
-	text-align: left;
-	letter-spacing: -1px;
-	color: #505050;
-	background-color: inherit;
+#sidebar h2 {
+	margin: 15px 5px 10px 5px;
+	font: bold 1.4em 'Trebuchet MS', Tahoma, Sans-serif;
+	color: #555;
 }
 
 #sidebar p {
-	margin: 0 0 16px 0;
-	font-size: 0.9em;
+	margin-left: 5px;
 }
 
 #sidebar ul {
-	margin: 0 0 20px 8px;
-	font-size: 0.9em;
-}
-
-#sidebar li {
 	list-style: none;
-	display: block;
-	padding: 2px;
-	margin-bottom: 2px;
-}
-
-#sidebar li a {
-	font-weight: bold;
+	text-align: left;
+	margin: 7px 10px 8px 0;
+	padding: 0;
 	text-decoration: none;
+	border-top: 1px solid #A9D4EF;
 }
 
-#sidebar li a:hover {
-	text-decoration: underline;
+#sidebar ul li {
+	list-style: none;
+	padding: 4px 0 4px 5px;
+	margin: 0 2px;
+	color: #777;
+	border-bottom: 1px solid #D2E8F7;
 }
 
-#sidebar li ul {
-	margin: 3px 0 3px 15px;
-	font-size: 1em;
-	font-weight: normal;
+* html body #sidebar ul li {
+	height: 1%;
 }
 
-#sidebar li ul li {
-	margin-bottom: 0;
+#sidebar ul li a {
+	text-decoration: none;
+	color: #1773BC;
 }
 
-#sidebar li ul a {
-	font-weight: normal;
+#sidebar ul li a:hover {
+	color: #333;
 }
 
-#sidebar .current {
-	background: #80b0da;
-	color: #ffffff;
+#sidebar ul ul {
+	margin: 0 0 0 5px;
+	padding: 0;
 }
 
-#sidebar .current a {
-	color: #ffffff;
+#sidebar ul ul li {
+	border: none;
 }
 
-/* Searchbar styles */
-
-#search {
-	margin: 0 0 20px 0;
-}
-
-#search form fieldset {
-	margin-left: 10px;
-	border: 0 solid;
-}
-
-#search input[type=text] {
-	height: 1.2em;
-	width: 110px;
-	margin: 0 5px 0 0;
-	border: 1px solid #a0a0a0;
-}
-
-#search input[type=submit] {
-	width: auto;
-	padding: 0 1px;
-	border: 1px solid #808080;
-	font-size: 0.9em;
-	text-align: center;
-}
-
-/* Footer styles */
-
+/* Footer */
 #footer {
+	color: #C6DDEE;
+	background: #caced1 url(img/footer.jpg) no-repeat center top;
 	clear: both;
-	width: 758px;
-	padding: 5px 0;
-	margin: 0 1px;
-	font-size: 0.9em;
-	color: #f0f0f0;
-	background: #467aa7;
+	width: 790px;
+	height: 57px;
+	text-align: center;
+	font-size: 90%;
 }
 
 #footer p {
-	padding: 0;
+	padding: 10px 0;
 	margin: 0;
-	text-align: center;
 }
 
 #footer a {
-	color: #f0f0f0;
-	background-color: inherit;
-	font-weight: bold;
+	color: #fff;
+	text-decoration: none;
 }
 
-#footer a:hover {
-	color: #ffffff;
-	background-color: inherit;
-	text-decoration: underline;
+/* post footer */
+.post-footer {
+	background: #F4F8FD;
+	padding: 5px;
+	margin: 20px 25px 0 25px;
+	border: 1px solid #E5F0FB;
+	font-size: 95%;
 }
 
-/* Misc classes and styles */
-
-.clear {
-	clear: both;
+.post-footer .date {
+	padding-left: 0px;
+	margin: 0 5px;
 }
 
-.small {
-	font-size: 0.8em;
+.post-footer .comments {
+	padding-left: 0px;
+	margin: 0 5px;
 }
 
-.hide {
-	display: none;
+.post-footer .readmore {
+	padding-left: 0px;
+	margin: 0 5px;
 }
 
-.textcenter {
-	text-align: center;
+.post-by {
+	font-size: .95em;
+	margin-top: 0;
 }
 
-.textright {
+/* alignment classes */
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+.align-left {
+	text-align: left;
+}
+
+.align-right {
 	text-align: right;
 }
 
-.important {
-	color: #f02025;
-	background-color: inherit;
-	font-weight: bold;
+/* clearing */
+.fix {
+	clear: both;
+	height: 1px;
+	margin: -1px 0 0;
+	overflow: hidden;
+}
+
+.clear {
+	display: inline-block;
+}
+
+.clear:after {
+	display: block;
+	visibility: hidden;
+	clear: both;
+	height: 0;
+	content: " ";
+}
+
+.green {
+	color: #93C600;
 }
 
 #news {
-	margin: 0 0 10px 0;
+	margin: 10px;
 	padding: 10px;
-	border: 1px solid #c0c0c0;
-	background-color: #fafbfc;
+	border: 1px solid #A9D4EF;
 	color: #505050;
 	line-height: 1.4em;
 }
@@ -379,16 +488,11 @@ code,pre {
 	color: #a0a0a0;
 }
 
+.current {
+	font-weight: bold;
+}
+
 #breadcrumb {
-	border-bottom: 1px solid #c0c0c0;
 	margin-bottom: 15px;
-}
-
-.media {
-	width: 525px;	
-}
-
-.mediaFlash {
-	width: 525px;
-	height: 395px;	
+	border-bottom:  1px solid #A9D4EF;
 }

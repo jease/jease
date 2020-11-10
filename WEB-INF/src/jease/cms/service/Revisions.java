@@ -20,10 +20,11 @@ import java.util.Arrays;
 
 import jease.cmf.service.Revisioner;
 import jease.cms.domain.Content;
+import jease.cms.domain.Version;
 
 /**
  * Service to create/restore content-revisions. Each content revision is stored
- * within an array of Blobs (newest revision is first element of array), so
+ * within an array (newest revision is first element of array), so
  * overhead is neglectable. The number of revisions to be kept is stored within
  * MAX_REVISIONS (default: Integer.MAX_VALUE).
  */
@@ -41,7 +42,14 @@ public class Revisions {
 	 * Add new revision for given content.
 	 */
 	public static void checkin(Content content) {
-		content.addRevision(revisioner.toBlob(content));
+		checkin(null, content);
+	}
+
+	/**
+	 * Add new revision with given info (e.g. username) for given content.
+	 */
+	public static void checkin(String info, Content content) {
+		content.addRevision(new Version(info, revisioner.toBlob(content)));
 		if (content.getRevisions().length > MAX_REVISIONS) {
 			content.setRevisions(Arrays.copyOf(content.getRevisions(),
 					MAX_REVISIONS));
@@ -52,6 +60,7 @@ public class Revisions {
 	 * Returns the given revision (by index) for given content.
 	 */
 	public static <E extends Content> E checkout(E content, int revision) {
-		return (E) revisioner.fromBlob(content.getRevisions()[revision]);
+		return (E) revisioner.fromBlob(content.getRevisions()[revision]
+				.getBlob());
 	}
 }

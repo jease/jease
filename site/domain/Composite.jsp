@@ -17,7 +17,7 @@
 	} else {
 %>
 <ul>
-	<li><a href="<%=child.getPath()%>"<%=child instanceof Image ? " class=\"imagePopup\"" : ""%>><%=child.getTitle()%></a></li>
+	<li><a href="<%=child.getPath()%>"><%=child.getTitle()%></a></li>
 </ul>
 <%
 	}

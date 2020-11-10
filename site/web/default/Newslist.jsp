@@ -12,7 +12,7 @@
 	<% } else { %>
 		<p>
 			<%=news.getTeaser()%>&nbsp;
-			<a href="<%=news.getPath()%>?print" class="iframePopup">More...</a>
+			<a href="<%=news.getPath()%>?print">More...</a>
 		</p>
 	<% } %>	
 <% } %>
