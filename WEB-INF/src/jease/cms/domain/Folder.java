@@ -16,9 +16,6 @@
  */
 package jease.cms.domain;
 
-import jfix.functor.Functors;
-import jfix.functor.Predicate;
-
 public class Folder extends Content {
 
 	public Folder() {
@@ -30,14 +27,6 @@ public class Folder extends Content {
 
 	public boolean isPage() {
 		return false;
-	}
-
-	public <E extends Content> E[] getVisibleChildren(Class<E> clazz) {
-		return Functors.filter(getChildren(clazz), new Predicate<E>() {
-			public boolean test(E content) {
-				return content.isVisible();
-			}
-		});
 	}
 
 	public Content getDefaultContent() {

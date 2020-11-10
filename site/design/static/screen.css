@@ -379,7 +379,6 @@ form.searchform input.button {
 /* menu tabs */
 
 #tabs ul {
-	z-index: 999999;
 	position: absolute;
 	margin: 0;
 	padding: 0;

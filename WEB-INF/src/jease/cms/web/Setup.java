@@ -74,7 +74,6 @@ public class Setup extends Div {
 	private class AdministratorEditor extends Editor {
 		public AdministratorEditor(User administrator) {
 			setObject(administrator);
-			hideAdvancedFields();
 			refresh();
 		}
 

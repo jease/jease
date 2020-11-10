@@ -25,6 +25,8 @@ import jease.cms.domain.Content;
 import jease.cms.domain.Folder;
 import jease.cms.domain.News;
 import jease.cms.domain.Reference;
+import jfix.functor.Functors;
+import jfix.functor.Predicate;
 
 /**
  * Common service-methods to ease the building of navigations for a site.
@@ -35,18 +37,23 @@ public class Navigations {
 	 * Returns all visible folders contained in root node which should be
 	 * displayed as tabs.
 	 */
-	public static Folder[] getTabs() {
-		return ((Folder) Nodes.getRoot()).getVisibleChildren(Folder.class);
+	public static Content[] getTabs() {
+		return Functors.filter(Nodes.getRoot().getChildren(Content.class),
+				new Predicate<Content>() {
+					public boolean test(Content content) {
+						return content instanceof Folder && content.isVisible();
+					}
+				});
 	}
 
 	/**
 	 * Returns all items (visible, not news) to be displayed in navigation for a
-	 * given folder.
+	 * given container.
 	 */
-	public static Content[] getItems(Folder folder) {
+	public static Content[] getItems(Content container) {
 		List<Content> navigation = new ArrayList();
-		for (Content content : folder.getVisibleChildren(Content.class)) {
-			if (!isNews(content)) {
+		for (Content content : container.getChildren(Content.class)) {
+			if (content.isVisible() && !isNews(content)) {
 				navigation.add(content);
 			}
 		}
@@ -54,17 +61,23 @@ public class Navigations {
 	}
 
 	/**
-	 * Returns all news-objects for a given folder.
+	 * Returns all news-objects for a given container. If the container is a
+	 * paged content-type (e.g. Composite), news from parent folder will be
+	 * returned if container has no news on its own.
 	 */
-	public static News[] getNews(Folder folder) {
+	public static News[] getNews(Content container) {
 		List<News> news = new ArrayList();
-		for (Content content : folder.getVisibleChildren(Content.class)) {
-			if (isNews(content)) {
+		for (Content content : container.getChildren(Content.class)) {
+			if (content.isVisible() && isNews(content)) {
 				news.add((News) (content instanceof News ? content
 						: ((Reference) content).getContent()));
 			}
 		}
-		return news.toArray(new News[] {});
+		if (news.isEmpty() && container.isPage()) {
+			return getNews((Content) container.getParent());
+		} else {
+			return news.toArray(new News[] {});
+		}
 	}
 
 	/**

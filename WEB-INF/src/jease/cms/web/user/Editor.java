@@ -28,11 +28,10 @@ import jfix.zk.ItemRenderer;
 import jfix.zk.ObjectEditor;
 import jfix.zk.Passwordfield;
 import jfix.zk.Picklist;
+import jfix.zk.Sessions;
 import jfix.zk.Textfield;
 
 public class Editor extends ObjectEditor<User> {
-
-	boolean showAdvancedFields = true;
 
 	Textfield name = new Textfield();
 	Textfield login = new Textfield();
@@ -52,6 +51,10 @@ public class Editor extends ObjectEditor<User> {
 				return ((Folder) value).getPath();
 			}
 		});
+		if (!isAdministrationMode()) {
+			hideButtons();
+			getSaveButton().setVisible(true);
+		}
 	}
 
 	public void init() {
@@ -60,7 +63,7 @@ public class Editor extends ObjectEditor<User> {
 		add(Strings.Password, password);
 		add(Strings.Password_Repeat, passwordRepeat);
 		add(Strings.Email, email);
-		if (showAdvancedFields) {			
+		if (isAdministrationMode()) {
 			add(Strings.Roots, roots);
 			add("", administrator);
 		}
@@ -72,10 +75,11 @@ public class Editor extends ObjectEditor<User> {
 		password.setText(getObject().getPassword());
 		passwordRepeat.setText(getObject().getPassword());
 		email.setText(getObject().getEmail());
-		administrator.setChecked(getObject().isAdministrator());
-		roots
-				.setSelection(Database.query(Folder.class), getObject()
-						.getRoots());
+		if (isAdministrationMode()) {
+			administrator.setChecked(getObject().isAdministrator());
+			roots.setSelection(Database.query(Folder.class), getObject()
+					.getRoots());
+		}
 	}
 
 	public void save() {
@@ -83,8 +87,11 @@ public class Editor extends ObjectEditor<User> {
 		getObject().setLogin(login.getText());
 		getObject().setPassword(password.getText());
 		getObject().setEmail(email.getText());
-		getObject().setAdministrator(administrator.isChecked());
-		getObject().setRoots(Arrays.cast(roots.getSelected(), Folder.class));
+		if (isAdministrationMode()) {
+			getObject().setAdministrator(administrator.isChecked());
+			getObject()
+					.setRoots(Arrays.cast(roots.getSelected(), Folder.class));
+		}
 		Database.save(getObject());
 	}
 
@@ -100,10 +107,8 @@ public class Editor extends ObjectEditor<User> {
 				Strings.Passwords_do_not_match);
 	}
 
-	public void hideAdvancedFields() {
-		hideButtons();
-		getSaveButton().setVisible(true);
-		showAdvancedFields = false;
+	private boolean isAdministrationMode() {
+		User user = Sessions.get(User.class);
+		return user != null && user.isAdministrator();
 	}
-
 }

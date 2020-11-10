@@ -24,6 +24,9 @@ import jfix.functor.Predicate;
 
 public class Users {
 
+	/**
+	 * Returns all users with administration rights.
+	 */
 	public static List<User> queryAdministrators() {
 		return Database.query(User.class, new Predicate<User>() {
 			public boolean test(User user) {
@@ -32,6 +35,25 @@ public class Users {
 		});
 	}
 
+	/**
+	 * Returns all users who are modifiable by given user. At the current state
+	 * administrators will retrieve all existing users, all other users will
+	 * retrieve themselfes.
+	 * 
+	 * TODO: This may change when users will be able to delegate rights
+	 * depending on their roots and administration rights.
+	 */
+	public static List<User> queryModifiableByUser(final User user) {
+		return Database.query(User.class, new Predicate<User>() {
+			public boolean test(User testUser) {
+				return user.isAdministrator() || user == testUser;
+			}
+		});
+	}
+
+	/**
+	 * Returns a unique user for given combination of login / password.
+	 */
 	public static User queryByLogin(final String login, final String password) {
 		return Database.queryUnique(User.class, new Predicate<User>() {
 			public boolean test(User user) {

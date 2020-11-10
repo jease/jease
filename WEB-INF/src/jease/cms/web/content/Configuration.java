@@ -20,22 +20,9 @@ import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseConfig;
 import jease.cmf.web.node.NodeEditor;
 import jease.cmf.web.node.NodeTableModel;
-import jease.cms.domain.File;
-import jease.cms.domain.Folder;
-import jease.cms.domain.Image;
-import jease.cms.domain.Link;
-import jease.cms.domain.News;
-import jease.cms.domain.Reference;
-import jease.cms.domain.Text;
-import jease.cms.domain.Topic;
-import jease.cms.web.content.editor.FileEditor;
-import jease.cms.web.content.editor.FolderEditor;
-import jease.cms.web.content.editor.ImageEditor;
-import jease.cms.web.content.editor.LinkEditor;
-import jease.cms.web.content.editor.NewsEditor;
-import jease.cms.web.content.editor.ReferenceEditor;
-import jease.cms.web.content.editor.TextEditor;
-import jease.cms.web.content.editor.TopicEditor;
+import jease.cms.domain.Content;
+import jease.cms.web.content.editor.ContentEditor;
+import jfix.util.Reflections;
 
 /**
  * Global configuration for JeaseCMS.
@@ -46,43 +33,25 @@ public class Configuration extends JeaseConfig {
 	 * Which type of nodes can be created by the user?
 	 */
 	public Node[] newNodes() {
-		return new Node[] { new Text(), new News(), new Folder(), new Image(),
-				new File(), new Link(), new Topic(), new Reference() };
+		return Reflections.find(Node.class, Content.class.getPackage());
 	}
 
 	/**
 	 * Which editor should be used to edit a given node?
 	 */
 	public NodeEditor newEditor(Node node) {
-		if (node instanceof Text) {
-			return new TextEditor();
+		try {
+			String clazz = ContentEditor.class.getPackage().getName() + "."
+					+ node.getType() + "Editor";
+			return (NodeEditor) Class.forName(clazz).newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		if (node instanceof News) {
-			return new NewsEditor();
-		}
-		if (node instanceof Folder) {
-			return new FolderEditor();
-		}
-		if (node instanceof Image) {
-			return new ImageEditor();
-		}
-		if (node instanceof File) {
-			return new FileEditor();
-		}
-		if (node instanceof Link) {
-			return new LinkEditor();
-		}
-		if (node instanceof Topic) {
-			return new TopicEditor();
-		}
-		if (node instanceof Reference) {
-			return new ReferenceEditor();
-		}
-		return null;
 	}
 
 	/**
-	 * Which TableModel should be used to render the contents of a container node?
+	 * Which TableModel should be used to render the contents of a container
+	 * node?
 	 */
 	public NodeTableModel newTableModel() {
 		return new ContentTableModel();

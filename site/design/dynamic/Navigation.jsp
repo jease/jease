@@ -1,11 +1,11 @@
 <%@page import="jease.cmf.domain.*,jease.cms.domain.*,jease.site.service.*"%>
 <%
-	Node navigationNode = (Node) request.getAttribute("Node");
+	Content navigationContext = (Content) request.getAttribute("Node");
 %>
-<h1><%=navigationNode.getParent().getTitle()%></h1>
+<h1><a href="<%=navigationContext.getParent().getPath()%>"><%=navigationContext.getParent().getTitle()%></a></h1>
 <ul>
 	<%
-		for (Content content : Navigations.getItems((Folder) navigationNode.getParent())) {
+		for (Content content : Navigations.getItems((Content) navigationContext.getParent())) {
 		if (content instanceof Topic) {
 	%>
 </ul>
@@ -14,8 +14,8 @@
 	<%
 		} else {
 	%>
-	<li <%=content == navigationNode ? " class=\"current\"" : ""%>>
-	<a href="<%=content.getPath()%>"><%=content.getTitle()%><%=content.isContainer() ? "..." : ""%></a>
+	<li <%=content == navigationContext ? " class=\"current\"" : ""%>>
+		<a href="<%=content.getPath()%>"><%=content.getTitle()%></a>
 	</li>
 	<%
 		}

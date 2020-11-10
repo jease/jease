@@ -13,20 +13,25 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.web.user;
 
 import java.util.List;
 
 import jease.cms.domain.User;
+import jease.cms.service.Users;
 import jease.cms.web.i18n.Strings;
-import jfix.db4o.Database;
 import jfix.zk.ObjectTableModel;
+import jfix.zk.Sessions;
 
 public class TableModel extends ObjectTableModel<User> {
 
 	public User newObject() {
-		return new User();
+		if (Sessions.get(User.class).isAdministrator()) {
+			return new User();
+		} else {
+			return null;
+		}
 	}
 
 	public String[] getColumns() {
@@ -34,8 +39,12 @@ public class TableModel extends ObjectTableModel<User> {
 				Strings.Administrator };
 	}
 
+	public int[] getProportions() {
+		return new int[] { 2, 3, 6, 1 };
+	}
+
 	public List<User> getList() {
-		return Database.query(User.class);
+		return Users.queryModifiableByUser(Sessions.get(User.class));
 	}
 
 	public Object getValue(User user, int column) {

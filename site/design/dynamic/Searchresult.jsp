@@ -12,7 +12,9 @@
  	}
  %>
 	<br />
-	<a href="<%=content.getPath()%>"><b><%=content.getTitle()%></b></a> (<%=content.getType()%>)
+	<a href="<%=content.getPath()%>?print" 
+		<%= content instanceof Image ? " class=\"imagePopup\"" : " class=\"iframePopup\"" %>><b><%=content.getTitle()%></b></a>
+		(<%=content.getType()%>)
 </p>
 <%
 	}

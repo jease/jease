@@ -59,9 +59,7 @@ public class Login extends LoginWindow {
 		if (Validations.isNotEmpty(user.getRoots())) {
 			tabs.add(Strings.Content, ContentManager.class);
 		}
-		if (user.isAdministrator()) {
-			tabs.add(Strings.User, jease.cms.web.user.Table.class);
-		}
+		tabs.add(Strings.User, jease.cms.web.user.Table.class);		
 		tabs.add(Strings.Logout, jfix.zk.Logout.class);
 		show(tabs);
 	}
