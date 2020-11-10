@@ -1,1 +1,0 @@
-<% pageContext.forward("File.jsp"); %>
