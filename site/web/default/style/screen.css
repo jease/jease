@@ -69,8 +69,16 @@ h6 {
     font-size: 1em;
 }
 
+hr {
+	border: 1px dashed #A9BAC3;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 ul,ol {
-	padding-left: 30px;
+	padding-left: 15px;
+	margin-top: 10px;
+	list-style: square;
 }
 
 ul span,ol span {

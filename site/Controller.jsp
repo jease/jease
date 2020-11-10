@@ -31,9 +31,11 @@
 		request.setAttribute("Page.Base", Navigations.getBasePath(node));
 		request.setAttribute("Page.Root", Navigations.getRootPath());
 		request.setAttribute("Page.Template", pageTemplate);		
-		// Get design for page rendering from request respectively cookie,
-		// use default layout if request and cookie are empty. 
-		String design = Cookies.pick(request, response, "design", "default");
+		// Get design for page rendering from servlet-config.
+		// Check if design is overwritten via request or cookie.
+		// Use "default" layout if no design is set at all.
+		String design = config.getServletContext().getInitParameter("JEASE_SITE_DESIGN");
+		design = Cookies.pick(request, response, "design", design != null ? design : "default");
 		pageContext.include(String.format("/site/web/%s/Page.jsp", design));
 	} else {
 		pageContext.forward(pageTemplate);

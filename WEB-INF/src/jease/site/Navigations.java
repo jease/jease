@@ -61,9 +61,7 @@ public class Navigations {
 	}
 
 	/**
-	 * Returns all news-objects for a given container. If the container is a
-	 * paged content-type (e.g. Composite), news from parent folder will be
-	 * returned if container has no news on its own.
+	 * Returns all news-objects for a given container.
 	 */
 	public static News[] getNews(Content container) {
 		List<News> news = new ArrayList();
@@ -73,11 +71,7 @@ public class Navigations {
 						: ((Reference) content).getDestination()));
 			}
 		}
-		if (news.isEmpty() && container.isPage()) {
-			return getNews((Content) container.getParent());
-		} else {
-			return news.toArray(new News[] {});
-		}
+		return news.toArray(new News[] {});
 	}
 
 	/**
@@ -87,6 +81,19 @@ public class Navigations {
 		return content instanceof News
 				|| (content instanceof Reference && ((Reference) content)
 						.getDestination() instanceof News);
+	}
+
+	/**
+	 * Returns all visible items contained in given container.
+	 */
+	public static Content[] getVisibleContent(Content container) {
+		List<Content> navigation = new ArrayList();
+		for (Content content : container.getChildren(Content.class)) {
+			if (content.isVisible()) {
+				navigation.add(content);
+			}
+		}
+		return navigation.toArray(new Content[] {});
 	}
 
 	/**

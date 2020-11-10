@@ -49,13 +49,13 @@
 	<div id="content">
 
 		<div id="breadcrumb">
-		<% for (Content parent : ((Content) request.getAttribute("Node")).getParents(Content.class)) { %>
+		<% for (Content parent : content.getParents(Content.class)) { %>
 			&raquo; <a href="<%=parent.getPath()%>"><%=parent.getTitle()%></a>
 		<% } %>
 		</div>
 		
 		<div class="article">
-			<% pageContext.include((String) request.getAttribute("Page.Template")); %>			
+			<% pageContext.include((String) request.getAttribute("Page.Template")); %>
 			<h3 class="editorial">
 				Last modified on <%=String.format("%tF", content.getLastModified())%>
 				<% if (content.getEditor() != null) { %>

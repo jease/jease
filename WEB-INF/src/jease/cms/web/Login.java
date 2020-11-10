@@ -76,10 +76,10 @@ public class Login extends LoginWindow {
 	private void showNavigation(User user) {
 		Tabbox tabs = new Tabbox();
 		if (Validations.isNotEmpty(user.getRoots())) {
-			tabs.add(Strings.Content, ContentManager.class, Images.Attachment);
+			tabs.add(Strings.Content, ContentManager.class, Images.MailAttachment);
 		}
-		tabs.add(Strings.User, jease.cms.web.user.Table.class, Images.Login);
-		tabs.add(Strings.Logout, jfix.zk.Logout.class, Images.Logout);
+		tabs.add(Strings.User, jease.cms.web.user.Table.class, Images.SystemUsers);
+		tabs.add(Strings.Logout, jfix.zk.Logout.class, Images.SystemLogOut);
 		show(tabs);
 	}
 }

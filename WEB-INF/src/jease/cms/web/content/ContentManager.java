@@ -56,7 +56,7 @@ public class ContentManager extends Jease {
 	}
 
 	private Component newDumpButton() {
-		return new Button(Strings.Dump, Images.Dump, new ActionListener() {
+		return new Button(Strings.Dump, Images.DriveCdrom, new ActionListener() {
 			public void actionPerformed(Event evt) {
 				Filedownload.save(Backups.dump(JeaseSession.getContainer()));
 			}
@@ -64,7 +64,7 @@ public class ContentManager extends Jease {
 	}
 
 	private Component newRestoreButton() {
-		return new Fileupload(Strings.Restore, Images.Restore,
+		return new Fileupload(Strings.Restore, Images.MediaCdrom,
 				new ActionListener() {
 					public void actionPerformed(Event evt) {
 						Media media = ((UploadEvent) evt).getMedia();
@@ -84,7 +84,7 @@ public class ContentManager extends Jease {
 	}
 
 	private Component newUploadButton() {
-		return new Fileupload(Strings.Upload, Images.Home,
+		return new Fileupload(Strings.Upload, Images.UserHome,
 				new ActionListener() {
 					public void actionPerformed(Event evt) {
 						Media media = ((UploadEvent) evt).getMedia();
@@ -104,7 +104,7 @@ public class ContentManager extends Jease {
 	}
 
 	private Component newViewButton() {
-		return new Button(Strings.View, Images.Internet, new ActionListener() {
+		return new Button(Strings.View, Images.InternetWebBrowser, new ActionListener() {
 			public void actionPerformed(Event evt) {
 				getRoot().appendChild(
 						new NodeViewer(JeaseSession.getContainer()));

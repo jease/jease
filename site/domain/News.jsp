@@ -1,4 +1,4 @@
-<%@page import="jease.cms.domain.*"%>
+<%@page import="jfix.util.*,jease.cms.domain.*"%>
 <%
 	News news = (News) request.getAttribute("Node");
 %>
@@ -6,5 +6,7 @@
 <p style="float: right;"><%=String.format("%tF", news.getDate())%></p>
 <% } %>
 <h1><%=news.getTitle()%></h1>
+<% if (Validations.isNotEmpty(news.getTeaser())) { %>
 <p><strong><%=news.getTeaser()%></strong></p>
-<div><%=news.getStory()%></div>
+<% } %>
+<%=news.getStory()%>

@@ -26,6 +26,7 @@ import jease.cms.domain.Content;
 import jease.cms.domain.User;
 import jease.cms.service.Contents;
 import jease.cms.service.Revisions;
+import jease.cms.web.content.editor.property.PropertyManager;
 import jease.cms.web.i18n.Strings;
 import jfix.zk.ActionListener;
 import jfix.zk.Button;
@@ -43,54 +44,75 @@ import org.zkoss.zk.ui.event.Event;
 public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	private Date lastNodeModification;
-	private Button view = new Button(Strings.View, Images.Internet);
 	protected Textfield title = new Textfield();
-	protected Selectfield revisions = new Selectfield();
+	protected Selectfield revisionSelection = new Selectfield();
+	protected PropertyManager propertyManager = new PropertyManager();
+	protected Button editProperties = new Button(Strings.Properties,
+			Images.DocumentProperties);
+	protected Button viewContent = new Button(Strings.View,
+			Images.InternetWebBrowser);
 
 	public ContentEditor() {
-		view.addClickListener(new ActionListener() {
+		if (getSessionUser().isAdministrator()) {
+			editProperties.addClickListener(new ActionListener() {
+				public void actionPerformed(Event event) {
+					propertyManager.toogleEdit();
+				}
+			});
+			getButtons().appendChild(editProperties);
+		}
+
+		viewContent.addClickListener(new ActionListener() {
 			public void actionPerformed(Event event) {
 				getRoot().appendChild(new NodeViewer(getNode()));
 			}
 		});
-		getButtons().appendChild(view);
+		getButtons().appendChild(viewContent);
 
-		revisions.setNullable(false);
-		revisions.addSelectListener(new ActionListener() {
+		revisionSelection.setNullable(false);
+		revisionSelection.addSelectListener(new ActionListener() {
 			public void actionPerformed(Event event) {
-				peek(Revisions.checkout(getNode(), revisions.getSelectedIndex()));
+				peek(Revisions.checkout(getNode(),
+						revisionSelection.getSelectedIndex()));
 				lastNodeModification = null;
 			}
 		});
 	}
 
 	protected void doInit() throws Exception {
-		add(Strings.Revision, revisions);
+		add(Strings.Revision, revisionSelection);
 		super.doInit();
 		add(Strings.Title, title);
 		init();
+		add(propertyManager);
 	}
 
 	protected void doLoad() throws Exception {
 		super.doLoad();
-		view.setVisible(Nodes.isRooted(getNode()));
+		viewContent.setVisible(Nodes.isRooted(getNode()));
 		lastNodeModification = getNode().getLastModified();
 		if (title.getParent() != null) {
 			title.setText(getNode().getTitle());
 		}
-		if (revisions.getParent() != null) {
-			revisions.setValues(getNode().getRevisions());
+		if (revisionSelection.getParent() != null) {
+			revisionSelection.setValues(getNode().getRevisions());
+		}
+		if (propertyManager.getParent() != null) {
+			propertyManager.setProperties(getNode().getProperties());
 		}
 		load();
 	}
 
 	protected void doSave() throws Exception {
 		super.doSave();
+		getNode().setEditor(getSessionUser());
+		getNode().setLastModified(new Date());
 		if (title.getParent() != null) {
 			getNode().setTitle(title.getText());
 		}
-		getNode().setEditor(getSessionUser());
-		getNode().setLastModified(new Date());
+		if (propertyManager.getParent() != null) {
+			getNode().setProperties(propertyManager.getProperties());
+		}
 		save();
 		persist();
 	}
@@ -121,8 +143,8 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	public void doCopy() throws Exception {
 		super.doCopy();
-		if (revisions.getParent() != null) {
-			revisions.setValues(new Object[] {});
+		if (revisionSelection.getParent() != null) {
+			revisionSelection.setValues(new Object[] {});
 		}
 	}
 
@@ -136,12 +158,9 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		return JeaseSession.get(User.class);
 	}
 
-	public Button getViewButton() {
-		return view;
-	}
-
 	public void hideButtons() {
 		super.hideButtons();
-		view.setVisible(false);
+		viewContent.setVisible(false);
+		editProperties.setVisible(false);
 	}
 }

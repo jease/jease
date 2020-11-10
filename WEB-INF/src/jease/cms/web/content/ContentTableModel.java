@@ -73,4 +73,11 @@ public class ContentTableModel extends NodeTableModel<Content> {
 		}
 		return "";
 	}
+
+	/**
+	 * Which content should be searchable in addition to columns above?
+	 */
+	public Object[] getSearchValues(Content content) {		
+		return new Object[] { content.getFulltext() };
+	}
 }

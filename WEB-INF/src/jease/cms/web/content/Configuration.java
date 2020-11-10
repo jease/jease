@@ -23,14 +23,21 @@ import jease.cmf.web.node.NodeEditor;
 import jease.cmf.web.node.NodeTableModel;
 import jease.cms.domain.User;
 import jease.cms.service.Contents;
+import jease.cms.service.Revisions;
 import jease.cms.web.content.editor.ContentEditor;
 import jfix.util.Reflections;
+import jfix.zk.ZK;
 
 /**
  * Global configuration for JeaseCMS.
  */
 public class Configuration implements JeaseConfig {
 
+	static {
+		Revisions.COUNT = Integer.parseInt(ZK.getInitParameter("JEASE_REVISION_COUNT"));
+		Revisions.DAYS = Integer.parseInt(ZK.getInitParameter("JEASE_REVISION_DAYS"));
+	}
+	
 	/**
 	 * Which type of nodes can be created by the user? We use reflection to find
 	 * all Nodes in the default Content-Package. If you want maximum control,

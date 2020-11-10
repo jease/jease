@@ -78,7 +78,7 @@ $(document).ready(function(){
 				<div class="aside maxheight">
 					<div class="indent">
 						<div id="breadcrumb">
-							<% for (Content parent : ((Content) request.getAttribute("Node")).getParents(Content.class)) { %>
+							<% for (Content parent : content.getParents(Content.class)) { %>
 								<% if(parent != content.getParent()) { %>
 									&raquo; <a href="<%=parent.getPath()%>"><%=parent.getTitle()%></a> 
 								<% } %>

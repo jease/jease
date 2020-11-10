@@ -18,8 +18,12 @@ package jease.cms.domain;
 
 import java.util.Date;
 
+import jease.cmf.annotation.NotSerialized;
 import jease.cmf.domain.Node;
+import jease.cms.domain.property.Property;
 import jfix.db4o.Blob;
+import jfix.functor.Functors;
+import jfix.functor.Predicate;
 import jfix.util.Arrays;
 
 /**
@@ -32,14 +36,21 @@ import jfix.util.Arrays;
  * In order to revision content, an array of Versions is maintained where each
  * Version stores one revision of content. The newest revision is the first
  * entry of array.
+ * 
+ * In order to support adding attributes at runtime, the class can store an
+ * array of properties.
  */
 public abstract class Content extends Node {
 
 	private String title;
 	private Date lastModified;
-	private User editor;
 	private boolean visible;
+	private Property[] properties;
+	@NotSerialized
+	private User editor;
+	@NotSerialized
 	private Version[] versions;
+	@NotSerialized
 	@Deprecated
 	private Blob[] revisions;
 
@@ -106,6 +117,52 @@ public abstract class Content extends Node {
 	}
 
 	/**
+	 * Returns an array of additional properties stored with content.
+	 */
+	public Property[] getProperties() {
+		return properties;
+	}
+
+	/**
+	 * Sets additional properties for content.
+	 */
+	public void setProperties(Property[] properties) {
+		this.properties = properties;
+	}
+
+	/**
+	 * Add given property to contet.
+	 */
+	public void addProperty(Property property) {
+		properties = Arrays.append(properties, property, Property.class);
+	}
+
+	/**
+	 * Returns all properties for given name.
+	 */
+	public Property[] getProperties(final String name) {
+		return Functors.filter(properties, new Predicate<Property>() {
+			public boolean test(Property property) {
+				return property.getName().equals(name);
+			}
+		});
+	}
+
+	/**
+	 * Returns first property with given name.
+	 */
+	public Property getProperty(String name) {
+		if (properties != null) {
+			for (Property property : properties) {
+				if (property.getName().equals(name)) {
+					return property;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * If true, the content-type is a container and can hold other nodes as
 	 * children.
 	 */
@@ -118,7 +175,14 @@ public abstract class Content extends Node {
 	 * add additional size information to super.getSize().
 	 */
 	public long getSize() {
-		return super.getSize() + getTitle().length();
+		long size = super.getSize() + getTitle().length();
+		if (properties != null) {
+			for (Property property : properties) {
+				size += property.getName().length();
+				size += property.toString().length();
+			}
+		}
+		return size;
 	}
 
 	/**
@@ -127,8 +191,15 @@ public abstract class Content extends Node {
 	 * super.getFulltext() without the need to create new strings.
 	 */
 	public StringBuilder getFulltext() {
-		return new StringBuilder().append(getId()).append("\n")
+		StringBuilder sb = new StringBuilder(32).append(getId()).append("\n")
 				.append(getTitle()).append("\n").append(getType());
+		if (properties != null) {
+			for (Property property : properties) {
+				sb.append("\n").append(property.getName()).append("\n")
+						.append(property.toString());
+			}
+		}
+		return sb;
 	}
 
 	/**
@@ -176,6 +247,14 @@ public abstract class Content extends Node {
 		content.setLastModified(getLastModified());
 		content.setEditor(getEditor());
 		content.setVisible(isVisible());
+		Property[] sourceProperties = getProperties();
+		if (sourceProperties != null) {
+			Property[] targetProperties = new Property[sourceProperties.length];
+			for (int i = 0; i < sourceProperties.length; i++) {
+				targetProperties[i] = sourceProperties[i].copy();
+			}
+			content.setProperties(targetProperties);
+		}
 		return content;
 	}
 

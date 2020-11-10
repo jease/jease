@@ -43,6 +43,11 @@ ul,ol {
 	line-height: 1.6em;
 }
 
+hr {
+	margin-top: 10px;
+	margin-bottom: 10px;	
+}
+
 #container {
 	background: url(img/spill.gif) no-repeat top right;
 	margin: 0 auto;

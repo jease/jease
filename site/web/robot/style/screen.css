@@ -30,6 +30,12 @@ object {
 	outline: none;
 }
 
+hr {
+	border: 1px solid #3782b2;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 ul,ol {	
 	list-style: none;		
 }

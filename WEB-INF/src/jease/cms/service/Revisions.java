@@ -16,7 +16,8 @@
  */
 package jease.cms.service;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import jease.cmf.service.Revisioner;
 import jease.cms.domain.Content;
@@ -24,19 +25,30 @@ import jease.cms.domain.Version;
 
 /**
  * Service to create/restore content-revisions. Each content revision is stored
- * within an array (newest revision is first element of array), so
- * overhead is neglectable. The number of revisions to be kept is stored within
- * MAX_REVISIONS (default: Integer.MAX_VALUE).
+ * within an array (newest revision is first element of array), so overhead is
+ * neglectable.
+ * 
+ * The minimum number of revisions to be kept is stored within COUNT (default:
+ * Integer.MAX_VALUE).
+ * 
+ * The number of days for which revisions in the past should be kept is stored
+ * in DAYS (default: Integer.MAX_VALUE).
  */
 public class Revisions {
 
-	private final static Revisioner revisioner = new Revisioner(
-			Contents.getAvailableTypes());
+	/**
+	 * Minimum count of revisions to be kept. -1 means unlimited.
+	 */
+	public static int COUNT = -1;
 
 	/**
-	 * Limit for the number ot revisions to be kept.
+	 * Number of days in the past for which revisions should be kept. -1 means
+	 * unlimited.
 	 */
-	public static int MAX_REVISIONS = Integer.MAX_VALUE;
+	public static int DAYS = -1;
+
+	private final static Revisioner revisioner = new Revisioner(
+			Contents.getAvailableTypes());
 
 	/**
 	 * Add new revision for given content.
@@ -50,10 +62,25 @@ public class Revisions {
 	 */
 	public static void checkin(String info, Content content) {
 		content.addRevision(new Version(info, revisioner.toBlob(content)));
-		if (content.getRevisions().length > MAX_REVISIONS) {
-			content.setRevisions(Arrays.copyOf(content.getRevisions(),
-					MAX_REVISIONS));
+		if (COUNT != -1 || DAYS != -1) {
+			prune(content, COUNT, DAYS);
 		}
+	}
+
+	/**
+	 * Keeps only revisions for given content below given count and given days.
+	 */
+	public static void prune(Content content, int count, int days) {
+		long daysInPast = System.currentTimeMillis()
+				- (days * 24L * 3600L * 1000L);
+		List<Version> revisions = new ArrayList();
+		for (Version version : content.getRevisions()) {
+			if (revisions.size() < count
+					|| version.getBlob().getFile().lastModified() > daysInPast) {
+				revisions.add(version);
+			}
+		}
+		content.setRevisions(revisions.toArray(new Version[] {}));
 	}
 
 	/**

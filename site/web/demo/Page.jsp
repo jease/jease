@@ -38,7 +38,7 @@
 		<div id="main">
 			<div id="content">
 				<p id="breadcrumb">
-				<% for (Content parent : ((Content) request.getAttribute("Node")).getParents(Content.class)) { %>
+				<% for (Content parent : content.getParents(Content.class)) { %>
 					&raquo; <a href="<%=parent.getPath()%>"><%=parent.getTitle()%></a>
 				<% } %>
 				</p>

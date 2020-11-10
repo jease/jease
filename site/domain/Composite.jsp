@@ -2,7 +2,7 @@
 <%
 	Composite composite = (Composite) request.getAttribute("Node");
 
-	for (Content child : Navigations.getItems(composite)) {
+	for (Content child : Navigations.getVisibleContent(composite)) {
 		if (child instanceof Reference) {
 			child = ((Reference) child).getDestination();
 		}

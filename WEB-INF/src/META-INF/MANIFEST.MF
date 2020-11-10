@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Created-By: 1.6.0_18 (OpenJDK)
+Created-By: 1.6.0_20 (OpenJDK)
 Implementation-Title: Jease
 Implementation-URL: http://www.jease.org/
-Implementation-Version: 1.4
+Implementation-Version: 1.5
 Implementation-Vendor: maik.jablonski@gmail.com

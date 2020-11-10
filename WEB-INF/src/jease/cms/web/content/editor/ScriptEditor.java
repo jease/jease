@@ -16,9 +16,13 @@
  */
 package jease.cms.web.content.editor;
 
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.InputEvent;
+
 import jease.cmf.service.Filenames;
 import jease.cms.domain.Script;
 import jease.cms.web.i18n.Strings;
+import jfix.zk.ActionListener;
 import jfix.zk.Codearea;
 
 public class ScriptEditor extends ContentEditor<Script> {
@@ -27,6 +31,11 @@ public class ScriptEditor extends ContentEditor<Script> {
 
 	public ScriptEditor() {
 		code.setHeight("350px");
+		id.addChangingListener(new ActionListener() {			
+			public void actionPerformed(Event event) {
+				code.setSyntax(Filenames.asExtension(((InputEvent) event).getValue()));
+			}
+		});
 	}
 
 	public void init() {

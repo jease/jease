@@ -34,7 +34,8 @@ public class LinkEditor extends ContentEditor<Link> {
 
 	public LinkEditor() {
 		link.setTooltiptext(Strings.Open);
-		link.setImage(Images.Internet);
+		link.setImage(Images.InternetWebBrowser);		
+		link.setWidth("24px");
 		link.addClickListener(new ActionListener() {
 			public void actionPerformed(Event event) {
 				ZK.redirect(url.getText(), "_blank");
