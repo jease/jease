@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import jease.Registry;
+import jease.cmf.web.JeaseSession;
+import jease.cms.domain.Factory;
 import jease.cms.domain.property.Property;
 import jease.cms.service.Properties;
-import jfix.util.Reflections;
 import jfix.zk.ActionListener;
 import jfix.zk.Button;
 import jfix.zk.Combobox;
@@ -44,10 +46,18 @@ import org.zkoss.zk.ui.event.Events;
 
 public class PropertyManager extends Formbox {
 
+	private List<Label> augmentableLabels = new ArrayList();
 	private Selectfield typeSelect = newTypeSelect();
 	private Combobox nameInput = newNameInput();
 	private Button addButton = newAddButton();
 	private Component controls = new Row(typeSelect, nameInput, addButton);
+
+	public PropertyManager() {
+	}
+
+	public boolean isFactoryMode() {
+		return JeaseSession.getContainer() instanceof Factory;
+	}
 
 	public void setProperties(Property[] properties) {
 		getRows().getChildren().clear();
@@ -62,7 +72,11 @@ public class PropertyManager extends Formbox {
 		List<Property> properties = new ArrayList();
 		for (Component component : ZK.getDescendants(this)) {
 			if (component instanceof PropertyEditor) {
-				properties.add(((PropertyEditor) component).getProperty());
+				Property property = ((PropertyEditor) component).getProperty();
+				if (isFactoryMode() && property.getSerial() == 0) {
+					property.initSerial();
+				}
+				properties.add(property);
 			}
 		}
 		return properties.toArray(new Property[] {});
@@ -77,8 +91,7 @@ public class PropertyManager extends Formbox {
 	}
 
 	private void appendProperty(Property property) {
-		PropertyEditor editor = newPropertyEditor(property);
-		add(property.getName(), editor);
+		add(property.getName(), newPropertyEditor(property));
 	}
 
 	private Button newAddButton() {
@@ -103,7 +116,7 @@ public class PropertyManager extends Formbox {
 	}
 
 	private Selectfield newTypeSelect() {
-		Selectfield select = new Selectfield(Reflections.find(Property.class));
+		Selectfield select = new Selectfield(Properties.getAvailableTypes());
 		select.setItemRenderer(new ItemRenderer() {
 			public String render(Object value) {
 				return value != null ? ((Property) value).getType() : null;
@@ -137,27 +150,24 @@ public class PropertyManager extends Formbox {
 	}
 
 	private void augmentLablesForEditing() {
-		for (Component component : ZK.getDescendants(this)) {
-			if (component instanceof Label) {
-				final Label label = (Label) component;
-				if (label.getStyle() != null) {
-					continue;
-				}
-				label.setStyle("cursor: pointer; font-style: italic;");
-				label.setDraggable(toString());
-				label.setDroppable(toString());
-				label.addEventListener(Events.ON_DROP, new EventListener() {
-					public void onEvent(Event evt) throws Exception {
-						DropEvent dropEvent = (DropEvent) evt;
-						swapRows(dropEvent.getDragged(), dropEvent.getTarget());
-					}
-				});
-				label.addEventListener(Events.ON_CLICK, new EventListener() {
-					public void onEvent(Event evt) throws Exception {
-						convertLabelToTextfield(label);
-					}
-				});
+		for (final Label label : augmentableLabels) {
+			if (label.getStyle() != null) {
+				continue;
 			}
+			label.setStyle("cursor: pointer; font-style: italic;");
+			label.setDraggable(toString());
+			label.setDroppable(toString());
+			label.addEventListener(Events.ON_DROP, new EventListener() {
+				public void onEvent(Event evt) throws Exception {
+					DropEvent dropEvent = (DropEvent) evt;
+					swapRows(dropEvent.getDragged(), dropEvent.getTarget());
+				}
+			});
+			label.addEventListener(Events.ON_CLICK, new EventListener() {
+				public void onEvent(Event evt) throws Exception {
+					convertLabelToTextfield(label);
+				}
+			});
 		}
 	}
 
@@ -184,11 +194,18 @@ public class PropertyManager extends Formbox {
 	}
 
 	private PropertyEditor newPropertyEditor(Property property) {
-		String classname = PropertyEditor.class.getPackage().getName() + "."
-				+ property.getClass().getSimpleName() + "Editor";
-		PropertyEditor editor = (PropertyEditor) Reflections
-				.newInstance(classname);
+		PropertyEditor editor = Registry.getEditor(property);
 		editor.setProperty(property.copy());
 		return editor;
+	}
+
+	protected Label newLabel(String name, Component component) {
+		Label label = super.newLabel(name, component);
+		if (component instanceof PropertyEditor
+				&& ((PropertyEditor) component).getProperty().getSerial() == 0
+				|| isFactoryMode()) {
+			augmentableLabels.add(label);
+		}
+		return label;
 	}
 }

@@ -81,8 +81,23 @@ h1,h2,h3,p {
 }
 
 ul,ol {
-	margin: 5px 15px;
-	padding: 0 25px;
+	margin-top: 10px;
+	margin-left: 15px;
+	margin-bottom: 10px;
+}
+
+dl {
+	margin-top: 10px;
+}
+
+dt {
+	font-weight: bold;
+	color: #555;	
+}
+
+dd {
+	
+	margin-bottom: 10px;	
 }
 
 hr {
@@ -109,12 +124,16 @@ acronym {
 }
 
 blockquote {
-	margin: 10px 15px;
-	padding: 0 0 0 25px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 35px;
+	padding-right: 10px;
 	font: bold 1.3em/1.5em "Trebuchet MS", Tahoma, arial, Sans-serif;
 	color: #2361BA;
 	border: 1px solid #E5F0FB;
-	background: #F4F8FD url(img/quote.jpg) no-repeat 8px 6px;
+	background: #F4F8FD url(img/quote.jpg) no-repeat 0px 10px;
 }
 
 /* form elements */

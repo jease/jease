@@ -40,8 +40,9 @@ $(document).ready(function() {
 			</ul>
 		</div>		
 		
-		<form id="search" action="<%= request.getAttribute("Page.Root") %>" method="get">
-			<input type="text" name="query" <% if(request.getParameter("query") != null) { %>value="<%= request.getParameter("query") %>"<% } else { %>value="Search this site..." onfocus="this.value='';"<% } %> />			
+		<form id="search" action="." method="get">
+			<input type="text" name="query" <% if(request.getParameter("query") != null) { %>value="<%= request.getParameter("query") %>"<% } else { %>value="Search this site..." onfocus="this.value='';"<% } %> />
+			<input type="hidden" name="page" value="/site/service/Search.jsp" />
 		</form>				
 	
 		<div id="breadcrumb">
@@ -61,21 +62,6 @@ $(document).ready(function() {
 		
 		<div id="content-wrapper">
 		<div id="content">
-		
-			<% if(request.getParameter("query") != null) { %>
-				<h1>Search results for  &quot;<%= Regexps.stripTags(request.getParameter("query")) %>&quot;</h1>
-				<ul>
-				<%
-					List<Content> searchResults = Fulltexts.query(request.getParameter("query"));
-					for (Content result : searchResults) {
-				%>
-					<li><a href="<%= result.getPath() %>"><%= ((Content) result.getParent()).getTitle() %> &raquo; <%= result.getTitle() %></a></li>
-				<% } %>
-				<% if (searchResults.size() == 0) { %>
-					<li>No results found.</li>
-				<% } %>
-				</ul>				
-			<% } else { %>
 				<% pageContext.include((String) request.getAttribute("Page.Template")); %>	
 				<p class="editorial">
 					Last modified on <%=String.format("%tF", content.getLastModified())%>
@@ -83,7 +69,6 @@ $(document).ready(function() {
 						by <%= content.getEditor().getName() %>
 					<% }%>
 				</p>
-			<% } %>
 
 			<% 
 				News[] news = Navigations.getNews((Content) content.getParent());
@@ -125,7 +110,7 @@ $(document).ready(function() {
 	</div>
 	
 	<div id="footer">
-		&copy; 2010 <a href="http://www.jease.org/">jease.org</a> | Design by <a href="http://www.styleshout.com/">styleshout</a>
+		&copy; 2011 <a href="http://www.jease.org/">jease.org</a> | Design by <a href="http://www.styleshout.com/">styleshout</a>
 		<br />
 		<%@include file="/site/service/Designswitch.jsp" %>
 	</div>

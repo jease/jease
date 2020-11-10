@@ -85,6 +85,19 @@ ul span,ol span {
 	color: #666666;
 }
 
+dl {
+	margin-top: 10px;
+}
+
+dt {
+	font-weight: bold;
+	color: #6297BC;	
+}
+
+dd {
+	margin-bottom: 10px;	
+}
+
 img {
 	border: 1px solid #CCC;
 }
@@ -130,8 +143,9 @@ acronym {
 }
 
 blockquote {
-	margin: 15px;
-	padding: 0 0 0 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 10px;
 	background: #FAFAFA;
 	border: 1px solid #f2f2f2;
 	border-left: 4px solid #4284B0;
@@ -272,7 +286,7 @@ form.searchform input.button {
 	width: 400px;
 }
 
-#main p,#main h1,#main h2,#main h3,#main h4,#main h5,#main h6 {
+#main p, #main h1,#main h2,#main h3,#main h4,#main h5,#main h6 {
 	margin-top: 10px;
 }
 

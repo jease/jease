@@ -43,6 +43,18 @@ ul,ol {
 li {
 }
 
+dl {
+	margin-top: 10px;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {	
+	margin-bottom: 10px;	
+}
+
 table td {
 	vertical-align: top;
 }

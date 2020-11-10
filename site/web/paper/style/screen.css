@@ -43,6 +43,18 @@ ul,ol {
 	line-height: 1.6em;
 }
 
+dl {
+	margin-top: 10px;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {	
+	margin-bottom: 10px;	
+}
+
 hr {
 	margin-top: 10px;
 	margin-bottom: 10px;	

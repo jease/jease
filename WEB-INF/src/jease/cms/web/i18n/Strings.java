@@ -19,19 +19,22 @@ package jease.cms.web.i18n;
 import jfix.util.I18N;
 
 public class Strings {
-
+	
 	static {
 		I18N.init(Strings.class);
 	}
 
 	public static String Administrator;
+	public static String Are_you_sure;
 	public static String Code;
 	public static String Content;
 	public static String Content_is_not_deletable;
 	public static String Content_is_required;
 	public static String Content_is_not_valid;
 	public static String Content_is_stale;
+	public static String Count;
 	public static String Date;
+	public static String Days;
 	public static String Dump;
 	public static String Editor;
 	public static String Email;
@@ -56,13 +59,17 @@ public class Strings {
 	public static String Path_is_required;
 	public static String Plaintext;
 	public static String Properties;
+	public static String Purge;
 	public static String Restore;
 	public static String Revision;
+	public static String Revisions;
+	public static String Revisions_purged;
 	public static String Roots;
 	public static String Setup_Administrator;
 	public static String Size;
 	public static String Story;
 	public static String Story_is_required;
+	public static String System;
 	public static String Teaser;
 	public static String Title;
 	public static String Title_is_required;

@@ -110,8 +110,9 @@ acronym {
 }
 
 blockquote {
-	margin: 15px 10px;
-	padding: 10px 10px 10px 35px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 10px 10px 10px 40px;
 	border: 1px solid #F0F0F0;
 	background: #F0F0F0 url(img/quote.jpg) no-repeat 5px 5px;
 	font-weight: normal;

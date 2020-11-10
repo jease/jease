@@ -19,6 +19,7 @@ package jease.cms.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import jease.Registry;
 import jease.cmf.domain.Node;
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
@@ -29,7 +30,6 @@ import jease.cms.domain.User;
 import jfix.db4o.Database;
 import jfix.functor.Functors;
 import jfix.functor.Predicate;
-import jfix.util.Reflections;
 
 public class Contents {
 
@@ -37,7 +37,7 @@ public class Contents {
 	 * Return array of all available content types.
 	 */
 	public static Content[] getAvailableTypes() {
-		return Reflections.find(Content.class);
+		return Registry.getContents();
 	}
 
 	/**

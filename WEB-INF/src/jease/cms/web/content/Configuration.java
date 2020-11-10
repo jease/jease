@@ -16,6 +16,7 @@
  */
 package jease.cms.web.content;
 
+import jease.Registry;
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseConfig;
 import jease.cmf.web.JeaseSession;
@@ -24,8 +25,6 @@ import jease.cmf.web.node.NodeTableModel;
 import jease.cms.domain.User;
 import jease.cms.service.Contents;
 import jease.cms.service.Revisions;
-import jease.cms.web.content.editor.ContentEditor;
-import jfix.util.Reflections;
 import jfix.zk.ZK;
 
 /**
@@ -34,21 +33,22 @@ import jfix.zk.ZK;
 public class Configuration implements JeaseConfig {
 
 	static {
-		Revisions.COUNT = Integer.parseInt(ZK.getInitParameter("JEASE_REVISION_COUNT"));
-		Revisions.DAYS = Integer.parseInt(ZK.getInitParameter("JEASE_REVISION_DAYS"));
+		Revisions.COUNT = Integer.parseInt(ZK
+				.getInitParameter("JEASE_REVISION_COUNT"));
+		Revisions.DAYS = Integer.parseInt(ZK
+				.getInitParameter("JEASE_REVISION_DAYS"));
 	}
-	
+
 	/**
-	 * Which type of nodes can be created by the user? We use reflection to find
-	 * all Nodes in the default Content-Package. If you want maximum control,
-	 * you can also create a config by hand:
+	 * Which type of nodes can be created by the user? If you want maximum
+	 * control, you can also create a config by hand:
 	 * 
 	 * <code> 
 	 * return new Node[] { new Folder(), new Text(), new File(), ... };
 	 * </code>
 	 */
 	public Node[] newNodes() {
-		Node[] nodes = Contents.getAvailableTypes();
+		Node[] nodes = Registry.getContents();
 		if (JeaseSession.get(User.class).isAdministrator()) {
 			return nodes;
 		} else {
@@ -57,10 +57,8 @@ public class Configuration implements JeaseConfig {
 	}
 
 	/**
-	 * Which editor should be used to edit a given node? We use reflection and
-	 * convention (editor-class needs to end on Editor) to find an editor for a
-	 * given Node. If you want maximum control, you can also create a config by
-	 * hand:
+	 * Which editor should be used to edit a given node? If you want maximum
+	 * control, you can also create a config by hand:
 	 * 
 	 * <code> 
 	 * if (node instanceof Folder) return new FolderEditor();
@@ -70,9 +68,7 @@ public class Configuration implements JeaseConfig {
 	 * </code>
 	 */
 	public NodeEditor newEditor(Node node) {
-		String pckage = ContentEditor.class.getPackage().getName();
-		String clazz = String.format("%s.%sEditor", pckage, node.getType());
-		return (NodeEditor) Reflections.newInstance(clazz);
+		return Registry.getEditor(node);
 	}
 
 	/**
@@ -87,7 +83,7 @@ public class Configuration implements JeaseConfig {
 	 * Which icon should be displayed in front of a given node?
 	 */
 	public String getIcon(Node node) {
-		return String.format("~./jease/cms/%s.png", node.getType());
+		return Registry.getIcon(node);
 	}
 
 }

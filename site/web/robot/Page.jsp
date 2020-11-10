@@ -42,6 +42,7 @@ $(document).ready(function(){
 							<form action="." id="search-form">
 							<fieldset>
 								<input type="text" class="text" name="query" value="<%=request.getParameter("query") != null ? request.getParameter("query") : ""%>" />
+								<input type="hidden" name="page" value="/site/service/Search.jsp" />
 								<input type="submit" class="submit" value="" />
 							</fieldset>
 							</form>
@@ -99,24 +100,13 @@ $(document).ready(function(){
 				<div class="mainContent maxheight">
 					<div class="indent">
 						<div class="section">
-							<% if (request.getParameter("query") != null) { %>
-								<h2>Search results</h2>
-								<ul>
-								<% for (Content item : Fulltexts.query(request.getParameter("query"))) { %>
-									<li>
-										<a href="<%=item.getPath()%>?print"><%=item.getTitle()%></a>		
-									</li>
+							<% pageContext.include((String) request.getAttribute("Page.Template")); %>
+							<p class="editorial">
+								Last modified on <%=String.format("%tF", content.getLastModified())%>
+								<% if (content.getEditor() != null) { %>
+									by <%=content.getEditor().getName()%>
 								<% }%>
-								</ul>
-							<% } else { %>															
-								<% pageContext.include((String) request.getAttribute("Page.Template")); %>
-								<p class="editorial">
-									Last modified on <%=String.format("%tF", content.getLastModified())%>
-									<% if (content.getEditor() != null) { %>
-										by <%=content.getEditor().getName()%>
-									<% }%>
-								</p>
-							<% }  %>
+							</p>
 						</div>
 					</div>
 				</div>
@@ -127,7 +117,7 @@ $(document).ready(function(){
 		<div class="bg">
 			<div class="container">
 				<div class="indent">
-					&copy; 2010 <a href="http://www.jease.org/">jease.org</a> | Design by <a href="http://www.templates.com/">templates.com</a>
+					&copy; 2011 <a href="http://www.jease.org/">jease.org</a> | Design by <a href="http://www.templates.com/">templates.com</a>
 					<br />
   					<%@include file="/site/service/Designswitch.jsp" %>	  			  								
 				</div>	

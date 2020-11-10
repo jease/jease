@@ -58,8 +58,9 @@ public class File extends Content {
 	}
 
 	public long getSize() {
-		return super.getSize() + getContentType().length()
-				+ blob.getFile().length();
+		return super.getSize()
+				+ (getContentType() != null ? getContentType().length() : 0)
+				+ getFile().length();
 	}
 
 	public File copy() {

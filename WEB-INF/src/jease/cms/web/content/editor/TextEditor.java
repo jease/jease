@@ -20,9 +20,9 @@ import jease.cms.domain.Text;
 import jease.cms.web.i18n.Strings;
 import jfix.zk.ActionListener;
 import jfix.zk.Checkbox;
+import jfix.zk.Codearea;
 import jfix.zk.Div;
 import jfix.zk.RichTextarea;
-import jfix.zk.Textarea;
 import jfix.zk.ZK;
 
 import org.zkoss.zk.ui.event.Event;
@@ -30,7 +30,7 @@ import org.zkoss.zk.ui.event.Event;
 public class TextEditor extends ContentEditor<Text> {
 
 	RichTextarea richText = new RichTextarea();
-	Textarea plainText = new Textarea();
+	Codearea plainText = new Codearea();
 	Checkbox plainMode = new Checkbox(Strings.Plaintext);
 
 	public TextEditor() {
@@ -71,7 +71,7 @@ public class TextEditor extends ContentEditor<Text> {
 
 	private void updateTextMode() {
 		if (plainMode.isChecked()) {
-			plainText.setText(richText.getText());
+			plainText.setValue(richText.getText());
 			if (richText.getParent() != null) {
 				ZK.replace(richText, plainText);
 			}

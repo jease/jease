@@ -22,7 +22,7 @@ public class ChoiceProperty extends Property {
 
 	private String[] value;
 	private String provider;
-	
+
 	public String[] getValue() {
 		return value;
 	}
@@ -39,13 +39,18 @@ public class ChoiceProperty extends Property {
 		this.provider = path;
 	}
 
+	public void cloneTo(Property clone) {
+		super.cloneTo(clone);
+		((ChoiceProperty) clone).setProvider(getProvider());
+	}
+
 	public ChoiceProperty copy() {
 		ChoiceProperty property = (ChoiceProperty) super.copy();
 		property.setValue(getValue());
 		property.setProvider(getProvider());
 		return property;
 	}
-	
+
 	public String toString() {
 		return Arrays.join(value, "\n");
 	}

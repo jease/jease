@@ -21,9 +21,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import jease.Registry;
 import jease.cmf.domain.Node;
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
+import jease.cms.domain.Factory;
 import jease.cms.domain.property.LinesProperty;
 import jease.cms.domain.property.Property;
 import jfix.db4o.Database;
@@ -66,6 +68,13 @@ public class Properties {
 	};
 
 	/**
+	 * Returns array of all available property types.
+	 */
+	public static Property[] getAvailableTypes() {
+		return Registry.getProperties();
+	}
+
+	/**
 	 * Returns all existing property names stored within database.
 	 */
 	public static String[] getPropertyNames() {
@@ -103,6 +112,25 @@ public class Properties {
 		Content content = (Content) Nodes.getByPath(contentPath);
 		if (content != null) {
 			return content.getProperty(propertyPath);
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the corresponding property factory for given node in relation to
+	 * given container. If no factory exists, null is returned.
+	 */
+	public static Factory getFactory(Node container, Node content) {
+		while (container != null) {
+			for (Factory factoryCandidate : container
+					.getChildren(Factory.class)) {
+				for (Node prototype : factoryCandidate.getChildren()) {
+					if (prototype.getClass().equals(content.getClass())) {
+						return factoryCandidate;
+					}
+				}
+			}
+			container = container.getParent();
 		}
 		return null;
 	}

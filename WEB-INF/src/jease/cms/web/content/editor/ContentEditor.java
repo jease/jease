@@ -23,8 +23,10 @@ import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.NodeEditor;
 import jease.cmf.web.node.browser.NodeViewer;
 import jease.cms.domain.Content;
+import jease.cms.domain.Factory;
 import jease.cms.domain.User;
 import jease.cms.service.Contents;
+import jease.cms.service.Properties;
 import jease.cms.service.Revisions;
 import jease.cms.web.content.editor.property.PropertyManager;
 import jease.cms.web.i18n.Strings;
@@ -98,7 +100,13 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 			revisionSelection.setValues(getNode().getRevisions());
 		}
 		if (propertyManager.getParent() != null) {
-			propertyManager.setProperties(getNode().getProperties());
+			Factory factory = Properties.getFactory(
+					JeaseSession.getContainer(), getNode());
+			if (factory != null && factory != JeaseSession.getContainer()) {
+				propertyManager.setProperties(factory.getProperties(getNode()));
+			} else {
+				propertyManager.setProperties(getNode().getProperties());
+			}
 		}
 		load();
 	}
@@ -124,13 +132,15 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	protected void doValidate() throws Exception {
 		super.doValidate();
-		if (title.getParent() != null) {
-			validate(title.isEmpty(), Strings.Title_is_required);
+		if (!isFactoryMode()) {
+			if (title.getParent() != null) {
+				validate(title.isEmpty(), Strings.Title_is_required);
+			}
+			validate(lastNodeModification != null
+					&& lastNodeModification != getNode().getLastModified(),
+					Strings.Content_is_stale);
+			validate();
 		}
-		validate(lastNodeModification != null
-				&& lastNodeModification != getNode().getLastModified(),
-				Strings.Content_is_stale);
-		validate();
 	}
 
 	protected void doDelete() throws Exception {
@@ -162,5 +172,9 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		super.hideButtons();
 		viewContent.setVisible(false);
 		editProperties.setVisible(false);
+	}
+
+	protected boolean isFactoryMode() {
+		return JeaseSession.getContainer() instanceof Factory;
 	}
 }

@@ -1,4 +1,4 @@
-<%@page import="jfix.servlet.*,jfix.util.*,jease.cms.domain.*,jease.site.*"%>
+<%@page import="jfix.servlet.*,jfix.util.*,jease.cms.domain.*,jease.site.*,jease.*"%>
 <%
 	// The current node is stored in request-attribute by JeaseServletFilter.
 	Content node = (Content) request.getAttribute("Node");
@@ -17,15 +17,15 @@
 	}
 
 	// Which template should be used to render the node?
-	String pageTemplate = String.format("/site/domain/%s.jsp", node.getType());
+	String pageTemplate = Registry.getView(node);
 	
 	// If node is page-like content (e.g. text) and no file-parameter exists in request,
 	// then include template, otherwise forward (e.g. to stream binary content).
 	if (node.isPage() && request.getParameter("file") == null) {
-		// If jsp-request-parameter is set, force template.
-		String jsp = request.getParameter("jsp");
-		if (Urls.isValid(jsp) && !jsp.equals("Page")) {
-			pageTemplate = String.format("%s.jsp", jsp);
+		String template = request.getParameter("page");
+		if (template != null && !template.startsWith("/WEB-INF") && !template.endsWith("Page.jsp") 
+				&& !template.equals(request.getAttribute("Controller"))) {
+			pageTemplate = template;
 		}
 		request.setAttribute("Page.Title", Navigations.getPageTitle(node));
 		request.setAttribute("Page.Base", Navigations.getBasePath(node));

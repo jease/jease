@@ -37,6 +37,11 @@ public class SelectionProperty extends Property {
 		this.provider = path;
 	}
 
+	public void cloneTo(Property clone) {
+		super.cloneTo(clone);
+		((SelectionProperty) clone).setProvider(getProvider());
+	}
+	
 	public SelectionProperty copy() {
 		SelectionProperty property = (SelectionProperty) super.copy();
 		property.setValue(getValue());

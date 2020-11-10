@@ -1,4 +1,4 @@
-<%@page import="jease.cms.domain.*,jease.site.*"%>
+<%@page import="jease.cms.domain.*,jease.site.*,jease.*"%>
 <%
 	Composite composite = (Composite) request.getAttribute("Node");
 
@@ -8,7 +8,7 @@
 		}
 		if (child.isPage()) {
 			request.setAttribute("Node", child);
-			pageContext.include(child.getType() + ".jsp");
+			pageContext.include(Registry.getView(child));
 			request.setAttribute("Node", composite);
 		} else if (child instanceof Topic) {
 %>

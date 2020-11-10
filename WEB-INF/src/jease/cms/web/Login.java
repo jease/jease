@@ -20,14 +20,12 @@ import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
 import jease.cms.domain.Content;
 import jease.cms.domain.User;
-import jease.cms.service.Users;
+import jease.cms.service.Authenticator;
 import jease.cms.web.content.Configuration;
-import jease.cms.web.content.ContentManager;
-import jease.cms.web.i18n.Strings;
+import jfix.util.Reflections;
 import jfix.util.Validations;
-import jfix.zk.Images;
 import jfix.zk.LoginWindow;
-import jfix.zk.Tabbox;
+import jfix.zk.ZK;
 
 /**
  * Login into JeaseCMS: init user session and display tab-navigation.
@@ -38,12 +36,14 @@ import jfix.zk.Tabbox;
  */
 public class Login extends LoginWindow {
 
+	private String queryString = ZK.getQueryString();
+	private String jeaseUserAuthenticator = ZK
+			.getInitParameter("JEASE_USER_AUTHENTICATOR");
+
 	public Login() {
-		super();
 		User user = JeaseSession.get(User.class);
 		if (user != null) {
 			initSession(user);
-			showNavigation(user);
 		}
 	}
 
@@ -53,10 +53,18 @@ public class Login extends LoginWindow {
 	}
 
 	public void doLogin(String login, String password) {
-		User user = Users.queryByLogin(login, password);
+		User user = getAuthenticator().identify(login, password);
 		if (user != null) {
 			initSession(user);
-			showNavigation(user);
+		}
+	}
+
+	private Authenticator getAuthenticator() {
+		if (jeaseUserAuthenticator != null) {
+			return (Authenticator) Reflections
+					.newInstance(jeaseUserAuthenticator);
+		} else {
+			return new Authenticator();
 		}
 	}
 
@@ -64,6 +72,9 @@ public class Login extends LoginWindow {
 		JeaseSession.set(user);
 		if (Validations.isNotEmpty(user.getRoots())) {
 			JeaseSession.setRoots(user.getRoots());
+			if (queryString != null) {
+				JeaseSession.setContainer(Nodes.getByPath(queryString));
+			}
 			if (JeaseSession.getContainer() == null
 					|| !JeaseSession.getContainer().isDescendant(
 							user.getRoots())) {
@@ -71,15 +82,6 @@ public class Login extends LoginWindow {
 			}
 			JeaseSession.setConfig(new Configuration());
 		}
-	}
-
-	private void showNavigation(User user) {
-		Tabbox tabs = new Tabbox();
-		if (Validations.isNotEmpty(user.getRoots())) {
-			tabs.add(Strings.Content, ContentManager.class, Images.MailAttachment);
-		}
-		tabs.add(Strings.User, jease.cms.web.user.Table.class, Images.SystemUsers);
-		tabs.add(Strings.Logout, jfix.zk.Logout.class, Images.SystemLogOut);
-		show(tabs);
+		show(new Navigation(user));
 	}
 }

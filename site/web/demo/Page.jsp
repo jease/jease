@@ -19,7 +19,7 @@
 		<h1 id="logo-text"><a href="<%=request.getAttribute("Page.Root") %>"><span class="green">j</span>e<span class="green">as</span>e.org</a></h1>		
 		<p id="slogan">Java with Ease...</p>
 		<div id="header-links">
-			<p><a href="<%=request.getAttribute("Page.Root") %>cms">Login</a></p>		
+			<p><a href="<%=request.getAttribute("Page.Root") %>cms?<%=content.getPath() %>">Edit</a></p>		
 		</div>		
 	</div>
 
@@ -76,17 +76,10 @@
 				<form method="get" action="." class="searchform">
 				<fieldset>
 					<input type="text" class="textbox" name="query" value="<%=request.getParameter("query") != null ? request.getParameter("query") : ""%>" />
+					<input type="hidden" name="page" value="/site/service/Search.jsp" />
 					<input type="submit" class="button" value="Search" />
 				</fieldset>
 				</form>
-				<% if(request.getParameter("query") != null) { %>
-					<h2>Search Results</h2>
-					<ul class="sidemenu">
-					<% for (Content item : Fulltexts.query(request.getParameter("query"))) { %>
-						<li><a href="<%=item.getPath()%>?print"><%=item.getTitle()%></a></li>
-					<% }%>
-					</ul>
-				<% } %>
 			</div>
 			<h2><%=((Content) content.getParent()).getTitle()%></h2>
 			<ul>
@@ -104,7 +97,7 @@
 	
 	<div id="footer">
 		<p>
-			&copy; 2010 <a href="http://www.jease.org/">jease.org</a> | Design by <a href="http://www.styleshout.com/">styleshout</a>
+			&copy; 2011 <a href="http://www.jease.org/">jease.org</a> | Design by <a href="http://www.styleshout.com/">styleshout</a>
 			<br />
 			<%@include file="/site/service/Designswitch.jsp" %>
 		</p>		

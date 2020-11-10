@@ -91,7 +91,7 @@
 
 	<div id="footer">
 		<p>
-			&copy; 2010 <a href="http://www.jease.org/">jease.org</a>
+			&copy; 2011 <a href="http://www.jease.org/">jease.org</a>
   			<br />
   			<%@include file="/site/service/Designswitch.jsp" %>	  			  			
 		</p>		

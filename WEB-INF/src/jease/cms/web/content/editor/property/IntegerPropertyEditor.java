@@ -29,7 +29,7 @@ public class IntegerPropertyEditor extends Spinner implements
 	}
 
 	public IntegerProperty getProperty() {
-		property.setValue(getValue().intValue());
+		property.setValue(intValue());
 		return property;
 	}
 

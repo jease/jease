@@ -16,6 +16,8 @@
  */
 package jease.cms.domain.property;
 
+import java.util.Random;
+
 import jfix.db4o.Persistent;
 
 /**
@@ -24,7 +26,22 @@ import jfix.db4o.Persistent;
  */
 public abstract class Property extends Persistent implements Persistent.Value {
 
+	private int serial;
 	private String name;
+
+	public int getSerial() {
+		return serial;
+	}
+
+	public void initSerial() {
+		do {
+			serial = new Random().nextInt();
+		} while (serial < 1);
+	}
+
+	public void setSerial(int serial) {
+		this.serial = serial;
+	}
 
 	public String getName() {
 		return name;
@@ -43,9 +60,14 @@ public abstract class Property extends Persistent implements Persistent.Value {
 		return getType();
 	}
 
+	public void cloneTo(Property clone) {
+		clone.setName(getName());
+	}
+
 	public Property copy() {
 		try {
 			Property property = getClass().newInstance();
+			property.setSerial(getSerial());
 			property.setName(getName());
 			return property;
 		} catch (Exception e) {

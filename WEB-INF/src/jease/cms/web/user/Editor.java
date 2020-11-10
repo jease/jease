@@ -111,7 +111,6 @@ public class Editor extends ObjectEditor<User> {
 	public void validate() {
 		validate(name.isEmpty(), Strings.Name_is_required);
 		validate(login.isEmpty(), Strings.Login_is_required);
-		validate(password.isEmpty(), Strings.Password_is_required);
 		validate(!password.getText().equals(passwordRepeat.getText()),
 				Strings.Passwords_do_not_match);
 	}

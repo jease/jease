@@ -18,14 +18,15 @@ package jease.cms.web.content.editor;
 
 import jease.cms.domain.Wiki;
 import jease.cms.web.i18n.Strings;
-import jfix.zk.Textarea;
+import jfix.zk.Codearea;
 
 public class WikiEditor extends ContentEditor<Wiki> {
 
-	Textarea content = new Textarea();
+	Codearea content = new Codearea();
 
 	public WikiEditor() {
 		content.setHeight("350px");
+		content.setSyntax("wiki");
 	}
 
 	public void init() {

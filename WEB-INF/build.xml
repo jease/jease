@@ -1,22 +1,26 @@
 <project default="build" basedir=".">
 
+	<property environment="env" />
 	<property name="build.sysclasspath" value="last" />
 
 	<path id="classpath">
+		<pathelement location="${env.CATALINA_HOME}/lib/servlet-api.jar" />
 		<fileset dir="lib">
 			<include name="*.jar" />
 		</fileset>
 	</path>
 
-	<target name="build" depends="clean,compile"/>
+	<target name="check" unless="env.CATALINA_HOME">
+		<fail message="Please set CATALINA_HOME in your environment to where Tomcat is installed" />
+	</target>
 
 	<target name="clean">
-		<delete dir="classes"/>
-		<mkdir dir="classes"/>
+		<delete dir="classes" />
+		<mkdir dir="classes" />
 	</target>
 
 	<target name="compile">
-		<javac srcdir="src" destdir="classes" classpathref="classpath"/>
+		<javac srcdir="src" destdir="classes" classpathref="classpath" />
 		<copy todir="classes">
 			<fileset dir="src">
 				<exclude name="**/*.java" />
@@ -25,4 +29,15 @@
 		</copy>
 	</target>
 
+	<target name="build" depends="check,clean,compile" />
+	
+	<target name="war" depends="build">
+		<war destfile="../../ROOT.war" webxml="web.xml">
+			<fileset dir="..">
+				<exclude name=".*" />
+				<include name="**/*" />
+			</fileset>
+		</war>
+	</target>
+	
 </project>
