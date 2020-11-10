@@ -1,4 +1,3 @@
-<%@page import="jease.cmf.service.*"%>
 <form method="get" class="searchform" action="<%=request.getAttribute("Page.Path") %>">
 <p>
 <input type="text" name="query" class="textbox" 

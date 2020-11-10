@@ -13,10 +13,11 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node.flat;
 
 import jease.cmf.web.JeaseSession;
+import jease.cmf.web.node.*;
 import jfix.zk.ObjectTable;
 import jfix.zk.Panel;
 import jfix.zk.Refreshable;
@@ -26,16 +27,19 @@ public class FlatDesktop extends Row implements Refreshable {
 
 	private ObjectTable table;
 	private Panel contentPanel;
-	
+	private NodeRefreshState refreshState;
+
 	public FlatDesktop() {
 		table = new FlatTable();
 		contentPanel = new Panel(table);
+		refreshState = new NodeRefreshState();
 		appendChild(contentPanel);
-		refresh();
 	}
-	
+
 	public void refresh() {
-		table.refresh();
-		contentPanel.setTitle(JeaseSession.getContainer().getPath());
+		if (refreshState.isStale()) {
+			table.refresh();
+			contentPanel.setTitle(JeaseSession.getContainer().getPath());
+		}
 	}
 }

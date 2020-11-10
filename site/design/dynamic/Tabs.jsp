@@ -1,8 +1,8 @@
-<%@page import="jease.cmf.domain.*,jease.cmf.service.*,jease.cms.domain.*"%>
+<%@page import="jease.cmf.domain.*,jease.cms.domain.*,jease.site.service.*"%>
 <ul>
 	<%
 		String nodePath = ((Node) request.getAttribute("Node")).getPath();
-		for (Folder folder : ((Folder) Nodes.getRoot()).getVisibleChildren(Folder.class)) {
+		for (Folder folder : Navigations.getTabs()) {
 			String folderPath = folder.getPath();
 			boolean current = nodePath.startsWith(folderPath + "/");
 	%>

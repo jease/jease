@@ -17,6 +17,7 @@
 package jease.cmf.web.node.tree;
 
 import jease.cmf.web.*;
+import jease.cmf.web.node.*;
 import jease.cmf.web.node.tree.container.*;
 import jease.cmf.web.node.tree.navigation.*;
 import jfix.zk.*;
@@ -25,19 +26,20 @@ import org.zkoss.zk.ui.event.*;
 
 public class TreeDesktop extends Row implements Refreshable {
 
-	public static String NAVIGATION_WIDTH = "250px";
+	public static String NAVIGATION_WIDTH = "275px";
 
 	private Panel navigationPanel;
 	private Panel containerPanel;
 	private NavigationTree navigationTree;
 	private ContainerTable containerTable;
+	private NodeRefreshState refreshState;
 
 	public TreeDesktop() {
 		initNavigationTree();
 		initContainerTable();
+		initRefreshState();
 		initPanels();
 		initStyle();
-		refresh();
 	}
 
 	private void initNavigationTree() {
@@ -49,6 +51,7 @@ public class TreeDesktop extends Row implements Refreshable {
 		});
 		navigationTree.addChangeListener(new ActionListener() {
 			public void actionPerformed(Event event) {
+				refreshState.reset();
 				refresh();
 			}
 		});
@@ -58,9 +61,14 @@ public class TreeDesktop extends Row implements Refreshable {
 		containerTable = new ContainerTable();
 		containerTable.addChangeListener(new ActionListener() {
 			public void actionPerformed(Event event) {
+				refreshState.reset();
 				refresh();
 			}
 		});
+	}
+
+	private void initRefreshState() {
+		refreshState = new NodeRefreshState();
 	}
 
 	private void initPanels() {
@@ -76,10 +84,11 @@ public class TreeDesktop extends Row implements Refreshable {
 	}
 
 	public void refresh() {
-		containerTable.refresh();
-		navigationTree.refresh();
-		containerPanel.setTitle(JeaseSession.getContainer().getPath());
-		navigationPanel.setTitle(JeaseSession.getContainer().getTitle());
+		if (refreshState.isStale()) {
+			containerTable.refresh();
+			navigationTree.refresh();
+			containerPanel.setTitle(JeaseSession.getContainer().getPath());
+			navigationPanel.setTitle(JeaseSession.getContainer().getTitle());
+		}
 	}
-
 }

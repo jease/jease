@@ -16,22 +16,20 @@
 */
 package jease.cmf.web.node.flat;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import jease.cmf.domain.Node;
-import jease.cmf.web.JeaseSession;
-import jease.cmf.web.i18n.Strings;
-import jease.cmf.web.node.NodeTableModel;
-import jfix.functor.Procedure;
-import jfix.zk.ObjectTableModel;
+import jease.cmf.domain.*;
+import jease.cmf.web.i18n.*;
+import jease.cmf.web.node.*;
+import jfix.functor.*;
+import jfix.zk.*;
 
 public class FlatTableModel extends ObjectTableModel<Node> {
 
 	private NodeTableModel nodeTableModel;
 
-	public FlatTableModel() {
-		nodeTableModel = JeaseSession.getConfig().newTableModel();
+	public FlatTableModel(NodeTableModel nodeTableModel) {
+		this.nodeTableModel = nodeTableModel;
 	}
 
 	public Node newObject() {
@@ -45,7 +43,7 @@ public class FlatTableModel extends ObjectTableModel<Node> {
 				nodes.add(node);
 			}
 		};
-		JeaseSession.getContainer().traverse(addNode);
+		nodeTableModel.getContainer().traverse(addNode);
 		return nodes;
 	}
 

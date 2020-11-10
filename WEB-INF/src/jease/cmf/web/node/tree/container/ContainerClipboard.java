@@ -22,11 +22,18 @@ public class ContainerClipboard extends Listbox {
 
 	public ContainerClipboard() {
 		setWidth("100%");
+		setNullable(false);
 		setRows(1);
+		clear();
 	}
-	
+
 	public void clear() {
-		setValues(new Object[]{});
+		setValues(new Object[] { null });
 	}
-	
+
+	public void clip(Object object) {
+		setValues(new Object[] { object });
+		renderAll();
+		getItemAtIndex(0).setDroppable(null);
+	}
 }

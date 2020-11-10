@@ -54,9 +54,7 @@ public class FileEditor extends ContentEditor<File> {
 	}
 
 	public void validate() {
-		if (file.isEmpty()) {
-			addError(Strings.File_is_required);
-		}
+		validate(file.isEmpty(), Strings.File_is_required);
 	}
 
 	protected void uploadPerformed() {

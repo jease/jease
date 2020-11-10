@@ -1,8 +1,8 @@
 <%@page import="jease.cms.domain.*"%>
 <%
-	Content content = ((Content) request.getAttribute("Node"));
+	Content editorialContent = ((Content) request.getAttribute("Node"));
 %>
 Last modified on
-<%=jfix.util.Dates.YYYY_MM_DD.format(content.getLastModified())%>
+<%=jfix.util.Dates.YYYY_MM_DD.format(editorialContent.getLastModified())%>
 by
-<%=content.getEditor().getName()%>
+<%=editorialContent.getEditor().getName()%>

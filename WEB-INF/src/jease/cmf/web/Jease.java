@@ -69,8 +69,7 @@ public class Jease extends Div implements Refreshable {
 	}
 
 	public void refresh() {
-		treeDesktop.refresh();
-		flatDesktop.refresh();
+		((Refreshable) desktopArea.getFirstChild()).refresh();
 	}
 
 	public void addUploadListener(ActionListener actionListener) {

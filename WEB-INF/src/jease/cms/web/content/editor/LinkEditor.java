@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.web.content.editor;
 
 import jease.cms.domain.Link;
@@ -55,8 +55,6 @@ public class LinkEditor extends ContentEditor<Link> {
 	}
 
 	public void validate() {
-		if (url.isEmpty()) {
-			addError(Strings.Url_is_required);
-		}
+		validate(url.isEmpty(), Strings.Url_is_required);
 	}
 }

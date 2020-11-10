@@ -18,11 +18,7 @@ package jease.cms.web.content.editor;
 
 import jease.cms.domain.News;
 import jease.cms.web.i18n.Strings;
-import jfix.zk.ActionListener;
-import jfix.zk.Checkbox;
-import jfix.zk.Column;
-import jfix.zk.RichTextarea;
-import jfix.zk.Textarea;
+import jfix.zk.*;
 
 import org.zkoss.zk.ui.event.Event;
 
@@ -31,7 +27,8 @@ public class NewsEditor extends ContentEditor<News> {
 	Textarea teaser = new Textarea();
 	RichTextarea story = new RichTextarea();
 	Checkbox emptyTeaser = new Checkbox(Strings.Empty_Teaser);
-
+	Datefield date = new Datefield();
+	
 	public NewsEditor() {
 		emptyTeaser.addCheckListener(new ActionListener() {
 			public void actionPerformed(Event event) {
@@ -43,23 +40,24 @@ public class NewsEditor extends ContentEditor<News> {
 	public void init() {
 		add(Strings.Teaser, new Column(teaser, emptyTeaser));
 		add(Strings.Story, story);
+		add(Strings.Date, date);
 	}
 
 	public void load() {
 		teaser.setText(getNode().getTeaser());
 		story.setText(getNode().getStory());
+		date.setValue(getNode().getDate());
 		emptyTeaserChecked(teaser.isEmpty());
 	}
 
 	public void save() {
 		getNode().setTeaser(teaser.getText());
 		getNode().setStory(story.getText());
+		getNode().setDate(date.getDate());
 	}
 
 	public void validate() {
-		if (story.isEmpty()) {
-			addError(Strings.Story_is_required);
-		}
+		validate(story.isEmpty(), Strings.Story_is_required);
 	}
 
 	private void emptyTeaserChecked(boolean empty) {

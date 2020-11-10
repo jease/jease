@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node;
 
 import jease.cmf.domain.Node;
@@ -52,9 +52,7 @@ public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 
 	protected void doValidate() throws Exception {
 		if (getNode() != Nodes.getRoot()) {
-			if (id.isEmpty()) {
-				addError(Strings.Id_is_required);
-			}
+			validate(id.isEmpty(), Strings.Id_is_required);
 			try {
 				Node parent = getNode().getParent();
 				if (parent == null) {

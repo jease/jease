@@ -16,21 +16,16 @@
  */
 package jease.cmf.web.node.tree.container;
 
-import jease.cmf.domain.Node;
-import jease.cmf.domain.NodeException;
-import jease.cmf.service.Nodes;
-import jease.cmf.web.JeaseSession;
-import jease.cmf.web.node.NodeTable;
-import jfix.util.Arrays;
+import jease.cmf.domain.*;
+import jease.cmf.service.*;
+import jease.cmf.web.*;
+import jease.cmf.web.node.*;
+import jfix.util.*;
 import jfix.zk.*;
 
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.DropEvent;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.ListitemRenderer;
-import org.zkoss.zul.Treeitem;
-import org.zkoss.zul.Treerow;
+import org.zkoss.zk.ui.*;
+import org.zkoss.zk.ui.event.*;
+import org.zkoss.zul.*;
 
 public class ContainerTable extends NodeTable {
 
@@ -40,11 +35,10 @@ public class ContainerTable extends NodeTable {
 		initTableModel();
 		initItemRenderer();
 		initClipboard();
-		initNodeConstructor();
 	}
 
 	private void initTableModel() {
-		init(new ContainerTableModel());
+		init(new ContainerTableModel(JeaseSession.getConfig().newTableModel()));
 	}
 
 	private void initItemRenderer() {
@@ -76,18 +70,23 @@ public class ContainerTable extends NodeTable {
 			target.getParent().insertBefore(dragged, target);
 			if (!targetIsNodeContainer) {
 				// Item is dragged onto clipboard, so we disable further
-				// dropping,
-				// because we want only one item in clipboard.
+				// dropping, because we want only one item in clipboard.
 				((Listitem) dragged).setDroppable(null);
 			}
 		}
 
-		if (dragged instanceof Treerow && targetIsNodeContainer) {
-			Treeitem treeitem = (Treeitem) ((Treerow) dragged).getParent();
-			Listitem listitem = new Listitem("");
-			listitem.setValue(treeitem.getValue());
-			dragged.getParent().removeChild(dragged);
-			target.getParent().insertBefore(listitem, target);
+		if (dragged instanceof Treerow) {
+			if (targetIsNodeContainer) {
+				Treeitem treeitem = (Treeitem) ((Treerow) dragged).getParent();
+				Listitem listitem = new Listitem("");
+				listitem.setValue(treeitem.getValue());
+				dragged.getParent().removeChild(dragged);
+				target.getParent().insertBefore(listitem, target);
+			} else {
+				Treeitem treeitem = (Treeitem) ((Treerow) dragged).getParent();
+				clipboard.clip(treeitem.getValue());
+				dragged.getParent().removeChild(dragged);
+			}
 		}
 
 		if (targetIsNodeContainer) {
@@ -96,8 +95,9 @@ public class ContainerTable extends NodeTable {
 						getListbox().getValues(), Node.class));
 			} catch (NodeException e) {
 				Modal.error(e.getMessage());
+			} finally {
+				fireChangeEvent();
 			}
-			fireChangeEvent();
 		}
 	}
 

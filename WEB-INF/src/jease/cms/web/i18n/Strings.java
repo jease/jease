@@ -23,14 +23,16 @@ public class Strings {
 	static {
 		I18N.init(Strings.class);
 	}
-
+	
 	public static String Administrator;
 	public static String Content;
+	public static String Content_is_not_deletable;
+	public static String Content_is_required;
+	public static String Date;
 	public static String Editor;
 	public static String Empty_Teaser;
 	public static String File;
 	public static String File_is_required;
-	public static String Folder_is_referenced_by_User;
 	public static String Id;
 	public static String Image_is_required;
 	public static String Jease;

@@ -13,33 +13,20 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.web.content;
 
-import jease.cmf.domain.Node;
-import jease.cmf.web.JeaseConfig;
-import jease.cmf.web.node.NodeEditor;
-import jease.cmf.web.node.NodeTableModel;
-import jease.cms.domain.File;
-import jease.cms.domain.Folder;
-import jease.cms.domain.Image;
-import jease.cms.domain.Link;
-import jease.cms.domain.News;
-import jease.cms.domain.Text;
-import jease.cms.domain.Topic;
-import jease.cms.web.content.editor.FileEditor;
-import jease.cms.web.content.editor.FolderEditor;
-import jease.cms.web.content.editor.ImageEditor;
-import jease.cms.web.content.editor.LinkEditor;
-import jease.cms.web.content.editor.NewsEditor;
-import jease.cms.web.content.editor.TextEditor;
-import jease.cms.web.content.editor.TopicEditor;
+import jease.cmf.domain.*;
+import jease.cmf.web.*;
+import jease.cmf.web.node.*;
+import jease.cms.domain.*;
+import jease.cms.web.content.editor.*;
 
 public class Configuration extends JeaseConfig {
 
 	public Node[] newNodes() {
 		return new Node[] { new Text(), new News(), new Folder(), new Image(),
-				new File(), new Link(), new Topic() };
+				new File(), new Link(), new Topic(), new Reference() };
 	}
 
 	public NodeEditor newEditor(Node node) {
@@ -63,6 +50,9 @@ public class Configuration extends JeaseConfig {
 		}
 		if (node instanceof Topic) {
 			return new TopicEditor();
+		}
+		if (node instanceof Reference) {
+			return new ReferenceEditor();
 		}
 		return null;
 	}

@@ -16,10 +16,7 @@
  */
 package jease.cms.web.content.editor;
 
-import jease.cms.domain.Folder;
-import jease.cms.service.*;
-import jease.cms.web.i18n.*;
-import jfix.zk.*;
+import jease.cms.domain.*;
 
 public class FolderEditor extends ContentEditor<Folder> {
 
@@ -30,14 +27,6 @@ public class FolderEditor extends ContentEditor<Folder> {
 	}
 
 	public void save() {
-	}
-
-	public void delete() {
-		if (Users.isRoot(getObject())) {
-			Modal.error(Strings.Folder_is_referenced_by_User);
-		} else {
-			super.delete();
-		}
 	}
 
 	public void validate() {

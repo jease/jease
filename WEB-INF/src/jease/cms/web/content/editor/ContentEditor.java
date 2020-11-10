@@ -13,18 +13,18 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.web.content.editor;
 
-import java.util.Date;
+import java.util.*;
 
-import jease.cmf.service.Nodes;
-import jease.cmf.web.JeaseSession;
-import jease.cmf.web.node.NodeEditor;
-import jease.cms.domain.Content;
-import jease.cms.domain.User;
-import jease.cms.web.i18n.Strings;
-import jfix.zk.Textfield;
+import jease.cmf.service.*;
+import jease.cmf.web.*;
+import jease.cmf.web.node.*;
+import jease.cms.domain.*;
+import jease.cms.service.*;
+import jease.cms.web.i18n.*;
+import jfix.zk.*;
 
 public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
@@ -53,10 +53,15 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	protected void doValidate() throws Exception {
 		super.doValidate();
-		if (title.isEmpty()) {
-			addError(Strings.Title_is_required);
-		}
+		validate(title.isEmpty(), Strings.Title_is_required);
 		validate();
 	}
 
+	protected void doDelete() throws Exception {
+		if (Contents.isDeletable(getObject())) {
+			super.doDelete();
+		} else {
+			Modal.error(Strings.Content_is_not_deletable);
+		}
+	}
 }

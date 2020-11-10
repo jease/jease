@@ -13,37 +13,43 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node;
 
-import jease.cmf.domain.Node;
-import jease.cmf.web.JeaseSession;
-import jease.cmf.web.node.constructor.NodeConstructor;
+import jease.cmf.domain.*;
+import jease.cmf.web.*;
+import jease.cmf.web.node.constructor.*;
 import jfix.zk.*;
 
 import org.zkoss.zk.ui.*;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.*;
 
 public class NodeTable extends ObjectTable {
 
 	protected NodeConstructor nodeConstructor;
-	
+
 	public void init(ObjectTableModel tableModel, Component editor) {
 		super.init(tableModel, editor);
 		getListbox().setFixedLayout(true);
 	}
-	
+
+	public void refresh() {
+		if (nodeConstructor == null) {
+			initNodeConstructor();
+		}
+		nodeConstructor.refresh();
+		super.refresh();
+	}
+
 	protected void initNodeConstructor() {
 		nodeConstructor = new NodeConstructor();
 		getCreateButton().setVisible(true);
 		getCreateButton().getParent().insertBefore(nodeConstructor,
 				getCreateButton());
 	}
-	
+
 	protected void onSelect(Object obj) {
-		if(obj == null) {
+		if (obj == null) {
 			obj = nodeConstructor.getSelectedNode();
 		}
 		if (obj instanceof Node) {
@@ -58,7 +64,7 @@ public class NodeTable extends ObjectTable {
 			super.onSelect(obj);
 		}
 	}
-	
+
 	public void addChangeListener(final ActionListener actionListener) {
 		addEventListener(Events.ON_CHANGE, new EventListener() {
 			public void onEvent(Event e) throws Exception {
@@ -69,13 +75,5 @@ public class NodeTable extends ObjectTable {
 
 	protected void fireChangeEvent() {
 		Events.sendEvent(new Event(Events.ON_CHANGE, this));
-		refresh();
-	}
-
-	public void refresh() {
-		super.refresh();
-		if (nodeConstructor != null) {
-			nodeConstructor.refresh();
-		}
 	}
 }

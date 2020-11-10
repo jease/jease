@@ -21,7 +21,6 @@ import java.util.*;
 import jease.cms.domain.*;
 import jfix.db4o.*;
 import jfix.functor.*;
-import jfix.util.Arrays;
 
 public class Users {
 
@@ -42,14 +41,4 @@ public class Users {
 		});
 	}
 
-	public static boolean isRoot(Folder folder) {
-		for (User user : Database.query(User.class)) {
-			for (Folder rootFolder : user.getRoots()) {
-				if (rootFolder == folder || Arrays.contains(rootFolder.getParents(), folder)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 }

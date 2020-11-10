@@ -342,6 +342,11 @@ form.searchform input.button {
 	margin: 0;
 }
 
+#rightbar p {
+	margin-bottom: 0px;
+	margin-top: 0px;	
+}
+
 /* Footer */
 
 #footer {

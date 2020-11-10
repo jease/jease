@@ -28,8 +28,6 @@ import org.zkoss.zul.*;
 
 public class NavigationTree extends Tree {
 
-	private long lastRefresh;
-
 	public NavigationTree() {
 		ActionListener dropListener = new ActionListener() {
 			public void actionPerformed(Event event) {
@@ -43,7 +41,7 @@ public class NavigationTree extends Tree {
 		};
 		setTreeitemRenderer(new NavigationTreeRenderer(dropListener));
 		addSelectListener(selectListener);
-		setModel(new NavigationTreeModel());
+		setModel(new NavigationTreeModel(JeaseSession.getRoots()));
 	}
 
 	public Object getSelectedValue() {
@@ -78,15 +76,8 @@ public class NavigationTree extends Tree {
 			Nodes.append(parentNode, draggedNode);
 		} catch (NodeException e) {
 			Modal.error(e.getMessage());
-		}
-		fireChangeEvent();
-	}
-
-	public void refresh() {
-		long lastChange = Nodes.queryLastChange();
-		if (lastRefresh < lastChange) {
-			lastRefresh = lastChange;
-			super.refresh();
+		} finally {
+			fireChangeEvent();
 		}
 	}
 }

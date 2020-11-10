@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><%= ((Node) request.getAttribute("Node")).getTitle() %></title>
+<title><%= request.getAttribute("Page.Title") %></title>
 <link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Path") %>site/design/static/screen.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Path") %>site/design/static/print.css" media="print" />
 </head>

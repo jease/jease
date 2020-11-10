@@ -16,17 +16,15 @@
 */
 package jease.cmf.web.node.tree.navigation;
 
-import jease.cmf.domain.Node;
-import jease.cmf.web.JeaseSession;
-import jfix.functor.Functors;
-import jfix.functor.Predicate;
+import jease.cmf.domain.*;
+import jfix.functor.*;
 
-import org.zkoss.zul.AbstractTreeModel;
+import org.zkoss.zul.*;
 
 public class NavigationTreeModel extends AbstractTreeModel {
 
-	public NavigationTreeModel() {
-		super(JeaseSession.getRoots());
+	public NavigationTreeModel(Node[] roots) {
+		super(roots);
 	}
 
 	public Object getChild(Object node, int idx) {

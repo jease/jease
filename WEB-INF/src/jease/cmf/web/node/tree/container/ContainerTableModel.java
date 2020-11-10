@@ -16,20 +16,18 @@
 */
 package jease.cmf.web.node.tree.container;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-import jease.cmf.domain.Node;
-import jease.cmf.web.JeaseSession;
-import jease.cmf.web.node.NodeTableModel;
-import jfix.zk.ObjectTableModel;
+import jease.cmf.domain.*;
+import jease.cmf.web.node.*;
+import jfix.zk.*;
 
 public class ContainerTableModel extends ObjectTableModel<Node> {
 
 	private NodeTableModel nodeTableModel;
 
-	public ContainerTableModel() {
-		nodeTableModel = JeaseSession.getConfig().newTableModel();
+	public ContainerTableModel(NodeTableModel nodeTableModel) {
+		this.nodeTableModel = nodeTableModel;
 	}
 
 	public Node newObject() {
@@ -37,7 +35,7 @@ public class ContainerTableModel extends ObjectTableModel<Node> {
 	}
 
 	public List<Node> getList() {
-		return Arrays.asList(JeaseSession.getContainer().getChildren());
+		return Arrays.asList(nodeTableModel.getContainer().getChildren());
 	}
 
 	public String[] getColumns() {

@@ -1,15 +1,12 @@
-<%@page import="jease.cmf.domain.*,jease.cms.domain.*"%>
+<%@page import="jease.cmf.domain.*,jease.cms.domain.*,jease.site.service.*"%>
 <%
-	Node node = (Node) request.getAttribute("Node");
+	Node navigationNode = (Node) request.getAttribute("Node");
 %>
-<h1><%=node.getParent().getTitle()%></h1>
+<h1><%=navigationNode.getParent().getTitle()%></h1>
 <ul>
 	<%
-		for (Content content : ((Folder) node.getParent()).getVisibleChildren(Content.class)) {
-			if (content instanceof News) {
-				continue;
-			}
-			if (content instanceof Topic) {
+		for (Content content : Navigations.getItems((Folder) navigationNode.getParent())) {
+		if (content instanceof Topic) {
 	%>
 </ul>
 <h1><%=content.getTitle()%></h1>
@@ -17,8 +14,8 @@
 	<%
 		} else {
 	%>
-	<li<%= content == node ? " class=\"current\"" : "" %>>
-	   <a href="<%=content.getPath()%>" ><%=content.getTitle()%><%=content.isContainer() ? "..." : ""%></a>
+	<li <%=content == navigationNode ? " class=\"current\"" : ""%>>
+	<a href="<%=content.getPath()%>"><%=content.getTitle()%><%=content.isContainer() ? "..." : ""%></a>
 	</li>
 	<%
 		}

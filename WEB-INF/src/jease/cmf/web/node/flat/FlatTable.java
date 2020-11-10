@@ -13,16 +13,16 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node.flat;
 
-import jease.cmf.web.node.NodeTable;
+import jease.cmf.web.*;
+import jease.cmf.web.node.*;
 
 public class FlatTable extends NodeTable {
 
 	public FlatTable() {
-		init(new FlatTableModel());
-		initNodeConstructor();
+		init(new FlatTableModel(JeaseSession.getConfig().newTableModel()));
 	}
 
 }

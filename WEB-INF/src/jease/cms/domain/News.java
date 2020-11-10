@@ -13,13 +13,18 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.domain;
+
+import java.util.*;
+
+import jfix.util.*;
 
 public class News extends Content {
 
 	private String teaser;
 	private String story;
+	private Date date;
 
 	public News() {
 	}
@@ -40,9 +45,19 @@ public class News extends Content {
 		this.story = story;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(getTeaser()).append("\n")
-				.append(getStory());
+		return super.getFulltext().append("\n").append(getTeaser())
+				.append("\n").append(getStory()).append("\n").append(
+						getDate() != null ? Dates.YYYY_MM_DD.format(getDate())
+								: "");
 	}
 
 	public long getSize() {
@@ -53,6 +68,7 @@ public class News extends Content {
 		News news = (News) super.copy();
 		news.setTeaser(getTeaser());
 		news.setStory(getStory());
+		news.setDate(getDate());
 		return news;
 	}
 }
