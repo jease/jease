@@ -20,6 +20,9 @@ import java.util.Date;
 
 import jfix.util.Dates;
 
+/**
+ * News-Object which consists of a teaser, a story and a publication date.
+ */
 public class News extends Content {
 
 	private String teaser;

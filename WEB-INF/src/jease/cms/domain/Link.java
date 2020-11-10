@@ -13,16 +13,19 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.domain;
 
+/**
+ * A Link-Object stores an url to another web-site.
+ */
 public class Link extends Content {
 
 	private String url;
 
 	public Link() {
 	}
-	
+
 	public void setUrl(String url) {
 		this.url = url;
 	}

@@ -28,6 +28,7 @@ public class Strings {
 	public static String Content;
 	public static String Content_is_not_deletable;
 	public static String Content_is_required;
+	public static String Content_is_not_valid;
 	public static String Date;
 	public static String Editor;
 	public static String Email;
@@ -35,7 +36,6 @@ public class Strings {
 	public static String File;
 	public static String File_is_required;
 	public static String Id;
-	public static String Image_is_required;
 	public static String Jease;
 	public static String Last_modified;
 	public static String Login;
@@ -49,6 +49,8 @@ public class Strings {
 	public static String Password_is_required;
 	public static String Password_Repeat;
 	public static String Passwords_do_not_match;
+	public static String Path;
+	public static String Path_is_required;
 	public static String Plaintext;
 	public static String Roots;
 	public static String Setup_Administrator;

@@ -13,13 +13,20 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.domain;
 
 import java.util.Date;
 
 import jease.cmf.domain.Node;
 
+/**
+ * Abstract base class for building up a Content-Management-System.
+ * 
+ * This class stores a title, the date and the user of the last modification and a
+ * flag which denotes if the content should be displayed in automatic generated
+ * lists when displayed in the public site.
+ */
 public abstract class Content extends Node {
 
 	private String title;
@@ -47,6 +54,10 @@ public abstract class Content extends Node {
 		this.visible = visible;
 	}
 
+	/**
+	 * If true, the content should be visible in automatically created lists
+	 * (e.g. navigations, search results).
+	 */
 	public boolean isVisible() {
 		return visible;
 	}
@@ -55,27 +66,61 @@ public abstract class Content extends Node {
 		this.editor = editor;
 	}
 
+	/**
+	 * Returns the user who was the last one who edited the content.
+	 */
 	public User getEditor() {
 		return editor;
 	}
 
+	/**
+	 * If true, the content-type is a container and can hold other nodes as
+	 * children.
+	 */
 	public boolean isContainer() {
 		return false;
 	}
 
+	/**
+	 * Returns the size of the content in bytes. Derived implementations should
+	 * add additional size information to super.getSize().
+	 */
 	public long getSize() {
 		return super.getSize() + getTitle().length();
 	}
 
+	/**
+	 * Returns a fulltext-representation of the content as StringBuilder, so
+	 * derived contents can append additional information directly to
+	 * super.getFulltext() without the need to create new strings.
+	 */
 	public StringBuilder getFulltext() {
 		return new StringBuilder().append(getId()).append("\n").append(
 				getTitle()).append("\n").append(getType());
 	}
 
+	/**
+	 * If true, the content should rendered as page (e.g. with surrounding
+	 * layout), otherwise the content is delivered directly.
+	 */
 	public boolean isPage() {
 		return true;
 	}
 
+	/**
+	 * If true, the content can perform serious operations with security risks
+	 * involved (e.g. access file-system, scripting), so only privileged users
+	 * (e.g. administrators) should be able to create them.
+	 */
+	public boolean isPrivileged() {
+		return false;
+	}
+
+	/**
+	 * Creates a controlled copy of the content. In derived implementations,
+	 * super.copy() should be called and then additional fields should be
+	 * copied. Elements of a container will copied automatically.
+	 */
 	public Content copy() {
 		Content content = (Content) super.copy();
 		content.setTitle(getTitle());

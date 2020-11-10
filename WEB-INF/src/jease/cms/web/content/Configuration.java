@@ -18,9 +18,12 @@ package jease.cms.web.content;
 
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseConfig;
+import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.NodeEditor;
 import jease.cmf.web.node.NodeTableModel;
 import jease.cms.domain.Content;
+import jease.cms.domain.User;
+import jease.cms.service.Contents;
 import jease.cms.web.content.editor.ContentEditor;
 import jfix.util.Reflections;
 
@@ -33,20 +36,21 @@ public class Configuration extends JeaseConfig {
 	 * Which type of nodes can be created by the user?
 	 */
 	public Node[] newNodes() {
-		return Reflections.find(Node.class, Content.class.getPackage());
+		Node[] nodes = Reflections.find(Node.class, Content.class.getPackage());
+		if (JeaseSession.get(User.class).isAdministrator()) {
+			return nodes;
+		} else {
+			return Contents.filterNotPrivileged(nodes);
+		}
 	}
 
 	/**
 	 * Which editor should be used to edit a given node?
 	 */
 	public NodeEditor newEditor(Node node) {
-		try {
-			String clazz = ContentEditor.class.getPackage().getName() + "."
-					+ node.getType() + "Editor";
-			return (NodeEditor) Class.forName(clazz).newInstance();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		String pckage = ContentEditor.class.getPackage().getName();
+		String clazz = String.format("%s.%sEditor", pckage, node.getType());
+		return (NodeEditor) Reflections.newInstance(clazz);
 	}
 
 	/**

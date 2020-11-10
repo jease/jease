@@ -16,6 +16,11 @@
  */
 package jease.cms.domain;
 
+/**
+ * A Folder contains an array of content-objects. A Folder defines a
+ * #getDefaultContent() which returns the first child of the Folder as default
+ * content which is used to render the Folder.
+ */
 public class Folder extends Content {
 
 	public Folder() {
@@ -29,6 +34,11 @@ public class Folder extends Content {
 		return false;
 	}
 
+	/**
+	 * Returns the content which should be used to render the folder. At the
+	 * moment the first child of the folder (regardless if visible or not) is
+	 * used.
+	 */
 	public Content getDefaultContent() {
 		for (Content child : getChildren(Content.class)) {
 			return child;

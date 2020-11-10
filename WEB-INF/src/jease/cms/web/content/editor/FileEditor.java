@@ -21,15 +21,16 @@ import jease.cms.domain.File;
 import jease.cms.web.i18n.Strings;
 import jfix.zk.ActionListener;
 import jfix.zk.Mediafield;
+import jfix.zk.Modal;
 
 import org.zkoss.zk.ui.event.Event;
 
-public class FileEditor extends ContentEditor<File> {
+public class FileEditor<E extends File> extends ContentEditor<E> {
 
 	Mediafield file = new Mediafield();
 
 	public FileEditor() {
-		file.setHeight("200px");
+		file.setHeight("350px");
 		file.addUploadListener(new ActionListener() {
 			public void actionPerformed(Event event) {
 				if (file.getMedia() != null) {
@@ -58,12 +59,18 @@ public class FileEditor extends ContentEditor<File> {
 	}
 
 	protected void uploadPerformed() {
-		String filename = file.getName();
-		if (id.isEmpty()) {
-			id.setText(Filenames.asId(filename));
-		}
-		if (title.isEmpty()) {
-			title.setText(Filenames.asTitle(filename));
+		if (getObject().isValidContentType(file.getContentType())) {
+			String filename = file.getName();
+			if (id.isEmpty()) {
+				id.setText(Filenames.asId(filename));
+			}
+			if (title.isEmpty()) {
+				title.setText(Filenames.asTitle(filename));
+			}
+		} else {
+			Modal.error(Strings.Content_is_not_valid);
+			file.setMedia(null);
+			refresh();
 		}
 	}
 

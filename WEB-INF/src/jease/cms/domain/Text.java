@@ -13,17 +13,22 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.domain;
 
+/**
+ * Text-Content can be edited as HTML (via a WYSIWYG-Editor) or as plain text
+ * (via a simple Textarea). The object remembers which kind of editing mode was
+ * used in the plain attribute, so the appropriate editor can be used later on.
+ */
 public class Text extends Content {
 
 	private String content;
 	private boolean plain;
-	
+
 	public Text() {
 	}
-	
+
 	public void setContent(String content) {
 		this.content = content;
 	}
@@ -43,11 +48,11 @@ public class Text extends Content {
 	public StringBuilder getFulltext() {
 		return super.getFulltext().append("\n").append(getContent());
 	}
-	
+
 	public long getSize() {
 		return super.getSize() + getContent().length();
 	}
-		
+
 	public Text copy() {
 		Text text = (Text) super.copy();
 		text.setContent(getContent());

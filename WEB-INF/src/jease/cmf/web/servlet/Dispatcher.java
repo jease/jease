@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.servlet;
 
 import java.io.IOException;
@@ -28,6 +28,10 @@ import jease.cmf.service.Nodes;
 
 public class Dispatcher {
 
+	/**
+	 * Retrieves Node by path (URI without context path of web-application) and
+	 * put it into request-attribute. Then forward request to given dispatcher.
+	 */
 	public static void forward(HttpServletRequest request,
 			HttpServletResponse response, String dispatcher)
 			throws NodeException, IOException, ServletException {
@@ -37,6 +41,7 @@ public class Dispatcher {
 		if (node == null) {
 			throw new NodeException();
 		}
+		// Redirect if trailing slash is missing for containers.
 		if (node.isContainer() && !uri.endsWith("/")) {
 			String queryString = request.getQueryString() != null ? "?"
 					+ request.getQueryString() : "";

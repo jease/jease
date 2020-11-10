@@ -13,14 +13,24 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.domain;
 
+/**
+ * Derives from File, but only images are allowed as storeable content-types.
+ */
 public class Image extends File {
 
 	public Image() {
 	}
-	
+
+	/**
+	 * Only accept images as valid content types.
+	 */
+	public boolean isValidContentType(String contentType) {
+		return contentType.startsWith("image");
+	}
+
 	public Image copy() {
 		return (Image) super.copy();
 	}

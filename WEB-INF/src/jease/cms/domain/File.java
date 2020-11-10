@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.domain;
 
 import java.io.IOException;
@@ -22,6 +22,11 @@ import jfix.db4o.Blob;
 
 import org.apache.commons.io.FileUtils;
 
+/**
+ * A File stores all kinds of binary content as blob in the file-system.
+ * Additionally the content-type is stored, so the Id of the File doesn't need
+ * to reflect the stored content.
+ */
 public class File extends Content {
 
 	private String contentType;
@@ -38,6 +43,15 @@ public class File extends Content {
 		return contentType;
 	}
 
+	/**
+	 * Returns true if it is valid to store given content type in object. File
+	 * accepts all content types, derived implementations may limit the set of
+	 * valid content types.
+	 */
+	public boolean isValidContentType(String contentType) {
+		return true;
+	}
+
 	public java.io.File getFile() {
 		return blob.getFile();
 	}
@@ -45,9 +59,10 @@ public class File extends Content {
 	public boolean isPage() {
 		return false;
 	}
-	
+
 	public long getSize() {
-		return super.getSize() + getContentType().length() + blob.getFile().length();
+		return super.getSize() + getContentType().length()
+				+ blob.getFile().length();
 	}
 
 	public File copy() {

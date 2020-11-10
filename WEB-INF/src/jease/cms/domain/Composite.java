@@ -19,6 +19,12 @@ package jease.cms.domain;
 import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
 
+/**
+ * A Composite is a container, which doesn't allow other containers as children.
+ * This way a Composite can be used to build complex pages out of several
+ * sub-content-nodes stored within the Composite. Per default a composite is a
+ * good starting point to build image gallerys or download folders.
+ */
 public class Composite extends Content {
 
 	public Composite() {
@@ -27,11 +33,14 @@ public class Composite extends Content {
 	public boolean isContainer() {
 		return true;
 	}
-	
+
 	public Composite copy() {
 		return (Composite) super.copy();
 	}
 
+	/**
+	 * Composite doesn't allow any containers as sub-nodes.
+	 */
 	protected void validateNesting(Node potentialChild, String potentialChildId)
 			throws NodeException {
 		super.validateNesting(potentialChild, potentialChildId);

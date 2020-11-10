@@ -16,12 +16,36 @@
  */
 package jease.cmf.service;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.AndFileFilter;
+import org.apache.commons.io.filefilter.HiddenFileFilter;
+import org.apache.commons.io.filefilter.NameFileFilter;
+import org.apache.commons.io.filefilter.NotFileFilter;
+
+import jfix.functor.Function;
+import jfix.functor.Functors;
 import jfix.util.Urls;
 
 /**
- * Service methods to ease the handling of filenames.
+ * Service methods to ease the handling of path- and filenames.
  */
 public class Filenames {
+
+	/**
+	 * Extracts the filename from a given pathname.
+	 */
+	public static String asFilename(String pathname) {
+		if (pathname != null) {
+			return new File(pathname).getName();
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Converts filename into id by replacing spaces with underscores.
@@ -47,5 +71,29 @@ public class Filenames {
 	 */
 	public static String asContentType(String filename) {
 		return Urls.guessContentTypeFromName(filename);
+	}
+
+	/**
+	 * Returns a recursive list of absolute pathnames for all visible files
+	 * contained in given directory. All ressources from a WEB-INF-directory
+	 * will be excluded.
+	 */
+	public static List<String> getPathnames(String directory) {
+		File file = new java.io.File(directory);
+		if (!file.exists()) {
+			return new ArrayList<String>();
+		}
+		if (!file.isDirectory()) {
+			file = file.getParentFile();
+		}
+		Collection files = FileUtils.listFiles(file, HiddenFileFilter.VISIBLE,
+				new AndFileFilter(new NotFileFilter(new NameFileFilter(
+						"WEB-INF")), HiddenFileFilter.VISIBLE));
+		return Functors.transform(files, new Function<java.io.File, String>() {
+			public String evaluate(java.io.File file) {
+				return file.getAbsolutePath();
+			}
+		});
+
 	}
 }

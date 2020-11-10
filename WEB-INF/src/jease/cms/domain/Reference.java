@@ -13,16 +13,21 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.domain;
 
+/**
+ * A reference is a symbolic link to another content-object. A reference can be
+ * used to mirror the same content at different places (think of identical news
+ * on frontpage and some subfolders).
+ */
 public class Reference extends Content {
 
 	private Content content;
-	
+
 	public Reference() {
 	}
-	
+
 	public Content getContent() {
 		return content;
 	}
@@ -32,12 +37,12 @@ public class Reference extends Content {
 	}
 
 	public boolean isPage() {
-		if(content != null) {
+		if (content != null) {
 			return content.isPage();
 		}
 		return true;
 	}
-	
+
 	public Reference copy() {
 		Reference reference = (Reference) super.copy();
 		reference.setContent(getContent());

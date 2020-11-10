@@ -24,6 +24,14 @@ import jfix.functor.Predicate;
 import jfix.functor.Procedure;
 import jfix.functor.Supplier;
 
+/**
+ * Static utility to ease the persistence-handling of Nodes.
+ * 
+ * Each Jease-Repository has one special Node called "root". The root is the
+ * only Node in a repository which doesn't have a parent node. All Nodes which
+ * are not the root and don't have a parent, are deleted when a persistence
+ * operation is performed.
+ */
 public class Nodes {
 
 	private static Node root = Database.queryUnique(Node.class,
@@ -39,24 +47,47 @@ public class Nodes {
 		}
 	};
 
+	/**
+	 * Sets the root-node for a repository. This method should only be called
+	 * once to initialize a repository.
+	 */
 	public static void setRoot(Node rootNode) {
 		root = rootNode;
 	}
 
+	/**
+	 * Returns the root-node of the repository. A root node is the only node in
+	 * a repository which doesn't have a parent.
+	 */
 	public static Node getRoot() {
 		return root;
 	}
 
+	/**
+	 * Returns the system time (milliseconds) of the last change in database.
+	 */
 	public static long queryLastChange() {
 		return Database.query(lastChange);
 	}
 
+	/**
+	 * Appends given child to given node and saves changes to database.
+	 * 
+	 * Please note: appending a child to a node automatically removes the child
+	 * from the former container.
+	 */
 	public static void append(Node node, Node child) throws NodeException {
 		node.validateChild(child, child.getId());
 		node.appendChild(child);
 		Nodes.save(node);
 	}
 
+	/**
+	 * Appends given children to given node and save changes to database.
+	 * 
+	 * Please note: appending a child to a node automatically removes the child
+	 * from the former container.
+	 */
 	public static void append(Node node, Node[] children) throws NodeException {
 		for (Node child : children) {
 			node.validateChild(child, child.getId());
@@ -65,6 +96,9 @@ public class Nodes {
 		Nodes.save(node);
 	}
 
+	/**
+	 * Saves all changes of a given node to database.
+	 */
 	public static void save(final Node node) {
 		Database.write(new Command() {
 			public void run() {
@@ -74,6 +108,9 @@ public class Nodes {
 		});
 	}
 
+	/**
+	 * Deletes given node from repository.
+	 */
 	public static void delete(final Node node) {
 		Database.write(new Command() {
 			public void run() {

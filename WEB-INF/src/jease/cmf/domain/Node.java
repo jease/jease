@@ -23,12 +23,21 @@ import java.util.List;
 import java.util.Set;
 
 import jfix.db4o.Persistent;
-import jfix.functor.Functors;
-import jfix.functor.Predicate;
 import jfix.functor.Procedure;
 import jfix.util.Arrays;
 import jfix.util.Urls;
 
+/**
+ * A Node is the fundamental base for building tree-like content repositories. A
+ * Node has an id, a reference to its parent node and contains an array of
+ * children. The id must be unique between all the children of a node.
+ * 
+ * The Node-Class contains a transient static set of changed nodes which is used
+ * to store references to all nodes which were changed during a reorganisation
+ * of the tree (e.g. appending a node to another parent). This way the
+ * persistence layer can perform updates to database very efficiently, because
+ * it needs only to iterate the changed nodes and save them.
+ */
 public class Node extends Persistent {
 
 	private transient static Set<Node> changedNodes = new HashSet();
@@ -36,18 +45,32 @@ public class Node extends Persistent {
 	private Node parent;
 	private Node[] children = new Node[] {};
 
+	/**
+	 * Returns the id of the node. If the id is null, an empty string is
+	 * returned.
+	 */
 	public String getId() {
 		return id != null ? id : "";
 	}
 
+	/**
+	 * Sets the id of the node. No checks are performed.
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Returns the parent of the node.
+	 */
 	public Node getParent() {
 		return parent;
 	}
 
+	/**
+	 * Sets given parent for node. Internally the call is forwarded to
+	 * #appendChild(Node).
+	 */
 	public void setParent(Node newParent) {
 		if (newParent == null) {
 			detachParent();
@@ -56,6 +79,9 @@ public class Node extends Persistent {
 		}
 	}
 
+	/**
+	 * Returns all parents of node ordered from root to parent of node.
+	 */
 	public Node[] getParents() {
 		List<Node> parents = new ArrayList();
 		Node parentNode = getParent();
@@ -67,10 +93,17 @@ public class Node extends Persistent {
 		return parents.toArray(new Node[] {});
 	}
 
+	/**
+	 * Returns all parents of node which are of given class type ordered from
+	 * root to parent of node.
+	 */
 	public <E extends Node> E[] getParents(Class<E> clazz) {
 		return Arrays.filter(getParents(), clazz);
 	}
 
+	/**
+	 * Returns true if node is a descendant of given parent.
+	 */
 	public boolean isDescendant(Node possibleParent) {
 		if (this == possibleParent) {
 			return true;
@@ -85,6 +118,9 @@ public class Node extends Persistent {
 		return false;
 	}
 
+	/**
+	 * Returns all descendant nodes by recursively traversing children.
+	 */
 	public Node[] getDescendants() {
 		final List<Node> nodes = new ArrayList();
 		traverse(new Procedure<Node>() {
@@ -95,18 +131,31 @@ public class Node extends Persistent {
 		return nodes.toArray(new Node[] {});
 	}
 
+	/**
+	 * Returns all descendant nodes of given class type by recursively
+	 * traversing children.
+	 */
 	public <E extends Node> E[] getDescendants(Class<E> clazz) {
 		return Arrays.filter(getDescendants(), clazz);
 	}
 
+	/**
+	 * Returns all children of the node.
+	 */
 	public Node[] getChildren() {
 		return children;
 	}
 
+	/**
+	 * Returns all children of given class type.
+	 */
 	public <E extends Node> E[] getChildren(Class<E> clazz) {
 		return Arrays.filter(getChildren(), clazz);
 	}
 
+	/**
+	 * Returns a child by given path.
+	 */
 	public Node getChild(String path) {
 		if (path == null) {
 			return null;
@@ -141,6 +190,10 @@ public class Node extends Persistent {
 		return node;
 	}
 
+	/**
+	 * Appends given child to node. This method automatically detaches the given
+	 * child before the child is attached to the new parent.
+	 */
 	public void appendChild(Node child) {
 		child.detachParent();
 		child.parent = this;
@@ -148,6 +201,10 @@ public class Node extends Persistent {
 		markChanged();
 	}
 
+	/**
+	 * Appens given children to node. This method automatically detaches all
+	 * children before each child is attached to the new parent.
+	 */
 	public void appendChildren(Node[] newChildren) {
 		Set<Node> newChildrenSet = Arrays.asSet(newChildren);
 		Set<Node> currentChildrenSet = Arrays.asSet(children);
@@ -172,6 +229,9 @@ public class Node extends Persistent {
 		}
 	}
 
+	/**
+	 * Detaches a node from node-tree by detaching parent and all children.
+	 */
 	public void detach() {
 		detachChildren();
 		detachParent();
@@ -192,18 +252,33 @@ public class Node extends Persistent {
 		markChanged();
 	}
 
+	/**
+	 * Returns type of node as string. Per default the type is the simple class
+	 * name.
+	 */
 	public String getType() {
 		return getClass().getSimpleName();
 	}
 
+	/**
+	 * Returns title of node. This method should be overriden by more specific
+	 * implementations.
+	 */
 	public String getTitle() {
 		return getId();
 	}
 
+	/**
+	 * Returns true if node accepts children.
+	 */
 	public boolean isContainer() {
 		return true;
 	}
 
+	/**
+	 * Returns the path for the node. The path is built from the root node to
+	 * the current node by joining the ids with slashes (/).
+	 */
 	public String getPath() {
 		if (getParent() == null) {
 			return "/" + getId();
@@ -217,10 +292,18 @@ public class Node extends Persistent {
 		return sb.toString();
 	}
 
+	/**
+	 * Returns the estimated size of the node in bytes.
+	 */
 	public long getSize() {
 		return getId().length();
 	}
 
+	/**
+	 * Creates a copy of the node. This method should be overriden by derived
+	 * classes by calling #super.copy() and then copying all class-specific
+	 * fields to copy.
+	 */
 	public Node copy() {
 		try {
 			Node node = getClass().newInstance();
@@ -234,19 +317,9 @@ public class Node extends Persistent {
 		}
 	}
 
-	public Node[] filterValidChildren(Node[] potentialChildren) {
-		return Functors.filter(potentialChildren, new Predicate<Node>() {
-			public boolean test(Node potentialChild) {
-				try {
-					validateChild(potentialChild, potentialChild.getId());
-					return true;
-				} catch (NodeException e) {
-					return false;
-				}
-			}
-		});
-	}
-
+	/**
+	 * Validates if the given child with given id can be appended to node.
+	 */
 	public void validateChild(Node potentialChild, String potentialChildId)
 			throws NodeException {
 		validateId(potentialChild, potentialChildId);
@@ -254,6 +327,9 @@ public class Node extends Persistent {
 		validateNesting(potentialChild, potentialChildId);
 	}
 
+	/**
+	 * Valididates if given id for given child is correct.
+	 */
 	protected void validateId(Node potentialChild, String potentialChildId)
 			throws NodeException {
 		if (potentialChildId != null && !Urls.isValid(potentialChildId)) {
@@ -261,6 +337,10 @@ public class Node extends Persistent {
 		}
 	}
 
+	/**
+	 * Validates if given child with given id is unique between children of a
+	 * node.
+	 */
 	protected void validateDuplicate(Node potentialChild,
 			String potentialChildId) throws NodeException {
 		for (Node actualChild : getChildren()) {
@@ -271,6 +351,10 @@ public class Node extends Persistent {
 		}
 	}
 
+	/**
+	 * Validates if given child with given id can be child of node. Use this
+	 * method in derived implementations to restrict the set of valid children.
+	 */
 	protected void validateNesting(Node potentialChild, String potentialChildId)
 			throws NodeException {
 		for (Node parentNode = this; parentNode != null; parentNode = parentNode
@@ -281,6 +365,9 @@ public class Node extends Persistent {
 		}
 	}
 
+	/**
+	 * Applies given procedure to node and recursively to all children.
+	 */
 	public void traverse(Procedure<Node> action) {
 		action.execute(this);
 		for (Node child : getChildren()) {
@@ -288,6 +375,9 @@ public class Node extends Persistent {
 		}
 	}
 
+	/**
+	 * Applies given procedure to all changed nodes.
+	 */
 	public void processChangedNodes(Procedure<Node> action) {
 		synchronized (changedNodes) {
 			for (Node node : changedNodes) {
@@ -297,6 +387,10 @@ public class Node extends Persistent {
 		}
 	}
 
+	/**
+	 * Marks the node as changed. Usually you don't have to call this method
+	 * directly.
+	 */
 	public void markChanged() {
 		synchronized (changedNodes) {
 			changedNodes.add(this);

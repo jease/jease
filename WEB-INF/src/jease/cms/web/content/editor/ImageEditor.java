@@ -16,19 +16,8 @@
 */
 package jease.cms.web.content.editor;
 
-import jease.cms.web.i18n.Strings;
-import jfix.zk.Modal;
+import jease.cms.domain.Image;
 
-public class ImageEditor extends FileEditor {
-
-	protected void uploadPerformed() {
-		if (!file.getContentType().startsWith("image")) {
-			Modal.error(Strings.Image_is_required);
-			file.setMedia(null);
-			refresh();
-		} else {
-			super.uploadPerformed();
-		}
-	}
+public class ImageEditor extends FileEditor<Image> {
 
 }

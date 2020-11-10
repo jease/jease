@@ -13,11 +13,17 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.domain;
 
 import jfix.db4o.Persistent;
 
+/**
+ * Users can create, update and delete content within the CMS. A user has one or
+ * more declared roots which are the folders which the user can access to
+ * manipulate content. Only administrators are allowed to create other users and
+ * can create privileged content-types.
+ */
 public class User extends Persistent {
 
 	private String name;
@@ -29,7 +35,7 @@ public class User extends Persistent {
 
 	public User() {
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -45,7 +51,7 @@ public class User extends Persistent {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
@@ -53,11 +59,15 @@ public class User extends Persistent {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public void setRoots(Folder[] roots) {
 		this.roots = roots;
 	}
 
+	/**
+	 * Returns all virtual "root"-folders which can be accessed by the user via
+	 * the CMS.
+	 */
 	public Folder[] getRoots() {
 		return roots;
 	}

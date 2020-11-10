@@ -13,18 +13,22 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.domain;
 
+/**
+ * Very simple content type which just consists of id and title. Useful to
+ * render headlines within a navigation.
+ */
 public class Topic extends Content {
 
 	public Topic() {
 	}
-	
+
 	public boolean isPage() {
 		return false;
 	}
-	
+
 	public Topic copy() {
 		return (Topic) super.copy();
 	}

@@ -7,8 +7,10 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Path") %>site/design/static/print.css" media="screen" />
 <% } %>
 
-<script type="text/javascript" src="http://gettopup.com/releases/latest/top_up-min.js"></script>
+<script type="text/javascript" src="<%=request.getAttribute("Page.Path") %>site/design/static/topup/javascripts/top_up-min.js"></script>
 <script type="text/javascript">
+	TopUp.images_path = "<%=request.getAttribute("Page.Path") %>site/design/static/topup/images/";
+	TopUp.players_path = "<%=request.getAttribute("Page.Path") %>site/design/static/topup/players/";
 	TopUp.addPresets({
 			".imagePopup": { type: "image", group: "gallery", overlayClose: 1 }, 
 			".iframePopup": { type: "iframe", width: 640, height: 400, overlayClose: 1 },

@@ -121,6 +121,14 @@ code {
 	border-left: 4px solid #4284B0;
 }
 
+pre {
+	margin: 10px 15px;
+	text-align: left;
+	display: block;
+	overflow: auto;
+	font: 500 1em/ 1.5em Verdana, Tahoma, Helvetica, sans-serif;
+}
+
 acronym {
 	cursor: help;
 	border-bottom: 1px solid #777;
@@ -470,4 +478,15 @@ form.searchform input.button {
 
 .gray {
 	color: #BFBFBF;
+}
+
+/* media classes */
+
+.media {
+	width: 380px;	
+}
+
+.mediaFlash {
+	width: 380px;
+	height: 285px;	
 }

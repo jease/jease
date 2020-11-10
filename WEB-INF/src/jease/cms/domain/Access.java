@@ -16,6 +16,13 @@
  */
 package jease.cms.domain;
 
+/**
+ * Access-Object which allows to protect containers with a stored combination
+ * of login and password.
+ * 
+ * Please note: the Access-Object itself doesn't enforce any security on its
+ * own, but relies on appropriate code in the public view (site).
+ */
 public class Access extends Content {
 
 	private String login;
