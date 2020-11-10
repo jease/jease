@@ -54,6 +54,7 @@ public class Strings {
 	public static String Path;
 	public static String Path_is_required;
 	public static String Plaintext;
+	public static String Revision;
 	public static String Roots;
 	public static String Setup_Administrator;
 	public static String Size;

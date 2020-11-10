@@ -24,24 +24,50 @@ import jease.cmf.web.node.NodeEditor;
 import jease.cms.domain.Content;
 import jease.cms.domain.User;
 import jease.cms.service.Contents;
+import jease.cms.service.Revisions;
 import jease.cms.web.i18n.Strings;
+import jfix.db4o.Blob;
+import jfix.zk.ActionListener;
 import jfix.zk.Button;
 import jfix.zk.Images;
+import jfix.zk.ItemRenderer;
 import jfix.zk.Modal;
+import jfix.zk.Selectfield;
 import jfix.zk.Textfield;
+
+import org.zkoss.zk.ui.event.Event;
 
 public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	private Date lastNodeModification;
 	private Button view = new Button(Strings.View, Images.Internet);
 	protected Textfield title = new Textfield();
+	protected Selectfield revisions = new Selectfield();
 
-	protected void doInit() throws Exception {
-		super.doInit();
+	public ContentEditor() {
 		view.setTarget("_blank");
 		getButtons().appendChild(view);
+		
+		revisions.setNullable(false);
+		revisions.setItemRenderer(new ItemRenderer() {
+			public String render(Object value) {
+				return String.format("%1$tF %1$tT", new Date(((Blob) value)
+						.getFile().lastModified()));
+			}
+		});
+		revisions.addSelectListener(new ActionListener() {
+			public void actionPerformed(Event event) {
+				peek(Revisions.checkout(getNode(), revisions.getSelectedIndex()));
+				lastNodeModification = null;
+			}
+		});		
+	}
+
+	protected void doInit() throws Exception {
+		add(Strings.Revision, revisions);
+		super.doInit();
 		add(Strings.Title, title);
-		init();
+		init();				
 	}
 
 	protected void doLoad() throws Exception {
@@ -50,6 +76,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		view.setHref(getViewUrl());
 		title.setText(getNode().getTitle());
 		lastNodeModification = getNode().getLastModified();
+		revisions.setValues(getNode().getRevisions());
 		load();
 	}
 
@@ -59,13 +86,19 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		getNode().setEditor(getSessionUser());
 		getNode().setLastModified(new Date());
 		save();
+		persist();
+	}
+
+	protected void persist() {
+		Revisions.checkin(getNode());
 		Nodes.save(getNode());
 	}
 
 	protected void doValidate() throws Exception {
 		super.doValidate();
 		validate(title.isEmpty(), Strings.Title_is_required);
-		validate(lastNodeModification != getNode().getLastModified(),
+		validate(lastNodeModification != null
+				&& lastNodeModification != getNode().getLastModified(),
 				Strings.Content_is_stale);
 		validate();
 	}

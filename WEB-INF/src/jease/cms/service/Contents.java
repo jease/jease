@@ -32,7 +32,8 @@ public class Contents {
 			}
 		}
 		for (Reference reference : Database.query(Reference.class)) {
-			if (reference.getContent().isDescendant(content)) {
+			if (reference.getContent() != null
+					&& reference.getContent().isDescendant(content)) {
 				return false;
 			}
 		}
@@ -81,7 +82,7 @@ public class Contents {
 			}
 		});
 	}
-	
+
 	/**
 	 * Returns all descendants for given nodes.
 	 */

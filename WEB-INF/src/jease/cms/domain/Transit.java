@@ -32,7 +32,7 @@ public class Transit extends Content {
 			try {
 				Files.createMissing(file);
 			} catch (RuntimeException e) {
-				// pass when create fails
+				return null;
 			}
 			return file;
 		} else {

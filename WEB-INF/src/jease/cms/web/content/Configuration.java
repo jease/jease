@@ -42,7 +42,7 @@ public class Configuration implements JeaseConfig {
 	 * </code>
 	 */
 	public Node[] newNodes() {
-		Node[] nodes = Reflections.find(Node.class, Content.class.getPackage());
+		Node[] nodes = Reflections.find(Content.class);
 		if (JeaseSession.get(User.class).isAdministrator()) {
 			return nodes;
 		} else {

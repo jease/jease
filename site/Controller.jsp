@@ -7,9 +7,9 @@
 	// in some templates on the fly (e.g. Folder, Reference, Composite).
 	request.setAttribute("Context", node);
 	
-	// Store RequestURI as Controller (Folder dispatches content via Controller)
-	request.setAttribute("Controller", request.getRequestURI());
-	
+	// Make Controller available (e.g. Folder dispatches content via Controller)
+	request.setAttribute("Controller", request.getAttribute("JEASE_SITE_CONTROLLER"));
+
 	// If an Access-Object is guarding the node, use it to force authorization.
 	Access access = Authorizations.check(node, request.getHeader("Authorization"));
 	if (access != null) {

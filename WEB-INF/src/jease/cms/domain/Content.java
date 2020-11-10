@@ -19,6 +19,8 @@ package jease.cms.domain;
 import java.util.Date;
 
 import jease.cmf.domain.Node;
+import jfix.db4o.Blob;
+import jfix.util.Arrays;
 
 /**
  * Abstract base class for building up a Content-Management-System.
@@ -26,6 +28,10 @@ import jease.cmf.domain.Node;
  * This class stores a title, the date and the user of the last modification and
  * a flag which denotes if the content should be displayed in automatic
  * generated lists when displayed in the public site.
+ * 
+ * In order to revision content, an array of Blobs is maintained where each Blob
+ * stores one revision of content. The newest revision is the first entry of
+ * array.
  */
 public abstract class Content extends Node {
 
@@ -33,6 +39,7 @@ public abstract class Content extends Node {
 	private Date lastModified;
 	private User editor;
 	private boolean visible;
+	private Blob[] revisions;
 
 	public String getTitle() {
 		return title;
@@ -74,6 +81,29 @@ public abstract class Content extends Node {
 	}
 
 	/**
+	 * Returns array of content revisions which are contained within Blobs.
+	 */
+	public Blob[] getRevisions() {
+		return revisions;
+	}
+
+	/**
+	 * Sets array of content revisions. The first element in the array should be
+	 * the newest revision.
+	 */
+	public void setRevisions(Blob[] revisions) {
+		this.revisions = revisions;
+	}
+
+	/**
+	 * Adds a content revision contained in given Blob in first position of
+	 * array, so newest revision is always first element in array.
+	 */
+	public void addRevision(Blob revision) {
+		revisions = Arrays.prepend(revisions, revision, Blob.class);
+	}
+
+	/**
 	 * If true, the content-type is a container and can hold other nodes as
 	 * children.
 	 */
@@ -95,8 +125,8 @@ public abstract class Content extends Node {
 	 * super.getFulltext() without the need to create new strings.
 	 */
 	public StringBuilder getFulltext() {
-		return new StringBuilder().append(getId()).append("\n").append(
-				getTitle()).append("\n").append(getType());
+		return new StringBuilder().append(getId()).append("\n")
+				.append(getTitle()).append("\n").append(getType());
 	}
 
 	/**
