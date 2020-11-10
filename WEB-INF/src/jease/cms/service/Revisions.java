@@ -19,6 +19,7 @@ package jease.cms.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import jease.Registry;
 import jease.cmf.service.Revisioner;
 import jease.cms.domain.Content;
 import jease.cms.domain.Version;
@@ -28,24 +29,37 @@ import jease.cms.domain.Version;
  * within an array (newest revision is first element of array), so overhead is
  * neglectable.
  * 
- * The minimum number of revisions to be kept is stored within COUNT (default:
- * -1 = unlimited, 0 = ignore).
+ * The minimum number of revisions to be kept is returned by {@link #getCount()}
+ * (default: -1 = unlimited, 0 = ignore).
  * 
- * The number of days for which revisions in the past should be kept is stored
- * in DAYS (default: -1 = unlimited, 0 = ignore).
+ * The number of days for which revisions in the past should be kept is returned
+ * by {@link #getDays()} (default: -1 = unlimited, 0 = ignore).
  */
 public class Revisions {
 
 	/**
 	 * Minimum count of revisions to be kept. -1 means unlimited.
 	 */
-	public static int COUNT = -1;
+	public static int getCount() {
+		try {
+			return Integer.parseInt(Registry.getParameter("JEASE_REVISION_COUNT"));
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+	}
 
 	/**
 	 * Number of days in the past for which revisions should be kept. -1 means
 	 * unlimited.
 	 */
-	public static int DAYS = -1;
+	public static int getDays() {
+		try {
+			return Integer.parseInt(Registry.getParameter("JEASE_REVISION_DAYS"));
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+
+	}
 
 	private final static Revisioner revisioner = new Revisioner(
 			Contents.getAvailableTypes());
@@ -62,7 +76,7 @@ public class Revisions {
 	 */
 	public static void checkin(String info, Content content) {
 		content.addRevision(new Version(info, revisioner.toBlob(content)));
-		purge(content, COUNT, DAYS);
+		purge(content, getCount(), getDays());
 	}
 
 	/**
@@ -92,7 +106,7 @@ public class Revisions {
 				revisions.add(version);
 			}
 		}
-		content.setRevisions(revisions.toArray(new Version[] {}));		
+		content.setRevisions(revisions.toArray(new Version[] {}));
 		return revisionsBefore - content.getRevisions().length;
 	}
 }

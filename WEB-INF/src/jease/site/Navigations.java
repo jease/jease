@@ -17,7 +17,10 @@
 package jease.site;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jease.cmf.domain.Node;
 import jease.cmf.service.Nodes;
@@ -61,7 +64,8 @@ public class Navigations {
 	}
 
 	/**
-	 * Returns all news-objects for a given container.
+	 * Returns all news-objects for a given container. If no news exist within
+	 * given container, news from parent container will be returned and so on.
 	 */
 	public static News[] getNews(Content container) {
 		List<News> news = new ArrayList();
@@ -71,6 +75,9 @@ public class Navigations {
 						: ((Reference) content).getDestination()));
 			}
 		}
+		if (news.isEmpty() && container.getParent() != null) {
+			return getNews((Content) container.getParent());
+		}
 		return news.toArray(new News[] {});
 	}
 
@@ -78,6 +85,10 @@ public class Navigations {
 	 * Checks if given content is news or a reference to news.
 	 */
 	public static boolean isNews(Content content) {
+		if (content.getParent() instanceof Folder
+				&& ((Folder) content.getParent()).getContent() == content) {
+			return false;
+		}
 		return content instanceof News
 				|| (content instanceof Reference && ((Reference) content)
 						.getDestination() instanceof News);
@@ -122,5 +133,39 @@ public class Navigations {
 	 */
 	public static String getBasePath(Node node) {
 		return node.isContainer() ? node.getPath() + "/" : node.getPath();
+	}
+
+	/**
+	 * Returns all News sorted by publication date which are visible by itself
+	 * or via a reference (Reference or Folder).
+	 */
+	public static News[] getSiteNews() {
+		Set<News> news = new HashSet();
+		for (Content content : Nodes.getRoot().getDescendants(Content.class)) {
+			if (content.isVisible()) {
+				News candidate = null;
+				if (content instanceof News) {
+					candidate = (News) content;
+				}
+				if (content instanceof Reference
+						&& ((Reference) content).getContent() instanceof News) {
+					candidate = (News) ((Reference) content).getContent();
+				}
+				if (content instanceof Folder
+						&& ((Folder) content).getContent() instanceof News) {
+					candidate = (News) ((Folder) content).getContent();
+				}
+				if (candidate != null && candidate.getDate() != null) {
+					news.add(candidate);
+				}
+			}
+		}
+		List<News> result = new ArrayList(news);
+		Collections.sort(result, new java.util.Comparator<News>() {
+			public int compare(News o1, News o2) {
+				return o2.getDate().compareTo(o1.getDate());
+			}
+		});
+		return result.toArray(new News[] {});
 	}
 }

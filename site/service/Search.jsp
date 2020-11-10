@@ -1,12 +1,13 @@
-<%@page import="java.util.*,jfix.util.*,jease.cms.domain.*,jease.site.*"%>
-<h1>Search results for &quot;<%=Regexps.stripTags(request.getParameter("query"))%>&quot;</h1>
+<%@page import="java.util.*,jfix.util.*,jease.cms.domain.*,jease.site.*,jease.site.i18n.*"%>
+<h1><%= Strings.Search_results_for %> &quot;<%=Regexps.stripTags(request.getParameter("query"))%>&quot;</h1>
 <%
 	List<Content> contents = Fulltexts.query(request.getParameter("query"));
 	if (!contents.isEmpty()) {
 		request.setAttribute("Pager.Scope", "search");
 		request.setAttribute("Pager.Contents", contents);
-		pageContext.include("/site/service/Pager.jsp");
+		request.setAttribute("Pager.Renderer", "/site/service/pager/Searchresult.jsp");		
+		pageContext.include("/site/service/pager/Pager.jsp");
 	} else {
 %>
-<p>No results.</p>
+<p><%= Strings.No_results %>.</p>
 <% } %>

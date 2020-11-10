@@ -48,6 +48,7 @@ dl {
 }
 
 dt {
+	color: #3e576d;
 	font-weight: bold;
 }
 
@@ -64,6 +65,7 @@ input,select,textarea {
 	font-size: 1em;
 	vertical-align: middle;
 	font-weight: normal;
+	border: 1px solid #a0a0a0;
 }
 
 p, pre {
@@ -335,4 +337,28 @@ h6 {
 
 #footer a {
 	color: #9ddeff;
+}
+
+.search-pager a {
+  border: 1px solid #ccc;
+  border-color: #ccc #aaa #aaa #ccc;
+  margin: 0 1px;
+  padding: 2px 6px;
+}
+
+.search-pager a:hover {
+	background-color: #5db2e9;
+	color: white;
+}
+
+.Discussion form {
+	padding: 10px;
+}
+
+.Discussion input[type=text], .Discussion textarea {
+	width: 100%;
+}
+
+.News div:first-child {
+	float: right;
 }

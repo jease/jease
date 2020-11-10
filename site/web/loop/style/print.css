@@ -1,0 +1,29 @@
+#header,#navigation,#news,#breadcrumb,#footer {
+	display: none;
+}
+
+body {
+	background: white;
+	background-image: none;
+	padding: 20px;
+}
+
+#main {
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+}
+
+#out-wrapper {
+	padding: 0px;
+	margin: 0px;
+	background-image: none;
+	width: 100%;
+}
+
+#wrapper {
+	padding: 0px;
+	margin: 0px;
+	background-image: none;
+	width: 100%;
+}

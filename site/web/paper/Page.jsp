@@ -13,6 +13,7 @@
   .twoColFixRtHdr #content { zoom: 1; }
 </style>
 <![endif]-->
+<%@include file="/site/service/Feeds.jsp" %>
 <%@include file="/site/service/Jquery.jsp"%>
 <%@include file="/site/service/Lightbox.jsp"%>
 <%@include file="/site/service/Prettify.jsp"%>

@@ -16,8 +16,10 @@
  */
 package jease.cms.web;
 
+import jease.cmf.domain.Node;
 import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
+import jease.cmf.web.node.NodeFilter;
 import jease.cms.domain.Content;
 import jease.cms.domain.User;
 import jease.cms.service.Authenticator;
@@ -71,16 +73,20 @@ public class Login extends LoginWindow {
 	private void initSession(User user) {
 		JeaseSession.set(user);
 		if (Validations.isNotEmpty(user.getRoots())) {
+			JeaseSession.setConfig(new Configuration());
+			JeaseSession.setFilter(new NodeFilter(JeaseSession.getConfig().newNodes()));
 			JeaseSession.setRoots(user.getRoots());
 			if (queryString != null) {
-				JeaseSession.setContainer(Nodes.getByPath(queryString));
+				Node node = Nodes.getByPath(queryString);
+				if (JeaseSession.getFilter().isAccepted(node)) {
+					JeaseSession.setContainer(node);
+				}
 			}
 			if (JeaseSession.getContainer() == null
 					|| !JeaseSession.getContainer().isDescendant(
 							user.getRoots())) {
 				JeaseSession.setContainer(user.getRoots()[0]);
-			}
-			JeaseSession.setConfig(new Configuration());
+			}			
 		}
 		show(new Navigation(user));
 	}

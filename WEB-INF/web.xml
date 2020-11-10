@@ -23,35 +23,11 @@
 	
 	<context-param>
 		<description>
-			How many content revisions should be kept at minimum?
-		</description>
-		<param-name>JEASE_REVISION_COUNT</param-name>
-		<param-value>15</param-value>		
-	</context-param>
-
-	<context-param>
-		<description>
-			For how many days in the past content revsions should be kept at minimum?
-		</description>
-		<param-name>JEASE_REVISION_DAYS</param-name>
-		<param-value>30</param-value>		
-	</context-param>
-
-	<context-param>
-		<description>
 			Which authenticator should be used to resolve logins?</description>
 		<param-name>JEASE_USER_AUTHENTICATOR</param-name>
 		<param-value>jease.cms.service.Authenticator</param-value>		
 	</context-param>
 
-	<context-param>
-		<description>
-			Which design (e.g. default, demo, paper, robot) should be used to render the layout of the website?
-		</description>
-		<param-name>JEASE_SITE_DESIGN</param-name>
-		<param-value>default</param-value>		
-	</context-param>
-	
 	<listener>
 		<listener-class>jease.cmf.web.servlet.JeaseServletListener</listener-class>
 	</listener>

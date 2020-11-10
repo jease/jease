@@ -61,7 +61,7 @@ public class Transit extends Content {
 	}
 
 	public boolean isPage() {
-		return getContentType().equals("text/html");
+		return "text/html".equals(getContentType());
 	}
 
 	/**

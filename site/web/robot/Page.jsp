@@ -8,6 +8,7 @@
 <title><%= request.getAttribute("Page.Title") %></title>
 <link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Root") %>site/web/robot/style/screen.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Root") %>site/web/robot/style/print.css" media="<%= request.getParameter("print") == null ? "print" : "print,screen" %>" />
+<%@include file="/site/service/Feeds.jsp" %>
 <%@include file="/site/service/Jquery.jsp"%>
 <%@include file="/site/service/Lightbox.jsp"%>
 <%@include file="/site/service/Prettify.jsp"%>

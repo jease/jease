@@ -29,9 +29,12 @@ import java.util.Set;
 
 import jease.cmf.domain.Node;
 import jease.cmf.web.node.NodeEditor;
+import jease.cms.domain.Parameter;
 import jease.cms.domain.Content;
 import jease.cms.domain.property.Property;
 import jease.cms.web.content.editor.property.PropertyEditor;
+import jfix.db4o.Database;
+import jfix.functor.Supplier;
 import jfix.util.Reflections;
 
 import com.thoughtworks.xstream.XStream;
@@ -44,9 +47,24 @@ import com.thoughtworks.xstream.XStream;
  * location (META-INF/jease/registry.xml), so bundling classes with an
  * appropriate XML-file into a single jar allows to create drop in modules for
  * Jease.
+ * 
+ * The Registry provides also access to central parameters. Parameters
+ * are simply key/value-pairs of strings which are stored in the database.
  */
 public class Registry {
 
+	private static class ParameterMap implements
+			Supplier<Map<String, Parameter>> {
+		public Map<String, Parameter> get() {
+			Map<String, Parameter> map = new HashMap();
+			for (Parameter parameter : Database.query(Parameter.class)) {
+				map.put(parameter.getKey(), parameter);
+			}
+			return map;
+		}
+	}
+
+	private static Supplier<Map<String, Parameter>> parameters = new ParameterMap();
 	private static Map<String, String> icons = new HashMap();
 	private static Map<String, String> editors = new HashMap();
 	private static Map<String, String> views = new HashMap();
@@ -163,4 +181,14 @@ public class Registry {
 		return (PropertyEditor) Reflections.newInstance(editors.get(property
 				.getClass().getName()));
 	}
+
+	/**
+	 * Returns value of parameter for given key or null if key
+	 * doesn't exist.
+	 */
+	public static String getParameter(String key) {
+		Parameter parameter = Database.query(parameters).get(key);
+		return parameter != null ? parameter.getValue() : null;
+	}
+
 }

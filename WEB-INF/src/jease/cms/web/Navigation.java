@@ -19,7 +19,6 @@ package jease.cms.web;
 import jease.cms.domain.User;
 import jease.cms.web.content.ContentManager;
 import jease.cms.web.i18n.Strings;
-import jease.cms.web.system.Control;
 import jfix.util.Validations;
 import jfix.zk.Images;
 import jfix.zk.Logout;
@@ -33,9 +32,17 @@ public class Navigation extends Tabbox {
 		}
 		add(Strings.User, jease.cms.web.user.Table.class, Images.SystemUsers);
 		if (user.isAdministrator()) {
-			add(Strings.System, Control.class, Images.ApplicationsSystem);
+			add(Strings.System, System.class, Images.ApplicationsSystem);
 		}
 		add(Strings.Logout, Logout.class, Images.SystemLogOut);
 	}
 
+	public static class System extends Tabbox {
+		public System() {
+			add(Strings.Parameter, jease.cms.web.system.parameter.Table.class,
+					Images.PreferencesSystem);
+			add(Strings.Revisions, jease.cms.web.system.revision.Control.class,
+					Images.EditUndo);
+		}
+	}
 }

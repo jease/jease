@@ -20,10 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jease.cms.domain.Content;
+import jease.cms.domain.Trash;
 import jfix.db4o.Database;
 import jfix.functor.Supplier;
 import jfix.search.FullTextIndex;
 import jfix.util.Regexps;
+import jfix.util.Validations;
 
 /**
  * Service for searching through fulltext of content.
@@ -34,9 +36,10 @@ public class Fulltexts {
 		public FullTextIndex get() {
 			FullTextIndex index = new FullTextIndex();
 			for (Content content : Database.query(Content.class)) {
-				if (content.isVisible()) {
-					index.add(content, Regexps.stripTags(content.getFulltext()
-							.toString()));
+				if (content.isVisible()
+						&& Validations.isEmpty(content.getParents(Trash.class))) {
+					index.add(content,
+							Regexps.stripTags(content.getFulltext().toString()));
 				}
 			}
 			index.commit();

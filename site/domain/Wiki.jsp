@@ -2,5 +2,7 @@
 <%
 	Wiki wiki = (Wiki) request.getAttribute("Node");
 %>
+<div class="Wiki">
 <h1><%=wiki.getTitle()%></h1>
-<%= Markups.renderMediaWiki(wiki.getContent()) %>
+<div><%= Markups.renderMediaWiki(wiki.getContent()) %></div>
+</div>

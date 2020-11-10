@@ -6,6 +6,12 @@
     <view>/site/domain/Access.jsp</view>
   </component>
   <component>
+    <domain>jease.cms.domain.Discussion</domain>
+    <editor>jease.cms.web.content.editor.DiscussionEditor</editor>
+    <icon>~./jease/cms/Discussion.png</icon>
+    <view>/site/domain/Discussion.jsp</view>
+  </component>
+  <component>
     <domain>jease.cms.domain.Composite</domain>
     <editor>jease.cms.web.content.editor.CompositeEditor</editor>
     <icon>~./jease/cms/Composite.png</icon>
@@ -112,6 +118,10 @@
   <component>
     <domain>jease.cms.domain.property.DateProperty</domain>
     <editor>jease.cms.web.content.editor.property.DatePropertyEditor</editor>
+  </component>
+  <component>
+    <domain>jease.cms.domain.property.DoubleProperty</domain>
+    <editor>jease.cms.web.content.editor.property.DoublePropertyEditor</editor>
   </component>
   <component>
     <domain>jease.cms.domain.property.FileProperty</domain>

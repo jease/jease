@@ -178,8 +178,7 @@ public abstract class Content extends Node {
 		long size = super.getSize() + getTitle().length();
 		if (properties != null) {
 			for (Property property : properties) {
-				size += property.getName().length();
-				size += property.toString().length();
+				size += property.getSize();
 			}
 		}
 		return size;

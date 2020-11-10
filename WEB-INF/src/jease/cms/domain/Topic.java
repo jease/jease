@@ -24,11 +24,7 @@ public class Topic extends Content {
 
 	public Topic() {
 	}
-
-	public boolean isPage() {
-		return false;
-	}
-
+	
 	public Topic copy() {
 		return (Topic) super.copy();
 	}

@@ -151,6 +151,10 @@ input,textarea,select {
 	border-color: #D4D4D4 #ebebeb #ebebeb #d4d4d4;
 }
 
+input[type=button]:hover,input[type=submit]:hover,input:focus,textarea:focus {
+	border: 1px solid #555;
+}
+
 #photos {
 	z-index: 0;
 }
@@ -406,4 +410,28 @@ input,textarea,select {
 	clear: both; 
 	height: 0; 
 	content: "."; 
+}
+
+.search-pager a {
+  border: 1px solid #ccc;
+  border-color: #ccc #aaa #aaa #ccc;
+  margin: 0 1px;
+  padding: 2px 6px;
+}
+
+.search-pager a:hover {
+	background-color: #A56F38;
+	color: white;
+}
+
+.Discussion form {
+	padding: 10px;
+}
+
+.Discussion input[type=text], .Discussion textarea {
+	width: 100%;
+}
+
+.News div:first-child {
+	float: right;
 }

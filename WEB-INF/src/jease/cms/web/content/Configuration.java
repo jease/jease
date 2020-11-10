@@ -24,20 +24,11 @@ import jease.cmf.web.node.NodeEditor;
 import jease.cmf.web.node.NodeTableModel;
 import jease.cms.domain.User;
 import jease.cms.service.Contents;
-import jease.cms.service.Revisions;
-import jfix.zk.ZK;
 
 /**
  * Global configuration for JeaseCMS.
  */
 public class Configuration implements JeaseConfig {
-
-	static {
-		Revisions.COUNT = Integer.parseInt(ZK
-				.getInitParameter("JEASE_REVISION_COUNT"));
-		Revisions.DAYS = Integer.parseInt(ZK
-				.getInitParameter("JEASE_REVISION_DAYS"));
-	}
 
 	/**
 	 * Which type of nodes can be created by the user? If you want maximum

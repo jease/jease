@@ -25,8 +25,10 @@ public class Strings {
 	}
 
 	public static String Administrator;
+	public static String Author;
 	public static String Are_you_sure;
 	public static String Code;
+	public static String Comment;
 	public static String Content;
 	public static String Content_is_not_deletable;
 	public static String Content_is_required;
@@ -43,14 +45,19 @@ public class Strings {
 	public static String File_is_required;
 	public static String Id;
 	public static String Jease;
+	public static String Key;
+	public static String Key_is_required;
+	public static String Key_must_be_unique;
 	public static String Last_modified;
 	public static String Login;
 	public static String Login_is_required;
 	public static String Logout;
+	public static String Multiline;
 	public static String Name;
 	public static String Name_is_required;
 	public static String No;
 	public static String Open;
+	public static String Parameter;
 	public static String Password;
 	public static String Password_is_required;
 	public static String Password_Repeat;
@@ -78,6 +85,7 @@ public class Strings {
 	public static String Url_is_required;
 	public static String User;
 	public static String Upload;
+	public static String Value;
 	public static String View;
 	public static String Visible;
 	public static String Yes;

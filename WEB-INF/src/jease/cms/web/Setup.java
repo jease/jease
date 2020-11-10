@@ -20,10 +20,12 @@ import java.util.Date;
 
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Folder;
+import jease.cms.domain.Parameter;
 import jease.cms.domain.User;
 import jease.cms.service.Users;
 import jease.cms.web.i18n.Strings;
 import jease.cms.web.user.Editor;
+import jfix.db4o.Database;
 import jfix.zk.ActionListener;
 import jfix.zk.Div;
 import jfix.zk.Window;
@@ -37,47 +39,60 @@ import org.zkoss.zk.ui.event.Event;
 public class Setup extends Div {
 
 	public Setup() {
-		if (Nodes.getRoot() == null) {
-			createRootFolder();
+		if (Database.query(Parameter.class).isEmpty()) {
+			createParameter();
 		}
-		if (Users.queryAdministrators().size() == 0) {
+		if (Nodes.getRoot() == null) {
+			createRoot();
+		}
+		if (Users.queryAdministrators().isEmpty()) {
 			createAdministrator();
 		} else {
 			redirectToLogin();
 		}
 	}
 
-	private void redirectToLogin() {
-		ZK.redirect("..");
+	private void createParameter() {
+		for (Parameter parameter : new Parameter[] {
+				new Parameter("JEASE_SITE_DESIGN", "bright"),
+				new Parameter("JEASE_REVISION_COUNT", "10"),
+				new Parameter("JEASE_REVISION_DAYS", "30") }) {
+			Database.save(parameter);
+		}
 	}
 
-	private void createRootFolder() {
+	private void createRoot() {
 		Folder folder = new Folder();
 		folder.setId(ZK.getContextPath().replaceFirst("/", ""));
 		folder.setTitle(Strings.Jease);
 		folder.setLastModified(new Date());
+		folder.setVisible(true);
 		Nodes.setRoot(folder);
 		Nodes.save(folder);
 	}
 
 	private void createAdministrator() {
-		User administrator = new User();
+		final User administrator = new User();
 		administrator.setAdministrator(true);
 		administrator.setRoots(new Folder[] { (Folder) Nodes.getRoot() });
 
 		final Window window = new Window(Strings.Setup_Administrator);
 		window.setClosable(false);
 		window.setParent(getRoot());
-		
+
 		Editor editor = new Editor();
 		editor.setObject(administrator);
-		editor.addChangeListener(new ActionListener() {			
+		editor.addChangeListener(new ActionListener() {
 			public void actionPerformed(Event evt) {
 				window.close();
 				redirectToLogin();
 			}
 		});
 		editor.refresh();
-		editor.setParent(window);		
+		editor.setParent(window);
+	}
+
+	private void redirectToLogin() {
+		ZK.redirect("..");
 	}
 }

@@ -56,8 +56,12 @@ public abstract class Property extends Persistent implements Persistent.Value {
 				Property.class.getSimpleName(), "");
 	}
 
+	public long getSize() {
+		return String.valueOf(toString()).length();
+	}
+	
 	public String toString() {
-		return getType();
+		return name;
 	}
 
 	public void cloneTo(Property clone) {

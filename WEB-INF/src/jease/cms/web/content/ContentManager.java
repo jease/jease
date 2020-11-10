@@ -25,7 +25,6 @@ import jease.cms.service.Imports;
 import jease.cms.web.i18n.Strings;
 import jfix.zk.ActionListener;
 import jfix.zk.Button;
-import jfix.zk.Div;
 import jfix.zk.Filedownload;
 import jfix.zk.Fileupload;
 import jfix.zk.Images;
@@ -45,14 +44,15 @@ import org.zkoss.zk.ui.event.UploadEvent;
 public class ContentManager extends Jease {
 
 	public ContentManager() {
-		Div container = new Div("text-align: right;");
+		getFlatTable().getLeftbox().getChildren().clear();
+		Component container = getTreeTable().getRightbox();
+		container.getChildren().clear();
 		if (JeaseSession.get(User.class).isAdministrator()) {
 			container.appendChild(newDumpButton());
 			container.appendChild(newRestoreButton());
 		}
 		container.appendChild(newUploadButton());
-		container.appendChild(newViewButton());
-		getAccessory().appendChild(container);
+		container.appendChild(newViewButton());		
 	}
 
 	private Component newDumpButton() {

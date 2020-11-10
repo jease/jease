@@ -1,5 +1,7 @@
 <%@page import="jease.cms.domain.*"%>
 <%
 	Topic topic = (Topic) request.getAttribute("Node");
-	response.sendRedirect("..");
 %>
+<div class="Topic">
+<h1><%= topic.getTitle() %></h1>
+</div>

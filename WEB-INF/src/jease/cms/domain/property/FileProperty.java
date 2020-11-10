@@ -24,7 +24,7 @@ public class FileProperty extends Property {
 	private String filename;
 	private String contentType;
 	private Blob blob = new Blob();
-	
+
 	public String getFilename() {
 		return filename;
 	}
@@ -32,7 +32,7 @@ public class FileProperty extends Property {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	
+
 	public String getContentType() {
 		return contentType;
 	}
@@ -44,9 +44,13 @@ public class FileProperty extends Property {
 	public Blob getBlob() {
 		return blob;
 	}
-	
+
 	public java.io.File getFile() {
 		return blob.getFile();
+	}
+
+	public long getSize() {
+		return super.getSize() + blob.getFile().length(); 		
 	}
 
 	public FileProperty copy() {
@@ -56,7 +60,7 @@ public class FileProperty extends Property {
 		Files.copy(getFile(), property.getFile());
 		return property;
 	}
-	
+
 	public String toString() {
 		return filename;
 	}

@@ -224,3 +224,15 @@ hr {
 #breadcrumb a {
 	text-decoration: none;
 }
+
+.Discussion form {
+	padding: 10px;
+}
+
+.Discussion input[type=text], .Discussion textarea {
+	width: 100%;
+}
+
+.News div:first-child {
+	float: right;
+}

@@ -2,11 +2,11 @@
 <%
 	News news = (News) request.getAttribute("Node");
 %>
-<% if (news.getDate() != null) { %>
-<p style="float: right;"><%=String.format("%tF", news.getDate())%></p>
-<% } %>
+<div class="News">
+<div><%= news.getDate() != null ? String.format("%tF", news.getDate()) : "" %></div>
 <h1><%=news.getTitle()%></h1>
 <% if (Validations.isNotEmpty(news.getTeaser())) { %>
 <p><strong><%=news.getTeaser()%></strong></p>
 <% } %>
-<%=news.getStory()%>
+<div><%=news.getStory()%></div>
+</div>

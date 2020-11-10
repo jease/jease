@@ -13,11 +13,20 @@ $(document).ready(function(){
 			hideflash: true
 	};
 	$("object,embed").attr({"width": 600, "height": 400});
-	$("a img").parent().attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
+	$("a.Image img").parent().attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
+	$("a[href$=.jpg] img,a[href$=.gif] img,a[href$=.png] img").parent().attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
 	$("a[href$=.jpg],a[href$=.gif],a[href$=.png]").attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
 	$("a[href$=.mov]").attr({"rel" : "prettyPhoto[movie]"}).prettyPhoto(config);
 	$("a[href$=.flv]").attr({"rel" : "prettyPhoto[movie]"}).each(function() { this.href += "?print&iframe=true";}).prettyPhoto(config);
 	$("a[href$=.swf]").attr({"rel" : "prettyPhoto[flash]"}).each(function() { this.href += "?width=600&height=400"; }).prettyPhoto(config);
 	$("a[href$=?print]").attr({"rel" : "prettyPhoto[iframe]"}).each(function() { this.href += "&iframe=true";}).prettyPhoto(config);
+	<% if (request.getParameter("print") != null) { %>
+		$("a").click(function(evt) {
+			if(!this.target) {
+				window.parent.$.prettyPhoto.close();
+				window.parent.location = this.href;
+			}
+		});
+	<% } %>	
 });
 //]]></script>
