@@ -3,9 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<script type="text/javascript">//<![CDATA[
-document.write("<base href=\"" + window.location.protocol + "//" + window.location.host + "<%=request.getAttribute("Page.Base") %>\" />");
-//]]></script>
+<%@include file="/site/service/Pagebase.jsp"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><%= request.getAttribute("Page.Title") %></title>
 <link rel="stylesheet" type="text/css" href="<%=request.getAttribute("Page.Root") %>site/web/demo/style/screen.css" media="screen" />
@@ -107,11 +105,10 @@ document.write("<base href=\"" + window.location.protocol + "//" + window.locati
 
 	<div id="footer">
 		<p>
-			&copy; 2010 <a href="http://www.jease.org/">jease.org</a>
-  			| Valid <a href="http://validator.w3.org/check/referer">XHTML</a> 
-  			| <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
-			| Design by <a href="http://andreasviklund.com/">Andreas Viklund</a>
-		</p>
+			&copy; 2010 <a href="http://www.jease.org/">jease.org</a> | Design by <a href="http://andreasviklund.com/">Andreas Viklund</a>
+			<br />
+			<%@include file="/site/service/Designswitch.jsp" %>
+		</p>		
 	</div>
 
 </div>

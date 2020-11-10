@@ -2,6 +2,7 @@ package jease.cms.web.content;
 
 import jease.cmf.web.Jease;
 import jease.cmf.web.JeaseSession;
+import jease.cmf.web.node.browser.NodeViewer;
 import jease.cms.domain.User;
 import jease.cms.service.Backups;
 import jease.cms.service.Imports;
@@ -34,6 +35,7 @@ public class ContentManager extends Jease {
 			container.appendChild(newRestoreButton());
 		}
 		container.appendChild(newUploadButton());
+		container.appendChild(newViewButton());
 		getAccessory().appendChild(container);
 	}
 
@@ -83,6 +85,15 @@ public class ContentManager extends Jease {
 						}
 					}
 				});
+	}
+
+	private Component newViewButton() {
+		return new Button(Strings.View, Images.Internet, new ActionListener() {
+			public void actionPerformed(Event evt) {
+				getRoot().appendChild(
+						new NodeViewer(JeaseSession.getContainer()));
+			}
+		});
 	}
 
 }

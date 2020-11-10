@@ -43,15 +43,6 @@
 	</filter-mapping>
 
 	<servlet>
-		<servlet-name>JeaseFckConnector</servlet-name>
-		<servlet-class>jease.cmf.web.servlet.JeaseFckConnector</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>JeaseFckConnector</servlet-name>
-		<url-pattern>/zkau/fckbrowser.xml</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>zkLoader</servlet-name>
 		<servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet</servlet-class>
 		<init-param>

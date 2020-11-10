@@ -21,6 +21,7 @@ import java.util.Date;
 import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.NodeEditor;
+import jease.cmf.web.node.browser.NodeViewer;
 import jease.cms.domain.Content;
 import jease.cms.domain.User;
 import jease.cms.service.Contents;
@@ -49,7 +50,11 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	protected Selectfield revisions = new Selectfield();
 
 	public ContentEditor() {
-		view.setTarget("_blank");
+		view.addClickListener(new ActionListener() {
+			public void actionPerformed(Event event) {
+				getRoot().appendChild(new NodeViewer(getNode()));
+			}
+		});
 		getButtons().appendChild(view);
 
 		revisions.setNullable(false);
@@ -85,7 +90,6 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	protected void doLoad() throws Exception {
 		super.doLoad();
 		view.setVisible(Nodes.isRooted(getNode()));
-		view.setHref(getViewUrl());
 		title.setText(getNode().getTitle());
 		lastNodeModification = getNode().getLastModified();
 		revisions.setValues(getNode().getRevisions());
@@ -137,7 +141,9 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		return view;
 	}
 
+	@Deprecated
 	protected String getViewUrl() {
 		return getNode().getPath() + "?" + System.currentTimeMillis();
 	}
+
 }
