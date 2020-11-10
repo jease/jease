@@ -21,7 +21,6 @@ import java.util.*;
 import jease.cmf.domain.*;
 import jease.cmf.web.i18n.*;
 import jease.cmf.web.node.*;
-import jfix.functor.*;
 import jfix.zk.*;
 
 public class FlatTableModel extends ObjectTableModel<Node> {
@@ -37,14 +36,7 @@ public class FlatTableModel extends ObjectTableModel<Node> {
 	}
 
 	public List<Node> getList() {
-		final List<Node> nodes = new ArrayList();
-		Procedure<Node> addNode = new Procedure<Node>() {
-			public void execute(Node node) {
-				nodes.add(node);
-			}
-		};
-		nodeTableModel.getContainer().traverse(addNode);
-		return nodes;
+		return Arrays.asList(nodeTableModel.getContainer().getDescendants());
 	}
 
 	public String[] getColumns() {

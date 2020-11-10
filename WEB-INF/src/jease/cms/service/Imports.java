@@ -54,8 +54,9 @@ public class Imports {
 				throw new Exception(errors.toString());
 			}
 		} else {
-			Imports.fromInputStream(filename, new FileInputStream(file),
-					parent, editor);
+			InputStream inputStream = new FileInputStream(file);
+			Imports.fromInputStream(filename, inputStream, parent, editor);
+			inputStream.close();
 		}
 	}
 
@@ -112,7 +113,7 @@ public class Imports {
 		text.setId(Filenames.asId(filename));
 		text.setTitle(Filenames.asTitle(filename));
 		text.setLastModified(new Date());
-		text.setContent(IOUtils.toString(inputStream, "UTF-8"));
+		text.setContent(readString(inputStream));
 		text
 				.setPlain(!(filename.endsWith(".htm") || filename
 						.endsWith(".html")));
@@ -126,7 +127,7 @@ public class Imports {
 		image.setTitle(Filenames.asTitle(filename));
 		image.setLastModified(new Date());
 		image.setContentType(Filenames.asContentType(filename));
-		IOUtils.copy(inputStream, new FileOutputStream(image.getFile()));
+		copyStreamToFile(inputStream, image.getFile());
 		return image;
 	}
 
@@ -137,8 +138,19 @@ public class Imports {
 		file.setTitle(Filenames.asTitle(filename));
 		file.setLastModified(new Date());
 		file.setContentType(Filenames.asContentType(filename));
-		IOUtils.copy(inputStream, new FileOutputStream(file.getFile()));
+		copyStreamToFile(inputStream, file.getFile());
 		return file;
 	}
 
+	private static String readString(InputStream inputStream)
+			throws IOException {
+		return IOUtils.toString(inputStream, "UTF-8");
+	}
+
+	private static void copyStreamToFile(InputStream inputStream,
+			java.io.File file) throws IOException {
+		OutputStream outputStream = new FileOutputStream(file);
+		IOUtils.copy(inputStream, outputStream);
+		outputStream.close();
+	}
 }

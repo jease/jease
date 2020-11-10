@@ -13,38 +13,45 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node.constructor;
 
-import jease.cmf.domain.Node;
-import jease.cmf.web.JeaseSession;
-import jfix.zk.Refreshable;
-import jfix.zk.Selectfield;
+import jease.cmf.domain.*;
+import jease.cmf.web.*;
+import jfix.zk.*;
 
 public class NodeConstructor extends Selectfield implements Refreshable {
 
 	public NodeConstructor() {
 		setWidth(null);
 		setItemRenderer(new NodeConstructorRenderer());
+		setValues(JeaseSession.getConfig().newNodes());
 	}
 
 	public Node getSelectedNode() {
-		return (Node) getSelectedValue();
-	}
-
-	public void refresh() {
-		Node currentSelection = getSelectedNode();
-		setValues(JeaseSession.getContainer().filterValidChildren(
-				JeaseSession.getConfig().newNodes()));
-		if (currentSelection != null) {
-			for (int i = 1; i < getModel().getSize(); i++) {
-				if (((Node) getModel().getElementAt(i)).getType().equals(
-						currentSelection.getType())) {
-					setSelectedIndex(i);
-					break;
-				}
-			}
+		Node node = (Node) getSelectedValue();
+		if (node != null) {
+			return node.copy();
+		} else {
+			return null;
 		}
 	}
 
+	public void refresh() {
+		Node currentSelection = (Node) getSelectedValue();
+		for (int i = 1; i < getModel().getSize(); i++) {
+			Node node = (Node) getModel().getElementAt(i);
+			getItemAtIndex(i).setSelected(node == currentSelection);
+			getItemAtIndex(i).setDisabled(!isValidChild(node));
+		}
+	}
+
+	private boolean isValidChild(Node node) {
+		try {
+			JeaseSession.getContainer().validateChild(node, null);
+			return true;
+		} catch (NodeException e) {
+			return false;
+		}
+	}
 }

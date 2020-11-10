@@ -2,6 +2,7 @@ package jease.site.service;
 
 import java.util.*;
 
+import jease.cmf.domain.*;
 import jease.cmf.service.*;
 import jease.cms.domain.*;
 
@@ -38,4 +39,15 @@ public class Navigations {
 						.getContent() instanceof News);
 	}
 
+	public static String getPageTitle(Node node) {
+		 return String.format("%s - %s", Nodes.getRoot().getTitle(), node.getTitle());
+	}
+	
+	public static String getRootPath() {
+		String rootPath = Nodes.getRoot().getPath();
+		if (!rootPath.endsWith("/")) {
+			rootPath = rootPath + "/";
+		}
+		return rootPath;
+	}
 }

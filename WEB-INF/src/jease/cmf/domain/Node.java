@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -69,6 +69,34 @@ public class Node extends Persistent {
 
 	public <E extends Node> E[] getParents(Class<E> clazz) {
 		return Arrays.filter(getParents(), clazz);
+	}
+
+	public boolean isDescendant(Node possibleParent) {
+		if (this == possibleParent) {
+			return true;
+		}
+		Node parentNode = getParent();
+		while (parentNode != null) {
+			if (parentNode == possibleParent) {
+				return true;
+			}
+			parentNode = parentNode.getParent();
+		}
+		return false;
+	}
+
+	public Node[] getDescendants() {
+		final List<Node> nodes = new ArrayList();
+		traverse(new Procedure<Node>() {
+			public void execute(Node node) {
+				nodes.add(node);
+			}
+		});
+		return nodes.toArray(new Node[] {});
+	}
+
+	public <E extends Node> E[] getDescendants(Class<E> clazz) {
+		return Arrays.filter(getDescendants(), clazz);
 	}
 
 	public Node[] getChildren() {
@@ -228,8 +256,7 @@ public class Node extends Persistent {
 
 	protected void validateId(Node potentialChild, String potentialChildId)
 			throws NodeException {
-		if (!String.valueOf(potentialChildId).equals(
-				Urls.encode(String.valueOf(potentialChildId), "UTF-8"))) {
+		if (potentialChildId != null && !Urls.isValid(potentialChildId)) {
 			throw new NodeException.IllegalId();
 		}
 	}

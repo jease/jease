@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,8 +44,9 @@ public class Jease extends Div implements Refreshable {
 		viewTreeDesktop.setChecked(true);
 		desktopArea.appendChild(treeDesktop);
 
+		basementArea.setPack("stretch");
 		basementArea.appendChild(new Radiogroup(viewTreeDesktop, viewFlatDesktop));
-		basementArea.appendChild(new Div(fileuploader, "text-align: right;"));
+		basementArea.appendChild(new Div("text-align: right;", fileuploader));
 
 		appendChild(desktopArea);
 		appendChild(basementArea);

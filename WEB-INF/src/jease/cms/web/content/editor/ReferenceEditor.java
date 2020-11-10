@@ -16,9 +16,10 @@
  */
 package jease.cms.web.content.editor;
 
+import jease.cmf.service.*;
 import jease.cms.domain.*;
-import jease.cms.service.*;
 import jease.cms.web.i18n.*;
+import jfix.util.*;
 import jfix.zk.*;
 
 import org.zkoss.zk.ui.event.*;
@@ -40,7 +41,7 @@ public class ReferenceEditor extends ContentEditor<Reference> {
 	}
 
 	public void load() {
-		content.setSelection(Contents.getContents(), getNode().getContent());
+		content.setSelection(Arrays.asList(Nodes.getRoot().getDescendants()), getNode().getContent());
 	}
 
 	public void save() {

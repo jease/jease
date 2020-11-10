@@ -31,6 +31,9 @@ public class DefaultServlet extends org.apache.catalina.servlets.DefaultServlet 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		try {
+			// For Tomcat: add useBodyEncodingForURI="true" to Connector in server.xml
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
 			Dispatcher.forward(request, response, "/site/Controller.jsp");
 		} catch (NodeException e) {
 			super.doGet(request, response);

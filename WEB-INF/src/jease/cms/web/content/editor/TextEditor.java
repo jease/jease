@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -38,8 +38,7 @@ public class TextEditor extends ContentEditor<Text> {
 	}
 
 	public void init() {
-		add(Strings.Content, new Column(richText, plainText, new Div(plainMode,
-				"text-align: right;")));
+		add(Strings.Content, new Column(richText, plainText, new Div("text-align: right;", plainMode)));
 	}
 
 	public void load() {
