@@ -26,7 +26,7 @@
 			<a class="<%=property.getType() %>" href="?file=<%= property.getName()%>"><%=property.toString()%></a>
 		<% } %>
 	<% } else { %>
-		<%=property.toString()%>
+		<%=String.valueOf(property).replace("\n","<br />")%>
 	<% } %>		
 	</dd>
 <% } %>

@@ -8,7 +8,7 @@
 	request.setAttribute("Context", node);
 	
 	// Make Controller available (e.g. Folder dispatches content via Controller)
-	request.setAttribute("Controller", request.getAttribute("JEASE_SITE_CONTROLLER"));
+	request.setAttribute("Controller", request.getAttribute(jease.cmf.Names.JEASE_SITE_CONTROLLER));
 
 	// If an Access-Object is guarding the node, use it to force authorization.
 	Access access = Authorizations.check(node, request.getHeader("Authorization"));
@@ -38,9 +38,11 @@
 		// Get design for page rendering from Registry.
 		// Check if design is overwritten via request or cookie.
 		// Use "default" layout if no design is set at all.
-		String design = Registry.getParameter("JEASE_SITE_DESIGN");
+		String design = Registry.getParameter(jease.cms.Names.JEASE_SITE_DESIGN);
 		design = Cookies.pick(request, response, "design", design);
-		pageContext.include(String.format("/site/web/%s/Page.jsp", design));
+		if (design != null) {
+			pageContext.include(String.format("/site/web/%s/Page.jsp", design));
+		}
 	} else {
 		pageContext.forward(pageTemplate);
 	}

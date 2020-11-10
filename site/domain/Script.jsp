@@ -35,7 +35,7 @@
 			servlet.destroy();
 		} else {
 			String resourcePath = SCRIPT_WEBINF_FOLDER + scriptParentPath + "/" + scriptId;
-			if(request.getParameter("file") != null) {
+			if(script.isForward() || request.getParameter("file") != null) {
 				pageContext.forward(resourcePath);
 			} else {
 				pageContext.include(resourcePath);	
