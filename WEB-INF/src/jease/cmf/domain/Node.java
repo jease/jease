@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.domain;
 
 import java.util.ArrayList;
@@ -229,7 +229,7 @@ public class Node extends Persistent {
 	protected void validateId(Node potentialChild, String potentialChildId)
 			throws NodeException {
 		if (!String.valueOf(potentialChildId).equals(
-				Urls.encode(String.valueOf(potentialChildId)))) {
+				Urls.encode(String.valueOf(potentialChildId), "UTF-8"))) {
 			throw new NodeException.IllegalId();
 		}
 	}

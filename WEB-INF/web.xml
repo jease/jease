@@ -8,6 +8,11 @@
 		<param-value>jease</param-value>
 	</context-param>
 
+    <context-param>
+        <param-name>JEASE_DATABASE_ENGINE</param-name>
+        <param-value>jfix.db4o.engine.PersistenceEngineDb4o</param-value>
+    </context-param>
+
 	<listener>
 		<listener-class>jease.cmf.web.JeaseServletListener
 		</listener-class>

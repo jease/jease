@@ -13,18 +13,28 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import javax.servlet.*;
 
-import jfix.db4o.Database;
+import jfix.db4o.*;
 
 public class JeaseServletListener implements ServletContextListener {
 
 	public void contextInitialized(ServletContextEvent sce) {
-		Database.open(sce.getServletContext().getInitParameter("JEASE_DATABASE_NAME"));
+		String databaseEngine = sce.getServletContext().getInitParameter(
+				"JEASE_DATABASE_ENGINE");
+		if (databaseEngine != null) {
+			Database.setPersistenceEngine(databaseEngine);
+		}
+		String databaseName = sce.getServletContext().getInitParameter(
+				"JEASE_DATABASE_NAME");
+		if (databaseName != null) {
+			Database.open(databaseName);
+		} else {
+			throw new RuntimeException();
+		}
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
