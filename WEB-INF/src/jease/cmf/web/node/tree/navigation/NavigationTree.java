@@ -13,26 +13,22 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node.tree.navigation;
 
-import jease.cmf.domain.Node;
-import jease.cmf.domain.NodeException;
-import jease.cmf.service.Nodes;
-import jease.cmf.web.JeaseSession;
-import jfix.util.Arrays;
-import jfix.zk.ActionListener;
-import jfix.zk.Modal;
+import jease.cmf.domain.*;
+import jease.cmf.service.*;
+import jease.cmf.web.*;
+import jfix.zk.*;
 import jfix.zk.Tree;
 
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.DropEvent;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Treeitem;
-import org.zkoss.zul.Treerow;
+import org.zkoss.zk.ui.*;
+import org.zkoss.zk.ui.event.*;
+import org.zkoss.zul.*;
 
 public class NavigationTree extends Tree {
+
+	private long lastRefresh;
 
 	public NavigationTree() {
 		ActionListener dropListener = new ActionListener() {
@@ -79,11 +75,18 @@ public class NavigationTree extends Tree {
 		try {
 			Node parentNode = (Node) ((Treeitem) ((Treerow) target).getParent())
 					.getValue();
-			Nodes.append(parentNode, Arrays.append(parentNode.getChildren(),
-					draggedNode, Node.class));
+			Nodes.append(parentNode, draggedNode);
 		} catch (NodeException e) {
 			Modal.error(e.getMessage());
 		}
 		fireChangeEvent();
+	}
+
+	public void refresh() {
+		long lastChange = Nodes.queryLastChange();
+		if (lastRefresh < lastChange) {
+			lastRefresh = lastChange;
+			super.refresh();
+		}
 	}
 }

@@ -30,6 +30,7 @@ public class Strings {
 	public static String Empty_Teaser;
 	public static String File;
 	public static String File_is_required;
+	public static String Folder_is_referenced_by_User;
 	public static String Id;
 	public static String Image_is_required;
 	public static String Jease;
@@ -45,6 +46,7 @@ public class Strings {
 	public static String Password_is_required;
 	public static String Password_Repeat;
 	public static String Passwords_do_not_match;
+	public static String Plaintext;
 	public static String Roots;
 	public static String Setup_Administrator;
 	public static String Size;

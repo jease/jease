@@ -13,27 +13,25 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web;
 
-import jease.cmf.web.i18n.Strings;
-import jease.cmf.web.node.flat.FlatDesktop;
-import jease.cmf.web.node.tree.TreeDesktop;
-import jfix.zk.ActionListener;
-import jfix.zk.Div;
-import jfix.zk.Radiobutton;
-import jfix.zk.Radiogroup;
-import jfix.zk.Refreshable;
+import jease.cmf.web.i18n.*;
+import jease.cmf.web.node.flat.*;
+import jease.cmf.web.node.tree.*;
+import jfix.zk.*;
 
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.*;
 
 public class Jease extends Div implements Refreshable {
 
 	private Div desktopArea = new Div();
+	private Row basementArea = new Row();
 	private Radiobutton viewTreeDesktop = new Radiobutton(Strings.Tree);
 	private Radiobutton viewFlatDesktop = new Radiobutton(Strings.Flat);
 	private TreeDesktop treeDesktop = new TreeDesktop();
 	private FlatDesktop flatDesktop = new FlatDesktop();
+	private Fileuploader fileuploader = new Fileuploader();
 
 	public Jease() {
 		ActionListener desktopSwitch = new ActionListener() {
@@ -45,14 +43,20 @@ public class Jease extends Div implements Refreshable {
 		viewTreeDesktop.addCheckListener(desktopSwitch);
 		viewTreeDesktop.setChecked(true);
 		desktopArea.appendChild(treeDesktop);
+
+		basementArea.appendChild(new Radiogroup(viewTreeDesktop, viewFlatDesktop));
+		basementArea.appendChild(new Div(fileuploader, "text-align: right;"));
+
 		appendChild(desktopArea);
-		appendChild(new Radiogroup(viewTreeDesktop, viewFlatDesktop));
+		appendChild(basementArea);
+
 		initStyle();
 	}
 
 	private void initStyle() {
 		setWidth("100%");
 		desktopArea.setWidth("100%");
+		basementArea.setWidth("100%");
 		treeDesktop.setWidth("100%");
 		flatDesktop.setWidth("100%");
 	}
@@ -68,4 +72,9 @@ public class Jease extends Div implements Refreshable {
 		treeDesktop.refresh();
 		flatDesktop.refresh();
 	}
+
+	public void addUploadListener(ActionListener actionListener) {
+		fileuploader.addUploadListener(actionListener);
+	}
+
 }

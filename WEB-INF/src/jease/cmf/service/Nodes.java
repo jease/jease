@@ -13,27 +13,27 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.service;
 
-import jease.cmf.domain.Node;
-import jease.cmf.domain.NodeException;
-import jfix.db4o.Database;
-import jfix.functor.Command;
-import jfix.functor.Predicate;
-import jfix.functor.Procedure;
+import jease.cmf.domain.*;
+import jfix.db4o.*;
+import jfix.functor.*;
 
 public class Nodes {
 
-	private static Node root;
+	private static Node root = Database.queryUnique(Node.class,
+			new Predicate<Node>() {
+				public boolean test(Node node) {
+					return node.getParent() == null;
+				}
+			});
 
-	static {
-		root = Database.queryUnique(Node.class, new Predicate<Node>() {
-			public boolean test(Node node) {
-				return node.getParent() == null;
-			}
-		});
-	}
+	private static Supplier<Long> lastChange = new Supplier<Long>() {
+		public Long get() {
+			return System.currentTimeMillis();
+		}
+	};
 
 	public static void setRoot(Node rootNode) {
 		root = rootNode;
@@ -41,6 +41,16 @@ public class Nodes {
 
 	public static Node getRoot() {
 		return root;
+	}
+
+	public static long queryLastChange() {
+		return Database.query(lastChange);
+	}
+
+	public static void append(Node node, Node child) throws NodeException {
+		node.validateChild(child, child.getId());
+		node.appendChild(child);
+		Nodes.save(node);
 	}
 
 	public static void append(Node node, Node[] children) throws NodeException {
@@ -75,7 +85,7 @@ public class Nodes {
 				if (node == root || node.getParent() != null) {
 					Database.save(node);
 				} else {
-					Database.delete(node);
+					Database.ext().deleteDeliberately(node);
 				}
 			}
 		});

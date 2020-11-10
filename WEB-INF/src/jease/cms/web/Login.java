@@ -13,18 +13,17 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.web;
 
-import jease.cmf.service.Nodes;
-import jease.cmf.web.JeaseSession;
-import jease.cms.domain.User;
-import jease.cms.service.Users;
-import jease.cms.web.content.Configuration;
-import jease.cms.web.i18n.Strings;
-import jfix.util.Validations;
-import jfix.zk.LoginWindow;
-import jfix.zk.Tabbox;
+import jease.cmf.service.*;
+import jease.cmf.web.*;
+import jease.cms.domain.*;
+import jease.cms.service.*;
+import jease.cms.web.content.*;
+import jease.cms.web.i18n.*;
+import jfix.util.*;
+import jfix.zk.*;
 
 public class Login extends LoginWindow {
 
@@ -53,7 +52,7 @@ public class Login extends LoginWindow {
 	private void showNavigation(User user) {
 		Tabbox tabs = new Tabbox();
 		if (Validations.isNotEmpty(user.getRoots())) {
-			tabs.add(Strings.Content, jease.cmf.web.Jease.class);
+			tabs.add(Strings.Content, ContentManager.class);
 		}
 		if (user.isAdministrator()) {
 			tabs.add(Strings.User, jease.cms.web.user.Table.class);

@@ -61,7 +61,7 @@ public class FlatTableModel extends ObjectTableModel<Node> {
 
 	public Object getValue(final Node content, int column) {
 		if (column == 0) {
-			return content.getPath();
+			return content.getParent().getPath();
 		} else {
 			return nodeTableModel.getValue(content, column - 1);
 		}

@@ -13,13 +13,16 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.web.content.editor;
 
 import jease.cms.domain.Folder;
+import jease.cms.service.*;
+import jease.cms.web.i18n.*;
+import jfix.zk.*;
 
 public class FolderEditor extends ContentEditor<Folder> {
-	
+
 	public void init() {
 	}
 
@@ -27,6 +30,14 @@ public class FolderEditor extends ContentEditor<Folder> {
 	}
 
 	public void save() {
+	}
+
+	public void delete() {
+		if (Users.isRoot(getObject())) {
+			Modal.error(Strings.Folder_is_referenced_by_User);
+		} else {
+			super.delete();
+		}
 	}
 
 	public void validate() {

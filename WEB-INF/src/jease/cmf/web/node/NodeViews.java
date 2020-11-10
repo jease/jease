@@ -21,14 +21,15 @@ import org.apache.commons.io.FileUtils;
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.i18n.Strings;
-import jfix.zk.ActionListener;
-import jfix.zk.Checkbox;
-import jfix.zk.Image;
-import jfix.zk.Label;
-import jfix.zk.View;
+import jfix.zk.*;
 
 public class NodeViews {
 
+	public static View asType(Node node) {
+		return new View(node.getType(), new Row(new Image(JeaseSession
+				.getConfig().getIcon(node)), new Label(node.getType())));
+	}
+	
 	public static View asIcon(Node node) {
 		Image image = new Image();
 		image.setSrc(JeaseSession.getConfig().getIcon(node));

@@ -19,10 +19,9 @@ package jease.cmf.web.node;
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.constructor.NodeConstructor;
-import jfix.zk.ActionListener;
-import jfix.zk.ObjectEditor;
-import jfix.zk.ObjectTable;
+import jfix.zk.*;
 
+import org.zkoss.zk.ui.*;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -30,6 +29,11 @@ import org.zkoss.zk.ui.event.Events;
 public class NodeTable extends ObjectTable {
 
 	protected NodeConstructor nodeConstructor;
+	
+	public void init(ObjectTableModel tableModel, Component editor) {
+		super.init(tableModel, editor);
+		getListbox().setFixedLayout(true);
+	}
 	
 	protected void initNodeConstructor() {
 		nodeConstructor = new NodeConstructor();

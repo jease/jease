@@ -13,23 +13,20 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node.tree;
 
-import jease.cmf.web.JeaseSession;
-import jease.cmf.web.node.tree.container.ContainerTable;
-import jease.cmf.web.node.tree.navigation.NavigationTree;
-import jfix.zk.ActionListener;
-import jfix.zk.Panel;
-import jfix.zk.Refreshable;
-import jfix.zk.Row;
+import jease.cmf.web.*;
+import jease.cmf.web.node.tree.container.*;
+import jease.cmf.web.node.tree.navigation.*;
+import jfix.zk.*;
 
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.*;
 
 public class TreeDesktop extends Row implements Refreshable {
 
 	public static String NAVIGATION_WIDTH = "250px";
-	
+
 	private Panel navigationPanel;
 	private Panel containerPanel;
 	private NavigationTree navigationTree;
@@ -67,21 +64,21 @@ public class TreeDesktop extends Row implements Refreshable {
 	}
 
 	private void initPanels() {
-		navigationPanel = new Panel(navigationTree);		
-		containerPanel = new Panel(containerTable);		
+		navigationPanel = new Panel(navigationTree);
+		containerPanel = new Panel(containerTable);
 		appendChild(navigationPanel);
+		appendChild(new Splitter(Splitter.COLLAPSE_BEFORE));
 		appendChild(containerPanel);
 	}
 
 	private void initStyle() {
-		navigationPanel.setWidth(NAVIGATION_WIDTH);
-		containerPanel.setWidth("100%");
+		setWidths(NAVIGATION_WIDTH);
 	}
 
 	public void refresh() {
 		containerTable.refresh();
 		navigationTree.refresh();
-		containerPanel.setTitle(JeaseSession.getContainer().getPath());		
+		containerPanel.setTitle(JeaseSession.getContainer().getPath());
 		navigationPanel.setTitle(JeaseSession.getContainer().getTitle());
 	}
 

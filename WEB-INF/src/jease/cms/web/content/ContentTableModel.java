@@ -37,7 +37,7 @@ public class ContentTableModel extends NodeTableModel<Content> {
 	public Object getValue(final Content content, int column) {
 		switch (column) {
 		case 0:
-			return NodeViews.asIcon(content);
+			return NodeViews.asType(content);
 		case 1:
 			return content.getId();
 		case 2:

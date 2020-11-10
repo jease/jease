@@ -13,14 +13,15 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.service;
 
-import java.util.List;
+import java.util.*;
 
-import jease.cms.domain.User;
-import jfix.db4o.Database;
-import jfix.functor.Predicate;
+import jease.cms.domain.*;
+import jfix.db4o.*;
+import jfix.functor.*;
+import jfix.util.Arrays;
 
 public class Users {
 
@@ -39,5 +40,16 @@ public class Users {
 						&& password.equals(user.getPassword());
 			}
 		});
+	}
+
+	public static boolean isRoot(Folder folder) {
+		for (User user : Database.query(User.class)) {
+			for (Folder rootFolder : user.getRoots()) {
+				if (rootFolder == folder || Arrays.contains(rootFolder.getParents(), folder)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

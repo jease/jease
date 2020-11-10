@@ -19,6 +19,7 @@ package jease.cms.domain;
 public class Text extends Content {
 
 	private String content;
+	private boolean plain;
 	
 	public Text() {
 	}
@@ -29,6 +30,14 @@ public class Text extends Content {
 
 	public String getContent() {
 		return content;
+	}
+
+	public boolean isPlain() {
+		return plain;
+	}
+
+	public void setPlain(boolean plain) {
+		this.plain = plain;
 	}
 
 	public StringBuilder getFulltext() {
@@ -42,6 +51,7 @@ public class Text extends Content {
 	public Text copy() {
 		Text text = (Text) super.copy();
 		text.setContent(getContent());
+		text.setPlain(isPlain());
 		return text;
 	}
 }

@@ -13,9 +13,10 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.web.content.editor;
 
+import jease.cmf.service.*;
 import jease.cms.domain.File;
 import jease.cms.web.i18n.Strings;
 import jfix.zk.ActionListener;
@@ -61,15 +62,10 @@ public class FileEditor extends ContentEditor<File> {
 	protected void uploadPerformed() {
 		String filename = file.getName();
 		if (id.isEmpty()) {
-			id.setText(filename.replace(" ", "_"));
+			id.setText(Filenames.asId(filename));
 		}
 		if (title.isEmpty()) {
-			int extension = filename.lastIndexOf('.');
-			if (extension != -1) {
-				title.setText(filename.substring(0, extension));
-			} else {
-				title.setText(filename);
-			}
+			title.setText(Filenames.asTitle(filename));
 		}
 	}
 
