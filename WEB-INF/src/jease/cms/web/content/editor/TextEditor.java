@@ -23,6 +23,7 @@ import jfix.zk.Checkbox;
 import jfix.zk.Div;
 import jfix.zk.RichTextarea;
 import jfix.zk.Textarea;
+import jfix.zk.ZK;
 
 import org.zkoss.zk.ui.event.Event;
 
@@ -44,7 +45,8 @@ public class TextEditor extends ContentEditor<Text> {
 	}
 
 	public void init() {
-		add(Strings.Content, new Div(richText, plainText, new Div("text-align: right;", plainMode)));
+		add(Strings.Content, richText);
+		add("", new Div("text-align: right;", plainMode));
 	}
 
 	public void load() {
@@ -54,13 +56,14 @@ public class TextEditor extends ContentEditor<Text> {
 		updateTextMode();
 	}
 
-	public void save() {
-		getNode().setPlain(plainMode.isChecked());
-		if (plainMode.isChecked()) {
-			getNode().setContent(plainText.getText());
-		} else {
+	public void save() {		
+		if (richText.getParent() != null) {
 			getNode().setContent(richText.getText());
 		}
+		if (plainText.getParent() != null) {
+			getNode().setContent(plainText.getText());
+		}
+		getNode().setPlain(plainMode.isChecked());
 	}
 
 	public void validate() {
@@ -69,12 +72,14 @@ public class TextEditor extends ContentEditor<Text> {
 	private void updateTextMode() {
 		if (plainMode.isChecked()) {
 			plainText.setText(richText.getText());
-			plainText.setVisible(true);
-			richText.setVisible(false);
+			if (richText.getParent() != null) {
+				ZK.replace(richText, plainText);
+			}
 		} else {
 			richText.setText(plainText.getText());
-			richText.setVisible(true);
-			plainText.setVisible(false);
+			if (plainText.getParent() != null) {
+				ZK.replace(plainText, richText);
+			}
 		}
 	}
 }

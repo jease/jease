@@ -16,11 +16,8 @@
  */
 package jease.cms.domain;
 
-import java.io.IOException;
-
 import jfix.db4o.Blob;
-
-import org.apache.commons.io.FileUtils;
+import jfix.util.Files;
 
 /**
  * A File stores all kinds of binary content as blob in the file-system.
@@ -68,13 +65,7 @@ public class File extends Content {
 	public File copy() {
 		File file = (File) super.copy();
 		file.setContentType(getContentType());
-		try {
-			if (getFile().exists()) {
-				FileUtils.copyFile(getFile(), file.getFile());
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		Files.copy(getFile(), file.getFile());
 		return file;
 	}
 }

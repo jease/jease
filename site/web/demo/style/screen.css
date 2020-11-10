@@ -383,3 +383,12 @@ code,pre {
 	border-bottom: 1px solid #c0c0c0;
 	margin-bottom: 15px;
 }
+
+.media {
+	width: 525px;	
+}
+
+.mediaFlash {
+	width: 525px;
+	height: 395px;	
+}

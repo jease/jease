@@ -30,8 +30,21 @@ import jfix.zk.Tabbox;
 
 /**
  * Login into JeaseCMS: init user session and display tab-navigation.
+ * 
+ * If a user is already stored within the session, we don't reinforce a login,
+ * but recreate the desktop from scratch. This avoids showing the login page
+ * when the users refreshes the browser.
  */
 public class Login extends LoginWindow {
+
+	public Login() {
+		super();
+		User user = JeaseSession.get(User.class);
+		if (user != null) {
+			initSession(user);
+			showNavigation(user);
+		}
+	}
 
 	public String getTitle() {
 		return Nodes.getRoot() != null ? ((Content) Nodes.getRoot()).getTitle()
@@ -41,18 +54,22 @@ public class Login extends LoginWindow {
 	public void doLogin(String login, String password) {
 		User user = Users.queryByLogin(login, password);
 		if (user != null) {
-			if (Validations.isNotEmpty(user.getRoots())) {
-				initSession(user);
-			}
+			initSession(user);
 			showNavigation(user);
 		}
 	}
 
 	private void initSession(User user) {
 		JeaseSession.set(user);
-		JeaseSession.setRoots(user.getRoots());
-		JeaseSession.setContainer(user.getRoots()[0]);
-		JeaseSession.setConfig(new Configuration());
+		if (Validations.isNotEmpty(user.getRoots())) {
+			JeaseSession.setRoots(user.getRoots());
+			if (JeaseSession.getContainer() == null
+					|| !JeaseSession.getContainer().isDescendant(
+							user.getRoots())) {
+				JeaseSession.setContainer(user.getRoots()[0]);
+			}
+			JeaseSession.setConfig(new Configuration());
+		}
 	}
 
 	private void showNavigation(User user) {

@@ -21,7 +21,7 @@
 
 	java.io.File scriptFile = new java.io.File(scriptDirectory + scriptId);
 	if (scriptFile.lastModified() < script.getLastModified().getTime()) {
-		FileUtils.writeStringToFile(scriptFile, script.getCode());
+		FileUtils.writeStringToFile(scriptFile, script.getCode(), "UTF-8");
 	}
 
 	try {

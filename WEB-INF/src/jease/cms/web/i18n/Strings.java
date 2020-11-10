@@ -32,6 +32,7 @@ public class Strings {
 	public static String Content_is_not_valid;
 	public static String Content_is_stale;
 	public static String Date;
+	public static String Dump;
 	public static String Editor;
 	public static String Email;
 	public static String Empty_Teaser;
@@ -54,6 +55,7 @@ public class Strings {
 	public static String Path;
 	public static String Path_is_required;
 	public static String Plaintext;
+	public static String Restore;
 	public static String Revision;
 	public static String Roots;
 	public static String Setup_Administrator;
@@ -67,6 +69,7 @@ public class Strings {
 	public static String Url;
 	public static String Url_is_required;
 	public static String User;
+	public static String Upload;
 	public static String View;
 	public static String Visible;
 	public static String Yes;

@@ -37,6 +37,10 @@ import jfix.zk.Textfield;
 
 import org.zkoss.zk.ui.event.Event;
 
+/**
+ * Base class for all content editors. All common fields for Content should be
+ * added here.
+ */
 public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 	private Date lastNodeModification;
@@ -47,7 +51,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	public ContentEditor() {
 		view.setTarget("_blank");
 		getButtons().appendChild(view);
-		
+
 		revisions.setNullable(false);
 		revisions.setItemRenderer(new ItemRenderer() {
 			public String render(Object value) {
@@ -60,14 +64,22 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 				peek(Revisions.checkout(getNode(), revisions.getSelectedIndex()));
 				lastNodeModification = null;
 			}
-		});		
+		});
+	}
+
+	protected void addRevisions() {
+		add(Strings.Revision, revisions);
+	}
+
+	protected void addTitle() {
+		add(Strings.Title, title);
 	}
 
 	protected void doInit() throws Exception {
-		add(Strings.Revision, revisions);
+		addRevisions();
 		super.doInit();
-		add(Strings.Title, title);
-		init();				
+		addTitle();
+		init();
 	}
 
 	protected void doLoad() throws Exception {

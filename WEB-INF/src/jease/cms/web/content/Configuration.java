@@ -21,7 +21,6 @@ import jease.cmf.web.JeaseConfig;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.NodeEditor;
 import jease.cmf.web.node.NodeTableModel;
-import jease.cms.domain.Content;
 import jease.cms.domain.User;
 import jease.cms.service.Contents;
 import jease.cms.web.content.editor.ContentEditor;
@@ -42,7 +41,7 @@ public class Configuration implements JeaseConfig {
 	 * </code>
 	 */
 	public Node[] newNodes() {
-		Node[] nodes = Reflections.find(Content.class);
+		Node[] nodes = Contents.getAvailableTypes();
 		if (JeaseSession.get(User.class).isAdministrator()) {
 			return nodes;
 		} else {
