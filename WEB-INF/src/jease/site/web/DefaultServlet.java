@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.site.web;
 
 import java.io.IOException;
@@ -25,13 +25,20 @@ import javax.servlet.http.HttpServletResponse;
 import jease.cmf.domain.NodeException;
 import jease.cmf.web.servlet.Dispatcher;
 
+/**
+ * Default servlet to handle all requests for which no dedicated servlet is
+ * declared in web.xml.
+ * 
+ * This implementation is Tomcat-specific. In order to have full UTF-8 support,
+ * you have to add useBodyEncodingForURI="true" to Connector in server.xml.
+ * 
+ * For Jetty use org.mortbay.jetty.servlet.DefaultServlet as base class.
+ */
 public class DefaultServlet extends org.apache.catalina.servlets.DefaultServlet {
-	// for Jetty: org.mortbay.jetty.servlet.DefaultServlet
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		try {
-			// For Tomcat: add useBodyEncodingForURI="true" to Connector in server.xml
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
 			Dispatcher.forward(request, response, "/site/Controller.jsp");

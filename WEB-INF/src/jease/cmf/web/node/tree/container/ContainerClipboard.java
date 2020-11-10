@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,15 +16,41 @@
  */
 package jease.cmf.web.node.tree.container;
 
-import jfix.zk.*;
+import jfix.zk.Images;
+import jfix.zk.Listbox;
+
+import org.zkoss.zul.Listhead;
+import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.ListitemRenderer;
 
 public class ContainerClipboard extends Listbox {
 
-	public ContainerClipboard() {
+	public ContainerClipboard(int[] props) {
 		setWidth("100%");
 		setNullable(false);
 		setRows(1);
-		clear();
+		Listhead listhead = new Listhead();
+		listhead.setStyle("height: 1px;");
+		for (int i = 0; i < props.length; i++) {
+			Listheader listheader = new Listheader(" ");
+			listheader.setHflex("" + props[i]);
+			listhead.appendChild(listheader);
+		}
+		appendChild(listhead);
+		setValues(new Object[] { null });
+	}
+
+	public void setItemRenderer(final ListitemRenderer itemRenderer) {
+		super.setItemRenderer(new ListitemRenderer() {
+			public void render(Listitem listitem, Object object)
+					throws Exception {
+				itemRenderer.render(listitem, object);
+				if (object == null) {
+					listitem.setImage(Images.Paste);
+				}
+			}
+		});
 	}
 
 	public void clear() {

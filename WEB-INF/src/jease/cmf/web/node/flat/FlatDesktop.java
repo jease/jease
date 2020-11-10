@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 package jease.cmf.web.node.flat;
 
 import jease.cmf.web.JeaseSession;
-import jease.cmf.web.node.*;
+import jease.cmf.web.node.NodeRefreshState;
 import jfix.zk.ObjectTable;
 import jfix.zk.Panel;
 import jfix.zk.Refreshable;
@@ -29,7 +29,7 @@ public class FlatDesktop extends Row implements Refreshable {
 	private Panel contentPanel;
 	private NodeRefreshState refreshState;
 
-	public FlatDesktop() {
+	public FlatDesktop() {	
 		table = new FlatTable();
 		contentPanel = new Panel(table);
 		refreshState = new NodeRefreshState();

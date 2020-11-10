@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@ import jease.cmf.domain.Node;
 
 public class JeaseSession extends jfix.zk.Sessions {
 
-	private static final String JEASE_ROOTS = "JEASE_ROOTS";
-	private static final String JEASE_CONTAINER = "JEASE_CONTAINER";
-	private static final String JEASE_CONFIG = "JEASE_CONFIG";
+	public static final String JEASE_ROOTS = "JEASE_ROOTS";
+	public static final String JEASE_CONTAINER = "JEASE_CONTAINER";
+	public static final String JEASE_CONFIG = "JEASE_CONFIG";
 
 	public static void setRoots(Node[] nodes) {
 		set(JEASE_ROOTS, nodes);

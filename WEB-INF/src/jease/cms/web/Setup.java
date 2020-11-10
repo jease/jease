@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,6 +28,9 @@ import jfix.zk.Div;
 import jfix.zk.Window;
 import jfix.zk.ZK;
 
+/**
+ * Initial setup of JeaseCMS: create root node and administration account.
+ */
 public class Setup extends Div {
 
 	public Setup() {
@@ -39,6 +42,10 @@ public class Setup extends Div {
 		} else {
 			redirectToLogin();
 		}
+	}
+
+	private void redirectToLogin() {
+		ZK.redirect("..");
 	}
 
 	private void createRootFolder() {
@@ -55,29 +62,25 @@ public class Setup extends Div {
 		administrator.setAdministrator(true);
 		administrator.setRoots(new Folder[] { (Folder) Nodes.getRoot() });
 
-		Editor userEditor = new Editor() {
-			public void init() {
-				hideButtons();
-				getSaveButton().setVisible(true);
-				disableAdministration();
-				super.init();
-			}
-
-			public void save() {
-				super.save();
-				redirectToLogin();
-			}
-		};
-		userEditor.setObject(administrator);
-		userEditor.refresh();
-
 		Window window = new Window(Strings.Setup_Administrator);
-		window.appendChild(userEditor);
+		window.appendChild(new AdministratorEditor(administrator));
 
 		getRoot().appendChild(window);
 	}
 
-	private void redirectToLogin() {
-		ZK.redirect("..");
+	/**
+	 * Customized UserEditor for creation of initial administration account.
+	 */
+	private class AdministratorEditor extends Editor {
+		public AdministratorEditor(User administrator) {
+			setObject(administrator);
+			hideAdvancedFields();
+			refresh();
+		}
+
+		public void save() {
+			super.save();
+			redirectToLogin();
+		}
 	}
 }

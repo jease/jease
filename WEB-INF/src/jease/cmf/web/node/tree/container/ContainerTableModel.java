@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,11 +16,12 @@
 */
 package jease.cmf.web.node.tree.container;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
-import jease.cmf.domain.*;
-import jease.cmf.web.node.*;
-import jfix.zk.*;
+import jease.cmf.domain.Node;
+import jease.cmf.web.node.NodeTableModel;
+import jfix.zk.ObjectTableModel;
 
 public class ContainerTableModel extends ObjectTableModel<Node> {
 
@@ -42,6 +43,10 @@ public class ContainerTableModel extends ObjectTableModel<Node> {
 		return nodeTableModel.getColumns();
 	}
 
+	public int[] getProportions() {
+		return nodeTableModel.getProportions();
+	}
+	
 	public Object getValue(Node content, int column) {
 		return nodeTableModel.getValue(content, column);
 	}

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 package jease.cms.web.content.editor;
 
-import jease.cmf.service.*;
+import jease.cmf.service.Filenames;
 import jease.cms.domain.File;
 import jease.cms.web.i18n.Strings;
 import jfix.zk.ActionListener;

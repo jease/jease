@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,11 @@ import jease.cms.domain.Content;
 import jfix.db4o.Database;
 import jfix.functor.Supplier;
 import jfix.search.FullTextIndex;
+import jfix.util.Regexps;
 
+/**
+ * Service for searching through fulltext of content.
+ */
 public class FullTexts {
 
 	private static Supplier<FullTextIndex> fullTextIndex = new Supplier() {
@@ -31,7 +35,8 @@ public class FullTexts {
 			FullTextIndex index = new FullTextIndex();
 			for (Content content : Database.query(Content.class)) {
 				if (content.isVisible()) {
-					index.add(content, content.getFulltext().toString());
+					index.add(content, Regexps.stripTags(content.getFulltext()
+							.toString()));
 				}
 			}
 			index.commit();
@@ -39,6 +44,9 @@ public class FullTexts {
 		}
 	};
 
+	/**
+	 * Returns all visible content which matches the given query.
+	 */
 	public static List<Content> query(String query) {
 		try {
 			return (List<Content>) Database.query(fullTextIndex).search(query);

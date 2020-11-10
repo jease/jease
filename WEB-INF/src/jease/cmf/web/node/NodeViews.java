@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,12 +16,17 @@
 */
 package jease.cmf.web.node;
 
-import org.apache.commons.io.FileUtils;
-
 import jease.cmf.domain.Node;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.i18n.Strings;
-import jfix.zk.*;
+import jfix.zk.ActionListener;
+import jfix.zk.Checkbox;
+import jfix.zk.Image;
+import jfix.zk.Label;
+import jfix.zk.Row;
+import jfix.zk.View;
+
+import org.apache.commons.io.FileUtils;
 
 public class NodeViews {
 

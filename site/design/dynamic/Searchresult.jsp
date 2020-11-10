@@ -1,4 +1,4 @@
-<%@page import="java.util.*,jease.cmf.domain.*,jease.cms.domain.*,jease.site.service.*"%>
+<%@page import="java.util.*,jfix.util.*,jease.cmf.domain.*,jease.cms.domain.*,jease.site.service.*"%>
 <%
 	List<Content> searchResult = FullTexts.query(request.getParameter("query"));
 	for (Content content : searchResult) {
@@ -20,7 +20,7 @@
 <%
 	if (searchResult.size() == 0) {
 %>
-<p>No results for &quot;<%=request.getParameter("query")%>&quot;.</p>
+<p>No results for &quot;<%=Regexps.stripTags(request.getParameter("query"))%>&quot;.</p>
 <%
 	}
 %>

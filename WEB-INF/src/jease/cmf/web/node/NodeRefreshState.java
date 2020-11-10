@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,9 @@
 */
 package jease.cmf.web.node;
 
-import jease.cmf.domain.*;
-import jease.cmf.service.*;
-import jease.cmf.web.*;
+import jease.cmf.domain.Node;
+import jease.cmf.service.Nodes;
+import jease.cmf.web.JeaseSession;
 
 public class NodeRefreshState {
 

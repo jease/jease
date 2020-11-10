@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,11 +42,18 @@ public class Folder extends Content {
 
 	public Content getDefaultContent() {
 		for (Content child : getChildren(Content.class)) {
-			if (child.isVisible()) {
-				return child;
-			}
+			return child;
 		}
 		return null;
+	}
+
+	public StringBuilder getFulltext() {
+		Content defaultContent = getDefaultContent();
+		if (defaultContent != null) {
+			return super.getFulltext().append(defaultContent.getFulltext());
+		} else {
+			return super.getFulltext();
+		}
 	}
 
 	public Folder copy() {

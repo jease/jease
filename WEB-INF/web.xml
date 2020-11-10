@@ -75,7 +75,7 @@
 
 	<jsp-config>
 		<jsp-property-group>
-			<url-pattern>*.jsp</url-pattern>
+			<url-pattern>*.jsp</url-pattern>	
 			<trim-directive-whitespaces>true</trim-directive-whitespaces>
 		</jsp-property-group>
 	</jsp-config>
@@ -99,4 +99,6 @@
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list></web-app>
+	</welcome-file-list>
+
+</web-app>

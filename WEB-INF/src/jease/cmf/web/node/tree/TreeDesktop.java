@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,17 +16,18 @@
  */
 package jease.cmf.web.node.tree;
 
-import jease.cmf.web.*;
-import jease.cmf.web.node.*;
-import jease.cmf.web.node.tree.container.*;
-import jease.cmf.web.node.tree.navigation.*;
-import jfix.zk.*;
+import jease.cmf.web.JeaseSession;
+import jease.cmf.web.node.NodeRefreshState;
+import jease.cmf.web.node.tree.container.ContainerTable;
+import jease.cmf.web.node.tree.navigation.NavigationTree;
+import jfix.zk.ActionListener;
+import jfix.zk.Panel;
+import jfix.zk.Refreshable;
+import jfix.zk.Row;
 
-import org.zkoss.zk.ui.event.*;
+import org.zkoss.zk.ui.event.Event;
 
 public class TreeDesktop extends Row implements Refreshable {
-
-	public static String NAVIGATION_WIDTH = "275px";
 
 	private Panel navigationPanel;
 	private Panel containerPanel;
@@ -39,7 +40,6 @@ public class TreeDesktop extends Row implements Refreshable {
 		initContainerTable();
 		initRefreshState();
 		initPanels();
-		initStyle();
 	}
 
 	private void initNavigationTree() {
@@ -72,15 +72,16 @@ public class TreeDesktop extends Row implements Refreshable {
 	}
 
 	private void initPanels() {
+		// Quirk: otherwise content runs out of view
+		containerTable.setWidth("99%");
 		navigationPanel = new Panel(navigationTree);
-		containerPanel = new Panel(containerTable);
-		appendChild(navigationPanel);
-		appendChild(new Splitter(Splitter.COLLAPSE_BEFORE));
-		appendChild(containerPanel);
-	}
+		navigationPanel.setHflex("1");
+	
+		containerPanel = new Panel(containerTable);						
+		containerPanel.setHflex("3");
 
-	private void initStyle() {
-		setWidths(NAVIGATION_WIDTH);
+		appendChild(navigationPanel);		
+		appendChild(containerPanel);
 	}
 
 	public void refresh() {

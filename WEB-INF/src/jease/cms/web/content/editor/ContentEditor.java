@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,28 +16,38 @@
  */
 package jease.cms.web.content.editor;
 
-import java.util.*;
+import java.util.Date;
 
-import jease.cmf.service.*;
-import jease.cmf.web.*;
-import jease.cmf.web.node.*;
-import jease.cms.domain.*;
-import jease.cms.service.*;
-import jease.cms.web.i18n.*;
-import jfix.zk.*;
+import jease.cmf.service.Nodes;
+import jease.cmf.web.JeaseSession;
+import jease.cmf.web.node.NodeEditor;
+import jease.cms.domain.Content;
+import jease.cms.domain.User;
+import jease.cms.service.Contents;
+import jease.cms.web.i18n.Strings;
+import jfix.zk.Button;
+import jfix.zk.Images;
+import jfix.zk.Modal;
+import jfix.zk.Textfield;
 
 public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
+	protected Button view = new Button(Strings.View, Images.Internet);
 	protected Textfield title = new Textfield();
 
 	protected void doInit() throws Exception {
 		super.doInit();
+
+		view.setTarget("_blank");
+		getButtons().appendChild(view);
+
 		add(Strings.Title, title);
 		init();
 	}
 
 	protected void doLoad() throws Exception {
 		super.doLoad();
+		view.setHref(getNode().getPath());
 		title.setText(getNode().getTitle());
 		load();
 	}

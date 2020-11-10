@@ -37,7 +37,7 @@ public class Node extends Persistent {
 	private Node[] children = new Node[] {};
 
 	public String getId() {
-		return id;
+		return id != null ? id : "";
 	}
 
 	public void setId(String id) {
@@ -197,7 +197,7 @@ public class Node extends Persistent {
 	}
 
 	public String getTitle() {
-		return id != null ? id : "";
+		return getId();
 	}
 
 	public boolean isContainer() {
@@ -218,7 +218,7 @@ public class Node extends Persistent {
 	}
 
 	public long getSize() {
-		return id.length();
+		return getId().length();
 	}
 
 	public Node copy() {

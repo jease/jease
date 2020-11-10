@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,11 +16,11 @@
  */
 package jease.cms.service;
 
-import java.util.*;
+import java.util.List;
 
-import jease.cms.domain.*;
-import jfix.db4o.*;
-import jfix.functor.*;
+import jease.cms.domain.User;
+import jfix.db4o.Database;
+import jfix.functor.Predicate;
 
 public class Users {
 

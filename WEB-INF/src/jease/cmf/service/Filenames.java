@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,14 +16,23 @@
  */
 package jease.cmf.service;
 
-import jfix.util.*;
+import jfix.util.Urls;
 
+/**
+ * Service methods to ease the handling of filenames.
+ */
 public class Filenames {
 
+	/**
+	 * Converts filename into id by replacing spaces with underscores.
+	 */
 	public static String asId(String filename) {
 		return filename.replace(" ", "_");
 	}
 
+	/**
+	 * Converts filename into title by removing extension.
+	 */
 	public static String asTitle(String filename) {
 		int extension = filename.lastIndexOf(".");
 		if (extension != -1) {
@@ -33,6 +42,9 @@ public class Filenames {
 		}
 	}
 
+	/**
+	 * Converts filename into content-type.
+	 */
 	public static String asContentType(String filename) {
 		return Urls.guessContentTypeFromName(filename);
 	}

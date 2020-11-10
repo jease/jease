@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,13 @@
  */
 package jease.cmf.service;
 
-import jease.cmf.domain.*;
-import jfix.db4o.*;
-import jfix.functor.*;
+import jease.cmf.domain.Node;
+import jease.cmf.domain.NodeException;
+import jfix.db4o.Database;
+import jfix.functor.Command;
+import jfix.functor.Predicate;
+import jfix.functor.Procedure;
+import jfix.functor.Supplier;
 
 public class Nodes {
 

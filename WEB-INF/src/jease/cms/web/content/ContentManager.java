@@ -2,14 +2,21 @@ package jease.cms.web.content;
 
 import java.io.File;
 
-import jease.cmf.web.*;
-import jease.cms.domain.*;
-import jease.cms.service.*;
-import jfix.zk.*;
+import jease.cmf.web.Jease;
+import jease.cmf.web.JeaseSession;
+import jease.cms.domain.User;
+import jease.cms.service.Imports;
+import jfix.zk.ActionListener;
+import jfix.zk.Medias;
+import jfix.zk.Modal;
 
-import org.zkoss.util.media.*;
-import org.zkoss.zk.ui.event.*;
+import org.zkoss.util.media.Media;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.UploadEvent;
 
+/**
+ * JeaseCMS with customized UploadListener for quick file import.
+ */
 public class ContentManager extends Jease {
 
 	public ContentManager() {

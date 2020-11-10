@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,31 +16,34 @@
  */
 package jease.cmf.web.node.tree.navigation;
 
-import jease.cmf.domain.*;
-import jease.cmf.service.*;
-import jease.cmf.web.*;
-import jfix.zk.*;
+import jease.cmf.domain.Node;
+import jease.cmf.domain.NodeException;
+import jease.cmf.service.Nodes;
+import jease.cmf.web.JeaseSession;
+import jfix.zk.ActionListener;
+import jfix.zk.Modal;
 import jfix.zk.Tree;
 
-import org.zkoss.zk.ui.*;
-import org.zkoss.zk.ui.event.*;
-import org.zkoss.zul.*;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.DropEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Treeitem;
+import org.zkoss.zul.Treerow;
 
 public class NavigationTree extends Tree {
 
 	public NavigationTree() {
-		ActionListener dropListener = new ActionListener() {
+		setTreeitemRenderer(new NavigationTreeRenderer(new ActionListener() {
 			public void actionPerformed(Event event) {
 				dropPerformed((DropEvent) event);
 			}
-		};
-		ActionListener selectListener = new ActionListener() {
+		}));
+		addSelectListener(new ActionListener() {
 			public void actionPerformed(Event event) {
 				selectPerformed();
 			}
-		};
-		setTreeitemRenderer(new NavigationTreeRenderer(dropListener));
-		addSelectListener(selectListener);
+		});
 		setModel(new NavigationTreeModel(JeaseSession.getRoots()));
 	}
 

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,18 +16,32 @@
  */
 package jease.cms.service;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Date;
 
-import jease.cmf.domain.*;
-import jease.cmf.service.*;
-import jease.cms.domain.*;
+import jease.cmf.domain.Node;
+import jease.cmf.domain.NodeException;
+import jease.cmf.service.Filenames;
+import jease.cmf.service.Nodes;
+import jease.cms.domain.Content;
 import jease.cms.domain.File;
-import jfix.util.*;
-import jfix.util.Zipfiles.*;
+import jease.cms.domain.Folder;
+import jease.cms.domain.Image;
+import jease.cms.domain.Text;
+import jease.cms.domain.User;
+import jfix.util.Zipfiles;
+import jfix.util.Zipfiles.EntryHandler;
 
-import org.apache.commons.io.*;
+import org.apache.commons.io.IOUtils;
 
+/**
+ * Service to import single files or whole file-systems (as zipped files which
+ * will be automatically unzipped) into Jease.
+ */
 public class Imports {
 
 	public static void fromFile(final String filename, final java.io.File file,

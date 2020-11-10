@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,7 +18,12 @@ package jease.cms.web.content.editor;
 
 import jease.cms.domain.News;
 import jease.cms.web.i18n.Strings;
-import jfix.zk.*;
+import jfix.zk.ActionListener;
+import jfix.zk.Checkbox;
+import jfix.zk.Column;
+import jfix.zk.Datefield;
+import jfix.zk.RichTextarea;
+import jfix.zk.Textarea;
 
 import org.zkoss.zk.ui.event.Event;
 
@@ -30,6 +35,7 @@ public class NewsEditor extends ContentEditor<News> {
 	Datefield date = new Datefield();
 	
 	public NewsEditor() {
+		story.setHeight("350px");
 		emptyTeaser.addCheckListener(new ActionListener() {
 			public void actionPerformed(Event event) {
 				emptyTeaserChecked(emptyTeaser.isChecked());

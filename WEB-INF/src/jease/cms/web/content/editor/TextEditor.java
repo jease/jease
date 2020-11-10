@@ -16,11 +16,15 @@
  */
 package jease.cms.web.content.editor;
 
-import jease.cms.domain.*;
-import jease.cms.web.i18n.*;
-import jfix.zk.*;
+import jease.cms.domain.Text;
+import jease.cms.web.i18n.Strings;
+import jfix.zk.ActionListener;
+import jfix.zk.Checkbox;
+import jfix.zk.Div;
+import jfix.zk.RichTextarea;
+import jfix.zk.Textarea;
 
-import org.zkoss.zk.ui.event.*;
+import org.zkoss.zk.ui.event.Event;
 
 public class TextEditor extends ContentEditor<Text> {
 
@@ -29,7 +33,9 @@ public class TextEditor extends ContentEditor<Text> {
 	Checkbox plainMode = new Checkbox(Strings.Plaintext);
 
 	public TextEditor() {
-		plainText.setHeight("300px");
+		richText.setHeight("350px");
+		plainText.setHeight("350px");
+		plainText.setWidth("100%");
 		plainMode.addCheckListener(new ActionListener() {
 			public void actionPerformed(Event evt) {
 				updateTextMode();
@@ -38,7 +44,7 @@ public class TextEditor extends ContentEditor<Text> {
 	}
 
 	public void init() {
-		add(Strings.Content, new Column(richText, plainText, new Div("text-align: right;", plainMode)));
+		add(Strings.Content, new Div(richText, plainText, new Div("text-align: right;", plainMode)));
 	}
 
 	public void load() {

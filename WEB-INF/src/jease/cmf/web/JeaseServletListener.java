@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,10 @@
  */
 package jease.cmf.web;
 
-import javax.servlet.*;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
-import jfix.db4o.*;
+import jfix.db4o.Database;
 
 public class JeaseServletListener implements ServletContextListener {
 

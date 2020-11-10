@@ -16,12 +16,18 @@
  */
 package jease.cmf.web;
 
-import jease.cmf.web.i18n.*;
-import jease.cmf.web.node.flat.*;
-import jease.cmf.web.node.tree.*;
-import jfix.zk.*;
+import jease.cmf.web.i18n.Strings;
+import jease.cmf.web.node.flat.FlatDesktop;
+import jease.cmf.web.node.tree.TreeDesktop;
+import jfix.zk.ActionListener;
+import jfix.zk.Div;
+import jfix.zk.Fileupload;
+import jfix.zk.Radiobutton;
+import jfix.zk.Radiogroup;
+import jfix.zk.Refreshable;
+import jfix.zk.Row;
 
-import org.zkoss.zk.ui.event.*;
+import org.zkoss.zk.ui.event.Event;
 
 public class Jease extends Div implements Refreshable {
 
@@ -31,7 +37,7 @@ public class Jease extends Div implements Refreshable {
 	private Radiobutton viewFlatDesktop = new Radiobutton(Strings.Flat);
 	private TreeDesktop treeDesktop = new TreeDesktop();
 	private FlatDesktop flatDesktop = new FlatDesktop();
-	private Fileuploader fileuploader = new Fileuploader();
+	private Fileupload fileupload = new Fileupload();
 
 	public Jease() {
 		ActionListener desktopSwitch = new ActionListener() {
@@ -46,7 +52,7 @@ public class Jease extends Div implements Refreshable {
 
 		basementArea.setPack("stretch");
 		basementArea.appendChild(new Radiogroup(viewTreeDesktop, viewFlatDesktop));
-		basementArea.appendChild(new Div("text-align: right;", fileuploader));
+		basementArea.appendChild(new Div("text-align: right;", fileupload));
 
 		appendChild(desktopArea);
 		appendChild(basementArea);
@@ -59,7 +65,9 @@ public class Jease extends Div implements Refreshable {
 		desktopArea.setWidth("100%");
 		basementArea.setWidth("100%");
 		treeDesktop.setWidth("100%");
+		treeDesktop.setPack("stretch");
 		flatDesktop.setWidth("100%");
+		flatDesktop.setPack("stretch");
 	}
 
 	private void switchDesktop() {
@@ -74,7 +82,7 @@ public class Jease extends Div implements Refreshable {
 	}
 
 	public void addUploadListener(ActionListener actionListener) {
-		fileuploader.addUploadListener(actionListener);
+		fileupload.addUploadListener(actionListener);
 	}
 
 }

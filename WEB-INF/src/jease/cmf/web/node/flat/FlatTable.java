@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  */
 package jease.cmf.web.node.flat;
 
-import jease.cmf.web.*;
-import jease.cmf.web.node.*;
+import jease.cmf.web.JeaseSession;
+import jease.cmf.web.node.NodeTable;
 
 public class FlatTable extends NodeTable {
 

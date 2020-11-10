@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -13,15 +13,16 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cmf.web.node.flat;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
-import jease.cmf.domain.*;
-import jease.cmf.web.i18n.*;
-import jease.cmf.web.node.*;
-import jfix.zk.*;
+import jease.cmf.domain.Node;
+import jease.cmf.web.i18n.Strings;
+import jease.cmf.web.node.NodeTableModel;
+import jfix.zk.ObjectTableModel;
 
 public class FlatTableModel extends ObjectTableModel<Node> {
 
@@ -47,6 +48,19 @@ public class FlatTableModel extends ObjectTableModel<Node> {
 			newCols[i + 1] = oldCols[i];
 		}
 		return newCols;
+	}
+
+	public int[] getProportions() {
+		int[] oldProps = nodeTableModel.getProportions();
+		int[] newProps = new int[oldProps.length + 1];
+		newProps[0] = 1;
+		for (int i = 0; i < oldProps.length; i++) {
+			newProps[i + 1] = oldProps[i];
+			if (oldProps[i] > newProps[0]) {
+				newProps[0] = oldProps[i];
+			}
+		}
+		return newProps;
 	}
 
 	public Object getValue(final Node content, int column) {

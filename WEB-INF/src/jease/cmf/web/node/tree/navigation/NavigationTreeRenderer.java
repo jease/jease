@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ public class NavigationTreeRenderer implements TreeitemRenderer {
 	public void render(Treeitem treeitem, Object value) throws Exception {
 		Node node = (Node) value;
 		treeitem.setLabel(node.getId());
-		treeitem.setTooltiptext(node.getTitle());
+		treeitem.getTreerow().setTooltiptext(node.toString());
 		treeitem.setImage(JeaseSession.getConfig().getIcon(node));
 		treeitem.setValue(node);
 		if (!Arrays.contains(JeaseSession.getRoots(), node)) {

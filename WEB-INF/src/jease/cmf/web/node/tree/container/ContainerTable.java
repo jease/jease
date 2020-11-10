@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,20 +16,28 @@
  */
 package jease.cmf.web.node.tree.container;
 
-import jease.cmf.domain.*;
-import jease.cmf.service.*;
-import jease.cmf.web.*;
-import jease.cmf.web.node.*;
-import jfix.util.*;
-import jfix.zk.*;
+import jease.cmf.domain.Node;
+import jease.cmf.domain.NodeException;
+import jease.cmf.service.Nodes;
+import jease.cmf.web.JeaseSession;
+import jease.cmf.web.node.NodeTable;
+import jease.cmf.web.node.NodeTableModel;
+import jfix.util.Arrays;
+import jfix.zk.ActionListener;
+import jfix.zk.Modal;
 
-import org.zkoss.zk.ui.*;
-import org.zkoss.zk.ui.event.*;
-import org.zkoss.zul.*;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.DropEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Treeitem;
+import org.zkoss.zul.Treerow;
 
 public class ContainerTable extends NodeTable {
 
-	private ContainerClipboard clipboard = new ContainerClipboard();
+	private ContainerClipboard clipboard;
+	private NodeTableModel nodeTableModel;
 
 	public ContainerTable() {
 		initTableModel();
@@ -38,7 +46,8 @@ public class ContainerTable extends NodeTable {
 	}
 
 	private void initTableModel() {
-		init(new ContainerTableModel(JeaseSession.getConfig().newTableModel()));
+		nodeTableModel = JeaseSession.getConfig().newTableModel();
+		init(new ContainerTableModel(nodeTableModel));
 	}
 
 	private void initItemRenderer() {
@@ -53,6 +62,7 @@ public class ContainerTable extends NodeTable {
 	}
 
 	private void initClipboard() {
+		clipboard = new ContainerClipboard(nodeTableModel.getProportions());
 		clipboard.setItemRenderer(getListbox().getItemRenderer());
 		appendChild(clipboard);
 	}
@@ -67,11 +77,12 @@ public class ContainerTable extends NodeTable {
 
 		if (dragged instanceof Listitem) {
 			dragged.getParent().removeChild(dragged);
-			target.getParent().insertBefore(dragged, target);
-			if (!targetIsNodeContainer) {
+			if (targetIsNodeContainer) {
+				target.getParent().insertBefore(dragged, target);
+			} else {
 				// Item is dragged onto clipboard, so we disable further
 				// dropping, because we want only one item in clipboard.
-				((Listitem) dragged).setDroppable(null);
+				clipboard.clip(((Listitem) dragged).getValue());
 			}
 		}
 
@@ -103,6 +114,8 @@ public class ContainerTable extends NodeTable {
 
 	public void refresh() {
 		super.refresh();
-		clipboard.clear();
+		if (clipboard != null) {
+			clipboard.clear();
+		}
 	}
 }

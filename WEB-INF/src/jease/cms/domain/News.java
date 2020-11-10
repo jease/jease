@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,9 @@
  */
 package jease.cms.domain;
 
-import java.util.*;
+import java.util.Date;
 
-import jfix.util.*;
+import jfix.util.Dates;
 
 public class News extends Content {
 

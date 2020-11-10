@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,11 @@
  */
 package jease.cmf.web.node.constructor;
 
-import jease.cmf.domain.*;
-import jease.cmf.web.*;
-import jfix.zk.*;
+import jease.cmf.domain.Node;
+import jease.cmf.domain.NodeException;
+import jease.cmf.web.JeaseSession;
+import jfix.zk.Refreshable;
+import jfix.zk.Selectfield;
 
 public class NodeConstructor extends Selectfield implements Refreshable {
 

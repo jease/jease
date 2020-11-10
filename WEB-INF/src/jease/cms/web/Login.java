@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,15 +16,20 @@
  */
 package jease.cms.web;
 
-import jease.cmf.service.*;
-import jease.cmf.web.*;
-import jease.cms.domain.*;
-import jease.cms.service.*;
-import jease.cms.web.content.*;
-import jease.cms.web.i18n.*;
-import jfix.util.*;
-import jfix.zk.*;
+import jease.cmf.service.Nodes;
+import jease.cmf.web.JeaseSession;
+import jease.cms.domain.User;
+import jease.cms.service.Users;
+import jease.cms.web.content.Configuration;
+import jease.cms.web.content.ContentManager;
+import jease.cms.web.i18n.Strings;
+import jfix.util.Validations;
+import jfix.zk.LoginWindow;
+import jfix.zk.Tabbox;
 
+/**
+ * Login into JeaseCMS: init user session and display tab-navigation.
+ */
 public class Login extends LoginWindow {
 
 	public String getTitle() {
@@ -36,13 +41,13 @@ public class Login extends LoginWindow {
 		User user = Users.queryByLogin(login, password);
 		if (user != null) {
 			if (Validations.isNotEmpty(user.getRoots())) {
-				initJeaseSession(user);
+				initSession(user);
 			}
 			showNavigation(user);
 		}
 	}
 
-	private void initJeaseSession(User user) {
+	private void initSession(User user) {
 		JeaseSession.set(user);
 		JeaseSession.setRoots(user.getRoots());
 		JeaseSession.setContainer(user.getRoots()[0]);

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ public class User extends Persistent {
 	private String name;
 	private String login;
 	private String password;
+	private String email;
 	private Folder[] roots;
 	private boolean administrator;
 
@@ -59,6 +60,14 @@ public class User extends Persistent {
 
 	public Folder[] getRoots() {
 		return roots;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public boolean isAdministrator() {

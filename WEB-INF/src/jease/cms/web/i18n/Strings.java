@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009 maik.jablonski@gmail.com
+    Copyright (C) 2010 maik.jablonski@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,13 +23,14 @@ public class Strings {
 	static {
 		I18N.init(Strings.class);
 	}
-	
+		
 	public static String Administrator;
 	public static String Content;
 	public static String Content_is_not_deletable;
 	public static String Content_is_required;
 	public static String Date;
 	public static String Editor;
+	public static String Email;
 	public static String Empty_Teaser;
 	public static String File;
 	public static String File_is_required;
@@ -61,6 +62,7 @@ public class Strings {
 	public static String Url;
 	public static String Url_is_required;
 	public static String User;
+	public static String View;
 	public static String Visible;
 	public static String Yes;
 
