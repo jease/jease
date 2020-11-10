@@ -1,5 +1,10 @@
-<%@page import="jfix.servlet.*,jease.cms.domain.*"%>
+<%@page import="jfix.util.*,jfix.servlet.*,jease.cms.domain.*"%>
 <%
-	File file = (File) request.getAttribute("Node");		
-	Servlets.write(file.getFile(), file.getContentType(), response);
+	File file = (File) request.getAttribute("Node");
+	if (file.getContentType().startsWith("image") && request.getParameter("scale") != null) {
+		int scale = Integer.parseInt(request.getParameter("scale"));
+		Servlets.write(Images.scale(file.getFile(), scale), file.getContentType(), response);
+	} else {
+		Servlets.write(file.getFile(), file.getContentType(), response);
+	}
 %>

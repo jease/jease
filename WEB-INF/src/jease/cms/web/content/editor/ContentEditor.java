@@ -21,7 +21,6 @@ import java.util.Date;
 import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.NodeEditor;
-import jease.cmf.web.node.browser.NodeViewer;
 import jease.cms.domain.Content;
 import jease.cms.domain.Factory;
 import jease.cms.domain.User;
@@ -36,6 +35,7 @@ import jfix.zk.Images;
 import jfix.zk.Modal;
 import jfix.zk.Selectfield;
 import jfix.zk.Textfield;
+import jfix.zk.WebBrowser;
 
 import org.zkoss.zk.ui.event.Event;
 
@@ -66,7 +66,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
 		viewContent.addClickListener(new ActionListener() {
 			public void actionPerformed(Event event) {
-				getRoot().appendChild(new NodeViewer(getNode()));
+				getRoot().appendChild(new WebBrowser(getNode().getPath()));
 			}
 		});
 		getButtons().appendChild(viewContent);

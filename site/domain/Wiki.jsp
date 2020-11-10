@@ -3,6 +3,6 @@
 	Wiki wiki = (Wiki) request.getAttribute("Node");
 %>
 <div class="Wiki">
-<h1><%=wiki.getTitle()%></h1>
-<div><%= Markups.renderMediaWiki(wiki.getContent()) %></div>
+<h1 class="Title"><%=wiki.getTitle()%></h1>
+<div class="Content"><%= Markups.renderMediaWiki(wiki.getContent()) %></div>
 </div>

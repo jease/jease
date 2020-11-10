@@ -13,7 +13,11 @@
 	// If an Access-Object is guarding the node, use it to force authorization.
 	Access access = Authorizations.check(node, request.getHeader("Authorization"));
 	if (access != null) {
-		request.setAttribute("Node", node = access);		
+		// If current user can view content in the CMS, skip authorization.
+		User user = (User) session.getAttribute(User.class.toString()); 
+		if (user == null || !access.isDescendant(user.getRoots())) { 
+			request.setAttribute("Node", node = access);
+		}
 	}
 
 	// Which template should be used to render the node?

@@ -74,7 +74,7 @@
 
 		<div id="sidebar">
 			<div id="search">			
-				<form method="get" action="." class="searchform">
+				<form method="get" action="<%=request.getAttribute("Page.Root") %>" class="searchform">
 				<fieldset>
 					<input type="text" class="textbox" name="query" value="<%=request.getParameter("query") != null ? request.getParameter("query") : ""%>" />
 					<input type="hidden" name="page" value="/site/service/Search.jsp" />

@@ -20,16 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jease.Registry;
-import jease.cmf.domain.Node;
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
-import jease.cms.domain.Folder;
 import jease.cms.domain.Reference;
 import jease.cms.domain.Trash;
 import jease.cms.domain.User;
 import jfix.db4o.Database;
+import jfix.functor.Function;
 import jfix.functor.Functors;
-import jfix.functor.Predicate;
 
 public class Contents {
 
@@ -38,6 +36,15 @@ public class Contents {
 	 */
 	public static Content[] getAvailableTypes() {
 		return Registry.getContents();
+	}
+
+	public static String[] getClassNamesForAvailableTypes() {
+		return Functors.transform(getAvailableTypes(),
+				new Function<Content, String>() {
+					public String evaluate(Content content) {
+						return content.getClass().getName();
+					}
+				});
 	}
 
 	/**
@@ -49,7 +56,7 @@ public class Contents {
 			return true;
 		}
 		for (User user : Database.query(User.class)) {
-			for (Folder folder : user.getRoots()) {
+			for (Content folder : user.getRoots()) {
 				if (folder.isDescendant(content)) {
 					return false;
 				}
@@ -67,7 +74,7 @@ public class Contents {
 	private static boolean isDeleteGuardedByTrash(Content content) {
 		return !(content instanceof Trash)
 				&& content.getParents(Trash.class).length == 0
-				&& content.getGuard(Trash.class) != null;
+				&& ((Content) content.getParent()).getGuard(Trash.class) != null;
 	}
 
 	/**
@@ -86,7 +93,7 @@ public class Contents {
 				Nodes.save(trash);
 			}
 		} else {
-			Trash trash = content.getGuard(Trash.class);
+			Trash trash = ((Content) content.getParent()).getGuard(Trash.class);
 			if (trash == null || content.isDescendant(trash)) {
 				Nodes.delete(content);
 			} else {
@@ -94,17 +101,6 @@ public class Contents {
 				Nodes.save(trash);
 			}
 		}
-	}
-
-	/**
-	 * Returns only non privileged nodes from given array.
-	 */
-	public static Node[] filterNotPrivileged(Node[] nodes) {
-		return Functors.filter(nodes, new Predicate<Node>() {
-			public boolean test(Node node) {
-				return !((Content) node).isPrivileged();
-			}
-		});
 	}
 
 	/**
@@ -119,4 +115,5 @@ public class Contents {
 		}
 		return contents.toArray(new Content[] {});
 	}
+
 }

@@ -40,7 +40,7 @@ $(document).ready(function(){
 							</div>
 						</div>
 						<div class="fright">
-							<form action="." id="search-form">
+							<form action="<%=request.getAttribute("Page.Root") %>" id="search-form">
 							<fieldset>
 								<input type="text" class="text" name="query" value="<%=request.getParameter("query") != null ? request.getParameter("query") : ""%>" />
 								<input type="hidden" name="page" value="/site/service/Search.jsp" />

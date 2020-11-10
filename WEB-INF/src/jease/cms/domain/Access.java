@@ -16,6 +16,9 @@
  */
 package jease.cms.domain;
 
+import jfix.util.Crypts;
+import jfix.util.Validations;
+
 /**
  * Access-Object which allows to protect containers with a stored combination
  * of login and password.
@@ -43,8 +46,19 @@ public class Access extends Content {
 		return password;
 	}
 
+	public boolean hasPassword(String password) {
+		return Validations.equals(this.password, encrypt(password));
+	}
+
 	public void setPassword(String password) {
-		this.password = password;
+		if (!Validations.equals(this.password, password)) {
+			this.password = encrypt(password);
+		}
+	}
+
+	protected String encrypt(String input) {
+		return Validations.isEmpty(input) ? input : Crypts
+				.md5(input.getBytes());
 	}
 
 	public boolean isPage() {

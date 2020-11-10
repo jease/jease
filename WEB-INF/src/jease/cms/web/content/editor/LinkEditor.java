@@ -23,7 +23,7 @@ import jfix.zk.Images;
 import jfix.zk.Linkbutton;
 import jfix.zk.Row;
 import jfix.zk.Textfield;
-import jfix.zk.ZK;
+import jfix.zk.WebBrowser;
 
 import org.zkoss.zk.ui.event.Event;
 
@@ -38,7 +38,7 @@ public class LinkEditor extends ContentEditor<Link> {
 		link.setWidth("24px");
 		link.addClickListener(new ActionListener() {
 			public void actionPerformed(Event event) {
-				ZK.redirect(url.getText(), "_blank");
+				getRoot().appendChild(new WebBrowser(url.getText()));
 			}
 		});
 	}

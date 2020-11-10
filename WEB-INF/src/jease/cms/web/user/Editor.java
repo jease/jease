@@ -20,16 +20,18 @@ import java.util.Comparator;
 
 import jease.cmf.web.JeaseSession;
 import jease.cms.domain.Folder;
+import jease.cms.domain.Role;
 import jease.cms.domain.User;
 import jease.cms.service.Users;
 import jease.cms.web.i18n.Strings;
 import jfix.db4o.Database;
 import jfix.util.Arrays;
-import jfix.zk.Checkbox;
+import jfix.util.Natural;
 import jfix.zk.ItemRenderer;
 import jfix.zk.ObjectEditor;
 import jfix.zk.Passwordfield;
 import jfix.zk.Picklist;
+import jfix.zk.Selectfield;
 import jfix.zk.Sessions;
 import jfix.zk.Textfield;
 
@@ -40,7 +42,7 @@ public class Editor extends ObjectEditor<User> {
 	Passwordfield password = new Passwordfield();
 	Passwordfield passwordRepeat = new Passwordfield();
 	Textfield email = new Textfield();
-	Checkbox administrator = new Checkbox(Strings.Administrator);
+	Selectfield role = new Selectfield();
 	Picklist roots = new Picklist(new Comparator<Folder>() {
 		public int compare(Folder o1, Folder o2) {
 			return o1.getPath().compareTo(o2.getPath());
@@ -66,8 +68,8 @@ public class Editor extends ObjectEditor<User> {
 		add(Strings.Password_Repeat, passwordRepeat);
 		add(Strings.Email, email);
 		if (isAdministrationMode()) {
+			add(Strings.Role, role);
 			add(Strings.Roots, roots);
-			add("", administrator);
 		}
 	}
 
@@ -78,7 +80,8 @@ public class Editor extends ObjectEditor<User> {
 		passwordRepeat.setText(getObject().getPassword());
 		email.setText(getObject().getEmail());
 		if (isAdministrationMode()) {
-			administrator.setChecked(getObject().isAdministrator());
+			role.setSelection(Natural.sort(Database.query(Role.class)),
+					getObject().getRole());
 			roots.setSelection(Database.query(Folder.class), getObject()
 					.getRoots());
 		}
@@ -90,7 +93,7 @@ public class Editor extends ObjectEditor<User> {
 		getObject().setPassword(password.getText());
 		getObject().setEmail(email.getText());
 		if (isAdministrationMode()) {
-			getObject().setAdministrator(administrator.isChecked());
+			getObject().setRole((Role) role.getSelectedValue());
 			getObject()
 					.setRoots(Arrays.cast(roots.getSelected(), Folder.class));
 		}
@@ -113,6 +116,8 @@ public class Editor extends ObjectEditor<User> {
 		validate(login.isEmpty(), Strings.Login_is_required);
 		validate(!password.getText().equals(passwordRepeat.getText()),
 				Strings.Passwords_do_not_match);
+		validate(!Users.isIdentityUnique(getObject(), login.getValue(),
+				email.getValue()), Strings.Identity_is_not_unique);
 	}
 
 	private boolean isAdministrationMode() {

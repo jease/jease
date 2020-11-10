@@ -24,6 +24,7 @@ import jease.cms.domain.Content;
 import jfix.db4o.Database;
 import jfix.functor.Supplier;
 import jfix.util.Crypts;
+import jfix.util.Validations;
 
 /**
  * Service for handling authorizations via Access-Objects.
@@ -43,21 +44,41 @@ public class Authorizations {
 	 * returned, which should force an unauthorized-response.
 	 */
 	public static Access check(Content content, String authorizationHeader) {
-		Map<Content, Access> cache = Database.query(accessByContent);
-		if (!cache.containsKey(content)) {
-			cache.put(content, content.getGuard(Access.class));
-		}
-		Access access = cache.get(content);
+		Access access = getGuard(content);
 		if (access != null) {
 			String userpass = Crypts
 					.decodeBasicAuthorization(authorizationHeader);
-			if (userpass == null
-					|| !userpass.equals(access.getLogin() + ":"
-							+ access.getPassword())) {
+			if (userpass == null) {
+				return access;
+			}
+			int index = userpass.indexOf(":");
+			String login = userpass.substring(0, index);
+			String password = userpass.substring(index + 1);
+			if (!(Validations.equals(access.getLogin(), login) && access
+					.hasPassword(password))) {
 				return access;
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Returns guarding Access object for given content or null, if content is
+	 * not guarded.
+	 */
+	public static Access getGuard(Content content) {
+		Map<Content, Access> cache = Database.query(accessByContent);
+		if (!cache.containsKey(content)) {
+			cache.put(content, content.getGuard(Access.class));
+		}
+		return (Access) cache.get(content);
+	}
+
+	/**
+	 * Returns true if content is guarded by an Access object.
+	 */
+	public static boolean isGuarded(Content content) {
+		return getGuard(content) != null;
 	}
 
 }

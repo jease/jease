@@ -13,13 +13,13 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package jease.cms.web.i18n;
 
 import jfix.util.I18N;
 
 public class Strings {
-	
+
 	static {
 		I18N.init(Strings.class);
 	}
@@ -44,10 +44,12 @@ public class Strings {
 	public static String File;
 	public static String File_is_required;
 	public static String Id;
+	public static String Identity_is_not_unique;
 	public static String Jease;
 	public static String Key;
 	public static String Key_is_required;
 	public static String Key_must_be_unique;
+	public static String Labeled;
 	public static String Last_modified;
 	public static String Login;
 	public static String Login_is_required;
@@ -65,13 +67,17 @@ public class Strings {
 	public static String Path;
 	public static String Path_is_required;
 	public static String Plaintext;
+	public static String Preface;
 	public static String Properties;
 	public static String Purge;
 	public static String Restore;
 	public static String Revision;
 	public static String Revisions;
 	public static String Revisions_purged;
+	public static String Role;
 	public static String Roots;
+	public static String Scale;
+	public static String Scale_is_not_valid;
 	public static String Setup_Administrator;
 	public static String Size;
 	public static String Story;

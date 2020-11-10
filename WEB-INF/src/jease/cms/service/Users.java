@@ -23,6 +23,7 @@ import jease.cms.domain.Content;
 import jease.cms.domain.User;
 import jfix.db4o.Database;
 import jfix.functor.Predicate;
+import jfix.util.Validations;
 
 public class Users {
 
@@ -41,9 +42,6 @@ public class Users {
 	 * Returns all users who are modifiable by given user. At the current state
 	 * administrators will retrieve all existing users, all other users will
 	 * retrieve themselfes.
-	 * 
-	 * TODO: This may change when users will be able to delegate rights
-	 * depending on their roots and administration rights.
 	 */
 	public static List<User> queryModifiableByUser(final User user) {
 		return Database.query(User.class, new Predicate<User>() {
@@ -54,13 +52,41 @@ public class Users {
 	}
 
 	/**
-	 * Returns a unique user for given combination of login / password.
+	 * Returns a unique user for given combination of login / password. If the
+	 * login is also compared to the email address of the user.
 	 */
 	public static User queryByLogin(final String login, final String password) {
 		return Database.queryUnique(User.class, new Predicate<User>() {
 			public boolean test(User user) {
-				return login.equals(user.getLogin())
-						&& password.equals(user.getPassword());
+				return (login.equals(user.getLogin()) || login.equals(user
+						.getEmail())) && user.hasPassword(password);
+			}
+		});
+	}
+
+	/**
+	 * Returns a unique user for given email address.
+	 */
+	public static User queryByEmail(final String email) {
+		return Database.queryUnique(User.class, new Predicate<User>() {
+			public boolean test(User user) {
+				return email.equals(user.getEmail());
+			}
+		});
+	}
+
+	/**
+	 * Returns true if given login and given email is unique within database for
+	 * given user.
+	 */
+	public static boolean isIdentityUnique(final User user, final String login,
+			final String email) {
+		return Database.isUnique(user, new Predicate<User>() {
+			public boolean test(User user) {
+				return (Validations.isNotEmpty(login) && login.equals(user
+						.getLogin()))
+						|| (Validations.isNotEmpty(email) && email.equals(user
+								.getEmail()));
 			}
 		});
 	}

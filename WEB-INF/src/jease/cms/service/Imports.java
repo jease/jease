@@ -33,6 +33,7 @@ import jease.cms.domain.Folder;
 import jease.cms.domain.Image;
 import jease.cms.domain.Text;
 import jease.cms.domain.User;
+import jfix.util.Validations;
 import jfix.util.Zipfiles;
 import jfix.util.Zipfiles.EntryHandler;
 
@@ -52,7 +53,9 @@ public class Imports {
 				public void process(String path, String entryName,
 						InputStream inputStream) throws Exception {
 					try {
-						makeFolders(parent, path, editor);
+						if (Validations.isNotEmpty(path)) {
+							makeFolders(parent, path, editor);
+						}
 						if (inputStream != null) {
 							Imports.fromInputStream(entryName, inputStream,
 									parent.getChild(Filenames.asId(path)),
@@ -69,9 +72,7 @@ public class Imports {
 			}
 		} else {
 			InputStream inputStream = new FileInputStream(file);
-			Imports
-					.fromInputStream(file.getName(), inputStream, parent,
-							editor);
+			Imports.fromInputStream(file.getName(), inputStream, parent, editor);
 			inputStream.close();
 		}
 	}

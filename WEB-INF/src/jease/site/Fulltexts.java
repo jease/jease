@@ -17,11 +17,13 @@
 package jease.site;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import jease.cms.domain.Content;
 import jease.cms.domain.Trash;
 import jfix.db4o.Database;
+import jfix.functor.Predicate;
 import jfix.functor.Supplier;
 import jfix.search.FullTextIndex;
 import jfix.util.Regexps;
@@ -35,24 +37,45 @@ public class Fulltexts {
 	private static Supplier<FullTextIndex> fullTextIndex = new Supplier() {
 		public FullTextIndex get() {
 			FullTextIndex index = new FullTextIndex();
-			for (Content content : Database.query(Content.class)) {
-				if (content.isVisible()
-						&& Validations.isEmpty(content.getParents(Trash.class))) {
-					index.add(content,
-							Regexps.stripTags(content.getFulltext().toString()));
-				}
+			for (Content content : getContents()) {
+				index.add(content,
+						Regexps.stripTags(content.getFulltext().toString()));
 			}
 			index.commit();
 			return index;
 		}
 	};
 
+	private static Collection<Content> getContents() {
+		return Database.query(Content.class, new Predicate<Content>() {
+			public boolean test(Content content) {
+				return content.isVisible()
+						&& Validations.isEmpty(content.getParents(Trash.class))
+						&& !Authorizations.isGuarded(content);
+			}
+		});
+	}
+
 	/**
 	 * Returns all visible content which matches the given query.
 	 */
 	public static List<Content> query(String query) {
 		try {
-			return (List<Content>) Database.query(fullTextIndex).search(query);
+			List<Content> result = new ArrayList();
+			for (Content content : (List<Content>) Database
+					.query(fullTextIndex).search(query)) {
+				// When content is child of a "paged container" (e.g. Composite),
+				// traverse upwards to the top-level container.
+				Content target = content;
+				while (((Content) target.getParent()).isPage()
+						&& ((Content) target.getParent()).isContainer()) {
+					target = (Content) target.getParent();
+				}
+				if (!result.contains(target)) {
+					result.add(target);
+				}
+			}
+			return result;
 		} catch (Exception e) {
 			return new ArrayList<Content>();
 		}

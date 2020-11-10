@@ -108,12 +108,18 @@ public class Navigations {
 	}
 
 	/**
-	 * Returns title (e.g. as page title) based on title of root node and title
-	 * of given node.
+	 * Returns title (e.g. as page title) based on title of root node, the
+	 * default content of the root node and the title of given node.
 	 */
 	public static String getPageTitle(Content content) {
-		return String.format("%s - %s", ((Content) Nodes.getRoot()).getTitle(),
-				content.getTitle());
+		Folder root = (Folder) Nodes.getRoot();
+		if (root.getContent() != null && root.getContent() != content) {
+			return String.format("%s - %s - %s", root.getTitle(), root
+					.getContent().getTitle(), content.getTitle());
+		} else {
+			return String
+					.format("%s - %s", root.getTitle(), content.getTitle());
+		}
 	}
 
 	/**

@@ -544,6 +544,24 @@ input[type=button]:hover, input[type=submit]:hover {
 	width: 100%;
 }
 
-.News div:first-child {
+.Gallery a.Image {
+	margin-right: 10px;
+	margin-bottom: 10px;
+	float: left;
+}
+
+.Gallery:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.News .Date {
 	float: right;
+}
+
+.News .Teaser {
+	font-weight: bold;
 }

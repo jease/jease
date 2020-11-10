@@ -91,6 +91,8 @@ public class Mails {
 					});
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(sender));
+			message.setReplyTo(new InternetAddress[] { new InternetAddress(
+					sender) });
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(recipients, false));
 			message.setSubject(subject, "utf-8");

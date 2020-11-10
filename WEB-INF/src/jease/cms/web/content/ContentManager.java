@@ -18,7 +18,6 @@ package jease.cms.web.content;
 
 import jease.cmf.web.Jease;
 import jease.cmf.web.JeaseSession;
-import jease.cmf.web.node.browser.NodeViewer;
 import jease.cms.domain.User;
 import jease.cms.service.Backups;
 import jease.cms.service.Imports;
@@ -30,6 +29,7 @@ import jfix.zk.Fileupload;
 import jfix.zk.Images;
 import jfix.zk.Medias;
 import jfix.zk.Modal;
+import jfix.zk.WebBrowser;
 
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
@@ -52,15 +52,17 @@ public class ContentManager extends Jease {
 			container.appendChild(newRestoreButton());
 		}
 		container.appendChild(newUploadButton());
-		container.appendChild(newViewButton());		
+		container.appendChild(newViewButton());
 	}
 
 	private Component newDumpButton() {
-		return new Button(Strings.Dump, Images.DriveCdrom, new ActionListener() {
-			public void actionPerformed(Event evt) {
-				Filedownload.save(Backups.dump(JeaseSession.getContainer()));
-			}
-		});
+		return new Button(Strings.Dump, Images.DriveCdrom,
+				new ActionListener() {
+					public void actionPerformed(Event evt) {
+						Filedownload.save(Backups.dump(JeaseSession
+								.getContainer()));
+					}
+				});
 	}
 
 	private Component newRestoreButton() {
@@ -104,12 +106,13 @@ public class ContentManager extends Jease {
 	}
 
 	private Component newViewButton() {
-		return new Button(Strings.View, Images.InternetWebBrowser, new ActionListener() {
-			public void actionPerformed(Event evt) {
-				getRoot().appendChild(
-						new NodeViewer(JeaseSession.getContainer()));
-			}
-		});
+		return new Button(Strings.View, Images.InternetWebBrowser,
+				new ActionListener() {
+					public void actionPerformed(Event evt) {
+						getRoot().appendChild(
+								new WebBrowser(JeaseSession.getContainer()
+										.getPath()));
+					}
+				});
 	}
-
 }

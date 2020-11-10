@@ -41,10 +41,19 @@ public class Reference extends Content {
 	 * not a Reference.
 	 */
 	public Content getDestination() {
-		if (content instanceof Reference) {
-			return ((Reference) content).getDestination();
+		Content destination = content;
+		while(destination instanceof Reference) {
+			destination = ((Reference) destination).getContent();
+		}
+		return destination;
+	}
+
+	public StringBuilder getFulltext() {
+		Content content = getContent();
+		if (content != null) {
+			return super.getFulltext().append(content.getFulltext());
 		} else {
-			return content;
+			return super.getFulltext();
 		}
 	}
 

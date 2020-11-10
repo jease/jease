@@ -82,7 +82,7 @@
 	  <% } %>	  	  
 	  <div id="search">
 	   	<h2>Search this site</h2>			
-		<form action="." method="get">
+		<form action="<%=request.getAttribute("Page.Root") %>" method="get">
 			<input type="text" name="query" <% if(request.getParameter("query") != null) { %>value="<%= request.getParameter("query") %>"<% } else { %>value="Enter your search..." onfocus="this.value='';"<% } %> />
 			<input type="hidden" name="page" value="/site/service/Search.jsp" />
 		</form>

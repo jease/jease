@@ -35,14 +35,6 @@ public class Script extends Content {
 		return code;
 	}
 
-	/**
-	 * A Script can access critical system-ressources, so only privileged users
-	 * should be able to add it.
-	 */
-	public boolean isPrivileged() {
-		return true;
-	}
-
 	public StringBuilder getFulltext() {
 		return super.getFulltext().append("\n").append(getCode());
 	}

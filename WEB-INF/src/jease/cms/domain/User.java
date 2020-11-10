@@ -17,12 +17,14 @@
 package jease.cms.domain;
 
 import jfix.db4o.Persistent;
+import jfix.util.Crypts;
+import jfix.util.Validations;
 
 /**
- * Users can create, update and delete content within the CMS. A user has one or
+ * Users can create, update and delete content within the CMS. A user has a role
+ * which determines which content types a user can create. A user has one or
  * more declared roots which are the folders which the user can access to
- * manipulate content. Only administrators are allowed to create other users and
- * can create privileged content-types.
+ * manipulate content.
  */
 public class User extends Persistent {
 
@@ -31,6 +33,8 @@ public class User extends Persistent {
 	private String password;
 	private String email;
 	private Folder[] roots;
+	private Role role;
+	@Deprecated
 	private boolean administrator;
 
 	public User() {
@@ -56,8 +60,19 @@ public class User extends Persistent {
 		return password;
 	}
 
+	public boolean hasPassword(String password) {
+		return Validations.equals(this.password, encrypt(password));
+	}
+
 	public void setPassword(String password) {
-		this.password = password;
+		if (!Validations.equals(this.password, password)) {
+			this.password = encrypt(password);
+		}
+	}
+
+	protected String encrypt(String input) {
+		return Validations.isEmpty(input) ? input : Crypts
+				.md5(input.getBytes());
 	}
 
 	public void setRoots(Folder[] roots) {
@@ -80,12 +95,16 @@ public class User extends Persistent {
 		this.email = email;
 	}
 
-	public boolean isAdministrator() {
-		return administrator;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
-	public void setAdministrator(boolean administrator) {
-		this.administrator = administrator;
+	public Role getRole() {
+		return role;
+	}
+
+	public boolean isAdministrator() {
+		return role != null ? role.isAdministrator() : false;
 	}
 
 	public String toString() {

@@ -210,22 +210,13 @@ public abstract class Content extends Node {
 	}
 
 	/**
-	 * If true, the content can perform serious operations with security risks
-	 * involved (e.g. access file-system, scripting), so only privileged users
-	 * (e.g. administrators) should be able to create them.
-	 */
-	public boolean isPrivileged() {
-		return false;
-	}
-
-	/**
 	 * Returns guard object of given type in upstream direction by traversing
 	 * all children of all parents for given content. In general a guard is a
 	 * child in one of the parent folders of the given object which should have
 	 * some influence on behaviour of the given object.
 	 */
 	public <E extends Content> E getGuard(Class<E> type) {
-		Node currentParent = getParent();
+		Node currentParent = this;
 		while (currentParent != null) {
 			for (E node : currentParent.getChildren(type)) {
 				return node;

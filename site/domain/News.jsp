@@ -3,10 +3,10 @@
 	News news = (News) request.getAttribute("Node");
 %>
 <div class="News">
-<div><%= news.getDate() != null ? String.format("%tF", news.getDate()) : "" %></div>
-<h1><%=news.getTitle()%></h1>
+<div class="Date"><%= news.getDate() != null ? String.format("%tF", news.getDate()) : "" %></div>
+<h1 class="Title"><%=news.getTitle()%></h1>
 <% if (Validations.isNotEmpty(news.getTeaser())) { %>
-<p><strong><%=news.getTeaser()%></strong></p>
+<p class="Teaser"><%=news.getTeaser()%></p>
 <% } %>
-<div><%=news.getStory()%></div>
+<div class="Story"><%=news.getStory()%></div>
 </div>

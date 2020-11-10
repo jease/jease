@@ -11,7 +11,9 @@
 			request.setAttribute("Node", composite);
 		} else {
 %>
-		<div class="Content <%=child.getType() %>"><a href="<%=child.getPath()%>"><%=child.getTitle()%></a></div>
+		<div class="Content <%=child.getType() %>">
+			<a href="<%=child.getPath()%>" class="<%=child.getType() %>"><%=child.getTitle()%></a>
+		</div>
 <%
 		}
 	}

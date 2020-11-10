@@ -41,7 +41,7 @@ $(document).ready(function() {
 			</ul>
 		</div>		
 		
-		<form id="search" action="." method="get">
+		<form id="search" action="<%=request.getAttribute("Page.Root") %>" method="get">
 			<input type="text" name="query" <% if(request.getParameter("query") != null) { %>value="<%= request.getParameter("query") %>"<% } else { %>value="Search this site..." onfocus="this.value='';"<% } %> />
 			<input type="hidden" name="page" value="/site/service/Search.jsp" />
 		</form>				

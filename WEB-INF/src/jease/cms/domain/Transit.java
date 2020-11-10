@@ -64,14 +64,6 @@ public class Transit extends Content {
 		return "text/html".equals(getContentType());
 	}
 
-	/**
-	 * A Transit can access the file-system of the server, therefore only
-	 * privileged users should be able to use them.
-	 */
-	public boolean isPrivileged() {
-		return true;
-	}
-
 	public long getSize() {
 		if (getFile() != null) {
 			return super.getSize() + getFile().length();

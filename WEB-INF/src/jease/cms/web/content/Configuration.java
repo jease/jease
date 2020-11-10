@@ -23,7 +23,6 @@ import jease.cmf.web.JeaseSession;
 import jease.cmf.web.node.NodeEditor;
 import jease.cmf.web.node.NodeTableModel;
 import jease.cms.domain.User;
-import jease.cms.service.Contents;
 
 /**
  * Global configuration for JeaseCMS.
@@ -39,11 +38,10 @@ public class Configuration implements JeaseConfig {
 	 * </code>
 	 */
 	public Node[] newNodes() {
-		Node[] nodes = Registry.getContents();
-		if (JeaseSession.get(User.class).isAdministrator()) {
-			return nodes;
+		if (JeaseSession.get(User.class).getRole() != null) {
+			return JeaseSession.get(User.class).getRole().getNodes();
 		} else {
-			return Contents.filterNotPrivileged(nodes);
+			return new Node[] {};
 		}
 	}
 

@@ -3,5 +3,5 @@
 	Topic topic = (Topic) request.getAttribute("Node");
 %>
 <div class="Topic">
-<h1><%= topic.getTitle() %></h1>
+<h1 class="Title"><%= topic.getTitle() %></h1>
 </div>

@@ -28,22 +28,23 @@
 <div class="Discussion">
 
 <%-- Show comment --%>
-<p>
-<% if (toplevel) { %>
-	<b><%=discussion.getTitle()%></b>
-<% } else { %>	
-	<a href="<%=discussion.getPath()%>"><%=discussion.getTitle()%></a>
-<% } %>
+<div class="Comment">
+	<span class="Title">
+		<% if (toplevel) { %>
+			<strong><%=discussion.getTitle()%></strong>
+		<% } else { %>	
+			<a href="<%=discussion.getPath()%>"><%=discussion.getTitle()%></a>
+		<% } %>
+	</span>
 	<% if (Validations.isNotEmpty(discussion.getAuthor())) {%>
-		<%= Strings.By %><%= " " + discussion.getAuthor() + " " %>
-		(<%=String.format("%1$td %1$tb %1$tY", discussion.getLastModified())%>)
+		<span class="Author"><%= Strings.By %><%= " " + discussion.getAuthor() + " " %></span>
+		<span class="Date">(<%=String.format("%1$td %1$tb %1$tY", discussion.getLastModified())%>)</span>
 	<% } %>	
-	<br />
-	<%=discussion.getComment().replace("\n","<br />")%>
-</p>
+	<p class="Text"><%=discussion.getComment().replace("\n","<br />")%></p>
+</div>
 
 <%-- Create threaded view of discussion via recursion --%>
-<ul>
+<ul class="Thread">
 	<% for (Discussion child : discussion.getChildren(Discussion.class)) { %>
 		<% if (child.isVisible()) { %>	
 		<li>
@@ -62,7 +63,7 @@
 <%-- Form with captcha to add a comment --%>
 <% if (toplevel) { %>
 	<a name="discussion<%= id %>"></a>	
-	<form action="#discussion<%= id %>" method="post">
+	<form class="Submission" action="#discussion<%= id %>" method="post">
 		<dl>
 		<dt><%= Strings.Name %>:</dt>
 		<dd><input type="text" name="author<%=id %>" maxlength="60" value="<%=author != null ? author : Strings.Anonymous %>"<%= author == null ? " onFocus=\"this.value=''\"" :"" %>/></dd>

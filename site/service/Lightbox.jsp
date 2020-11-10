@@ -5,17 +5,16 @@
 <script type="text/javascript">//<![CDATA[                                          
 $(document).ready(function(){
 	var config = {
-			show_title: false,
+			show_title: true,
 			theme: "light_rounded", 
 			default_width: 640,
 			default_height: 480,
-			overlay_gallery: false, 
+			overlay_gallery: true, 
 			hideflash: true
 	};
 	$("object,embed").attr({"width": 600, "height": 400});
-	$("a.Image img").parent().attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
+	$("a.Image").attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
 	$("a[href$=.jpg] img,a[href$=.gif] img,a[href$=.png] img").parent().attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
-	$("a[href$=.jpg],a[href$=.gif],a[href$=.png]").attr({"rel" : "prettyPhoto[image]"}).prettyPhoto(config);
 	$("a[href$=.mov]").attr({"rel" : "prettyPhoto[movie]"}).prettyPhoto(config);
 	$("a[href$=.flv]").attr({"rel" : "prettyPhoto[movie]"}).each(function() { this.href += "?print&iframe=true";}).prettyPhoto(config);
 	$("a[href$=.swf]").attr({"rel" : "prettyPhoto[flash]"}).each(function() { this.href += "?width=600&height=400"; }).prettyPhoto(config);
@@ -27,6 +26,6 @@ $(document).ready(function(){
 				window.parent.location = this.href;
 			}
 		});
-	<% } %>	
+	<% } %>
 });
 //]]></script>

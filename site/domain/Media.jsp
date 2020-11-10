@@ -1,18 +1,23 @@
-<%@page import="org.apache.commons.io.FileUtils,jfix.servlet.*,jease.cms.domain.*"%>
+<%@page import="org.apache.commons.io.FileUtils,jfix.util.*,jfix.servlet.*,jease.cms.domain.*"%>
 <%
 	Media media = (Media) request.getAttribute("Node");
 
 	if (request.getParameter("file") != null) {
-		Servlets.write(media.getFile(), media.getContentType(), response);
+		if (media.getContentType().startsWith("image") && request.getParameter("scale") != null) {
+			int scale = Integer.parseInt(request.getParameter("scale"));
+			Servlets.write(Images.scale(media.getFile(), scale), media.getContentType(), response);
+		} else {
+			Servlets.write(media.getFile(), media.getContentType(), response);
+		}
 		return;
 	}
 %>
 <div class="Media">
-<h1><%=media.getTitle()%></h1>
+<h1 class="Title"><%=media.getTitle()%></h1>
 <%
 	if (media.getContentType().startsWith("image")) {
 %>
-<a class="Image" href="<%=media.getPath() %>?file"><img src="<%=media.getPath() %>?file" alt="<%=media.getTitle()%>" title="<%=media.getTitle()%>" /></a>
+<a href="<%=media.getPath() %>?file&<%=media.getContentType().replace("/",".") %>" class="Image"><img src="<%=media.getPath() %>?file" alt="<%=media.getTitle()%>" title="<%=media.getTitle()%>" /></a>
 <%
 	} else if (media.getContentType().equals("video/x-flv")) {
 		String movie = String.format("%ssite/service/videoplayer/OSplayer.swf?autoplay=on&movie=%s;file", request.getAttribute("Page.Root"), media.getPath()); 

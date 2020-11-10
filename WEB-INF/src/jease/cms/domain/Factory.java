@@ -42,10 +42,6 @@ public class Factory extends Content {
 		return false;
 	}
 
-	public boolean isPrivileged() {
-		return true;
-	}
-
 	/**
 	 * Returns an array of properties for given content synchronized with
 	 * properties from appropriate prototype defined as child within factory.

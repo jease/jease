@@ -41,6 +41,7 @@ public class Navigation extends Tabbox {
 		public System() {
 			add(Strings.Parameter, jease.cms.web.system.parameter.Table.class,
 					Images.PreferencesSystem);
+			add(Strings.Role, jease.cms.web.role.Table.class, Images.ApplicationCertificate);
 			add(Strings.Revisions, jease.cms.web.system.revision.Control.class,
 					Images.EditUndo);
 		}

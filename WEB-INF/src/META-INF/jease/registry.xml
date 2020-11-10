@@ -36,6 +36,12 @@
     <view>/site/domain/Folder.jsp</view>
   </component>
   <component>
+    <domain>jease.cms.domain.Gallery</domain>
+    <editor>jease.cms.web.content.editor.GalleryEditor</editor>
+    <icon>~./jease/cms/Gallery.png</icon>
+    <view>/site/domain/Gallery.jsp</view>
+  </component>
+  <component>
     <domain>jease.cms.domain.Image</domain>
     <editor>jease.cms.web.content.editor.ImageEditor</editor>
     <icon>~./jease/cms/Image.png</icon>

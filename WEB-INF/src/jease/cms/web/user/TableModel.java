@@ -35,12 +35,12 @@ public class TableModel extends ObjectTableModel<User> {
 	}
 
 	public String[] getColumns() {
-		return new String[] { Strings.Login, Strings.Name, Strings.Roots,
-				Strings.Administrator };
+		return new String[] { Strings.Login, Strings.Name, Strings.Role,
+				Strings.Roots, };
 	}
 
 	public int[] getProportions() {
-		return new int[] { 2, 3, 6, 1 };
+		return new int[] { 2, 3, 2, 6 };
 	}
 
 	public List<User> getList() {
@@ -54,9 +54,9 @@ public class TableModel extends ObjectTableModel<User> {
 		case 1:
 			return user.getName();
 		case 2:
-			return user.getRoots();
+			return user.getRole();
 		case 3:
-			return user.isAdministrator() ? Strings.Yes : Strings.No;
+			return user.getRoots();
 		}
 		return "";
 	}
