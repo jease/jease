@@ -16,11 +16,9 @@
  */
 package jease.cms.web.content.editor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jease.cms.domain.Content;
 import jease.cms.domain.Reference;
+import jease.cms.service.Contents;
 import jease.cms.web.i18n.Strings;
 import jfix.zk.ActionListener;
 import jfix.zk.Selectbutton;
@@ -44,7 +42,8 @@ public class ReferenceEditor extends ContentEditor<Reference> {
 	}
 
 	public void load() {
-		content.setSelection(getContentSelection(), getNode().getContent());
+		content.setModel(Contents.getDescendants(getSessionUser().getRoots()),
+				getNode().getContent());
 	}
 
 	public void save() {
@@ -64,15 +63,5 @@ public class ReferenceEditor extends ContentEditor<Reference> {
 				title.setText(content.getTitle());
 			}
 		}
-	}
-
-	private List<Content> getContentSelection() {
-		List<Content> contents = new ArrayList();
-		for (Content root : getSessionUser().getRoots()) {
-			for (Content content : root.getDescendants(Content.class)) {
-				contents.add(content);
-			}
-		}
-		return contents;
 	}
 }

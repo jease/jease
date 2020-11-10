@@ -47,7 +47,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	protected void doLoad() throws Exception {
 		super.doLoad();
 		view.setVisible(Nodes.isRooted(getNode()));
-		view.setHref(getNode().getPath());
+		view.setHref(getViewUrl());
 		title.setText(getNode().getTitle());
 		lastNodeModification = getNode().getLastModified();
 		load();
@@ -92,4 +92,7 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 		return view;
 	}
 
+	protected String getViewUrl() {
+		return getNode().getPath() + "?" + System.currentTimeMillis();
+	}
 }

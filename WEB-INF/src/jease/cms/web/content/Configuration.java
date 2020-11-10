@@ -30,7 +30,7 @@ import jfix.util.Reflections;
 /**
  * Global configuration for JeaseCMS.
  */
-public class Configuration extends JeaseConfig {
+public class Configuration implements JeaseConfig {
 
 	/**
 	 * Which type of nodes can be created by the user? We use reflection to find

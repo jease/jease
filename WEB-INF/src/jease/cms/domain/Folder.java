@@ -17,8 +17,8 @@
 package jease.cms.domain;
 
 /**
- * A Folder contains an array of content-objects. A Folder defines a
- * #getDefaultContent() which returns the first child of the Folder as default
+ * A Folder contains an array of content-objects. A Folder defines 
+ * #getContent() which returns the first child of the Folder as default
  * content which is used to render the Folder.
  */
 public class Folder extends Content {
@@ -39,7 +39,7 @@ public class Folder extends Content {
 	 * moment the first child of the folder (regardless if visible or not) is
 	 * used.
 	 */
-	public Content getDefaultContent() {
+	public Content getContent() {
 		for (Content child : getChildren(Content.class)) {
 			return child;
 		}
@@ -47,9 +47,9 @@ public class Folder extends Content {
 	}
 
 	public StringBuilder getFulltext() {
-		Content defaultContent = getDefaultContent();
-		if (defaultContent != null) {
-			return super.getFulltext().append(defaultContent.getFulltext());
+		Content content = getContent();
+		if (content != null) {
+			return super.getFulltext().append(content.getFulltext());
 		} else {
 			return super.getFulltext();
 		}

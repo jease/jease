@@ -1,7 +1,14 @@
-<%@page import="jfix.util.*,jease.cms.domain.*,jease.site.*" pageEncoding="UTF-8"%>
+<%@page import="jfix.util.*,jease.cms.domain.*,jease.site.*"%>
 <%
 	// The current node is stored in request-attribute by JeaseServletFilter.
 	Content node = (Content) request.getAttribute("Node");
+	
+	// Save original node as stable context, because "Node" is exchanged
+	// in some templates on the fly (e.g. Folder, Reference, Composite).
+	request.setAttribute("Context", node);
+	
+	// Store RequestURI as Controller (Folder dispatches content via Controller)
+	request.setAttribute("Controller", request.getRequestURI());
 	
 	// If an Access-Object is guarding the node, use it to force authorization.
 	Access access = Authorizations.check(node, request.getHeader("Authorization"));
@@ -13,7 +20,7 @@
 	response.setDateHeader("Last-Modified", node.getLastModified().getTime());
 	
 	// Which template should be used to render the node?
-	String pageTemplate = String.format("/site/content/%s.jsp", node.getType());
+	String pageTemplate = String.format("/site/domain/%s.jsp", node.getType());
 	
 	// If node is page-like content (e.g. text) and no file-parameter exists in request,
 	// then include template, otherwise forward (e.g. to stream binary content).
@@ -24,9 +31,11 @@
 			pageTemplate = String.format("%s.jsp", jsp);
 		}
 		request.setAttribute("Page.Title", Navigations.getPageTitle(node));
-		request.setAttribute("Page.Path", Navigations.getRootPath());
-		request.setAttribute("Page.Template", pageTemplate);
-		pageContext.include("design/dynamic/Page.jsp");
+		request.setAttribute("Page.Base", Navigations.getBasePath(node));
+		request.setAttribute("Page.Root", Navigations.getRootPath());
+		request.setAttribute("Page.Template", pageTemplate);		
+		// For demo layout use "/site/web/demo/Page.jsp".
+		pageContext.include("/site/web/default/Page.jsp");
 	} else {
 		pageContext.forward(pageTemplate);
 	}

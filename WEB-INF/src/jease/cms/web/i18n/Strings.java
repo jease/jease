@@ -25,6 +25,7 @@ public class Strings {
 	}
 
 	public static String Administrator;
+	public static String Code;
 	public static String Content;
 	public static String Content_is_not_deletable;
 	public static String Content_is_required;

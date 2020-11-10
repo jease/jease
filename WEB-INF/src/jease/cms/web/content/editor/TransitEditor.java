@@ -16,6 +16,8 @@
  */
 package jease.cms.web.content.editor;
 
+import java.net.URI;
+
 import jease.cmf.service.Filenames;
 import jease.cms.domain.Transit;
 import jease.cms.web.i18n.Strings;
@@ -65,6 +67,8 @@ public class TransitEditor extends ContentEditor<Transit> {
 
 	public void validate() {
 		validate(uri.isEmpty(), Strings.Path_is_required);
+		validate(!URI.create(uri.getText()).isAbsolute(),
+				Strings.Path_is_required);
 	}
 
 	private void pathSelected() {

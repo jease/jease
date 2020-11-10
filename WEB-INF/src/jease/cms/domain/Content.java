@@ -23,9 +23,9 @@ import jease.cmf.domain.Node;
 /**
  * Abstract base class for building up a Content-Management-System.
  * 
- * This class stores a title, the date and the user of the last modification and a
- * flag which denotes if the content should be displayed in automatic generated
- * lists when displayed in the public site.
+ * This class stores a title, the date and the user of the last modification and
+ * a flag which denotes if the content should be displayed in automatic
+ * generated lists when displayed in the public site.
  */
 public abstract class Content extends Node {
 
@@ -132,7 +132,7 @@ public abstract class Content extends Node {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Creates a controlled copy of the content. In derived implementations,
 	 * super.copy() should be called and then additional fields should be
@@ -145,5 +145,9 @@ public abstract class Content extends Node {
 		content.setEditor(getEditor());
 		content.setVisible(isVisible());
 		return content;
+	}
+
+	public String toString() {
+		return super.toString() + " - " + getTitle();
 	}
 }

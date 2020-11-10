@@ -19,6 +19,7 @@ package jease.site;
 import java.util.ArrayList;
 import java.util.List;
 
+import jease.cmf.domain.Node;
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
 import jease.cms.domain.Folder;
@@ -69,7 +70,7 @@ public class Navigations {
 		for (Content content : container.getChildren(Content.class)) {
 			if (content.isVisible() && isNews(content)) {
 				news.add((News) (content instanceof News ? content
-						: ((Reference) content).getContent()));
+						: ((Reference) content).getDestination()));
 			}
 		}
 		if (news.isEmpty() && container.isPage()) {
@@ -85,7 +86,7 @@ public class Navigations {
 	public static boolean isNews(Content content) {
 		return content instanceof News
 				|| (content instanceof Reference && ((Reference) content)
-						.getContent() instanceof News);
+						.getDestination() instanceof News);
 	}
 
 	/**
@@ -107,5 +108,12 @@ public class Navigations {
 		} else {
 			return rootPath + "/";
 		}
+	}
+
+	/**
+	 * Returns path of given node (with trailing slash for containers).
+	 */
+	public static String getBasePath(Node node) {
+		return node.isContainer() ? node.getPath() + "/" : node.getPath();
 	}
 }

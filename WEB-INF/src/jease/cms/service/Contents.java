@@ -1,5 +1,8 @@
 package jease.cms.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jease.cmf.domain.Node;
 import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
@@ -77,5 +80,18 @@ public class Contents {
 				return !((Content) node).isPrivileged();
 			}
 		});
+	}
+	
+	/**
+	 * Returns all descendants for given nodes.
+	 */
+	public static Content[] getDescendants(Content[] nodes) {
+		List<Content> contents = new ArrayList();
+		for (Content node : nodes) {
+			for (Content content : node.getDescendants(Content.class)) {
+				contents.add(content);
+			}
+		}
+		return contents.toArray(new Content[] {});
 	}
 }

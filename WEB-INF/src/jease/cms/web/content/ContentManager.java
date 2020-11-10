@@ -1,12 +1,12 @@
 package jease.cms.web.content;
 
-import java.io.File;
-
 import jease.cmf.web.Jease;
 import jease.cmf.web.JeaseSession;
 import jease.cms.domain.User;
 import jease.cms.service.Imports;
 import jfix.zk.ActionListener;
+import jfix.zk.Div;
+import jfix.zk.Fileupload;
 import jfix.zk.Medias;
 import jfix.zk.Modal;
 
@@ -15,32 +15,30 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.UploadEvent;
 
 /**
- * JeaseCMS with customized UploadListener for quick file import.
+ * JeaseCMS with additional fileupload for quick content import.
  */
 public class ContentManager extends Jease {
 
 	public ContentManager() {
-		addUploadListener(new ActionListener() {
+		Fileupload fileupload = new Fileupload(new ActionListener() {
 			public void actionPerformed(Event evt) {
-				Media media = ((UploadEvent) evt).getMedia();
-				if (media != null) {
-					importMedia(media);
-				}
+				uploadPerformed(((UploadEvent) evt).getMedia());
 			}
 		});
+		getAccessory().appendChild(new Div("text-align: right;", fileupload));
 	}
 
-	private void importMedia(Media media) {
-		try {
-			String mediaName = media.getName();
-			File mediaFile = Medias.asFile(media);
-			Imports.fromFile(mediaName, mediaFile, JeaseSession.getContainer(),
-					JeaseSession.get(User.class));
-			mediaFile.delete();
-		} catch (Exception e) {
-			Modal.error(e.getMessage());
-		} finally {
-			refresh();
+	private void uploadPerformed(Media media) {
+		if (media != null) {
+			try {
+				Imports.fromFile(Medias.asFile(media), JeaseSession
+						.getContainer(), JeaseSession.get(User.class));
+			} catch (Exception e) {
+				Modal.error(e.getMessage());
+			} finally {
+				refresh();
+			}
 		}
 	}
+
 }

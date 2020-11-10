@@ -44,9 +44,9 @@ import org.apache.commons.io.IOUtils;
  */
 public class Imports {
 
-	public static void fromFile(final String filename, final java.io.File file,
-			final Node parent, final User editor) throws Exception {
-		if (Filenames.asContentType(filename).equals("application/zip")) {
+	public static void fromFile(final java.io.File file, final Node parent,
+			final User editor) throws Exception {
+		if (Filenames.asContentType(file.getName()).equals("application/zip")) {
 			final StringBuilder errors = new StringBuilder();
 			Zipfiles.unzip(file, new EntryHandler() {
 				public void process(String path, String entryName,
@@ -69,14 +69,17 @@ public class Imports {
 			}
 		} else {
 			InputStream inputStream = new FileInputStream(file);
-			Imports.fromInputStream(filename, inputStream, parent, editor);
+			Imports
+					.fromInputStream(file.getName(), inputStream, parent,
+							editor);
 			inputStream.close();
 		}
 	}
 
 	private static void makeFolders(Node relativeRoot, String path, User editor)
 			throws NodeException {
-		if (relativeRoot.getChild(Filenames.asId(path)) == null) {
+		Node node = relativeRoot.getChild(Filenames.asId(path));
+		if (node == null) {
 			int lastSlash = path.lastIndexOf("/");
 			if (lastSlash != -1) {
 				String parentPath = path.substring(0, lastSlash);
@@ -90,6 +93,10 @@ public class Imports {
 				Folder newFolder = newFolder(path);
 				newFolder.setEditor(editor);
 				Nodes.append(relativeRoot, newFolder);
+			}
+		} else {
+			if (!(node instanceof Folder)) {
+				throw new NodeException.IllegalNesting();
 			}
 		}
 	}

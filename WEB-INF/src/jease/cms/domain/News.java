@@ -18,8 +18,6 @@ package jease.cms.domain;
 
 import java.util.Date;
 
-import jfix.util.Dates;
-
 /**
  * News-Object which consists of a teaser, a story and a publication date.
  */
@@ -59,7 +57,7 @@ public class News extends Content {
 	public StringBuilder getFulltext() {
 		return super.getFulltext().append("\n").append(getTeaser())
 				.append("\n").append(getStory()).append("\n").append(
-						getDate() != null ? Dates.YYYY_MM_DD.format(getDate())
+						getDate() != null ? String.format("%tF", getDate())
 								: "");
 	}
 

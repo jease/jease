@@ -27,13 +27,13 @@ import org.zkoss.zk.ui.event.Event;
 
 public class FileEditor<E extends File> extends ContentEditor<E> {
 
-	Mediafield file = new Mediafield();
+	Mediafield media = new Mediafield();
 
 	public FileEditor() {
-		file.setHeight("350px");
-		file.addUploadListener(new ActionListener() {
+		media.setHeight("350px");
+		media.addUploadListener(new ActionListener() {
 			public void actionPerformed(Event event) {
-				if (file.getMedia() != null) {
+				if (media.getMedia() != null) {
 					uploadPerformed();
 				}
 			}
@@ -41,26 +41,26 @@ public class FileEditor<E extends File> extends ContentEditor<E> {
 	}
 
 	public void init() {
-		add(Strings.File, file);
+		add(Strings.File, media);
 	}
 
 	public void load() {
-		file.setMedia(getNode().getId(), getNode().getContentType(), getNode()
+		media.setMedia(getNode().getId(), getNode().getContentType(), getNode()
 				.getFile());
 	}
 
 	public void save() {
-		getNode().setContentType(file.getContentType());
-		file.copyToFile(getNode().getFile());
+		getNode().setContentType(media.getContentType());
+		media.copyToFile(getNode().getFile());
 	}
 
 	public void validate() {
-		validate(file.isEmpty(), Strings.File_is_required);
+		validate(media.isEmpty(), Strings.File_is_required);
 	}
 
 	protected void uploadPerformed() {
-		if (getObject().isValidContentType(file.getContentType())) {
-			String filename = file.getName();
+		if (getObject().isValidContentType(media.getContentType())) {
+			String filename = media.getName();
 			if (id.isEmpty()) {
 				id.setText(Filenames.asId(filename));
 			}
@@ -69,7 +69,7 @@ public class FileEditor<E extends File> extends ContentEditor<E> {
 			}
 		} else {
 			Modal.error(Strings.Content_is_not_valid);
-			file.setMedia(null);
+			media.setMedia(null);
 			refresh();
 		}
 	}

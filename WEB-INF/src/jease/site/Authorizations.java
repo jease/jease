@@ -25,6 +25,9 @@ import jfix.db4o.Database;
 import jfix.functor.Supplier;
 import jfix.util.Crypts;
 
+/**
+ * Service for handling authorizations via Access-Objects.
+ */
 public class Authorizations {
 
 	private static Supplier<Map<Content, Access>> accessByContent = new Supplier<Map<Content, Access>>() {
@@ -34,7 +37,7 @@ public class Authorizations {
 	};
 
 	/**
-	 * Checks if content is guarded by Access-Object against
+	 * Checks if given content is guarded by Access-Object against
 	 * HTTP-Authorization-Header. Returns null if no guard exists or
 	 * authorization against guard is successful, otherwise the Access-Guard is
 	 * returned, which should force an unauthorized-response.

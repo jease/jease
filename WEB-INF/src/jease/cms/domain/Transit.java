@@ -29,7 +29,11 @@ public class Transit extends Content {
 	public java.io.File getFile() {
 		if (uri != null) {
 			java.io.File file = new java.io.File(URI.create(uri));
-			Files.createMissing(file);
+			try {
+				Files.createMissing(file);
+			} catch (RuntimeException e) {
+				// pass when create fails
+			}
 			return file;
 		} else {
 			return null;
@@ -41,7 +45,7 @@ public class Transit extends Content {
 	}
 
 	public boolean isPage() {
-		return Urls.guessContentTypeFromName(uri).startsWith("text");
+		return getContentType().equals("text/html");
 	}
 
 	/**

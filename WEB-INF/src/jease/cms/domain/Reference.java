@@ -36,6 +36,18 @@ public class Reference extends Content {
 		this.content = content;
 	}
 
+	/**
+	 * Resolves chain of linked References and returns first content which is
+	 * not a Reference.
+	 */
+	public Content getDestination() {
+		if (content instanceof Reference) {
+			return ((Reference) content).getDestination();
+		} else {
+			return content;
+		}
+	}
+
 	public boolean isPage() {
 		if (content != null) {
 			return content.isPage();
