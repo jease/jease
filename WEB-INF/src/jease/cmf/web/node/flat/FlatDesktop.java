@@ -16,30 +16,12 @@
  */
 package jease.cmf.web.node.flat;
 
-import jease.cmf.web.JeaseSession;
-import jease.cmf.web.node.NodeRefreshState;
-import jfix.zk.ObjectTable;
-import jfix.zk.Panel;
-import jfix.zk.Refreshable;
-import jfix.zk.Row;
+import jease.cmf.web.node.NodeDesktop;
 
-public class FlatDesktop extends Row implements Refreshable {
+public class FlatDesktop extends NodeDesktop {
 
-	private ObjectTable table;
-	private Panel contentPanel;
-	private NodeRefreshState refreshState;
-
-	public FlatDesktop() {	
-		table = new FlatTable();
-		contentPanel = new Panel(table);
-		refreshState = new NodeRefreshState();
-		appendChild(contentPanel);
+	public FlatDesktop() {
+		appendDesktop(new FlatTable());
 	}
 
-	public void refresh() {
-		if (refreshState.isStale()) {
-			table.refresh();
-			contentPanel.setTitle(JeaseSession.getContainer().getPath());
-		}
-	}
 }

@@ -21,15 +21,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import jfix.functor.Function;
+import jfix.functor.Functors;
+import jfix.util.Urls;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.AndFileFilter;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
-
-import jfix.functor.Function;
-import jfix.functor.Functors;
-import jfix.util.Urls;
 
 /**
  * Service methods to ease the handling of path- and filenames.
@@ -48,6 +48,17 @@ public class Filenames {
 	}
 
 	/**
+	 * Converts a pathname into an platform-independent URI.
+	 */
+	public static String asURI(String pathname) {
+		if (pathname != null) {
+			return new File(pathname).toURI().toString();
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Converts filename into id by replacing spaces with underscores.
 	 */
 	public static String asId(String filename) {
@@ -59,7 +70,7 @@ public class Filenames {
 	 */
 	public static String asTitle(String filename) {
 		int extension = filename.lastIndexOf(".");
-		if (extension != -1) {
+		if (extension > 0) {
 			return filename.substring(0, extension);
 		} else {
 			return filename;
@@ -74,12 +85,12 @@ public class Filenames {
 	}
 
 	/**
-	 * Returns a recursive list of absolute pathnames for all visible files
+	 * Returns a recursive list of URIs (pathnames) for all visible files
 	 * contained in given directory. All ressources from a WEB-INF-directory
 	 * will be excluded.
 	 */
 	public static List<String> getPathnames(String directory) {
-		File file = new java.io.File(directory);
+		File file = new File(directory);
 		if (!file.exists()) {
 			return new ArrayList<String>();
 		}
@@ -89,11 +100,10 @@ public class Filenames {
 		Collection files = FileUtils.listFiles(file, HiddenFileFilter.VISIBLE,
 				new AndFileFilter(new NotFileFilter(new NameFileFilter(
 						"WEB-INF")), HiddenFileFilter.VISIBLE));
-		return Functors.transform(files, new Function<java.io.File, String>() {
-			public String evaluate(java.io.File file) {
-				return file.getAbsolutePath();
+		return Functors.transform(files, new Function<File, String>() {
+			public String evaluate(File file) {
+				return file.toURI().toString();
 			}
 		});
-
 	}
 }

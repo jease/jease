@@ -1,4 +1,4 @@
-<%@page import="jfix.util.*,jease.cms.domain.*,jease.site.service.*"%>
+<%@page import="jfix.util.*,jease.cms.domain.*,jease.site.*"%>
 <%
 	Content newsContext = (Content) ((Content) request.getAttribute("Node")).getParent();
 	for (News news : Navigations.getNews(newsContext)) { 
@@ -8,7 +8,7 @@
 		<p class="float-right"><i><%=Dates.YYYY_MM_DD.format(news.getDate())%></i></p>
 	<% } %>	
 	<% if (Validations.isEmpty(news.getTeaser())) { %>
-		<p><%=news.getStory()%></p>
+		<%=news.getStory()%>
 	<% } else { %>
 		<p>
 			<%=news.getTeaser()%>&nbsp;

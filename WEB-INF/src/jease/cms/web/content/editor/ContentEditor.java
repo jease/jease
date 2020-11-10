@@ -32,31 +32,32 @@ import jfix.zk.Textfield;
 
 public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 
-	protected Button view = new Button(Strings.View, Images.Internet);
+	private Date lastNodeModification;
+	private Button view = new Button(Strings.View, Images.Internet);
 	protected Textfield title = new Textfield();
 
 	protected void doInit() throws Exception {
 		super.doInit();
-
 		view.setTarget("_blank");
 		getButtons().appendChild(view);
-
 		add(Strings.Title, title);
 		init();
 	}
 
 	protected void doLoad() throws Exception {
 		super.doLoad();
+		view.setVisible(Nodes.isRooted(getNode()));
 		view.setHref(getNode().getPath());
 		title.setText(getNode().getTitle());
+		lastNodeModification = getNode().getLastModified();
 		load();
 	}
 
 	protected void doSave() throws Exception {
 		super.doSave();
 		getNode().setTitle(title.getText());
+		getNode().setEditor(getSessionUser());
 		getNode().setLastModified(new Date());
-		getNode().setEditor(JeaseSession.get(User.class));
 		save();
 		Nodes.save(getNode());
 	}
@@ -64,14 +65,31 @@ public abstract class ContentEditor<E extends Content> extends NodeEditor<E> {
 	protected void doValidate() throws Exception {
 		super.doValidate();
 		validate(title.isEmpty(), Strings.Title_is_required);
+		validate(lastNodeModification != getNode().getLastModified(),
+				Strings.Content_is_stale);
 		validate();
 	}
 
 	protected void doDelete() throws Exception {
-		if (Contents.isDeletable(getObject())) {
+		if (Contents.isDeletable(getNode())) {
 			super.doDelete();
 		} else {
 			Modal.error(Strings.Content_is_not_deletable);
 		}
 	}
+
+	public void delete() {
+		getNode().setEditor(getSessionUser());
+		getNode().setLastModified(new Date());
+		Contents.delete(getNode());
+	}
+
+	protected User getSessionUser() {
+		return JeaseSession.get(User.class);
+	}
+
+	protected Button getViewButton() {
+		return view;
+	}
+
 }

@@ -40,6 +40,19 @@ public class Jease extends Div implements Refreshable {
 	private Fileupload fileupload = new Fileupload();
 
 	public Jease() {
+		setWidth("100%");		
+		
+		desktopArea.setWidth("100%");
+		desktopArea.appendChild(treeDesktop);
+		
+		basementArea.setPack("stretch");
+		basementArea.setWidth("100%");
+		basementArea.appendChild(new Radiogroup(viewTreeDesktop, viewFlatDesktop));
+		basementArea.appendChild(new Div("text-align: right;", fileupload));
+		
+		appendChild(desktopArea);
+		appendChild(basementArea);
+		
 		ActionListener desktopSwitch = new ActionListener() {
 			public void actionPerformed(Event event) {
 				switchDesktop();
@@ -48,26 +61,6 @@ public class Jease extends Div implements Refreshable {
 		viewFlatDesktop.addCheckListener(desktopSwitch);
 		viewTreeDesktop.addCheckListener(desktopSwitch);
 		viewTreeDesktop.setChecked(true);
-		desktopArea.appendChild(treeDesktop);
-
-		basementArea.setPack("stretch");
-		basementArea.appendChild(new Radiogroup(viewTreeDesktop, viewFlatDesktop));
-		basementArea.appendChild(new Div("text-align: right;", fileupload));
-
-		appendChild(desktopArea);
-		appendChild(basementArea);
-
-		initStyle();
-	}
-
-	private void initStyle() {
-		setWidth("100%");
-		desktopArea.setWidth("100%");
-		basementArea.setWidth("100%");
-		treeDesktop.setWidth("100%");
-		treeDesktop.setPack("stretch");
-		flatDesktop.setWidth("100%");
-		flatDesktop.setPack("stretch");
 	}
 
 	private void switchDesktop() {

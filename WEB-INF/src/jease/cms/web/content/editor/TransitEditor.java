@@ -29,12 +29,12 @@ import org.zkoss.zk.ui.event.Event;
 
 public class TransitEditor extends ContentEditor<Transit> {
 
-	Combobox path = new Combobox();
+	Combobox uri = new Combobox();
 	Mediafield file = new Mediafield();
 
 	public TransitEditor() {
 		file.setHeight("350px");
-		path.addSelectListener(new ActionListener() {
+		uri.addSelectListener(new ActionListener() {
 			public void actionPerformed(Event paramEvent) {
 				pathSelected();
 			}
@@ -42,33 +42,33 @@ public class TransitEditor extends ContentEditor<Transit> {
 	}
 
 	public void init() {
-		add(Strings.Path, path);
+		add(Strings.Path, uri);
 		add(Strings.File, file);
 	}
 
 	public void load() {
-		path.setSelection(Filenames.getPathnames(ZK.getRealPath("/")),
-				getObject().getPathname());
-		if (getNode().getPathname() != null) {
-			path.setDisabled(true);
+		uri.setSelection(Filenames.getPathnames(ZK.getRealPath("/")),
+				getObject().getURI());
+		if (getNode().getURI() != null) {
+			uri.setDisabled(true);
 			file.setMedia(getNode().getId(), getNode().getContentType(),
 					getNode().getFile());
 		} else {
-			path.setDisabled(false);
+			uri.setDisabled(false);
 		}
 	}
 
 	public void save() {
-		getNode().setPathname((String) path.getValue());
+		getNode().setURI((String) uri.getValue());
 		file.copyToFile(getNode().getFile());
 	}
 
 	public void validate() {
-		validate(path.isEmpty(), Strings.Path_is_required);
+		validate(uri.isEmpty(), Strings.Path_is_required);
 	}
 
 	private void pathSelected() {
-		String pathname = (String) path.getValue();
+		String pathname = (String) uri.getValue();
 		if (Validations.isNotEmpty(pathname)) {
 			String name = Filenames.asFilename(pathname);
 			if (id.isEmpty()) {

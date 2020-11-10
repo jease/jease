@@ -33,7 +33,13 @@ import jfix.util.Reflections;
 public class Configuration extends JeaseConfig {
 
 	/**
-	 * Which type of nodes can be created by the user?
+	 * Which type of nodes can be created by the user? We use reflection to find
+	 * all Nodes in the default Content-Package. If you want maximum control,
+	 * you can also create a config by hand:
+	 * 
+	 * <code> 
+	 * return new Node[] { new Folder(), new Text(), new File(), ... };
+	 * </code>
 	 */
 	public Node[] newNodes() {
 		Node[] nodes = Reflections.find(Node.class, Content.class.getPackage());
@@ -45,7 +51,17 @@ public class Configuration extends JeaseConfig {
 	}
 
 	/**
-	 * Which editor should be used to edit a given node?
+	 * Which editor should be used to edit a given node? We use reflection and
+	 * convention (editor-class needs to end on Editor) to find an editor for a
+	 * given Node. If you want maximum control, you can also create a config by
+	 * hand:
+	 * 
+	 * <code> 
+	 * if (node instanceof Folder) return new FolderEditor();
+	 * if (node instanceof Text) return new TextEditor();
+	 * if (node instanceof File) return new FileEditor();
+	 * ...
+	 * </code>
 	 */
 	public NodeEditor newEditor(Node node) {
 		String pckage = ContentEditor.class.getPackage().getName();

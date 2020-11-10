@@ -21,19 +21,20 @@ import jease.cmf.domain.NodeException;
 import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
 import jease.cmf.web.i18n.Strings;
+import jfix.util.Arrays;
 import jfix.zk.ObjectEditor;
 import jfix.zk.Textfield;
 
 public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 
 	protected Textfield id = new Textfield();
-	
+
 	public E getNode() {
 		return getObject();
 	}
 
 	protected void doInit() throws Exception {
-		if (JeaseSession.getContainer() == getNode()) {
+		if (Arrays.contains(JeaseSession.getRoots(), getNode())) {
 			getDeleteButton().setVisible(false);
 		}
 		add(Strings.Id, id);
@@ -66,8 +67,10 @@ public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 	}
 
 	protected void doDelete() throws Exception {
-		if (JeaseSession.getContainer() != getNode()) {
-			delete();
+		Node parent = getNode().getParent();
+		delete();
+		if (parent != null) {
+			JeaseSession.setContainer(parent);
 		}
 	}
 

@@ -128,9 +128,7 @@ public class Imports {
 		text.setTitle(Filenames.asTitle(filename));
 		text.setLastModified(new Date());
 		text.setContent(readString(inputStream));
-		text
-				.setPlain(!(filename.endsWith(".htm") || filename
-						.endsWith(".html")));
+		text.setPlain(!Filenames.asContentType(filename).endsWith("html"));
 		return text;
 	}
 

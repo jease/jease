@@ -36,7 +36,7 @@ public class NavigationTreeRenderer implements TreeitemRenderer {
 	public void render(Treeitem treeitem, Object value) throws Exception {
 		Node node = (Node) value;
 		treeitem.setLabel(node.getId());
-		treeitem.getTreerow().setTooltiptext(node.toString());
+		treeitem.setTooltiptext(node.getType());
 		treeitem.setImage(JeaseSession.getConfig().getIcon(node));
 		treeitem.setValue(node);
 		if (!Arrays.contains(JeaseSession.getRoots(), node)) {

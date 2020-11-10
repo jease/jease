@@ -1,11 +1,11 @@
-<%@page import="java.util.*,jfix.util.*,jease.cmf.domain.*,jease.cms.domain.*,jease.site.service.*"%>
+<%@page import="java.util.*,jfix.util.*,jease.cms.domain.*,jease.site.*"%>
 <%
-	List<Content> searchResult = FullTexts.query(request.getParameter("query"));
+	List<Content> searchResult = Fulltexts.query(request.getParameter("query"));
 	for (Content content : searchResult) {
 %>
 <p>
 <%
-	for (Node parent : content.getParents()) {
+	for (Content parent : content.getParents(Content.class)) {
 %> 
 	&raquo; <a href="<%=parent.getPath()%>"><%=parent.getTitle()%></a> 
 <%

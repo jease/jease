@@ -102,18 +102,20 @@ public class Node extends Persistent {
 	}
 
 	/**
-	 * Returns true if node is a descendant of given parent.
+	 * Returns true if node is a descendant of given parents.
 	 */
-	public boolean isDescendant(Node possibleParent) {
-		if (this == possibleParent) {
-			return true;
-		}
-		Node parentNode = getParent();
-		while (parentNode != null) {
-			if (parentNode == possibleParent) {
+	public boolean isDescendant(Node... possibleParents) {
+		for (Node possibleParent : possibleParents) {
+			if (this == possibleParent) {
 				return true;
 			}
-			parentNode = parentNode.getParent();
+			Node parentNode = getParent();
+			while (parentNode != null) {
+				if (parentNode == possibleParent) {
+					return true;
+				}
+				parentNode = parentNode.getParent();
+			}
 		}
 		return false;
 	}
@@ -237,13 +239,19 @@ public class Node extends Persistent {
 		detachParent();
 	}
 
-	private void detachChildren() {
+	/**
+	 * Detaches all children from node.
+	 */
+	protected void detachChildren() {
 		for (Node child : children) {
 			child.detach();
 		}
 	}
 
-	private void detachParent() {
+	/**
+	 * Detaches parent from node.
+	 */
+	protected void detachParent() {
 		if (parent != null && Arrays.contains(parent.children, this)) {
 			parent.children = Arrays.remove(parent.children, this, Node.class);
 			parent.markChanged();
@@ -263,6 +271,8 @@ public class Node extends Persistent {
 	/**
 	 * Returns title of node. This method should be overriden by more specific
 	 * implementations.
+	 * 
+	 * @deprecated
 	 */
 	public String getTitle() {
 		return getId();
@@ -325,6 +335,7 @@ public class Node extends Persistent {
 		validateId(potentialChild, potentialChildId);
 		validateDuplicate(potentialChild, potentialChildId);
 		validateNesting(potentialChild, potentialChildId);
+		potentialChild.validateParent(this, potentialChildId);
 	}
 
 	/**
@@ -366,6 +377,16 @@ public class Node extends Persistent {
 	}
 
 	/**
+	 * Validates if node with given potential id can be attached to given
+	 * potential parent. Use this method in derived implementations to restrict
+	 * the set of valid parents for certain kinds of nodes.
+	 */
+	public void validateParent(Node potentialParent, String potentialId)
+			throws NodeException {
+		// No restrictions per default.
+	}
+
+	/**
 	 * Applies given procedure to node and recursively to all children.
 	 */
 	public void traverse(Procedure<Node> action) {
@@ -398,7 +419,7 @@ public class Node extends Persistent {
 	}
 
 	public String toString() {
-		return String.format("%s - %s - %s", getPath(), getTitle(), getType());
+		return getPath() + " - " + getType();
 	}
 
 }

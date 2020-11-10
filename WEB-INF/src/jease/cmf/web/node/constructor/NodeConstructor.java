@@ -44,7 +44,7 @@ public class NodeConstructor extends Selectfield implements Refreshable {
 		for (int i = 1; i < getModel().getSize(); i++) {
 			Node node = (Node) getModel().getElementAt(i);
 			getItemAtIndex(i).setSelected(node == currentSelection);
-			getItemAtIndex(i).setDisabled(!isValidChild(node));
+			getItemAtIndex(i).setVisible(isValidChild(node));
 		}
 	}
 

@@ -1,4 +1,4 @@
-<%@page import="jease.cms.domain.*,jease.site.service.*"%>
+<%@page import="jease.cms.domain.*,jease.site.*"%>
 <%
 	Composite composite = (Composite) request.getAttribute("Node");
 

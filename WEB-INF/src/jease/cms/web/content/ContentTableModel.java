@@ -21,7 +21,6 @@ import jease.cmf.web.node.NodeTableModel;
 import jease.cmf.web.node.NodeViews;
 import jease.cms.domain.Content;
 import jease.cms.web.i18n.Strings;
-import jfix.util.Regexps;
 import jfix.zk.ActionListener;
 
 import org.zkoss.zk.ui.event.CheckEvent;
@@ -74,13 +73,4 @@ public class ContentTableModel extends NodeTableModel<Content> {
 		}
 		return "";
 	}
-
-	/**
-	 * Which additional (non displayed) values should be searchable?
-	 */
-	public Object[] getSearchValues(Content content) {
-		return new Object[] { Regexps.stripTags(content.getFulltext()
-				.toString()) };
-	}
-
 }

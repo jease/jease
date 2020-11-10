@@ -23,10 +23,12 @@ import jfix.zk.ActionListener;
 import jfix.zk.Checkbox;
 import jfix.zk.Image;
 import jfix.zk.Label;
+import jfix.zk.Modal;
 import jfix.zk.Row;
 import jfix.zk.View;
 
 import org.apache.commons.io.FileUtils;
+import org.zkoss.zk.ui.event.Event;
 
 public class NodeViews {
 
@@ -42,10 +44,14 @@ public class NodeViews {
 		return new View(node.getType(), image);
 	}
 
-	public static View asCheckbox(boolean state, ActionListener action) {
-		Checkbox checkbox = new Checkbox();
+	public static View asCheckbox(boolean state, final ActionListener action) {
+		final Checkbox checkbox = new Checkbox();
 		checkbox.setChecked(state);
-		checkbox.addCheckListener(action);
+		checkbox.addCheckListener(new ActionListener() {
+			public void actionPerformed(Event evt) {
+				Modal.click(checkbox, evt, action);
+			}
+		});
 		return new View(state ? Strings.Yes : Strings.No, checkbox);
 	}
 

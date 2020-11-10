@@ -16,11 +16,12 @@
  */
 package jease.cms.web.content.editor;
 
-import jease.cmf.service.Nodes;
+import java.util.ArrayList;
+import java.util.List;
+
 import jease.cms.domain.Content;
 import jease.cms.domain.Reference;
 import jease.cms.web.i18n.Strings;
-import jfix.util.Arrays;
 import jfix.zk.ActionListener;
 import jfix.zk.Selectbutton;
 
@@ -43,7 +44,7 @@ public class ReferenceEditor extends ContentEditor<Reference> {
 	}
 
 	public void load() {
-		content.setSelection(Arrays.asList(Nodes.getRoot().getDescendants()), getNode().getContent());
+		content.setSelection(getContentSelection(), getNode().getContent());
 	}
 
 	public void save() {
@@ -54,12 +55,24 @@ public class ReferenceEditor extends ContentEditor<Reference> {
 		validate(content.isEmpty(), Strings.Content_is_required);
 	}
 
-	private void contentSelected(Content selectedContent) {
-		if (id.isEmpty()) {
-			id.setText(selectedContent.getId());
+	private void contentSelected(Content content) {
+		if (content != null) {
+			if (id.isEmpty()) {
+				id.setText(content.getId());
+			}
+			if (title.isEmpty()) {
+				title.setText(content.getTitle());
+			}
 		}
-		if (title.isEmpty()) {
-			title.setText(selectedContent.getTitle());
+	}
+
+	private List<Content> getContentSelection() {
+		List<Content> contents = new ArrayList();
+		for (Content root : getSessionUser().getRoots()) {
+			for (Content content : root.getDescendants(Content.class)) {
+				contents.add(content);
+			}
 		}
+		return contents;
 	}
 }

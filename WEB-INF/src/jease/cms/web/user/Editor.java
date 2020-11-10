@@ -18,8 +18,10 @@ package jease.cms.web.user;
 
 import java.util.Comparator;
 
+import jease.cmf.web.JeaseSession;
 import jease.cms.domain.Folder;
 import jease.cms.domain.User;
+import jease.cms.service.Users;
 import jease.cms.web.i18n.Strings;
 import jfix.db4o.Database;
 import jfix.util.Arrays;
@@ -96,7 +98,14 @@ public class Editor extends ObjectEditor<User> {
 	}
 
 	public void delete() {
-		Database.delete(getObject());
+		if (getObject() != getSessionUser()) {
+			Users.replace(getObject(), getSessionUser());
+			Database.delete(getObject());
+		} else {
+			Users.replace(getObject(), null);
+			Database.delete(getObject());
+			Sessions.invalidate();
+		}
 	}
 
 	public void validate() {
@@ -108,7 +117,11 @@ public class Editor extends ObjectEditor<User> {
 	}
 
 	private boolean isAdministrationMode() {
-		User user = Sessions.get(User.class);
-		return user != null && user.isAdministrator();
+		return getSessionUser() != null && getSessionUser().isAdministrator();
 	}
+
+	private User getSessionUser() {
+		return JeaseSession.get(User.class);
+	}
+
 }

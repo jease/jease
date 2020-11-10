@@ -18,6 +18,7 @@ package jease.cms.web;
 
 import jease.cmf.service.Nodes;
 import jease.cmf.web.JeaseSession;
+import jease.cms.domain.Content;
 import jease.cms.domain.User;
 import jease.cms.service.Users;
 import jease.cms.web.content.Configuration;
@@ -33,8 +34,8 @@ import jfix.zk.Tabbox;
 public class Login extends LoginWindow {
 
 	public String getTitle() {
-		return Nodes.getRoot() != null ? Nodes.getRoot().getTitle() : super
-				.getTitle();
+		return Nodes.getRoot() != null ? ((Content) Nodes.getRoot()).getTitle()
+				: super.getTitle();
 	}
 
 	public void doLogin(String login, String password) {
@@ -59,7 +60,7 @@ public class Login extends LoginWindow {
 		if (Validations.isNotEmpty(user.getRoots())) {
 			tabs.add(Strings.Content, ContentManager.class);
 		}
-		tabs.add(Strings.User, jease.cms.web.user.Table.class);		
+		tabs.add(Strings.User, jease.cms.web.user.Table.class);
 		tabs.add(Strings.Logout, jfix.zk.Logout.class);
 		show(tabs);
 	}

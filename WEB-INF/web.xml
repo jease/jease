@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/j2ee"
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd">
-
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	
 	<context-param>
 		<param-name>JEASE_DATABASE_NAME</param-name>
 		<param-value>jease</param-value>
 	</context-param>
 
-    <context-param>
-        <param-name>JEASE_DATABASE_ENGINE</param-name>
-        <param-value>jfix.db4o.engine.PersistenceEngineDb4o</param-value>
-    </context-param>
+	<context-param>
+		<param-name>JEASE_DATABASE_ENGINE</param-name>
+		<param-value>jfix.db4o.engine.PersistenceEngineDb4o</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>JEASE_SITE_CONTROLLER</param-name>
+		<param-value>/site/Controller.jsp</param-value>
+	</context-param>
 
 	<listener>
-		<listener-class>jease.cmf.web.JeaseServletListener
-		</listener-class>
+		<listener-class>jease.cmf.web.servlet.JeaseServletListener</listener-class>
 	</listener>
 
 	<listener>
-		<listener-class>org.zkoss.zk.ui.http.HttpSessionListener
-		</listener-class>
+		<listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
 	</listener>
 
-    <servlet>
-        <servlet-name>FckConnector</servlet-name>
-        <servlet-class>jease.cmf.web.servlet.FckConnector
-        </servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>FckConnector</servlet-name>
-        <url-pattern>/zkau/fckbrowser.xml</url-pattern>
-    </servlet-mapping>
+	<filter>
+		<filter-name>JeaseServletFilter</filter-name>
+		<filter-class>jease.cmf.web.servlet.JeaseServletFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>JeaseServletFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 	<servlet>
-		<servlet-name>DefaultServlet</servlet-name>
-		<servlet-class>jease.site.web.DefaultServlet
-		</servlet-class>
+		<servlet-name>JeaseFckConnector</servlet-name>
+		<servlet-class>jease.cmf.web.servlet.JeaseFckConnector</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>DefaultServlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<servlet-name>JeaseFckConnector</servlet-name>
+		<url-pattern>/zkau/fckbrowser.xml</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>zkLoader</servlet-name>
-		<servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet
-		</servlet-class>
+		<servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet</servlet-class>
 		<init-param>
 			<param-name>update-uri</param-name>
 			<param-value>/zkau</param-value>
@@ -65,8 +65,7 @@
 
 	<servlet>
 		<servlet-name>auEngine</servlet-name>
-		<servlet-class>org.zkoss.zk.au.http.DHtmlUpdateServlet
-		</servlet-class>
+		<servlet-class>org.zkoss.zk.au.http.DHtmlUpdateServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>auEngine</servlet-name>
@@ -75,7 +74,7 @@
 
 	<jsp-config>
 		<jsp-property-group>
-			<url-pattern>*.jsp</url-pattern>	
+			<url-pattern>*.jsp</url-pattern>
 			<trim-directive-whitespaces>true</trim-directive-whitespaces>
 		</jsp-property-group>
 	</jsp-config>

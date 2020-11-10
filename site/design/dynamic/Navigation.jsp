@@ -1,8 +1,8 @@
-<%@page import="jease.cmf.domain.*,jease.cms.domain.*,jease.site.service.*"%>
+<%@page import="jease.cms.domain.*,jease.site.*"%>
 <%
 	Content navigationContext = (Content) request.getAttribute("Node");
 %>
-<h1><a href="<%=navigationContext.getParent().getPath()%>"><%=navigationContext.getParent().getTitle()%></a></h1>
+<h1><a href="<%=navigationContext.getParent().getPath()%>"><%=((Content) navigationContext.getParent()).getTitle()%></a></h1>
 <ul>
 	<%
 		for (Content content : Navigations.getItems((Content) navigationContext.getParent())) {

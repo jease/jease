@@ -16,6 +16,9 @@
  */
 package jease.cmf.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
 import jfix.db4o.Database;
@@ -23,6 +26,7 @@ import jfix.functor.Command;
 import jfix.functor.Predicate;
 import jfix.functor.Procedure;
 import jfix.functor.Supplier;
+import jfix.util.Arrays;
 
 /**
  * Static utility to ease the persistence-handling of Nodes.
@@ -47,6 +51,12 @@ public class Nodes {
 		}
 	};
 
+	private static Supplier<Map<String, Node>> nodesByPath = new Supplier<Map<String, Node>>() {
+		public Map<String, Node> get() {
+			return new HashMap<String, Node>();
+		}
+	};
+
 	/**
 	 * Sets the root-node for a repository. This method should only be called
 	 * once to initialize a repository.
@@ -68,6 +78,30 @@ public class Nodes {
 	 */
 	public static long queryLastChange() {
 		return Database.query(lastChange);
+	}
+
+	/**
+	 * Returns true if given node is root or attached to a parent.
+	 */
+	public static boolean isRooted(Node node) {
+		return node == root || Arrays.contains(node.getParents(), root);
+	}
+
+	/**
+	 * Returns node from root by given path.
+	 */
+	public static Node getByPath(String path) {
+		if (root == null) {
+			return null;
+		}
+		Map<String, Node> cache = Database.query(nodesByPath);
+		if (!cache.containsKey(path)) {
+			Node node = root.getChild(path);
+			if (node != null) {
+				cache.put(path, node);
+			}
+		}
+		return cache.get(path);
 	}
 
 	/**
@@ -123,7 +157,7 @@ public class Nodes {
 	private static void persistChanges() {
 		root.processChangedNodes(new Procedure<Node>() {
 			public void execute(Node node) {
-				if (node == root || node.getParent() != null) {
+				if (isRooted(node)) {
 					Database.save(node);
 				} else {
 					Database.ext().deleteDeliberately(node);

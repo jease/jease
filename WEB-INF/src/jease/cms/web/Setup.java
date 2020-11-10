@@ -24,9 +24,12 @@ import jease.cms.domain.User;
 import jease.cms.service.Users;
 import jease.cms.web.i18n.Strings;
 import jease.cms.web.user.Editor;
+import jfix.zk.ActionListener;
 import jfix.zk.Div;
 import jfix.zk.Window;
 import jfix.zk.ZK;
+
+import org.zkoss.zk.ui.event.Event;
 
 /**
  * Initial setup of JeaseCMS: create root node and administration account.
@@ -50,7 +53,7 @@ public class Setup extends Div {
 
 	private void createRootFolder() {
 		Folder folder = new Folder();
-		folder.setId("");
+		folder.setId(ZK.getContextPath().replaceFirst("/", ""));
 		folder.setTitle(Strings.Jease);
 		folder.setLastModified(new Date());
 		Nodes.setRoot(folder);
@@ -62,24 +65,19 @@ public class Setup extends Div {
 		administrator.setAdministrator(true);
 		administrator.setRoots(new Folder[] { (Folder) Nodes.getRoot() });
 
-		Window window = new Window(Strings.Setup_Administrator);
-		window.appendChild(new AdministratorEditor(administrator));
-
-		getRoot().appendChild(window);
-	}
-
-	/**
-	 * Customized UserEditor for creation of initial administration account.
-	 */
-	private class AdministratorEditor extends Editor {
-		public AdministratorEditor(User administrator) {
-			setObject(administrator);
-			refresh();
-		}
-
-		public void save() {
-			super.save();
-			redirectToLogin();
-		}
+		final Window window = new Window(Strings.Setup_Administrator);
+		window.setClosable(false);
+		window.setParent(getRoot());
+		
+		Editor editor = new Editor();
+		editor.setObject(administrator);
+		editor.addChangeListener(new ActionListener() {			
+			public void actionPerformed(Event evt) {
+				window.close();
+				redirectToLogin();
+			}
+		});
+		editor.refresh();
+		editor.setParent(window);		
 	}
 }

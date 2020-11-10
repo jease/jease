@@ -1,9 +1,11 @@
 package jease.cms.service;
 
 import jease.cmf.domain.Node;
+import jease.cmf.service.Nodes;
 import jease.cms.domain.Content;
 import jease.cms.domain.Folder;
 import jease.cms.domain.Reference;
+import jease.cms.domain.Trash;
 import jease.cms.domain.User;
 import jfix.db4o.Database;
 import jfix.functor.Functors;
@@ -16,6 +18,9 @@ public class Contents {
 	 * exist, content can be deleted without dangling references in database.
 	 */
 	public static boolean isDeletable(Content content) {
+		if (isDeleteGuardedByTrash(content)) {
+			return true;
+		}
 		for (User user : Database.query(User.class)) {
 			for (Folder folder : user.getRoots()) {
 				if (folder.isDescendant(content)) {
@@ -30,7 +35,39 @@ public class Contents {
 		}
 		return true;
 	}
-	
+
+	private static boolean isDeleteGuardedByTrash(Content content) {
+		return !(content instanceof Trash)
+				&& content.getParents(Trash.class).length == 0
+				&& content.getGuard(Trash.class) != null;
+	}
+
+	/**
+	 * Deletes given content. If a Trash-Object is guarding the given content,
+	 * the content will be moved to Trash, otherwise it will be deleted
+	 * directly. If the given content is a Trash-Object, the Trash-Object is
+	 * deleted only when it is empty, otherwise the Trash will be emptied.
+	 */
+	public static void delete(Content content) {
+		if (content instanceof Trash) {
+			Trash trash = (Trash) content;
+			if (trash.isEmpty()) {
+				Nodes.delete(trash);
+			} else {
+				trash.empty();
+				Nodes.save(trash);
+			}
+		} else {
+			Trash trash = content.getGuard(Trash.class);
+			if (trash == null || content.isDescendant(trash)) {
+				Nodes.delete(content);
+			} else {
+				trash.appendChild(content);
+				Nodes.save(trash);
+			}
+		}
+	}
+
 	/**
 	 * Returns only non privileged nodes from given array.
 	 */

@@ -1,6 +1,6 @@
-<%@page import="jease.cmf.domain.*"%>
+<%@page import="jease.cms.domain.*"%>
 <%
-	for (Node parent : ((Node) request.getAttribute("Node")).getParents()) {
+	for (Content parent : ((Content) request.getAttribute("Node")).getParents(Content.class)) {
 %>
 &raquo; <a href="<%=parent.getPath()%>"><%=parent.getTitle()%></a>
 <%

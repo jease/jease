@@ -56,9 +56,12 @@ public class NavigationTree extends Tree {
 	}
 
 	private void selectPerformed() {
-		Node value = (Node) getSelectedItem().getValue();
-		if (value != null) {
-			JeaseSession.setContainer(value);
+		Treeitem treeitem = getSelectedItem();
+		if (treeitem != null) {
+			Node value = (Node) treeitem.getValue();
+			if (value != null) {
+				JeaseSession.setContainer(value);
+			}
 		}
 	}
 

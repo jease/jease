@@ -117,6 +117,23 @@ public abstract class Content extends Node {
 	}
 
 	/**
+	 * Returns guard object of given type in upstream direction by traversing
+	 * all children of all parents for given content. In general a guard is a
+	 * child in one of the parent folders of the given object which should have
+	 * some influence on behaviour of the given object.
+	 */
+	public <E extends Content> E getGuard(Class<E> type) {
+		Node currentParent = getParent();
+		while (currentParent != null) {
+			for (E node : currentParent.getChildren(type)) {
+				return node;
+			}
+			currentParent = currentParent.getParent();
+		}
+		return null;
+	}
+	
+	/**
 	 * Creates a controlled copy of the content. In derived implementations,
 	 * super.copy() should be called and then additional fields should be
 	 * copied. Elements of a container will copied automatically.

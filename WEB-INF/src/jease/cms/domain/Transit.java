@@ -1,38 +1,47 @@
 package jease.cms.domain;
 
+import java.net.URI;
+
+import jfix.util.Files;
 import jfix.util.Urls;
 
 /**
- * A Transit references a file in the file-system of the server as content.
- * Therefore a Transit is quite powerful (e.g. edit JSPs directly via the CMS),
- * but it comes with security risks. Therefore a Transit should only be
+ * A Transit references a file in the file-system of the server via an URI as
+ * content. Therefore a Transit is quite powerful (e.g. edit JSPs directly via
+ * the CMS), but it comes with security risks. A Transit should only be
  * available to very trusted people (like administrators).
  */
 public class Transit extends Content {
 
-	private String pathname;
+	private String uri;
 
 	public Transit() {
 	}
 
-	public String getPathname() {
-		return pathname;
+	public String getURI() {
+		return uri;
 	}
 
-	public void setPathname(String pathname) {
-		this.pathname = pathname;
+	public void setURI(String uri) {
+		this.uri = uri;
 	}
 
 	public java.io.File getFile() {
-		return new java.io.File(pathname);
+		if (uri != null) {
+			java.io.File file = new java.io.File(URI.create(uri));
+			Files.createMissing(file);
+			return file;
+		} else {
+			return null;
+		}
 	}
 
 	public String getContentType() {
-		return Urls.guessContentTypeFromName(pathname);
+		return Urls.guessContentTypeFromName(uri);
 	}
 
 	public boolean isPage() {
-		return false;
+		return Urls.guessContentTypeFromName(uri).startsWith("text");
 	}
 
 	/**
@@ -49,7 +58,7 @@ public class Transit extends Content {
 
 	public Transit copy() {
 		Transit transit = (Transit) super.copy();
-		transit.setPathname(getPathname());
+		transit.setURI(getURI());
 		return transit;
 	}
 }

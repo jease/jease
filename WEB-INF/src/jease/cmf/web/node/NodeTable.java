@@ -22,21 +22,20 @@ import jease.cmf.web.node.constructor.NodeConstructor;
 import jfix.zk.ActionListener;
 import jfix.zk.ObjectEditor;
 import jfix.zk.ObjectTable;
-import jfix.zk.ObjectTableModel;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
 public class NodeTable extends ObjectTable {
 
-	protected NodeConstructor nodeConstructor;
+	private NodeConstructor nodeConstructor;
 
-	public void init(ObjectTableModel tableModel, Component editor) {
-		super.init(tableModel, editor);
+	public NodeTable() {
+		// Quirk: otherwise content runs out of view
+		setWidth("99%");
 	}
-
+	
 	public void refresh() {
 		if (nodeConstructor == null) {
 			initNodeConstructor();
@@ -45,14 +44,14 @@ public class NodeTable extends ObjectTable {
 		super.refresh();
 	}
 
-	protected void initNodeConstructor() {
+	private void initNodeConstructor() {
 		nodeConstructor = new NodeConstructor();
 		getCreateButton().setVisible(true);
 		getCreateButton().getParent().insertBefore(nodeConstructor,
 				getCreateButton());
 	}
 
-	protected void onSelect(Object obj) {
+	public void onSelect(Object obj) {
 		if (obj == null) {
 			obj = nodeConstructor.getSelectedNode();
 		}

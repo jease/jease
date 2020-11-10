@@ -18,6 +18,8 @@ package jease.cms.service;
 
 import java.util.List;
 
+import jease.cmf.service.Nodes;
+import jease.cms.domain.Content;
 import jease.cms.domain.User;
 import jfix.db4o.Database;
 import jfix.functor.Predicate;
@@ -63,4 +65,21 @@ public class Users {
 		});
 	}
 
+	/**
+	 * Replaces all occurences of old user with new user as editor of content.
+	 */
+	public static void replace(User oldUser, User newUser) {
+		for (Content content : queryContentsEditedByUser(oldUser)) {
+			content.setEditor(newUser);
+			Nodes.save(content);
+		}
+	}
+
+	private static List<Content> queryContentsEditedByUser(final User user) {
+		return Database.query(Content.class, new Predicate<Content>() {
+			public boolean test(Content content) {
+				return content.getEditor() == user;
+			}
+		});
+	}
 }
