@@ -17,6 +17,7 @@
 package jfix.search;
 
 import org.apache.lucene.search.SimpleCollector;
+import org.apache.lucene.search.ScoreMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,5 +44,9 @@ public class ObjectCollector<E> extends SimpleCollector {
     public List<E> getOutput() {
         return output;
     }
+	
+	public ScoreMode scoreMode() {
+		return ScoreMode.TOP_SCORES;
+	}
 
 }
