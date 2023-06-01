@@ -21,7 +21,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
@@ -35,13 +40,8 @@ import jease.cms.domain.Image;
 import jease.cms.domain.Text;
 import jease.cms.domain.User;
 import jfix.util.MimeTypes;
-import jfix.util.Urls;
 import jfix.util.Zipfiles;
 import jfix.util.Zipfiles.EntryHandler;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Service to import single files or whole file-systems (as zipped files which
@@ -55,6 +55,7 @@ public class Imports {
                 "application/zip")) {
             final StringBuilder errors = new StringBuilder();
             Zipfiles.unzip(file, new EntryHandler() {
+                @Override
                 public void process(String path, String entryName,
                         InputStream inputStream) throws Exception {
                     try {
@@ -157,7 +158,7 @@ public class Imports {
         text.setId(Filenames.asId(filename));
         text.setTitle(FilenameUtils.removeExtension(filename));
         text.setLastModified(new Date());
-        text.setContent(IOUtils.toString(inputStream, "UTF-8"));
+        text.setContent(IOUtils.toString(inputStream, StandardCharsets.UTF_8));
         text.setPlain(true);
         return text;
     }

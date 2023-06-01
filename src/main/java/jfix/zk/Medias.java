@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import org.apache.commons.io.IOUtils;
@@ -56,7 +57,7 @@ public class Medias {
                 input.close();
             } else {
                 Reader input = Medias.asReader(media);
-                IOUtils.copy(input, output);
+                IOUtils.copy(input, output, StandardCharsets.UTF_8);
                 input.close();
             }
             output.close();
@@ -68,10 +69,10 @@ public class Medias {
 
     public static String asString(Media media) {
         try {
-            String result = null;
+            final String result;
             if (media.isBinary()) {
                 InputStream input = Medias.asStream(media);
-                result = IOUtils.toString(input, "UTF-8");
+                result = IOUtils.toString(input, StandardCharsets.UTF_8);
                 input.close();
             } else {
                 Reader reader = Medias.asReader(media);
