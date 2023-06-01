@@ -203,7 +203,7 @@ public class Mediafield extends Vlayout {
                     }
                     if (isContentTypeEditable()) {
                         String mediaString = Medias.asString(media);
-                        if (mediaString.length() < 5 * 1024 * 1024) {
+                        if (mediaString.length() < 16 * 1024 * 1024) {
                             codemirror.setVisible(true);
                             showLineNums.setVisible(true);
                             codemirror.setSyntax(FilenameUtils.getExtension(media.getName()));
