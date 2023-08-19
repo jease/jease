@@ -18,6 +18,13 @@ package jease.cms.web.content;
 
 import java.io.File;
 
+import org.zkoss.util.media.Media;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Label;
+
 import jease.Names;
 import jease.Registry;
 import jease.cmf.web.Jease;
@@ -32,12 +39,6 @@ import jfix.zk.Images;
 import jfix.zk.Medias;
 import jfix.zk.Modal;
 import jfix.zk.WebBrowser;
-
-import org.zkoss.util.media.Media;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.UploadEvent;
-import org.zkoss.zul.Button;
 
 /**
  * JeaseCMS with additional content dump/restore and fileupload for quick
@@ -55,14 +56,15 @@ public class ContentManager extends Jease {
         getFlatTable().getLeftbox().getChildren().clear();
         Component container = getTreeTable().getRightbox();
         container.getChildren().clear();
+        initUploadButton();
+        container.appendChild(upload);
+        container.appendChild(new Label("\u00A0\u00A0\u00A0\u00A0"));
         if (JeaseSession.get(User.class).isAdministrator()) {
             initDumpButton();
             initRestoreButton();
             container.appendChild(dump);
             container.appendChild(restore);
         }
-        initUploadButton();
-        container.appendChild(upload);
         if (Registry.getParameter(Names.JEASE_SITE_DESIGN) != null) {
             initViewButton();
             container.appendChild(view);
@@ -71,9 +73,8 @@ public class ContentManager extends Jease {
 
     private void initDumpButton() {
         dump = new Button(I18N.get("Dump"), Images.DriveCdrom);
-        dump.addEventListener(Events.ON_CLICK, event -> Filedownload
-                .save(Backups.dump(JeaseSession.getContainer()))
-
+        dump.addEventListener(Events.ON_CLICK, event ->
+            Filedownload.save(Backups.dump(JeaseSession.getContainer()))
         );
     }
 
@@ -100,44 +101,47 @@ public class ContentManager extends Jease {
     }
 
     private void initUploadButton() {
-        upload = new Fileupload(I18N.get("Upload"), Images.UserHome);
-        upload.addEventListener(
-                Events.ON_UPLOAD,
-                event -> {
-                    Media media = ((UploadEvent) event).getMedia();
-                    if (media != null) {
+        upload = new Fileupload(I18N.get("Upload"), Images.UserHome, true/*multiple*/);
+        upload.addEventListener(Events.ON_UPLOAD, event -> {
+            Media[] medias = ((UploadEvent) event).getMedias();
+            if (medias != null) {
+                try {
+                    for (int i = 0; i < medias.length; i++) {
+                        Media media = medias[i];
                         try {
                             File inputFile = Medias.asFile(media);
                             inputFile.deleteOnExit();
                             Imports.fromFile(inputFile,
-                                    JeaseSession.getContainer(),
-                                    JeaseSession.get(User.class));
+                                    JeaseSession.getContainer(), JeaseSession.get(User.class));
                         } catch (Exception e) {
                             Modal.error(e.getMessage());
-                        } finally {
-                            refresh();
                         }
                     }
-                });
-        upload.setUploadLimit(Registry.getParameter(Names.JEASE_UPLOAD_LIMIT));
+                } finally {
+                    refresh();
+                }
+            }
+        });
+        //
+        setUploadLimit();
+    }
+
+    private void setUploadLimit() {
+        final String limit = Registry.getParameter(Names.JEASE_UPLOAD_LIMIT);
+        if (upload != null) upload.setUploadLimit(limit);
     }
 
     private void initViewButton() {
         view = new Button(I18N.get("View"), Images.InternetWebBrowser);
         view.addEventListener(
-                Events.ON_CLICK,
-                event -> {
-                    getRoot().appendChild(
-                            new WebBrowser(JeaseSession.getContainer()
-                                    .getPath()));
+                Events.ON_CLICK, event -> {
+                    getRoot().appendChild(new WebBrowser(JeaseSession.getContainer().getPath()));
                 });
     }
 
+    @Override
     public void refresh() {
         super.refresh();
-        if (upload != null) {
-            upload.setUploadLimit(Registry
-                    .getParameter(Names.JEASE_UPLOAD_LIMIT));
-        }
+        setUploadLimit();
     }
 }

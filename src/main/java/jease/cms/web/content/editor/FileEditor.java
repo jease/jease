@@ -22,6 +22,7 @@ import org.zkoss.zk.ui.event.Events;
 
 import jease.Names;
 import jease.Registry;
+import jease.cmf.service.Filenames;
 import jease.cms.domain.File;
 import jfix.util.I18N;
 import jfix.zk.Mediafield;
@@ -66,13 +67,19 @@ public class FileEditor<E extends File> extends ContentEditor<E> {
     }
 
     protected void uploadPerformed() {
-        if (getObject().isValidContentType(media.getContentType())) {
+        String contentType = media.getContentType();
+        if (getObject().isValidContentType(contentType)) {
             String filename = media.getName();
+            String fileNoExt = FilenameUtils.removeExtension(filename);
             if (StringUtils.isEmpty(id.getValue())) {
-                id.setText(filename);
+                if (contentType != null && contentType.startsWith("image/")) {
+                    id.setText(Filenames.asId(fileNoExt));
+                } else {
+                    id.setText(Filenames.asId(filename));
+                }
             }
             if (StringUtils.isEmpty(title.getValue())) {
-                title.setText(FilenameUtils.removeExtension(filename));
+                title.setText(fileNoExt);
             }
         } else {
             Modal.error(I18N.get("Content_is_not_valid"));

@@ -166,8 +166,9 @@ public class Imports {
     private static Image newImage(String filename, InputStream inputStream)
             throws IOException {
         Image image = new Image();
-        image.setId(Filenames.asId(filename));
-        image.setTitle(FilenameUtils.removeExtension(filename));
+        String fileNoExt = FilenameUtils.removeExtension(filename);
+        image.setId(Filenames.asId(fileNoExt));
+        image.setTitle(fileNoExt);
         image.setLastModified(new Date());
         image.setContentType(MimeTypes.guessContentTypeFromName(filename));
         copyStreamToFile(inputStream, image.getFile());

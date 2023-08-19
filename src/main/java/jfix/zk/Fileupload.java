@@ -16,24 +16,59 @@
  */
 package jfix.zk;
 
-import jfix.util.I18N;
-
 import org.apache.commons.lang3.StringUtils;
 
+import jfix.util.I18N;
+
 public class Fileupload extends org.zkoss.zul.Button {
+
+    private boolean multiple;
+    private int limit;
 
     public Fileupload() {
         this(I18N.get("Upload"), Images.UserHome);
     }
 
     public Fileupload(String label, String image) {
+        this(label, image, false/*multiple*/);
+    }
+
+    public Fileupload(String label, String image, boolean multiple) {
         super(label, image);
-        setUpload("true");
+        this.multiple = multiple;
+        configure();
+    }
+
+    private void configure() {
+        String s = "";
+        if (multiple) s += ",multiple=true";
+        if (limit != 0) s += ",maxsize=" + String.valueOf(limit);
+        setUpload("true" + s);
+    }
+
+    public int getLimit() {
+        return limit;
     }
 
     public void setUploadLimit(String limit) {
         if (StringUtils.isNotBlank(limit)) {
-            setUpload("true,maxsize=" + limit);
+            try {
+                this.limit = Integer.parseInt(limit);
+            } catch (Exception ex) {
+                this.limit = 0;
+            }
+        } else {
+            this.limit = 0;
         }
+        configure();
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+        configure();
     }
 }
