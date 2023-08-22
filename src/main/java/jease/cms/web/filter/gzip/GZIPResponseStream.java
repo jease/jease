@@ -32,14 +32,17 @@ public class GZIPResponseStream extends ServletOutputStream {
 
         byte[] bytes = baos.toByteArray();
         final String contentType = response.getContentType();
-        if (stopGZIP == null || !stopGZIP.test(contentType)) {
-            ByteArrayOutputStream newBaos = new ByteArrayOutputStream();
-            GZIPOutputStream gzipstream = new GZIPOutputStream(newBaos);
-            gzipstream.write(bytes);
-            gzipstream.finish();
-            bytes = newBaos.toByteArray();
-            response.addHeader("Content-Length", Integer.toString(bytes.length));
-            response.addHeader("Content-Encoding", "gzip");
+        final String contentEncoding = response.getHeader("Content-Encoding");
+        if (contentEncoding == null || !contentEncoding.contains("gzip")) {
+            if (stopGZIP == null || !stopGZIP.test(contentType)) {
+                ByteArrayOutputStream newBaos = new ByteArrayOutputStream();
+                GZIPOutputStream gzipstream = new GZIPOutputStream(newBaos);
+                gzipstream.write(bytes);
+                gzipstream.finish();
+                bytes = newBaos.toByteArray();
+                response.setHeader("Content-Length", Integer.toString(bytes.length));
+                response.setHeader("Content-Encoding", "gzip");
+            }
         }
 
         output.write(bytes);
