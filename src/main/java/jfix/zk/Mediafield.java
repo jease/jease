@@ -20,8 +20,11 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+
+import javax.swing.ImageIcon;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -183,6 +186,86 @@ public class Mediafield extends Vlayout {
         updateMediaViewer();
     }
 
+    private class AImageFix implements org.zkoss.image.Image, java.io.Serializable {
+
+        private String _name;
+        private final AImage img;
+
+        public AImageFix(String name, InputStream is) throws IOException {
+            _name = name;
+            img = new AImage(name, is);
+        }
+
+        @Override
+        public String getName() {
+            return _name;
+        }
+
+        public void setName(String value) {
+            _name = value;
+        }
+
+        @Override
+        public boolean isBinary() {
+            return img.isBinary();
+        }
+
+        @Override
+        public boolean inMemory() {
+            return img.inMemory();
+        }
+
+        @Override
+        public byte[] getByteData() {
+            return img.getByteData();
+        }
+
+        @Override
+        public String getStringData() {
+            return img.getStringData();
+        }
+
+        @Override
+        public InputStream getStreamData() {
+            return img.getStreamData();
+        }
+
+        @Override
+        public Reader getReaderData() {
+            return img.getReaderData();
+        }
+
+        @Override
+        public String getFormat() {
+            return img.getFormat();
+        }
+
+        @Override
+        public String getContentType() {
+            return img.getContentType();
+        }
+
+        @Override
+        public boolean isContentDisposition() {
+            return img.isContentDisposition();
+        }
+
+        @Override
+        public int getWidth() {
+            return img.getWidth();
+        }
+
+        @Override
+        public int getHeight() {
+            return img.getHeight();
+        }
+
+        @Override
+        public ImageIcon toImageIcon() {
+            return img.toImageIcon();
+        }
+    }
+
     private void updateMediaViewer() {
         try {
             download.setVisible(media != null);
@@ -192,12 +275,22 @@ public class Mediafield extends Vlayout {
             showLineNums.setVisible(false);
             download.setLabel(I18N.get("Download") + " (" + getContentType() + ")");
             if (isPreview()) {
-                if (getContentType() != null) {
-                    if (getContentType().startsWith("image")) {
+                final String contentType = getContentType();
+                if (contentType != null) {
+                    if (contentType.startsWith("image")) {
                         InputStream input = Medias.asStream(media);
                         imagePreview.setVisible(true);
                         imageControlsVisible(true);
-                        image.setContent(new AImage(getName(), input));
+                        final String n = getName();
+                        // Special processing in case of: image/svg+xml
+                        if (contentType.contains("/svg") && n.lastIndexOf('.') == -1) {
+                            // we must help AImage.getFormatByName() to recognize SVG by extension
+                            AImageFix img = new AImageFix(n + ".svg", input);
+                            img.setName(n);
+                            image.setContent(img);
+                        } else {
+                            image.setContent(new AImage(n, input));
+                        }
                         input.close();
                         adjustImage();
                     }
