@@ -17,7 +17,7 @@
         </repository>
         <repository>
             <id>zk-ce</id>
-            <url>http://mavensync.zkoss.org/maven2</url>
+            <url>https://mavensync.zkoss.org/maven2</url>
         </repository>
     </repositories>
     <dependencies>
