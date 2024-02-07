@@ -23,10 +23,10 @@ import org.zkoss.zul.ListitemRenderer;
 
 public class NodeConstructorRenderer implements ListitemRenderer<Node> {
 
-	public void render(Listitem listitem, Node value, int index)
-			throws Exception {
-		if (value != null) {
-			listitem.setLabel(value.getType());
-		}
-	}
+    public void render(Listitem listitem, Node value, int index)
+            throws Exception {
+        if (value != null) {
+            listitem.setLabel(value.getType());
+        }
+    }
 }

@@ -27,35 +27,35 @@ import org.zkoss.zul.Textbox;
 
 public class Editor extends ObjectEditor<Sequence> {
 
-	Textbox name = new Textbox();
-	Spinner value = new Spinner();
+    Textbox name = new Textbox();
+    Spinner value = new Spinner();
 
-	public Editor() {
-	}
+    public Editor() {
+    }
 
-	public void init() {
-		add(I18N.get("Name"), name);
-		add(I18N.get("Value"), value);
-	}
+    public void init() {
+        add(I18N.get("Name"), name);
+        add(I18N.get("Value"), value);
+    }
 
-	public void load() {
-		name.setText(getObject().getName());
-		value.setValue(getObject().getValue());
-	}
+    public void load() {
+        name.setText(getObject().getName());
+        value.setValue(getObject().getValue());
+    }
 
-	public void save() {
-		getObject().setName(name.getText());
-		getObject().setValue(value.intValue());
-		Database.save(getObject());
-	}
+    public void save() {
+        getObject().setName(name.getText());
+        getObject().setValue(value.intValue());
+        Database.save(getObject());
+    }
 
-	public void delete() {
-		Database.delete(getObject());
-	}
+    public void delete() {
+        Database.delete(getObject());
+    }
 
-	public void validate() {
-		validate(StringUtils.isEmpty(name.getValue()),
-				I18N.get("Name_is_required"));
-	}
+    public void validate() {
+        validate(StringUtils.isEmpty(name.getValue()),
+                I18N.get("Name_is_required"));
+    }
 
 }

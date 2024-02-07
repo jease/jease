@@ -21,39 +21,39 @@ package jease.cms.domain;
  */
 public class Link extends Content {
 
-	private String url;
+    private String url;
 
-	public Link() {
-	}
+    public Link() {
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public boolean isPage() {
-		return false;
-	}
+    public boolean isPage() {
+        return false;
+    }
 
-	public long getSize() {
-		return super.getSize() + getUrl().length();
-	}
+    public long getSize() {
+        return super.getSize() + getUrl().length();
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(getUrl());
-	}
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n").append(getUrl());
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		setUrl(getUrl().replace(target, replacement));
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        setUrl(getUrl().replace(target, replacement));
+    }
 
-	public Link copy(boolean recursive) {
-		Link link = (Link) super.copy(recursive);
-		link.setUrl(getUrl());
-		return link;
-	}
+    public Link copy(boolean recursive) {
+        Link link = (Link) super.copy(recursive);
+        link.setUrl(getUrl());
+        return link;
+    }
 }

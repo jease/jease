@@ -22,28 +22,28 @@ import com.db4o.config.EmbeddedConfiguration;
 
 public class Db4oXStream {
 
-	private String databaseFile;
-	private String xstreamFile;
+    private String databaseFile;
+    private String xstreamFile;
 
-	public Db4oXStream(String databaseFile, String xstreamFile) {
-		this.databaseFile = databaseFile;
-		this.xstreamFile = xstreamFile;
-	}
+    public Db4oXStream(String databaseFile, String xstreamFile) {
+        this.databaseFile = databaseFile;
+        this.xstreamFile = xstreamFile;
+    }
 
-	public void toXML() {
-		EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
-		config.common().activationDepth(Integer.MAX_VALUE);
-		ObjectContainer db4o = Db4oEmbedded.openFile(config, databaseFile);
-		new XStreamFile(xstreamFile).write(db4o.queryByExample(null));
-		db4o.close();
-	}
+    public void toXML() {
+        EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
+        config.common().activationDepth(Integer.MAX_VALUE);
+        ObjectContainer db4o = Db4oEmbedded.openFile(config, databaseFile);
+        new XStreamFile(xstreamFile).write(db4o.queryByExample(null));
+        db4o.close();
+    }
 
-	public void fromXML() {
-		ObjectContainer db4o = Db4oEmbedded.openFile(databaseFile);
-		for (Object obj : new XStreamFile(xstreamFile).read()) {
-			db4o.store(obj);
-		}
-		db4o.commit();
-		db4o.close();
-	}
+    public void fromXML() {
+        ObjectContainer db4o = Db4oEmbedded.openFile(databaseFile);
+        for (Object obj : new XStreamFile(xstreamFile).read()) {
+            db4o.store(obj);
+        }
+        db4o.commit();
+        db4o.close();
+    }
 }

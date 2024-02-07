@@ -20,10 +20,10 @@ import org.zkoss.zk.ui.Component;
 
 public class Scrollbox extends Div {
 
-	public Scrollbox(Component comp) {
-		setStyle("overflow: auto;");
-		setHeight("250px");
-		appendChild(comp);
-	}
+    public Scrollbox(Component comp) {
+        setStyle("overflow: auto;");
+        setHeight("250px");
+        appendChild(comp);
+    }
 
 }

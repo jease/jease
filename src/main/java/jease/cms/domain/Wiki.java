@@ -22,35 +22,35 @@ package jease.cms.domain;
  */
 public class Wiki extends Content {
 
-	private String content;
+    private String content;
 
-	public Wiki() {
-	}
+    public Wiki() {
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(getContent());
-	}
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n").append(getContent());
+    }
 
-	public long getSize() {
-		return super.getSize() + getContent().length();
-	}
+    public long getSize() {
+        return super.getSize() + getContent().length();
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		setContent(getContent().replace(target, replacement));
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        setContent(getContent().replace(target, replacement));
+    }
 
-	public Wiki copy(boolean recursive) {
-		Wiki wiki = (Wiki) super.copy(recursive);
-		wiki.setContent(getContent());
-		return wiki;
-	}
+    public Wiki copy(boolean recursive) {
+        Wiki wiki = (Wiki) super.copy(recursive);
+        wiki.setContent(getContent());
+        return wiki;
+    }
 }

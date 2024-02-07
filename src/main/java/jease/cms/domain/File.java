@@ -29,59 +29,59 @@ import jfix.db4o.Blob;
  */
 public class File extends Content {
 
-	private String contentType;
-	private Blob blob = new Blob();
+    private String contentType;
+    private Blob blob = new Blob();
 
-	public File() {
-	}
+    public File() {
+    }
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 
-	public String getContentType() {
-		return contentType;
-	}
+    public String getContentType() {
+        return contentType;
+    }
 
-	/**
-	 * Returns true if it is valid to store given content type in object. File
-	 * accepts all content types, derived implementations may limit the set of
-	 * valid content types.
-	 */
-	public boolean isValidContentType(String contentType) {
-		return true;
-	}
+    /**
+     * Returns true if it is valid to store given content type in object. File
+     * accepts all content types, derived implementations may limit the set of
+     * valid content types.
+     */
+    public boolean isValidContentType(String contentType) {
+        return true;
+    }
 
-	public java.io.File getFile() {
-		return blob.getFile();
-	}
+    public java.io.File getFile() {
+        return blob.getFile();
+    }
 
-	public boolean isPage() {
-		return false;
-	}
+    public boolean isPage() {
+        return false;
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(getContentType())
-				.append("\n").append(getFile().length());
-	}
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n").append(getContentType())
+                .append("\n").append(getFile().length());
+    }
 
-	public long getSize() {
-		return super.getSize()
-				+ (getContentType() != null ? getContentType().length() : 0)
-				+ getFile().length();
-	}
+    public long getSize() {
+        return super.getSize()
+                + (getContentType() != null ? getContentType().length() : 0)
+                + getFile().length();
+    }
 
-	public File copy(boolean recursive) {
-		File file = (File) super.copy(recursive);
-		file.setContentType(getContentType());
-		if (getFile().exists()) {
-			try {
-				Files.copy(getFile().toPath(), file.getFile().toPath(),
-						StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		return file;
-	}
+    public File copy(boolean recursive) {
+        File file = (File) super.copy(recursive);
+        file.setContentType(getContentType());
+        if (getFile().exists()) {
+            try {
+                Files.copy(getFile().toPath(), file.getFile().toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return file;
+    }
 }

@@ -22,25 +22,25 @@ import org.zkoss.zul.TreeModel;
 
 public class Tree extends org.zkoss.zul.Tree implements Refreshable {
 
-	public Tree() {
-	}
+    public Tree() {
+    }
 
-	public void fireChangeEvent() {
-		Events.sendEvent(new Event(Events.ON_CHANGE, this));
-	}
+    public void fireChangeEvent() {
+        Events.sendEvent(new Event(Events.ON_CHANGE, this));
+    }
 
-	public void refresh() {
-		TreeModel<?> model = (TreeModel<?>) getModel();
-		setModel(null);
-		setModel(model);
-	}
+    public void refresh() {
+        TreeModel<?> model = (TreeModel<?>) getModel();
+        setModel(null);
+        setModel(model);
+    }
 
-	public Object getSelectedValue() {
-		return getSelectedItem() != null ? getSelectedItem().getValue() : null;
-	}
+    public Object getSelectedValue() {
+        return getSelectedItem() != null ? getSelectedItem().getValue() : null;
+    }
 
-	public void resetSelectedValue() {
-		setSelectedItem(null);
-	}
+    public void resetSelectedValue() {
+        setSelectedItem(null);
+    }
 
 }

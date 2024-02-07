@@ -28,33 +28,33 @@ import com.thoughtworks.xstream.mapper.Mapper;
 
 public class DelegateArrayConverter extends ArrayConverter {
 
-	private Converter delegateConverter;
+    private Converter delegateConverter;
 
-	public DelegateArrayConverter(Converter delegateConverter, Mapper mapper) {
-		super(mapper);
-		this.delegateConverter = delegateConverter;
-	}
+    public DelegateArrayConverter(Converter delegateConverter, Mapper mapper) {
+        super(mapper);
+        this.delegateConverter = delegateConverter;
+    }
 
-	protected void writeItem(Object item, MarshallingContext context,
-			HierarchicalStreamWriter writer) {
-		if (item == null) {
-			String name = mapper().serializedClass(null);
-			ExtendedHierarchicalStreamWriterHelper.startNode(writer, name,
-					Mapper.Null.class);
-			writer.endNode();
-		} else {
-			String name = mapper().serializedClass(item.getClass());
-			ExtendedHierarchicalStreamWriterHelper.startNode(writer, name,
-					item.getClass());
-			context.convertAnother(item, delegateConverter);
-			writer.endNode();
-		}
-	}
+    protected void writeItem(Object item, MarshallingContext context,
+            HierarchicalStreamWriter writer) {
+        if (item == null) {
+            String name = mapper().serializedClass(null);
+            ExtendedHierarchicalStreamWriterHelper.startNode(writer, name,
+                    Mapper.Null.class);
+            writer.endNode();
+        } else {
+            String name = mapper().serializedClass(item.getClass());
+            ExtendedHierarchicalStreamWriterHelper.startNode(writer, name,
+                    item.getClass());
+            context.convertAnother(item, delegateConverter);
+            writer.endNode();
+        }
+    }
 
-	protected Object readItem(HierarchicalStreamReader reader,
-			UnmarshallingContext context, Object current) {
-		Class<?> type = HierarchicalStreams.readClassType(reader, mapper());
-		return context.convertAnother(current, type, delegateConverter);
-	}
+    protected Object readItem(HierarchicalStreamReader reader,
+            UnmarshallingContext context, Object current) {
+        Class<?> type = HierarchicalStreams.readClassType(reader, mapper());
+        return context.convertAnother(current, type, delegateConverter);
+    }
 
 }

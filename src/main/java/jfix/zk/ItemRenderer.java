@@ -24,22 +24,22 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
 
 public abstract class ItemRenderer implements ListitemRenderer<Object>,
-		TreeitemRenderer<Object>, ComboitemRenderer<Object> {
+        TreeitemRenderer<Object>, ComboitemRenderer<Object> {
 
-	public abstract String render(Object value);
+    public abstract String render(Object value);
 
-	public void render(Listitem listitem, Object value, int index) {
-		listitem.setValue(value);
-		listitem.setLabel(render(value));
-	}
+    public void render(Listitem listitem, Object value, int index) {
+        listitem.setValue(value);
+        listitem.setLabel(render(value));
+    }
 
-	public void render(Treeitem treeitem, Object value, int index) {
-		treeitem.setValue(value);
-		treeitem.setLabel(render(value));
-	}
+    public void render(Treeitem treeitem, Object value, int index) {
+        treeitem.setValue(value);
+        treeitem.setLabel(render(value));
+    }
 
-	public void render(Comboitem comboitem, Object value, int index) {
-		comboitem.setValue(value);
-		comboitem.setLabel(render(value));
-	}
+    public void render(Comboitem comboitem, Object value, int index) {
+        comboitem.setValue(value);
+        comboitem.setLabel(render(value));
+    }
 }

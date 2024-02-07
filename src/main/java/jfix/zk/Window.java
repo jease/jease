@@ -18,53 +18,53 @@ package jfix.zk;
 
 public class Window extends org.zkoss.zul.Window {
 
-	public Window() {
-		this("?", true);
-	}
+    public Window() {
+        this("?", true);
+    }
 
-	public Window(String title) {
-		this(title, true);
-	}
+    public Window(String title) {
+        this(title, true);
+    }
 
-	public Window(String title, boolean closable) {
-		this(title, "normal", closable);
-	}
+    public Window(String title, boolean closable) {
+        this(title, "normal", closable);
+    }
 
-	public Window(String title, String border, boolean closable) {
-		super(title, border, closable);
-		doOverlapped();
-		setPosition("none");
-		setWidth("70%");
-		setLeft("15%");
-		setTop("2%");
-	}
+    public Window(String title, String border, boolean closable) {
+        super(title, border, closable);
+        doOverlapped();
+        setPosition("none");
+        setWidth("70%");
+        setLeft("15%");
+        setTop("2%");
+    }
 
-	/**
-	 * Closes the window by detaching it from parent.
-	 */
-	public void close() {
-		setParent(null);
-	}
+    /**
+     * Closes the window by detaching it from parent.
+     */
+    public void close() {
+        setParent(null);
+    }
 
-	public void setTitle(String title) {
-		title = (title == null) ? "?" : title.trim().replace("null", "?");
-		super.setTitle("".equals(title) ? "..." : title);
-	}
+    public void setTitle(String title) {
+        title = (title == null) ? "?" : title.trim().replace("null", "?");
+        super.setTitle("".equals(title) ? "..." : title);
+    }
 
-	public void setTitle(Object obj) {
-		if (obj == null) {
-			setTitle("...");
-		} else {
-			String title = obj.toString();
-			if (title == null) {
-				setTitle("...");
-			} else {
-				setTitle(title);
-			}
-		}
-	}
+    public void setTitle(Object obj) {
+        if (obj == null) {
+            setTitle("...");
+        } else {
+            String title = obj.toString();
+            if (title == null) {
+                setTitle("...");
+            } else {
+                setTitle(title);
+            }
+        }
+    }
 
-	public void doModal() {
-		doHighlighted();
-	}
+    public void doModal() {
+        doHighlighted();
+    }
 }

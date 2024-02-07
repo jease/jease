@@ -30,57 +30,57 @@ import org.zkoss.zul.Radio;
 
 public class Jease extends Div implements Refreshable {
 
-	private Div workspace = new Div();
-	private Div accessory = new Div();
-	private Radio viewTreeDesktop = new Radio(I18N.get("Navigation"));
-	private Radio viewFlatDesktop = new Radio(I18N.get("Search"));
-	private TreeDesktop treeDesktop = new TreeDesktop();
-	private FlatDesktop flatDesktop = new FlatDesktop();
+    private Div workspace = new Div();
+    private Div accessory = new Div();
+    private Radio viewTreeDesktop = new Radio(I18N.get("Navigation"));
+    private Radio viewFlatDesktop = new Radio(I18N.get("Search"));
+    private TreeDesktop treeDesktop = new TreeDesktop();
+    private FlatDesktop flatDesktop = new FlatDesktop();
 
-	public Jease() {
-		setWidth("100%");
+    public Jease() {
+        setWidth("100%");
 
-		workspace.setWidth("100%");
-		workspace.appendChild(treeDesktop);
+        workspace.setWidth("100%");
+        workspace.appendChild(treeDesktop);
 
-		accessory.setWidth("100%");
-		accessory.appendChild(new Radiogroup(viewTreeDesktop, viewFlatDesktop));
+        accessory.setWidth("100%");
+        accessory.appendChild(new Radiogroup(viewTreeDesktop, viewFlatDesktop));
 
-		appendChild(workspace);
-		appendChild(accessory);
+        appendChild(workspace);
+        appendChild(accessory);
 
-		viewFlatDesktop.addEventListener(Events.ON_CHECK,
-				$event -> switchDesktop());
-		viewTreeDesktop.addEventListener(Events.ON_CHECK,
-				$event -> switchDesktop());
-		viewTreeDesktop.setChecked(true);
-	}
+        viewFlatDesktop.addEventListener(Events.ON_CHECK,
+                $event -> switchDesktop());
+        viewTreeDesktop.addEventListener(Events.ON_CHECK,
+                $event -> switchDesktop());
+        viewTreeDesktop.setChecked(true);
+    }
 
-	private void switchDesktop() {
-		workspace.getChildren().clear();
-		workspace.appendChild(viewTreeDesktop.isChecked() ? treeDesktop
-				: flatDesktop);
-		refresh();
-	}
+    private void switchDesktop() {
+        workspace.getChildren().clear();
+        workspace.appendChild(viewTreeDesktop.isChecked() ? treeDesktop
+                : flatDesktop);
+        refresh();
+    }
 
-	public void refresh() {
-		((Refreshable) workspace.getFirstChild()).refresh();
-	}
+    public void refresh() {
+        ((Refreshable) workspace.getFirstChild()).refresh();
+    }
 
-	protected Component getWorkspace() {
-		return workspace;
-	}
+    protected Component getWorkspace() {
+        return workspace;
+    }
 
-	protected Component getAccessory() {
-		return accessory;
-	}
+    protected Component getAccessory() {
+        return accessory;
+    }
 
-	protected NodeTable getTreeTable() {
-		return treeDesktop.getNodeTable();
-	}
+    protected NodeTable getTreeTable() {
+        return treeDesktop.getNodeTable();
+    }
 
-	protected NodeTable getFlatTable() {
-		return flatDesktop.getNodeTable();
-	}
+    protected NodeTable getFlatTable() {
+        return flatDesktop.getNodeTable();
+    }
 
 }

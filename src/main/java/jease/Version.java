@@ -18,16 +18,16 @@ package jease;
 
 public class Version {
 
-	private static int MAJOR = 3;
-	private static int MINOR = 3;
-	private static int REVISION = 0;
+    private static int MAJOR = 3;
+    private static int MINOR = 3;
+    private static int REVISION = 0;
 
-	public static String getName() {
-		return String.format("%d.%d.%d", MAJOR, MINOR, REVISION);
-	}
+    public static String getName() {
+        return String.format("%d.%d.%d", MAJOR, MINOR, REVISION);
+    }
 
-	public static void main(String[] args) {
-		System.out.println(getName());
-	}
+    public static void main(String[] args) {
+        System.out.println(getName());
+    }
 
 }

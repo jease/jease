@@ -32,26 +32,26 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Templates implements Function<Content, String> {
 
-	private static Supplier<Function<Content, String>> supplier = () -> {
-		String templateResolver = Registry.getParameter(Names.JEASE_TEMPLATE_RESOLVER);
-		if (StringUtils.isNotBlank(templateResolver)) {
-			return (Function<Content, String>) Reflections.newInstance(templateResolver);
-		}
-		return new Templates();
-	};
+    private static Supplier<Function<Content, String>> supplier = () -> {
+        String templateResolver = Registry.getParameter(Names.JEASE_TEMPLATE_RESOLVER);
+        if (StringUtils.isNotBlank(templateResolver)) {
+            return (Function<Content, String>) Reflections.newInstance(templateResolver);
+        }
+        return new Templates();
+    };
 
-	/**
-	 * Returns template path for given content.
-	 */
-	public static String get(Content content) {
-		return Database.query(supplier).apply(content);
-	}
+    /**
+     * Returns template path for given content.
+     */
+    public static String get(Content content) {
+        return Database.query(supplier).apply(content);
+    }
 
-	/**
-	 * Returns template path for given content.
-	 */
-	public String apply(Content content) {
-		return Registry.getView(content);
-	}
+    /**
+     * Returns template path for given content.
+     */
+    public String apply(Content content) {
+        return Registry.getView(content);
+    }
 
 }

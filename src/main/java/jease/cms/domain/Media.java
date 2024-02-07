@@ -23,14 +23,14 @@ package jease.cms.domain;
  */
 public class Media extends File {
 
-	public Media() {
-	}
+    public Media() {
+    }
 
-	public boolean isPage() {
-		return true;
-	}
+    public boolean isPage() {
+        return true;
+    }
 
-	public Media copy(boolean recursive) {
-		return (Media) super.copy(recursive);
-	}
+    public Media copy(boolean recursive) {
+        return (Media) super.copy(recursive);
+    }
 }

@@ -16,6 +16,10 @@
  */
 package jease.cmf.web.node;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.zkoss.zul.Textbox;
+
 import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
 import jease.cmf.service.Filenames;
@@ -24,97 +28,104 @@ import jease.cmf.web.JeaseSession;
 import jfix.util.I18N;
 import jfix.zk.ObjectEditor;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.zkoss.zul.Textbox;
-
 public abstract class NodeEditor<E extends Node> extends ObjectEditor<E> {
 
-	protected Textbox id = new Textbox();
+    protected Textbox id = new Textbox();
 
-	public E getNode() {
-		return getObject();
-	}
+    public E getNode() {
+        return getObject();
+    }
 
-	protected void doInit() throws Exception {
-		if (ArrayUtils.contains(JeaseSession.getRoots(), getNode())) {
-			getDeleteButton().setVisible(false);
-		}
-		add(I18N.get("Id"), id);
-	}
+    protected void doInitButtons() {
+        if (ArrayUtils.contains(JeaseSession.getRoots(), getNode())) {
+            getDeleteButton().setVisible(false);
+        }
+    }
 
-	protected void doLoad() throws Exception {
-		if (id.getParent() != null) {
-			if (getNode() == Nodes.getRoot()) {
-				id.setDisabled(true);
-			}
-			id.setText(getNode().getId());
-		}
-	}
+    @Override
+    protected void doInit() throws Exception {
+        doInitButtons();
+        add(I18N.get("Id"), id);
+    }
 
-	protected void doSave() throws Exception {
-		if (getNode().getParent() == null && getNode() != Nodes.getRoot()) {
-			getNode().setParent(JeaseSession.getContainer());
-		}
-		if (id.getParent() != null) {
-			getNode().setId(Filenames.asId(id.getValue()));
-		}
-	}
+    @Override
+    protected void doLoad() throws Exception {
+        if (id.getParent() != null) {
+            if (getNode() == Nodes.getRoot()) {
+                id.setDisabled(true);
+            }
+            id.setText(getNode().getId());
+        }
+    }
 
-	protected void doValidate() throws Exception {
-		if (id.getParent() != null) {
-			if (getNode() != Nodes.getRoot()) {
-				if (StringUtils.isEmpty(id.getValue())) {
-					addError(I18N.get("Id_is_required"));
-				} else {
-					try {
-						Node parent = getNode().getParent();
-						if (parent == null) {
-							parent = JeaseSession.getContainer();
-						}
-						parent.validateChild(getNode(),
-								Filenames.asId(id.getValue()));
-					} catch (NodeException e) {
-						addError(e.getMessage());
-					}
-				}
-			}
-		}
-	}
+    @Override
+    protected void doSave() throws Exception {
+        if (getNode().getParent() == null && getNode() != Nodes.getRoot()) {
+            getNode().setParent(JeaseSession.getContainer());
+        }
+        if (id.getParent() != null) {
+            getNode().setId(Filenames.asId(id.getValue()));
+        }
+    }
 
-	protected void doDelete() throws Exception {
-		Node parent = getNode().getParent();
-		delete();
-		if (parent != null && !parent.isDescendant(JeaseSession.getContainer())) {
-			JeaseSession.setContainer(parent);
-		}
-	}
+    @Override
+    protected void doValidate() throws Exception {
+        if (id.getParent() != null) {
+            if (getNode() != Nodes.getRoot()) {
+                if (StringUtils.isEmpty(id.getValue())) {
+                    addError(I18N.get("Id_is_required"));
+                } else {
+                    try {
+                        Node parent = getNode().getParent();
+                        if (parent == null) {
+                            parent = JeaseSession.getContainer();
+                        }
+                        parent.validateChild(getNode(),
+                                Filenames.asId(id.getValue()));
+                    } catch (NodeException e) {
+                        addError(e.getMessage());
+                    }
+                }
+            }
+        }
+    }
 
-	public void delete() {
-		Nodes.delete(getNode());
-	}
+    @Override
+    protected void doDelete() throws Exception {
+        Node parent = getNode().getParent();
+        delete();
+        if (parent != null && !parent.isDescendant(JeaseSession.getContainer())) {
+            JeaseSession.setContainer(parent);
+        }
+    }
 
-	protected void copyObject(boolean recursive) {
-		setObject((E) getNode().copy(recursive));
-		// Clear id to avoid path change processing.
-		getObject().setId(null);
-	}
+    @Override
+    public void delete() {
+        Nodes.delete(getNode());
+    }
 
-	protected void copyObject() {
-		copyObject(true);
-	}
+    protected void copyObject(boolean recursive) {
+        setObject((E) getNode().copy(recursive));
+        // Clear id to avoid path change processing.
+        getObject().setId(null);
+    }
 
-	protected void peek(E peekNode) {
-		if (peekNode == null) {
-			return;
-		}
-		try {
-			E workNode = getNode();
-			setObject(peekNode);
-			doLoad();
-			setObject(workNode);
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    @Override
+    protected void copyObject() {
+        copyObject(true);
+    }
+
+    protected void peek(E peekNode) {
+        if (peekNode == null) {
+            return;
+        }
+        try {
+            E workNode = getNode();
+            setObject(peekNode);
+            doLoad();
+            setObject(workNode);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 }

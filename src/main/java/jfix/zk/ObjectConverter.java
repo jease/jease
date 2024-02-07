@@ -21,50 +21,50 @@ import java.util.Date;
 
 public class ObjectConverter {
 
-	private static String delimiter = "\n";
+    private static String delimiter = "\n";
 
-	private ObjectConverter() {
-	}
+    private ObjectConverter() {
+    }
 
-	public static Object convert(Object value) {
-		if (value == null) {
-			return "";
-		}
+    public static Object convert(Object value) {
+        if (value == null) {
+            return "";
+        }
 
-		if (value instanceof Number) {
-			return value;
-		}
+        if (value instanceof Number) {
+            return value;
+        }
 
-		if (value instanceof Date) {
-			String result = String.format("%1$tF %1$tR", value);
-			int index = result.lastIndexOf(" 00:00");
-			if (index == -1) {
-				return result;
-			} else {
-				return result.substring(0, index);
-			}
-		}
+        if (value instanceof Date) {
+            String result = String.format("%1$tF %1$tR", value);
+            int index = result.lastIndexOf(" 00:00");
+            if (index == -1) {
+                return result;
+            } else {
+                return result.substring(0, index);
+            }
+        }
 
-		if (value instanceof View) {
-			return convert(((View<?>) value).getValue());
-		}
+        if (value instanceof View) {
+            return convert(((View<?>) value).getValue());
+        }
 
-		if (value instanceof Collection) {
-			return convert(((Collection<?>) value).toArray());
-		}
+        if (value instanceof Collection) {
+            return convert(((Collection<?>) value).toArray());
+        }
 
-		if (value.getClass().isArray()) {
-			StringBuilder sb = new StringBuilder(256);
-			for (Object obj : (Object[]) value) {
-				if (sb.length() != 0) {
-					sb.append(delimiter);
-				}
-				sb.append(convert(obj));
-			}
-			return sb.toString();
-		}
+        if (value.getClass().isArray()) {
+            StringBuilder sb = new StringBuilder(256);
+            for (Object obj : (Object[]) value) {
+                if (sb.length() != 0) {
+                    sb.append(delimiter);
+                }
+                sb.append(convert(obj));
+            }
+            return sb.toString();
+        }
 
-		return String.valueOf(value);
-	}
+        return String.valueOf(value);
+    }
 
 }

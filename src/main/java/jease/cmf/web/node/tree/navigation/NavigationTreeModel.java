@@ -25,44 +25,44 @@ import org.zkoss.zul.AbstractTreeModel;
 
 public class NavigationTreeModel extends AbstractTreeModel<Object> {
 
-	private NodeFilter nodeFilter;
+    private NodeFilter nodeFilter;
 
-	public NavigationTreeModel(Node[] roots, NodeFilter nodeFilter) {
-		super(roots);
-		this.nodeFilter = nodeFilter;
-	}
+    public NavigationTreeModel(Node[] roots, NodeFilter nodeFilter) {
+        super(roots);
+        this.nodeFilter = nodeFilter;
+    }
 
-	public Object getChild(Object node, int idx) {
-		if (node instanceof Node[]) {
-			return ((Node[]) node)[idx];
-		} else {
-			Node[] children = getChildContainer((Node) node);
-			if (children.length > 0) {
-				return children[Math.min(idx, children.length - 1)];
-			} else {
-				return null;
-			}
-		}
-	}
+    public Object getChild(Object node, int idx) {
+        if (node instanceof Node[]) {
+            return ((Node[]) node)[idx];
+        } else {
+            Node[] children = getChildContainer((Node) node);
+            if (children.length > 0) {
+                return children[Math.min(idx, children.length - 1)];
+            } else {
+                return null;
+            }
+        }
+    }
 
-	public int getChildCount(Object node) {
-		if (node instanceof Node[]) {
-			return ((Node[]) node).length;
-		} else {
-			return getChildContainer((Node) node).length;
-		}
-	}
+    public int getChildCount(Object node) {
+        if (node instanceof Node[]) {
+            return ((Node[]) node).length;
+        } else {
+            return getChildContainer((Node) node).length;
+        }
+    }
 
-	public boolean isLeaf(Object node) {
-		if (node instanceof Node[]) {
-			return false;
-		} else {
-			return getChildContainer((Node) node).length == 0;
-		}
-	}
+    public boolean isLeaf(Object node) {
+        if (node instanceof Node[]) {
+            return false;
+        } else {
+            return getChildContainer((Node) node).length == 0;
+        }
+    }
 
-	private Node[] getChildContainer(final Node node) {
-		Node[] result = Stream.of(node.getChildren()).filter(Node::isContainer).toArray($size -> new Node[$size]);
-		return result == null ? new Node[] {} : nodeFilter.apply(result);
-	}
+    private Node[] getChildContainer(final Node node) {
+        Node[] result = Stream.of(node.getChildren()).filter(Node::isContainer).toArray($size -> new Node[$size]);
+        return result == null ? new Node[] {} : nodeFilter.apply(result);
+    }
 }

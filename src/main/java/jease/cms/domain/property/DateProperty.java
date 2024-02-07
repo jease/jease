@@ -20,36 +20,36 @@ import java.util.Date;
 
 public class DateProperty extends Property {
 
-	private Date value;
+    private Date value;
 
-	public DateProperty() {
-	}
+    public DateProperty() {
+    }
 
-	public DateProperty(String name) {
-		super(name);
-	}
+    public DateProperty(String name) {
+        super(name);
+    }
 
-	public DateProperty(String name, Date value) {
-		this(name);
-		setValue(value);
-	}
+    public DateProperty(String name, Date value) {
+        this(name);
+        setValue(value);
+    }
 
-	public Date getValue() {
-		return value;
-	}
+    public Date getValue() {
+        return value;
+    }
 
-	public void setValue(Date value) {
-		this.value = value;
-	}
+    public void setValue(Date value) {
+        this.value = value;
+    }
 
-	public DateProperty copy() {
-		DateProperty property = (DateProperty) super.copy();
-		property.setValue(getValue());
-		return property;
-	}
+    public DateProperty copy() {
+        DateProperty property = (DateProperty) super.copy();
+        property.setValue(getValue());
+        return property;
+    }
 
-	public String toString() {
-		return String.format("%tF", value);
-	}
+    public String toString() {
+        return String.format("%tF", value);
+    }
 
 }

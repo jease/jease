@@ -25,87 +25,87 @@ import org.zkoss.zul.ext.Selectable;
 
 public class Listbox extends org.zkoss.zul.Listbox {
 
-	public Listbox() {
-		setSeltype("single");
-	}
+    public Listbox() {
+        setSeltype("single");
+    }
 
-	public Listbox(List<Object> values) {
-		setValues(values);
-	}
+    public Listbox(List<Object> values) {
+        setValues(values);
+    }
 
-	public Listbox(Object[] values) {
-		setValues(values);
-	}
+    public Listbox(Object[] values) {
+        setValues(values);
+    }
 
-	public Listbox doPaged(int pageSize) {
-		setMold("paging");
-		setPageSize(pageSize);
-		return this;
-	}
+    public Listbox doPaged(int pageSize) {
+        setMold("paging");
+        setPageSize(pageSize);
+        return this;
+    }
 
-	public void setValues(Object[] values) {
-		if (values != null) {
-			setModel(new SimpleListModel<Object>(values));
-		}
-	}
+    public void setValues(Object[] values) {
+        if (values != null) {
+            setModel(new SimpleListModel<Object>(values));
+        }
+    }
 
-	public void setValues(List<?> values) {
-		if (values != null) {
-			setModel(new SimpleListModel<Object>(values));
-		}
-	}
+    public void setValues(List<?> values) {
+        if (values != null) {
+            setModel(new SimpleListModel<Object>(values));
+        }
+    }
 
-	public void setModel(ListModel<?> model) {
-		super.setModel(model);
-	}
+    public void setModel(ListModel<?> model) {
+        super.setModel(model);
+    }
 
-	public void setSelection(List<?> values, Object selected) {
-		setValues(values);
-		setSelectedValue(selected);
-	}
+    public void setSelection(List<?> values, Object selected) {
+        setValues(values);
+        setSelectedValue(selected);
+    }
 
-	public void setModel(Object[] values, Object selected) {
-		setValues(values);
-		setSelectedValue(selected);
-	}
+    public void setModel(Object[] values, Object selected) {
+        setValues(values);
+        setSelectedValue(selected);
+    }
 
-	public Object getSelectedValue() {
-		if (getSelectedIndex() != -1) {
-			return getModel().getElementAt(getSelectedIndex());
-		}
-		return null;
-	}
+    public Object getSelectedValue() {
+        if (getSelectedIndex() != -1) {
+            return getModel().getElementAt(getSelectedIndex());
+        }
+        return null;
+    }
 
-	public Object[] getValues() {
-		List<Object> values = new ArrayList<>();
-		for (int i = 0; i < getItemCount(); i++) {
-			Object value = getItemAtIndex(i).getValue();
-			if (value != null) {
-				values.add(getItemAtIndex(i).getValue());
-			}
-		}
-		return values.toArray(new Object[] {});
-	}
+    public Object[] getValues() {
+        List<Object> values = new ArrayList<>();
+        for (int i = 0; i < getItemCount(); i++) {
+            Object value = getItemAtIndex(i).getValue();
+            if (value != null) {
+                values.add(getItemAtIndex(i).getValue());
+            }
+        }
+        return values.toArray(new Object[] {});
+    }
 
-	public void setSelectedValue(Object value) {
-		setSelectedIndex(-1);
-		if (value != null) {
-			for (int i = 0; i < getModel().getSize(); i++) {
-				if (value.equals(getModel().getElementAt(i))) {
-					setSelectedIndex(i);
-					return;
-				}
-			}
-		}
-	}
+    public void setSelectedValue(Object value) {
+        setSelectedIndex(-1);
+        if (value != null) {
+            for (int i = 0; i < getModel().getSize(); i++) {
+                if (value.equals(getModel().getElementAt(i))) {
+                    setSelectedIndex(i);
+                    return;
+                }
+            }
+        }
+    }
 
-	public boolean isEmpty() {
-		return getSelectedValue() == null;
-	}
+    public boolean isEmpty() {
+        return getSelectedValue() == null;
+    }
 
-	public void clearSelection() {
-		super.clearSelection();
-		((Selectable<Object>) getModel()).clearSelection();
-	}
+    public void clearSelection() {
+        super.clearSelection();
+        ((Selectable<Object>) getModel()).clearSelection();
+    }
 
 }

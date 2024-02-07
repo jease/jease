@@ -22,14 +22,14 @@ import org.zkoss.zul.Image;
 
 public class Help extends Hbox {
 
-	public Help(String msg) {
-		Popup popup = new Popup(new Html(msg.replace("\n", "<br />")));
+    public Help(String msg) {
+        Popup popup = new Popup(new Html(msg.replace("\n", "<br />")));
 
-		Image image = new Image(Images.HelpBrowser);
-		image.setStyle("cursor:pointer;");
-		image.setPopup(popup);
+        Image image = new Image(Images.HelpBrowser);
+        image.setStyle("cursor:pointer;");
+        image.setPopup(popup);
 
-		appendChild(image);
-		appendChild(popup);
-	}
+        appendChild(image);
+        appendChild(popup);
+    }
 }

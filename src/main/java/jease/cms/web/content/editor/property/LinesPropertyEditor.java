@@ -22,22 +22,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.zkoss.zul.Textbox;
 
 public class LinesPropertyEditor extends Textbox implements
-		PropertyEditor<LinesProperty> {
+        PropertyEditor<LinesProperty> {
 
-	private LinesProperty property;
+    private LinesProperty property;
 
-	public LinesPropertyEditor() {
-		setHeight("100px");
-	}
+    public LinesPropertyEditor() {
+        setHeight("100px");
+    }
 
-	public LinesProperty getProperty() {
-		property.setValue(getValue().split("\n"));
-		return property;
-	}
+    public LinesProperty getProperty() {
+        property.setValue(getValue().split("\n"));
+        return property;
+    }
 
-	public void setProperty(LinesProperty property) {
-		this.property = property;
-		setValue(StringUtils.join(property.getValue(), "\n"));
-	}
+    public void setProperty(LinesProperty property) {
+        this.property = property;
+        setValue(StringUtils.join(property.getValue(), "\n"));
+    }
 
 }

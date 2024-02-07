@@ -29,30 +29,30 @@ import org.apache.commons.io.FileUtils;
 
 public class Informatons {
 
-	public static String getDatabaseDirectory() {
-		return Database.ext().getBlobDirectory();
-	}
+    public static String getDatabaseDirectory() {
+        return Database.ext().getBlobDirectory();
+    }
 
-	public static String getDatabaseSize() {
-		return FileUtils.byteCountToDisplaySize(FileUtils
-				.sizeOfDirectory(new File(getDatabaseDirectory())));
-	}
+    public static String getDatabaseSize() {
+        return FileUtils.byteCountToDisplaySize(FileUtils
+                .sizeOfDirectory(new File(getDatabaseDirectory())));
+    }
 
-	public static Collection<Persistent> getDatabaseObjectCount() {
-		return Database.query(Persistent.class);
-	}
+    public static Collection<Persistent> getDatabaseObjectCount() {
+        return Database.query(Persistent.class);
+    }
 
-	public static Map<Class<?>, Integer> getDatabaseClassCount() {
-		Map<Class<?>, Integer> resultMap = new TreeMap<>(
-				Comparator.comparing(Class::getName));
-		for (Persistent obj : Database.query(Persistent.class)) {
-			Class<?> clazz = obj.getClass();
-			if (!resultMap.containsKey(clazz)) {
-				resultMap.put(clazz, 0);
-			}
-			resultMap.put(clazz, resultMap.get(clazz) + 1);
-		}
-		return resultMap;
-	}
+    public static Map<Class<?>, Integer> getDatabaseClassCount() {
+        Map<Class<?>, Integer> resultMap = new TreeMap<>(
+                Comparator.comparing(Class::getName));
+        for (Persistent obj : Database.query(Persistent.class)) {
+            Class<?> clazz = obj.getClass();
+            if (!resultMap.containsKey(clazz)) {
+                resultMap.put(clazz, 0);
+            }
+            resultMap.put(clazz, resultMap.get(clazz) + 1);
+        }
+        return resultMap;
+    }
 
 }

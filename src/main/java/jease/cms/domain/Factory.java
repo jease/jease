@@ -31,82 +31,82 @@ import jease.cms.domain.property.Property;
  */
 public class Factory extends Content {
 
-	private String sequence;
+    private String sequence;
 
-	public Factory() {
-	}
+    public Factory() {
+    }
 
-	public String getSequence() {
-		return sequence;
-	}
+    public String getSequence() {
+        return sequence;
+    }
 
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
-	}
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
+    }
 
-	public boolean isContainer() {
-		return true;
-	}
+    public boolean isContainer() {
+        return true;
+    }
 
-	public boolean isPage() {
-		return false;
-	}
+    public boolean isPage() {
+        return false;
+    }
 
-	/**
-	 * Returns an array of properties for given content synchronized with
-	 * properties from appropriate prototype defined as child within factory.
-	 */
-	public Property[] getProperties(Content content) {
-		for (Content prototype : getChildren(Content.class)) {
-			if (prototype.getClass().equals(content.getClass())) {
-				return sync(prototype.getProperties(), content.getProperties());
-			}
-		}
-		return content.getProperties();
-	}
+    /**
+     * Returns an array of properties for given content synchronized with
+     * properties from appropriate prototype defined as child within factory.
+     */
+    public Property[] getProperties(Content content) {
+        for (Content prototype : getChildren(Content.class)) {
+            if (prototype.getClass().equals(content.getClass())) {
+                return sync(prototype.getProperties(), content.getProperties());
+            }
+        }
+        return content.getProperties();
+    }
 
-	private Property[] sync(Property[] prototypes, Property[] clones) {
-		Map<Integer, Property> clonesBySerial = new HashMap<Integer, Property>();
-		List<Property> clonesWithoutSerial = new ArrayList<Property>();
-		if (clones != null) {
-			for (Property clone : clones) {
-				if (clone != null) {
-					if (clone.getSerial() != 0) {
-						clonesBySerial.put(clone.getSerial(), clone);
-					} else {
-						clonesWithoutSerial.add(clone);
-					}
-				}
-			}
-		}
-		List<Property> newClones = new ArrayList<Property>();
-		for (Property prototype : prototypes) {
-			Property clone = clonesBySerial.get(prototype.getSerial());
-			if (clone != null) {
-				prototype.cloneTo(clone);
-				newClones.add(clone);
-			} else {
-				newClones.add(prototype.copy());
-			}
-		}
-		newClones.addAll(clonesWithoutSerial);
-		return newClones.toArray(new Property[] {});
-	}
+    private Property[] sync(Property[] prototypes, Property[] clones) {
+        Map<Integer, Property> clonesBySerial = new HashMap<Integer, Property>();
+        List<Property> clonesWithoutSerial = new ArrayList<Property>();
+        if (clones != null) {
+            for (Property clone : clones) {
+                if (clone != null) {
+                    if (clone.getSerial() != 0) {
+                        clonesBySerial.put(clone.getSerial(), clone);
+                    } else {
+                        clonesWithoutSerial.add(clone);
+                    }
+                }
+            }
+        }
+        List<Property> newClones = new ArrayList<Property>();
+        for (Property prototype : prototypes) {
+            Property clone = clonesBySerial.get(prototype.getSerial());
+            if (clone != null) {
+                prototype.cloneTo(clone);
+                newClones.add(clone);
+            } else {
+                newClones.add(prototype.copy());
+            }
+        }
+        newClones.addAll(clonesWithoutSerial);
+        return newClones.toArray(new Property[] {});
+    }
 
-	public Factory copy(boolean recursive) {
-		Factory factory = (Factory) super.copy(recursive);
-		factory.setSequence(getSequence());
-		return factory;
-	}
+    public Factory copy(boolean recursive) {
+        Factory factory = (Factory) super.copy(recursive);
+        factory.setSequence(getSequence());
+        return factory;
+    }
 
-	protected void validateDuplicate(Node potentialChild,
-			String potentialChildId) throws NodeException {
-		super.validateDuplicate(potentialChild, potentialChildId);
-		for (Node child : getChildren()) {
-			if (child != potentialChild
-					&& child.getClass().equals(potentialChild.getClass())) {
-				throw new NodeException.IllegalDuplicate();
-			}
-		}
-	}
+    protected void validateDuplicate(Node potentialChild,
+            String potentialChildId) throws NodeException {
+        super.validateDuplicate(potentialChild, potentialChildId);
+        for (Node child : getChildren()) {
+            if (child != potentialChild
+                    && child.getClass().equals(potentialChild.getClass())) {
+                throw new NodeException.IllegalDuplicate();
+            }
+        }
+    }
 }

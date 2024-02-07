@@ -23,54 +23,49 @@ package jease.cms.domain;
  */
 public class Text extends Content {
 
-	private String content;
-	private String tags;
-	private boolean plain;
+    private String content;
+    private boolean plain;
 
-	public Text() {
-	}
+    public Text() {
+    }
 
-	public String getTags() {
-		return tags;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public boolean isPlain() {
+        return plain;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public void setPlain(boolean plain) {
+        this.plain = plain;
+    }
 
-	public boolean isPlain() {
-		return plain;
-	}
+    @Override
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n").append(getContent());
+    }
 
-	public void setPlain(boolean plain) {
-		this.plain = plain;
-	}
+    @Override
+    public long getSize() {
+        return super.getSize() + getContent().length();
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(getContent());
-	}
+    @Override
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        setContent(getContent().replace(target, replacement));
+    }
 
-	public long getSize() {
-		return super.getSize() + getContent().length();
-	}
-
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		setContent(getContent().replace(target, replacement));
-	}
-
-	public Text copy(boolean recursive) {
-		Text text = (Text) super.copy(recursive);
-		text.setContent(getContent());
-		text.setPlain(isPlain());
-		return text;
-	}
+    @Override
+    public Text copy(boolean recursive) {
+        Text text = (Text) super.copy(recursive);
+        text.setContent(getContent());
+        text.setPlain(isPlain());
+        return text;
+    }
 }

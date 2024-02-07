@@ -25,21 +25,21 @@ import jfix.zk.Combobox;
 
 public class FactoryEditor extends ContentEditor<Factory> {
 
-	Combobox sequence = new Combobox();
+    Combobox sequence = new Combobox();
 
-	public void init() {
-		add(I18N.get("Sequence"), sequence);
-	}
+    public void init() {
+        add(I18N.get("Sequence"), sequence);
+    }
 
-	public void load() {
-		sequence.setSelection(Natural.sort(Database.query(Sequence.class)),
-				getNode().getSequence());
-	}
+    public void load() {
+        sequence.setSelection(Natural.sort(Database.query(Sequence.class)),
+                getNode().getSequence());
+    }
 
-	public void save() {
-		getNode().setSequence(sequence.getText());
-	}
+    public void save() {
+        getNode().setSequence(sequence.getText());
+    }
 
-	public void validate() {
-	}
+    public void validate() {
+    }
 }
