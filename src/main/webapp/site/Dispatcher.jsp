@@ -12,7 +12,7 @@
 <%
 	// The current node is stored in request-attribute by JeaseServletFilter.
 	Content node = (Content) request.getAttribute("Node");
-	
+
 	// Save original node as stable context, because "Node" is exchanged
 	// in some templates on the fly (e.g. Folder, Reference, Composite).
 	if (request.getAttribute("Context") == null) {
@@ -48,8 +48,8 @@
 	// then include template, otherwise forward (e.g. to stream binary content).
 	if (node.isPage() && request.getParameter("file") == null) {
 		String template = request.getParameter("page");
-		if (template != null && !template.startsWith("/WEB-INF") && !template.endsWith("Page.jsp") 
-				&& !template.equals((String) request.getAttribute(Names.JEASE_SITE_DISPATCHER))) {
+		if (template != null && !template.contains("/WEB-INF") && !template.endsWith("Page.jsp")
+				&& !template.equals(request.getAttribute(Names.JEASE_SITE_DISPATCHER))) {
 			pageTemplate = template;
 		}
 		request.setAttribute("Page.Template", pageTemplate);
