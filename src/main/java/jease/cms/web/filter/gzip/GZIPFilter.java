@@ -72,6 +72,11 @@ public class GZIPFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
+        String qs = request.getQueryString();
+        if (qs != null && qs.contains("dir")) {
+            execGZIP(request, response, filterChain);
+            return;
+        }
         final String subPathCheckURL = getSubPathCheckURL(request);
         if (!excludedFolders.isEmpty()) {
             // Check if the request URI starts with an excluded folder
@@ -93,6 +98,11 @@ public class GZIPFilter implements Filter {
             wrappedResponse.finishResponse();
             return;
         }
+        execGZIP(request, response, filterChain);
+    }
+
+    private static void execGZIP(HttpServletRequest request, HttpServletResponse response,
+            FilterChain filterChain) throws IOException, ServletException {
         // Wrap the response to enable GZIP compression
         GZIPResponseWrapper wrappedResponse = new GZIPResponseWrapper(response);
         filterChain.doFilter(request, wrappedResponse);
