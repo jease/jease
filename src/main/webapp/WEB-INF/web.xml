@@ -101,7 +101,20 @@
       <init-param>
         <param-name>excludedContentTypes</param-name>
         <param-value>/png, /jpg, /jpeg</param-value>
-      </init-param>    
+      </init-param>
+      <init-param>
+        <param-name>gzipMaxCache</param-name>
+        <param-value>2000000000</param-value>
+      </init-param>
+      <init-param>
+        <param-name>gzipMinCacheFileSize</param-name>
+        <param-value>400000</param-value>
+      </init-param>
+      <init-param>
+        <param-name>gzipMaxCacheFileSize</param-name>
+        <param-value>100000000</param-value>
+      </init-param>  
+                
     </filter>
   
     <filter-mapping>

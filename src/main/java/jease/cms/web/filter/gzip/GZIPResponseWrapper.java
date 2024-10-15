@@ -1,5 +1,6 @@
 package jease.cms.web.filter.gzip;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -13,17 +14,27 @@ import jfix.zk.Modal;
 
 public class GZIPResponseWrapper extends HttpServletResponseWrapper {
     private final HttpServletResponse origResponse;
+    private final String cacheKey;
     private GZIPResponseStream stream;
     private PrintWriter writer;
     private Predicate<String> stopGZIP;
+    private final int gzipMaxCache;
+    private final int gzipMinCacheFileSize;
+    private final int gzipMaxCacheFileSize;
 
-    public GZIPResponseWrapper(HttpServletResponse response) {
+    public GZIPResponseWrapper(HttpServletResponse response, String cacheKey,
+            int gzipMaxCache, int gzipMinCacheFileSize, int gzipMaxCacheFileSize) {
         super(response);
-        origResponse = response;
+        this.origResponse = response;
+        this.cacheKey = cacheKey;
+        this.gzipMaxCache = gzipMaxCache;
+        this.gzipMinCacheFileSize = gzipMinCacheFileSize;
+        this.gzipMaxCacheFileSize = gzipMaxCacheFileSize;
     }
 
     private GZIPResponseStream createOutputStream() throws IOException {
-        GZIPResponseStream st = new GZIPResponseStream(origResponse);
+        GZIPResponseStream st = new GZIPResponseStream(origResponse, cacheKey,
+                gzipMaxCache, gzipMinCacheFileSize, gzipMaxCacheFileSize);
         st.setStopGZIP(stopGZIP);
         return st;
     }
@@ -68,7 +79,8 @@ public class GZIPResponseWrapper extends HttpServletResponseWrapper {
         }
 
         stream = createOutputStream();
-        writer = new PrintWriter(new OutputStreamWriter(stream, getCharacterEncoding()));
+        writer = new PrintWriter(
+                new BufferedWriter(new OutputStreamWriter(stream, getCharacterEncoding())));
         return (writer);
     }
 

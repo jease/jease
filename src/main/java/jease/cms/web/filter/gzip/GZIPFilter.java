@@ -24,6 +24,10 @@ public class GZIPFilter implements Filter {
     private final List<String> excludedFolders = new ArrayList<String>();
     private final List<String> excludedContentTypes = new ArrayList<String>();
 
+    private int gzipMaxCache;
+    private int gzipMinCacheFileSize;
+    private int gzipMaxCacheFileSize;
+
     @Override
     public void destroy() {
     }
@@ -44,8 +48,25 @@ public class GZIPFilter implements Filter {
         } else {
             excludedFolders.add("/images/");
         }
-        LOGGER.info("GZIPFilter initialized with excludedContentTypes = {} and excludedFolders = {}",
+        s = filterConfig.getInitParameter("gzipMaxCache");
+        if (!isEmpty(s)) {
+            gzipMaxCache = Integer.parseUnsignedInt(s);
+            s = filterConfig.getInitParameter("gzipMinCacheFileSize");
+            gzipMinCacheFileSize = !isEmpty(s) ? Integer.parseUnsignedInt(s) : 400_000;
+            s = filterConfig.getInitParameter("gzipMaxCacheFileSize");
+            gzipMaxCacheFileSize = !isEmpty(s) ? Integer.parseUnsignedInt(s) : 100_000_000;
+        } else {
+            gzipMaxCache = 0;
+            gzipMinCacheFileSize = 0;
+            gzipMaxCacheFileSize = 0;
+        }
+        LOGGER.info("Initialized with excludedContentTypes = {} and excludedFolders = {}",
                 excludedContentTypes, excludedFolders);
+        if (gzipMaxCache <= 0) {
+            LOGGER.info("gzipped files cache is OFF");
+        } else {
+            LOGGER.info("gzipped files cache: {} | {} | {}", gzipMaxCache, gzipMinCacheFileSize, gzipMaxCacheFileSize);
+        }
     }
 
     // See http://stackoverflow.com/a/23014248
@@ -72,9 +93,17 @@ public class GZIPFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
-        String qs = request.getQueryString();
+        final String qs = request.getQueryString();
+        final StringBuffer sb = request.getRequestURL();
+        final String cacheKey;
+        if (qs != null) {
+            cacheKey = sb.append('?').append(qs).toString();
+        } else {
+            cacheKey = sb.toString();
+        }
         if (qs != null && qs.contains("dir")) {
-            execGZIP(request, response, filterChain);
+            execGZIP(request, response, filterChain, cacheKey,
+                    gzipMaxCache, gzipMinCacheFileSize, gzipMaxCacheFileSize);
             return;
         }
         final String subPathCheckURL = getSubPathCheckURL(request);
@@ -91,20 +120,24 @@ public class GZIPFilter implements Filter {
             }
         }
         if (!excludedContentTypes.isEmpty()) {
-            GZIPResponseWrapper wrappedResponse = new GZIPResponseWrapper(response);
+            GZIPResponseWrapper wrappedResponse = new GZIPResponseWrapper(response, cacheKey,
+                    gzipMaxCache, gzipMinCacheFileSize, gzipMaxCacheFileSize);
             LOGGER.info("Check excludedContentTypes for: " + subPathCheckURL);
             wrappedResponse.setStopGZIP(this::stopGZIP);
             filterChain.doFilter(request, wrappedResponse);
             wrappedResponse.finishResponse();
             return;
         }
-        execGZIP(request, response, filterChain);
+        execGZIP(request, response, filterChain, cacheKey, gzipMaxCache, gzipMinCacheFileSize, gzipMaxCacheFileSize);
     }
 
     private static void execGZIP(HttpServletRequest request, HttpServletResponse response,
-            FilterChain filterChain) throws IOException, ServletException {
+            FilterChain filterChain, String cacheKey,
+            int gzipMaxCache, int gzipMinCacheFileSize, int gzipMaxCacheFileSize
+            ) throws IOException, ServletException {
         // Wrap the response to enable GZIP compression
-        GZIPResponseWrapper wrappedResponse = new GZIPResponseWrapper(response);
+        GZIPResponseWrapper wrappedResponse = new GZIPResponseWrapper(response, cacheKey,
+                gzipMaxCache, gzipMinCacheFileSize, gzipMaxCacheFileSize);
         filterChain.doFilter(request, wrappedResponse);
         wrappedResponse.finishResponse();
     }
