@@ -178,13 +178,14 @@ public class JeaseController implements javax.servlet.Filter {
             return;
         }
 
-        if (request.getQueryString() != null && request.getQueryString().contains("dir")) {
+        final String queryStr = request.getQueryString();
+        if (queryStr != null && queryStr.contains("dir")) {
             List<String> files = getFiles(node);
             response.setContentType("application/json");
             response.getWriter().write(new Gson().toJson(files));
             return;
         }
-        if (request.getQueryString() != null && request.getQueryString().contains("dir1")) {
+        if (queryStr != null && queryStr.contains("dir1")) {
             List<String> files = getFiles1(node);
             response.setContentType("application/json");
             response.getWriter().write(new Gson().toJson(files));
@@ -193,7 +194,7 @@ public class JeaseController implements javax.servlet.Filter {
 
         // Redirect if trailing slash is missing for containers.
         if (node.isContainer() && !uri.endsWith("/")) {
-            response.sendRedirect(response.encodeRedirectURL(buildURI(uri + "/", request.getQueryString())));
+            response.sendRedirect(response.encodeRedirectURL(buildURI(uri + "/", queryStr)));
         } else {
             // Set node into request scope and forward to dispatcher
             request.setAttribute(Node.class.getSimpleName(), node);
