@@ -29,6 +29,7 @@ public class Names {
     public static String JEASE_CMS_HEIGHT;
     public static String JEASE_CMS_MAINTENANCE;
     public static String JEASE_CMS_WIDTH;
+    public static String JEASE_CMS_LOG_LEVEL; // all, trace, debug, info, warn, error, off
     public static String JEASE_CKEDITOR_PATH;
     public static String JEASE_CONTENT_CUSTOMIZER;
     public static String JEASE_DATABASE_ENGINE;

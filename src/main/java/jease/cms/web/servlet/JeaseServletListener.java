@@ -24,7 +24,10 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
 import jease.Names;
 import jease.cms.service.Timers;
 import jease.cms.web.Application;
@@ -38,6 +41,7 @@ public class JeaseServletListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
         initSystemProperties(context);
+        initLogger(context);
         initLocale(context);
         initDatabase(context);
         initAppParams(context);
@@ -94,4 +98,14 @@ public class JeaseServletListener implements ServletContextListener {
         if ("true".equals(s)) Application.noAdminUi = true;
     }
 
+    protected void initLogger(ServletContext context) {
+        String s = context.getInitParameter(Names.JEASE_CMS_LOG_LEVEL);
+        if (s == null || s.isEmpty()) return;
+        Level level = Level.toLevel(s, null);
+        if (level == null) return;
+        Logger rootLog = LoggerFactory.getILoggerFactory().getLogger(Logger.ROOT_LOGGER_NAME);
+        if (rootLog != null && (rootLog instanceof ch.qos.logback.classic.Logger)) {
+            ((ch.qos.logback.classic.Logger) rootLog).setLevel(level);
+        }
+    }
 }
