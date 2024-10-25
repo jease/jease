@@ -1,5 +1,6 @@
 package jease.cms.web.filter.etag;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -21,7 +22,9 @@ public class ETagResponseWrapper extends HttpServletResponseWrapper {
 
     public ETagResponseWrapper(HttpServletResponse response) {
         super(response);
-        capture = new ByteArrayOutputStream(response.getBufferSize());
+        int sz = response.getBufferSize();
+        if (sz < 131072) sz = 131072;
+        capture = new ByteArrayOutputStream(sz);
     }
 
     @Override
@@ -70,8 +73,8 @@ public class ETagResponseWrapper extends HttpServletResponseWrapper {
         }
 
         if (writer == null) {
-            writer = new PrintWriter(new OutputStreamWriter(capture,
-                    getCharacterEncoding()));
+            writer = new PrintWriter(
+                    new BufferedWriter(new OutputStreamWriter(capture, getCharacterEncoding())));
         }
 
         return writer;

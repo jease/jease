@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dynatrace.hash4j.hashing.Hashing;
+
 public class ETagServletFilter implements Filter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ETagServletFilter.class);
@@ -91,8 +93,10 @@ public class ETagServletFilter implements Filter {
                 return;
             }
         }
-        String resourcePath = getResourcePathFromRequest(req);
-        String token = ETagHashUtils.getMd5Digest(bytes, resourcePath);
+        //String resourcePath = getResourcePathFromRequest(req);
+        //String token = ETagHashUtils.getMd5Digest(bytes, resourcePath);
+        long bytesHash = Hashing.xxh3_64().hashBytesToLong(bytes);
+        String token = Long.toUnsignedString(bytesHash, 16);
         if (isEmpty(token)) {
             writeResp(bytes, resp);
             return;
@@ -101,7 +105,7 @@ public class ETagServletFilter implements Filter {
         String s = req.getServletContext().getInitParameter("jease.etag.max.age");
         if (s == null || s.isEmpty()) s = "900";
         resp.setHeader(CACHE_CONTROL_HEADER, "max-age=" + s);
-        
+
         String previousToken = req.getHeader(IF_NONE_MATCH_HEADER);
         if (previousToken != null && previousToken.equals(token)) { // compare previous token with current one
             LOGGER.info(ETAG_HEADER + " match: returning '304 Not Modified'");
