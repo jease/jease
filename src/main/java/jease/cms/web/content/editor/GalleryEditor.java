@@ -27,40 +27,40 @@ import jfix.zk.Spinner;
 
 public class GalleryEditor extends ContentEditor<Gallery> {
 
-	RichTextarea preface = new RichTextarea();
-	Spinner scale = new Spinner();
-	Checkbox labeled = new Checkbox();
+    RichTextarea preface = new RichTextarea();
+    Spinner scale = new Spinner();
+    Checkbox labeled = new Checkbox();
 
-	public GalleryEditor() {
-		preface.setHeight(getVeryRichEditorHeight());
-		scale.setConstraint("min 0,no empty");
-		scale.setStep(25);
-	}
+    public GalleryEditor() {
+        preface.setHeight(getVeryRichEditorHeight());
+        scale.setConstraint("min 0,no empty");
+        scale.setStep(25);
+    }
 
-	@Override
+    @Override
     public void init() {
-		add(I18N.get("Preface"), preface);
-		add(I18N.get("Scale"), new Div(scale, new Label(" px")));
-		add(I18N.get("Labeled"), labeled);
-	}
+        add(I18N.get("Preface"), preface);
+        add(I18N.get("Scale"), new Div(scale, new Label(" px")));
+        add(I18N.get("Labeled"), labeled);
+    }
 
-	@Override
+    @Override
     public void load() {
-		preface.setValue(getNode().getPreface());
-		scale.setValue(getNode().getScale());
-		labeled.setChecked(getNode().isLabeled());
-	}
+        preface.setValue(getNode().getPreface());
+        scale.setValue(getNode().getScale());
+        labeled.setChecked(getNode().isLabeled());
+    }
 
-	@Override
+    @Override
     public void save() {
-		getNode().setPreface(preface.getValue());
-		getNode().setScale(scale.intValue());
-		getNode().setLabeled(labeled.isChecked());
-	}
+        getNode().setPreface(preface.getValue());
+        getNode().setScale(scale.intValue());
+        getNode().setLabeled(labeled.isChecked());
+    }
 
-	@Override
+    @Override
     public void validate() {
-		validate(scale.intValue() < 1, I18N.get("Scale_is_not_valid"));
-	}
+        validate(scale.intValue() < 1, I18N.get("Scale_is_not_valid"));
+    }
 
 }

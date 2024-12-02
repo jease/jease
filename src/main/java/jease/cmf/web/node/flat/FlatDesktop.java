@@ -20,8 +20,8 @@ import jease.cmf.web.node.NodeDesktop;
 
 public class FlatDesktop extends NodeDesktop {
 
-	public FlatDesktop() {
-		appendDesktop(new FlatTable());
-	}
+    public FlatDesktop() {
+        appendDesktop(new FlatTable());
+    }
 
 }

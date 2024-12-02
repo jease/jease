@@ -7,9 +7,13 @@
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
+  
+  <appender name="ASYNC_STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="STDOUT" />
+  </appender>
 
   <root level="info">
-    <appender-ref ref="STDOUT" />
+    <appender-ref ref="ASYNC_STDOUT" />
   </root>
   
 </configuration>

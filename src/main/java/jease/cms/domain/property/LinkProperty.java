@@ -18,43 +18,43 @@ package jease.cms.domain.property;
 
 public class LinkProperty extends Property {
 
-	private String value;
+    private String value;
 
-	public LinkProperty() {
-	}
+    public LinkProperty() {
+    }
 
-	public LinkProperty(String name) {
-		super(name);
-	}
+    public LinkProperty(String name) {
+        super(name);
+    }
 
-	public LinkProperty(String name, String value) {
-		this(name);
-		setValue(value);
-	}
+    public LinkProperty(String name, String value) {
+        this(name);
+        setValue(value);
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public LinkProperty copy() {
-		LinkProperty property = (LinkProperty) super.copy();
-		property.setValue(getValue());
-		return property;
-	}
+    public LinkProperty copy() {
+        LinkProperty property = (LinkProperty) super.copy();
+        property.setValue(getValue());
+        return property;
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		if (getValue() != null) {
-			setValue(getValue().replace(target, replacement));
-		}
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        if (getValue() != null) {
+            setValue(getValue().replace(target, replacement));
+        }
+    }
 
-	public String toString() {
-		return value;
-	}
+    public String toString() {
+        return value;
+    }
 
 }

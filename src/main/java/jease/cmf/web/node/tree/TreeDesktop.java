@@ -32,55 +32,55 @@ import org.zkoss.zul.Toolbarbutton;
 
 public class TreeDesktop extends NodeDesktop {
 
-	private Panel navigationPanel;
-	private NavigationTree navigationTree;
+    private Panel navigationPanel;
+    private NavigationTree navigationTree;
 
-	public TreeDesktop() {
-		appendNavigation();
-		appendDesktop(new ContainerTable());
-	}
+    public TreeDesktop() {
+        appendNavigation();
+        appendDesktop(new ContainerTable());
+    }
 
-	private void appendNavigation() {
-		navigationTree = new NavigationTree();
-		navigationTree.addEventListener(Events.ON_SELECT, $event -> refresh());
-		navigationTree.addEventListener(Events.ON_CHANGE,
-				$event -> forceRefresh());
-		navigationPanel = new Panel(navigationTree);
-		navigationPanel.setHflex("3");
-		appendChild(navigationPanel);
-	}
+    private void appendNavigation() {
+        navigationTree = new NavigationTree();
+        navigationTree.addEventListener(Events.ON_SELECT, $event -> refresh());
+        navigationTree.addEventListener(Events.ON_CHANGE,
+                $event -> forceRefresh());
+        navigationPanel = new Panel(navigationTree);
+        navigationPanel.setHflex("3");
+        appendChild(navigationPanel);
+    }
 
-	protected void refreshDesktop() {
-		super.refreshDesktop();
-		navigationPanel.clearToolbar();
-		navigationPanel.appendChildToToolbar(newGoHomeButton());
-		navigationPanel.appendChildToToolbar(newGoIntoButton());
-		navigationTree.resetSelectedValue();
-		navigationTree.refresh();
-	}
+    protected void refreshDesktop() {
+        super.refreshDesktop();
+        navigationPanel.clearToolbar();
+        navigationPanel.appendChildToToolbar(newGoHomeButton());
+        navigationPanel.appendChildToToolbar(newGoIntoButton());
+        navigationTree.resetSelectedValue();
+        navigationTree.refresh();
+    }
 
-	private Button newGoHomeButton() {
-		Button button = new Toolbarbutton(null, Images.GoHome);
-		button.setTooltiptext(I18N.get("Go_Home"));
-		button.addEventListener(Events.ON_CLICK,
-				$event -> refreshModel(JeaseSession.getRoots()));
-		return button;
-	}
+    private Button newGoHomeButton() {
+        Button button = new Toolbarbutton(null, Images.GoHome);
+        button.setTooltiptext(I18N.get("Go_Home"));
+        button.addEventListener(Events.ON_CLICK,
+                $event -> refreshModel(JeaseSession.getRoots()));
+        return button;
+    }
 
-	private Button newGoIntoButton() {
-		Button button = new Toolbarbutton(null, Images.GoJump);
-		button.setTooltiptext(I18N.get("Go_Into"));
-		button.addEventListener(
-				Events.ON_CLICK,
-				$event -> refreshModel(new Node[] { JeaseSession.getContainer() }));
-		return button;
-	}
+    private Button newGoIntoButton() {
+        Button button = new Toolbarbutton(null, Images.GoJump);
+        button.setTooltiptext(I18N.get("Go_Into"));
+        button.addEventListener(
+                Events.ON_CLICK,
+                $event -> refreshModel(new Node[] { JeaseSession.getContainer() }));
+        return button;
+    }
 
-	private void refreshModel(Node[] roots) {
-		navigationTree.setModel(null);
-		navigationTree.setModel(new NavigationTreeModel(roots, JeaseSession
-				.getFilter()));
-		refreshDesktop();
-	}
+    private void refreshModel(Node[] roots) {
+        navigationTree.setModel(null);
+        navigationTree.setModel(new NavigationTreeModel(roots, JeaseSession
+                .getFilter()));
+        refreshDesktop();
+    }
 
 }

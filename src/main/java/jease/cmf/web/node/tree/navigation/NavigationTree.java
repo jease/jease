@@ -39,67 +39,67 @@ import org.zkoss.zul.ext.TreeOpenableModel;
 
 public class NavigationTree extends Tree {
 
-	public NavigationTree() {
-		setItemRenderer(new NavigationTreeRenderer(
-				$event -> dropPerformed((DropEvent) $event)));
-		addEventListener(Events.ON_SELECT, $event -> selectPerformed());
-		setModel(new NavigationTreeModel(JeaseSession.getRoots(),
-				JeaseSession.getFilter()));
-		((TreeOpenableModel) getModel()).addOpenPath(new int[] { 0 });
-	}
+    public NavigationTree() {
+        setItemRenderer(new NavigationTreeRenderer(
+                $event -> dropPerformed((DropEvent) $event)));
+        addEventListener(Events.ON_SELECT, $event -> selectPerformed());
+        setModel(new NavigationTreeModel(JeaseSession.getRoots(),
+                JeaseSession.getFilter()));
+        ((TreeOpenableModel) getModel()).addOpenPath(new int[] { 0 });
+    }
 
-	public Object getSelectedValue() {
-		Object value = super.getSelectedValue();
-		if (value == null) {
-			value = JeaseSession.getContainer();
-		}
-		return value;
-	}
+    public Object getSelectedValue() {
+        Object value = super.getSelectedValue();
+        if (value == null) {
+            value = JeaseSession.getContainer();
+        }
+        return value;
+    }
 
-	private void selectPerformed() {
-		Treeitem treeitem = getSelectedItem();
-		if (treeitem != null) {
-			Node value = (Node) treeitem.getValue();
-			if (value != null) {
-				JeaseSession.setContainer(value);
-			}
-		}
-	}
+    private void selectPerformed() {
+        Treeitem treeitem = getSelectedItem();
+        if (treeitem != null) {
+            Node value = (Node) treeitem.getValue();
+            if (value != null) {
+                JeaseSession.setContainer(value);
+            }
+        }
+    }
 
-	private void dropPerformed(DropEvent dropEvent) {
-		Component target = dropEvent.getTarget();
-		Component dragged = dropEvent.getDragged();
-		Node[] draggedNodes = null;
-		if (dragged instanceof Listitem) {
-			Listbox listbox = ((Listitem) dragged).getListbox();
-			Set<Listitem> itemSet = new HashSet<>(listbox.getSelectedItems());
-			itemSet.add((Listitem) dragged);
-			List<Node> nodes = new ArrayList<>();
-			for (Object item : listbox.getItems()) {
-				if (itemSet.contains(item)) {
-					if (((Listitem) item).getValue() instanceof Node) {
-						nodes.add((Node) ((Listitem) item).getValue());
-					}
-				}
-			}
-			listbox.clearSelection();
-			draggedNodes = nodes.toArray(new Node[] {});
-		}
-		if (dragged instanceof Treerow) {
-			draggedNodes = new Node[] { (Node) ((Treeitem) ((Treerow) dragged)
-					.getParent()).getValue() };
-		}
-		try {
-			Node parentNode = (Node) ((Treeitem) ((Treerow) target).getParent())
-					.getValue();
-			for (Node node : draggedNodes) {
-				Nodes.append(parentNode, node);
-			}
-		} catch (NodeException e) {
-			Modal.error(e.getMessage());
-		} finally {
-			fireChangeEvent();
-		}
-	}
+    private void dropPerformed(DropEvent dropEvent) {
+        Component target = dropEvent.getTarget();
+        Component dragged = dropEvent.getDragged();
+        Node[] draggedNodes = null;
+        if (dragged instanceof Listitem) {
+            Listbox listbox = ((Listitem) dragged).getListbox();
+            Set<Listitem> itemSet = new HashSet<>(listbox.getSelectedItems());
+            itemSet.add((Listitem) dragged);
+            List<Node> nodes = new ArrayList<>();
+            for (Object item : listbox.getItems()) {
+                if (itemSet.contains(item)) {
+                    if (((Listitem) item).getValue() instanceof Node) {
+                        nodes.add((Node) ((Listitem) item).getValue());
+                    }
+                }
+            }
+            listbox.clearSelection();
+            draggedNodes = nodes.toArray(new Node[] {});
+        }
+        if (dragged instanceof Treerow) {
+            draggedNodes = new Node[] { (Node) ((Treeitem) ((Treerow) dragged)
+                    .getParent()).getValue() };
+        }
+        try {
+            Node parentNode = (Node) ((Treeitem) ((Treerow) target).getParent())
+                    .getValue();
+            for (Node node : draggedNodes) {
+                Nodes.append(parentNode, node);
+            }
+        } catch (NodeException e) {
+            Modal.error(e.getMessage());
+        } finally {
+            fireChangeEvent();
+        }
+    }
 
 }

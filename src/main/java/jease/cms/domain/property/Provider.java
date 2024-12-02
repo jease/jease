@@ -18,6 +18,6 @@ package jease.cms.domain.property;
 
 public interface Provider {
 
-	public String[] getValue();
+    public String[] getValue();
 
 }

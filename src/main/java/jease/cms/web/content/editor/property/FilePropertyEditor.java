@@ -22,25 +22,25 @@ import jease.cms.domain.property.FileProperty;
 import jfix.zk.Mediafield;
 
 public class FilePropertyEditor extends Mediafield implements
-		PropertyEditor<FileProperty> {
+        PropertyEditor<FileProperty> {
 
-	private FileProperty property;
+    private FileProperty property;
 
-	public FilePropertyEditor() {
-		setUploadLimit(Registry.getParameter(Names.JEASE_UPLOAD_LIMIT));
-	}
+    public FilePropertyEditor() {
+        setUploadLimit(Registry.getParameter(Names.JEASE_UPLOAD_LIMIT));
+    }
 
-	public FileProperty getProperty() {
-		property.setFilename(getName());
-		property.setContentType(getContentType());
-		copyToFile(property.getFile());
-		return property;
-	}
+    public FileProperty getProperty() {
+        property.setFilename(getName());
+        property.setContentType(getContentType());
+        copyToFile(property.getFile());
+        return property;
+    }
 
-	public void setProperty(FileProperty property) {
-		this.property = property;
-		setMedia(property.getFilename(), property.getContentType(),
-				property.getFile());
-	}
+    public void setProperty(FileProperty property) {
+        this.property = property;
+        setMedia(property.getFilename(), property.getContentType(),
+                property.getFile());
+    }
 
 }

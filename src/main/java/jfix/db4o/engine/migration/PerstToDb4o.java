@@ -29,35 +29,35 @@ import org.apache.commons.io.FileUtils;
 
 public class PerstToDb4o {
 
-	public static void main(String[] args) throws IOException {
-		if (args.length == 0) {
-			System.out.println("Database name required.");
-			return;
-		}
+    public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
+            System.out.println("Database name required.");
+            return;
+        }
 
-		String databaseName = args[0];
+        String databaseName = args[0];
 
-		PersistenceEngine perstEngine = new PersistenceEnginePerst();
-		perstEngine.open(databaseName);
+        PersistenceEngine perstEngine = new PersistenceEnginePerst();
+        perstEngine.open(databaseName);
 
-		ObjectDatabase perst = new ObjectDatabase(perstEngine);
-		perst.open();
+        ObjectDatabase perst = new ObjectDatabase(perstEngine);
+        perst.open();
 
-		PersistenceEngine db4oEngine = new PersistenceEngineDb4o();
-		db4oEngine.open(databaseName);
+        PersistenceEngine db4oEngine = new PersistenceEngineDb4o();
+        db4oEngine.open(databaseName);
 
-		ObjectDatabase db4o = new ObjectDatabase(db4oEngine);
-		db4o.open();
+        ObjectDatabase db4o = new ObjectDatabase(db4oEngine);
+        db4o.open();
 
-		for (Persistent p : perst.query(Persistent.class)) {
-			db4o.save(p);
-		}
+        for (Persistent p : perst.query(Persistent.class)) {
+            db4o.save(p);
+        }
 
-		FileUtils.copyDirectory(new File(perst.getBlobDirectory()
-				+ File.separator + "blob"), new File(db4o.getBlobDirectory()
-				+ File.separator + "blob"));
+        FileUtils.copyDirectory(new File(perst.getBlobDirectory()
+                + File.separator + "blob"), new File(db4o.getBlobDirectory()
+                + File.separator + "blob"));
 
-		db4o.close();
-		perst.close();
-	}
+        db4o.close();
+        perst.close();
+    }
 }

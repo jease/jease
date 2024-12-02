@@ -20,16 +20,16 @@ import jease.cms.domain.Topic;
 
 public class TopicEditor extends ContentEditor<Topic> {
 
-	public void init() {
-	}
+    public void init() {
+    }
 
-	public void load() {
-	}
+    public void load() {
+    }
 
-	public void save() {
-	}
+    public void save() {
+    }
 
-	public void validate() {
-	}
+    public void validate() {
+    }
 
 }

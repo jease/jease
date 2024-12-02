@@ -20,8 +20,11 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+
+import javax.swing.ImageIcon;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -50,9 +53,8 @@ public class Mediafield extends Vlayout {
     private Button rotateImage = new Button(I18N.get("Rotate"), Images.EditRedo);
     private Spinner width = new Spinner();
     private Spinner height = new Spinner();
-    private Checkbox aspectRatioLock = new Checkbox();
-    private Column imagePreview = new Column(image, new Row(width,
-            aspectRatioLock, height, rotateImage));
+    private Checkbox aspectRatioLock = new Checkbox(I18N.get("Lock_aspect_ratio"));
+    private Column imagePreview = new Column(image);
     private Fileupload upload = new Fileupload();
     private Button download = new Button();
     private Dimension originalDimension = null;
@@ -107,23 +109,42 @@ public class Mediafield extends Vlayout {
         setPreview(true);
 
         codemirror.setVisible(false);
+        imagePreview.setVisible(false);
+        imageControlsVisible(false);
+
+        appendChild(codemirror);
+        appendChild(imagePreview);
+
+        width.setStep(10);
+        height.setStep(10);
+        width.setStyle("width: 105px; margin-right: 5px");
+        height.setStyle("width: 105px; margin-right: 5px");
+        aspectRatioLock.setStyle("margin-right: 5px");
+        rotateImage.setStyle("margin-right: 40px");
+        Div l = new Div("float: left; width: auto !important; padding-top: 7px",
+                width, aspectRatioLock, height, rotateImage);
+
         showLineNums.setVisible(false);
         showLineNums.setStyle("margin-left: 50px");
         showLineNums.addEventListener(Events.ON_CHECK, evt -> {
             boolean v = codemirror.getLineNumbers();
             codemirror.setLineNumbers(!v);
         });
-
-        imagePreview.setVisible(false);
-        width.setStep(10);
-        height.setStep(10);
-
         download.setImage(Images.DriveRemovableMedia);
         download.setVisible(false);
+        download.setStyle("margin-right: 5px");
+        upload.setStyle("margin-right: 5px");
+        Div r = new Div("float: right; width: auto !important; padding-top: 7px",
+                download, upload, showLineNums);
 
-        appendChild(codemirror);
-        appendChild(imagePreview);
-        appendChild(new Row(download, upload, showLineNums));
+        appendChild(new Div(l, r));
+    }
+
+    private void imageControlsVisible(boolean value) {
+        width.setVisible(value);
+        aspectRatioLock.setVisible(value);
+        height.setVisible(value);
+        rotateImage.setVisible(value);
     }
 
     @Override
@@ -165,25 +186,117 @@ public class Mediafield extends Vlayout {
         updateMediaViewer();
     }
 
+    private class AImageFix implements org.zkoss.image.Image, java.io.Serializable {
+
+        private String _name;
+        private final AImage img;
+
+        public AImageFix(String name, InputStream is) throws IOException {
+            _name = name;
+            img = new AImage(name, is);
+        }
+
+        @Override
+        public String getName() {
+            return _name;
+        }
+
+        public void setName(String value) {
+            _name = value;
+        }
+
+        @Override
+        public boolean isBinary() {
+            return img.isBinary();
+        }
+
+        @Override
+        public boolean inMemory() {
+            return img.inMemory();
+        }
+
+        @Override
+        public byte[] getByteData() {
+            return img.getByteData();
+        }
+
+        @Override
+        public String getStringData() {
+            return img.getStringData();
+        }
+
+        @Override
+        public InputStream getStreamData() {
+            return img.getStreamData();
+        }
+
+        @Override
+        public Reader getReaderData() {
+            return img.getReaderData();
+        }
+
+        @Override
+        public String getFormat() {
+            return img.getFormat();
+        }
+
+        @Override
+        public String getContentType() {
+            return img.getContentType();
+        }
+
+        @Override
+        public boolean isContentDisposition() {
+            return img.isContentDisposition();
+        }
+
+        @Override
+        public int getWidth() {
+            return img.getWidth();
+        }
+
+        @Override
+        public int getHeight() {
+            return img.getHeight();
+        }
+
+        @Override
+        public ImageIcon toImageIcon() {
+            return img.toImageIcon();
+        }
+    }
+
     private void updateMediaViewer() {
         try {
             download.setVisible(media != null);
             imagePreview.setVisible(false);
+            imageControlsVisible(false);
             codemirror.setVisible(false);
             showLineNums.setVisible(false);
             download.setLabel(I18N.get("Download") + " (" + getContentType() + ")");
             if (isPreview()) {
-                if (getContentType() != null) {
-                    if (getContentType().startsWith("image")) {
+                final String contentType = getContentType();
+                if (contentType != null) {
+                    if (contentType.startsWith("image")) {
                         InputStream input = Medias.asStream(media);
                         imagePreview.setVisible(true);
-                        image.setContent(new AImage(getName(), input));
+                        imageControlsVisible(true);
+                        final String n = getName();
+                        // Special processing in case of: image/svg+xml
+                        if (contentType.contains("/svg") && n.lastIndexOf('.') == -1) {
+                            // we must help AImage.getFormatByName() to recognize SVG by extension
+                            AImageFix img = new AImageFix(n + ".svg", input);
+                            img.setName(n);
+                            image.setContent(img);
+                        } else {
+                            image.setContent(new AImage(n, input));
+                        }
                         input.close();
                         adjustImage();
                     }
                     if (isContentTypeEditable()) {
                         String mediaString = Medias.asString(media);
-                        if (mediaString.length() < 5 * 1024 * 1024) {
+                        if (mediaString.length() < 16 * 1024 * 1024) {
                             codemirror.setVisible(true);
                             showLineNums.setVisible(true);
                             codemirror.setSyntax(FilenameUtils.getExtension(media.getName()));

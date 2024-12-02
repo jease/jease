@@ -24,25 +24,25 @@ import org.apache.commons.lang3.StringUtils;
 
 public class LinkEditor extends ContentEditor<Link> {
 
-	Linkfield link = new Linkfield();
+    Linkfield link = new Linkfield();
 
-	public LinkEditor() {
-	}
+    public LinkEditor() {
+    }
 
-	public void init() {
-		add(I18N.get("Url"), link);
-	}
+    public void init() {
+        add(I18N.get("Url"), link);
+    }
 
-	public void load() {
-		link.setValue(getNode().getUrl());
-	}
+    public void load() {
+        link.setValue(getNode().getUrl());
+    }
 
-	public void save() {
-		getNode().setUrl(link.getValue());
-	}
+    public void save() {
+        getNode().setUrl(link.getValue());
+    }
 
-	public void validate() {
-		validate(StringUtils.isEmpty(link.getValue()),
-				I18N.get("Url_is_required"));
-	}
+    public void validate() {
+        validate(StringUtils.isEmpty(link.getValue()),
+                I18N.get("Url_is_required"));
+    }
 }

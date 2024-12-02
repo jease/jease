@@ -20,10 +20,10 @@ import org.zkoss.zk.ui.Component;
 
 public class Popup extends org.zkoss.zul.Popup {
 
-	public Popup() {
-	}
+    public Popup() {
+    }
 
-	public Popup(Component comp) {
-		appendChild(comp);
-	}
+    public Popup(Component comp) {
+        appendChild(comp);
+    }
 }

@@ -27,57 +27,57 @@ import jfix.db4o.Blob;
 
 public class Revisioner extends Serializer {
 
-	/**
-	 * Create a new Revisioner. The service needs to know about all nodes which
-	 * exist to configure the serializer properly.
-	 */
-	public Revisioner(Node... nodes) {
-		for (Node node : nodes) {
-			for (Field field : getFields(node)) {
-				if (isNotSerialized(field)
-						|| (isNodeDeclaringClass(field) && isNode(field))) {
-					omitField(field);
-					continue;
-				}
-				if (!isNodeDeclaringClass(field) && isNode(field)) {
-					registerConverter(field);
-				}
-			}
-		}
-	}
+    /**
+     * Create a new Revisioner. The service needs to know about all nodes which
+     * exist to configure the serializer properly.
+     */
+    public Revisioner(Node... nodes) {
+        for (Node node : nodes) {
+            for (Field field : getFields(node)) {
+                if (isNotSerialized(field)
+                        || (isNodeDeclaringClass(field) && isNode(field))) {
+                    omitField(field);
+                    continue;
+                }
+                if (!isNodeDeclaringClass(field) && isNode(field)) {
+                    registerConverter(field);
+                }
+            }
+        }
+    }
 
-	/**
-	 * Serialize given Node into XML and return result as Blob.
-	 */
-	public Blob toBlob(Node node) {
-		if (node == null) {
-			return null;
-		}
-		try {
-			Blob blob = new Blob();
-			Writer writer = Files.newBufferedWriter(blob.getFile().toPath());
-			toXML(node, writer);
-			writer.close();
-			return blob;
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    /**
+     * Serialize given Node into XML and return result as Blob.
+     */
+    public Blob toBlob(Node node) {
+        if (node == null) {
+            return null;
+        }
+        try {
+            Blob blob = new Blob();
+            Writer writer = Files.newBufferedWriter(blob.getFile().toPath());
+            toXML(node, writer);
+            writer.close();
+            return blob;
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
-	/**
-	 * Deserializes given XML contained in Blob into Node.
-	 */
-	public Node fromBlob(Blob blob) {
-		if (blob == null) {
-			return null;
-		}
-		try {
-			Reader reader = Files.newBufferedReader(blob.getFile().toPath());
-			Node node = fromXML(reader);
-			reader.close();
-			return node;
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    /**
+     * Deserializes given XML contained in Blob into Node.
+     */
+    public Node fromBlob(Blob blob) {
+        if (blob == null) {
+            return null;
+        }
+        try {
+            Reader reader = Files.newBufferedReader(blob.getFile().toPath());
+            Node node = fromXML(reader);
+            reader.close();
+            return node;
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 }

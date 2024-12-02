@@ -33,11 +33,11 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class PersistenceEngineXStream extends PersistenceEngineBase implements PersistenceEngine {
 
-	protected final Set<Object> objects = new HashSet<>();
-	protected final Set<Object> added   = new HashSet<>();
-	protected final Set<Object> deleted = new HashSet<>();
+    protected final Set<Object> objects = new HashSet<>();
+    protected final Set<Object> added   = new HashSet<>();
+    protected final Set<Object> deleted = new HashSet<>();
 
-	@Override
+    @Override
     protected String getEngineName() {
         return "xstream";
     }
@@ -47,76 +47,76 @@ public class PersistenceEngineXStream extends PersistenceEngineBase implements P
         return "odb.xml";
     }
 
-	@Override
+    @Override
     public void open(String database) {
-		initDirectory(database);
-		openEngine();
-	}
+        initDirectory(database);
+        openEngine();
+    }
 
-	protected void clearObjects() {
-	    objects.clear();
+    protected void clearObjects() {
+        objects.clear();
         added.clear();
         deleted.clear();
-	}
+    }
 
-	protected void openEngine() {
-	    clearObjects();
-	}
+    protected void openEngine() {
+        clearObjects();
+    }
 
-	@Override
+    @Override
     public Collection<Object> query() {
-		try {
-			if (new File(filename).exists()) {
-				XStream xstream = new XStream(new DomDriver());
-				xstream.setMode(XStream.ID_REFERENCES);
-				FileReader reader = new FileReader(filename);
-				Object r = xstream.fromXML(reader);
-				clearObjects();
-				if (r instanceof Collection) {
-				    @SuppressWarnings("unchecked")
+        try {
+            if (new File(filename).exists()) {
+                XStream xstream = new XStream(new DomDriver());
+                xstream.setMode(XStream.ID_REFERENCES);
+                FileReader reader = new FileReader(filename);
+                Object r = xstream.fromXML(reader);
+                clearObjects();
+                if (r instanceof Collection) {
+                    @SuppressWarnings("unchecked")
                     Collection<Object> c = (Collection<Object>) r;
-				    objects.addAll(c);
-				} else {
-				    objects.add(r);
-				}
-				reader.close();
-			}
-			return objects;
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+                    objects.addAll(c);
+                } else {
+                    objects.add(r);
+                }
+                reader.close();
+            }
+            return objects;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
-	@Override
+    @Override
     public void save(Object object) {
-	    if (objects.contains(object)) return;
-		objects.add(object);
-		added.add(object);
-	}
+        if (objects.contains(object)) return;
+        objects.add(object);
+        added.add(object);
+    }
 
-	@Override
+    @Override
     public void delete(Object object) {
-	    if (objects.contains(object)) {
-	        objects.remove(object);
-	        if (added.contains(object)) added.remove(object);
-	        else deleted.add(object);
-	    }
-	}
+        if (objects.contains(object)) {
+            objects.remove(object);
+            if (added.contains(object)) added.remove(object);
+            else deleted.add(object);
+        }
+    }
 
-	@Override
+    @Override
     public void begin() {
-		// Empty as XStream has no concept of transactions at all.
-	}
+        // Empty as XStream has no concept of transactions at all.
+    }
 
-	@Override
+    @Override
     public void commit() {
-	    added.clear();
+        added.clear();
         deleted.clear();
-	}
+    }
 
-	@Override
+    @Override
     public void rollback() {
-	    if (!added.isEmpty()) {
+        if (!added.isEmpty()) {
             for (Object i : added) objects.remove(i);
         }
         if (!deleted.isEmpty()) {
@@ -124,24 +124,24 @@ public class PersistenceEngineXStream extends PersistenceEngineBase implements P
         }
         added.clear();
         deleted.clear();
-	}
+    }
 
-	@Override
+    @Override
     public void backup() {
         backupAsCopyFile();
-	}
+    }
 
-	@Override
+    @Override
     public void close() {
-		try {
-			XStream xstream = new XStream(new DomDriver());
-			xstream.setMode(XStream.ID_REFERENCES);
-			FileWriter writer = new FileWriter(filename);
-			xstream.toXML(objects, writer);
-			writer.close();
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+        try {
+            XStream xstream = new XStream(new DomDriver());
+            xstream.setMode(XStream.ID_REFERENCES);
+            FileWriter writer = new FileWriter(filename);
+            xstream.toXML(objects, writer);
+            writer.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
 }

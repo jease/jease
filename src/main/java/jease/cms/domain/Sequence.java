@@ -24,37 +24,37 @@ import jfix.db4o.Persistent;
  */
 public class Sequence extends Persistent {
 
-	private String name;
-	private int value;
+    private String name;
+    private int value;
 
-	public Sequence() {
-	}
+    public Sequence() {
+    }
 
-	public Sequence(String name) {
-		this.name = name;
-	}
+    public Sequence(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public synchronized int getValue() {
-		return value;
-	}
+    public synchronized int getValue() {
+        return value;
+    }
 
-	public synchronized void setValue(int value) {
-		this.value = value;
-	}
+    public synchronized void setValue(int value) {
+        this.value = value;
+    }
 
-	public synchronized int getNext() {
-		return ++value;
-	}
+    public synchronized int getNext() {
+        return ++value;
+    }
 
-	public String toString() {
-		return name;
-	}
+    public String toString() {
+        return name;
+    }
 }

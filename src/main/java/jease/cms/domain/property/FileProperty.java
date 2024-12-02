@@ -24,66 +24,66 @@ import jfix.db4o.Blob;
 
 public class FileProperty extends Property {
 
-	private String filename;
-	private String contentType;
-	private Blob blob = new Blob();
+    private String filename;
+    private String contentType;
+    private Blob blob = new Blob();
 
-	public FileProperty() {
-	}
+    public FileProperty() {
+    }
 
-	public FileProperty(String name) {
-		super(name);
-	}
+    public FileProperty(String name) {
+        super(name);
+    }
 
-	public FileProperty(String name, String filename, String contentType) {
-		this(name);
-		setFilename(filename);
-		setContentType(contentType);
-	}
+    public FileProperty(String name, String filename, String contentType) {
+        this(name);
+        setFilename(filename);
+        setContentType(contentType);
+    }
 
-	public String getFilename() {
-		return filename;
-	}
+    public String getFilename() {
+        return filename;
+    }
 
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
-	public String getContentType() {
-		return contentType;
-	}
+    public String getContentType() {
+        return contentType;
+    }
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 
-	public Blob getBlob() {
-		return blob;
-	}
+    public Blob getBlob() {
+        return blob;
+    }
 
-	public java.io.File getFile() {
-		return blob.getFile();
-	}
+    public java.io.File getFile() {
+        return blob.getFile();
+    }
 
-	public long getSize() {
-		return super.getSize() + blob.getFile().length();
-	}
+    public long getSize() {
+        return super.getSize() + blob.getFile().length();
+    }
 
-	public FileProperty copy() {
-		FileProperty property = (FileProperty) super.copy();
-		property.setFilename(getFilename());
-		property.setContentType(getContentType());
-		try {
-			Files.copy(getFile().toPath(), property.getFile().toPath(),
-					StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return property;
-	}
+    public FileProperty copy() {
+        FileProperty property = (FileProperty) super.copy();
+        property.setFilename(getFilename());
+        property.setContentType(getContentType());
+        try {
+            Files.copy(getFile().toPath(), property.getFile().toPath(),
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return property;
+    }
 
-	public String toString() {
-		return filename;
-	}
+    public String toString() {
+        return filename;
+    }
 
 }

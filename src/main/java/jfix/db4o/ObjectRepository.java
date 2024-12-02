@@ -28,80 +28,80 @@ import jfix.util.Reflections;
 
 public class ObjectRepository {
 
-	private final Map<Class<?>, Set<Object>> objectsByClass = new IdentityHashMap<>();
+    private final Map<Class<?>, Set<Object>> objectsByClass = new IdentityHashMap<>();
 
-	public void put(Object entity) {
-		for (Class<?> clazz : Reflections.getSuperClassesAndInterfaces(entity
-				.getClass())) {
-			put(clazz, entity);
-		}
-	}
+    public void put(Object entity) {
+        for (Class<?> clazz : Reflections.getSuperClassesAndInterfaces(entity
+                .getClass())) {
+            put(clazz, entity);
+        }
+    }
 
-	private void put(Class<?> clazz, Object entity) {
-		Set<Object> objects = objectsByClass.get(clazz);
-		if (objects == null) {
-			objects = Collections.newSetFromMap(new IdentityHashMap<>());
-			objectsByClass.put(clazz, objects);
-		}
-		objects.add(entity);
-	}
+    private void put(Class<?> clazz, Object entity) {
+        Set<Object> objects = objectsByClass.get(clazz);
+        if (objects == null) {
+            objects = Collections.newSetFromMap(new IdentityHashMap<>());
+            objectsByClass.put(clazz, objects);
+        }
+        objects.add(entity);
+    }
 
-	public void remove(Object entity) {
-		for (Class<?> clazz : Reflections.getSuperClassesAndInterfaces(entity
-				.getClass())) {
-			remove(clazz, entity);
-		}
-	}
+    public void remove(Object entity) {
+        for (Class<?> clazz : Reflections.getSuperClassesAndInterfaces(entity
+                .getClass())) {
+            remove(clazz, entity);
+        }
+    }
 
-	private void remove(Class<?> clazz, Object entity) {
-		Set<Object> objects = objectsByClass.get(clazz);
-		if (objects != null) {
-			objects.remove(entity);
-		}
-	}
+    private void remove(Class<?> clazz, Object entity) {
+        Set<Object> objects = objectsByClass.get(clazz);
+        if (objects != null) {
+            objects.remove(entity);
+        }
+    }
 
-	public List<Object> get(Class<?> clazz) {
-		Set<Object> objects = objectsByClass.get(clazz);
-		if (objects != null) {
-			return new ArrayList<>(objects);
-		} else {
-			return new ArrayList<>();
-		}
-	}
+    public List<Object> get(Class<?> clazz) {
+        Set<Object> objects = objectsByClass.get(clazz);
+        if (objects != null) {
+            return new ArrayList<>(objects);
+        } else {
+            return new ArrayList<>();
+        }
+    }
 
-	public Set<Class<?>> getClasses() {
-		return objectsByClass.keySet();
-	}
+    public Set<Class<?>> getClasses() {
+        return objectsByClass.keySet();
+    }
 
-	public Set<Object> getReferrers(Object reference) {
-		Map<Class<?>, Set<Field>> referringFieldsByClass = new IdentityHashMap<>();
-		for (Class<?> clazz : getClasses()) {
-			Set<Field> referringFields = Reflections.getReferringFields(clazz,
-					reference);
-			if (referringFields.size() > 0) {
-				referringFieldsByClass.put(clazz, referringFields);
-			}
-		}
-		Set<Object> referreringObjects = Collections
-				.newSetFromMap(new IdentityHashMap<>());
-		for (Class<?> clazz : referringFieldsByClass.keySet()) {
-			for (Object possibleReferrer : get(clazz)) {
-				if (Reflections.isReferrer(possibleReferrer,
-						referringFieldsByClass.get(clazz), reference)) {
-					referreringObjects.add(possibleReferrer);
-				}
-			}
-		}
-		return referreringObjects;
-	}
+    public Set<Object> getReferrers(Object reference) {
+        Map<Class<?>, Set<Field>> referringFieldsByClass = new IdentityHashMap<>();
+        for (Class<?> clazz : getClasses()) {
+            Set<Field> referringFields = Reflections.getReferringFields(clazz,
+                    reference);
+            if (referringFields.size() > 0) {
+                referringFieldsByClass.put(clazz, referringFields);
+            }
+        }
+        Set<Object> referreringObjects = Collections
+                .newSetFromMap(new IdentityHashMap<>());
+        for (Class<?> clazz : referringFieldsByClass.keySet()) {
+            for (Object possibleReferrer : get(clazz)) {
+                if (Reflections.isReferrer(possibleReferrer,
+                        referringFieldsByClass.get(clazz), reference)) {
+                    referreringObjects.add(possibleReferrer);
+                }
+            }
+        }
+        return referreringObjects;
+    }
 
-	public Set<Object> getGarbage(Class<?> valueClazz) {
-		Set<Object> orphanedValues = Collections
-				.newSetFromMap(new IdentityHashMap<>());
-		orphanedValues.addAll(get(valueClazz));
-		orphanedValues.removeAll(Reflections.getReferredObjects(
-				get(Object.class), valueClazz));
-		return orphanedValues;
-	}
+    public Set<Object> getGarbage(Class<?> valueClazz) {
+        Set<Object> orphanedValues = Collections
+                .newSetFromMap(new IdentityHashMap<>());
+        orphanedValues.addAll(get(valueClazz));
+        orphanedValues.removeAll(Reflections.getReferredObjects(
+                get(Object.class), valueClazz));
+        return orphanedValues;
+    }
 
 }

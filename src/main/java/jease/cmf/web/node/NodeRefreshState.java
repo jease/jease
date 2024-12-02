@@ -22,23 +22,23 @@ import jease.cmf.web.JeaseSession;
 
 public class NodeRefreshState {
 
-	private long nodeChange;
-	private Node nodeContainer;
+    private long nodeChange;
+    private Node nodeContainer;
 
-	public boolean isStale() {
-		long lastNodeChange = Nodes.queryLastChange();
-		Node lastNodeContainer = JeaseSession.getContainer();
-		if (nodeContainer != lastNodeContainer || nodeChange < lastNodeChange) {
-			nodeContainer = lastNodeContainer;
-			nodeChange = lastNodeChange;
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public void reset() {
-		nodeChange = 0;
-		nodeContainer = null;
-	}
+    public boolean isStale() {
+        long lastNodeChange = Nodes.queryLastChange();
+        Node lastNodeContainer = JeaseSession.getContainer();
+        if (nodeContainer != lastNodeContainer || nodeChange < lastNodeChange) {
+            nodeContainer = lastNodeContainer;
+            nodeChange = lastNodeChange;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public void reset() {
+        nodeChange = 0;
+        nodeContainer = null;
+    }
 }

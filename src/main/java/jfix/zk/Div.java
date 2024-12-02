@@ -20,21 +20,21 @@ import org.zkoss.zk.ui.Component;
 
 public class Div extends org.zkoss.zul.Div {
 
-	public Div() {
-		super();
-		setWidth("100%");
-	}
+    public Div() {
+        super();
+        setWidth("100%");
+    }
 
-	public Div(Component... children) {
-		this();
-		for (Component child : children) {
-			appendChild(child);
-		}
-	}
+    public Div(Component... children) {
+        this();
+        for (Component child : children) {
+            appendChild(child);
+        }
+    }
 
-	public Div(String style, Component... children) {
-		this(children);
-		setStyle(style);
-	}
+    public Div(String style, Component... children) {
+        this(children);
+        setStyle(style);
+    }
 
 }
