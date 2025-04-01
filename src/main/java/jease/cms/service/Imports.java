@@ -28,10 +28,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import jease.Registry;
 import jease.cmf.domain.Node;
 import jease.cmf.domain.NodeException;
 import jease.cmf.service.Filenames;
 import jease.cmf.service.Nodes;
+import jease.cmf.web.node.NodeEditor;
 import jease.cms.domain.Content;
 import jease.cms.domain.Document;
 import jease.cms.domain.File;
@@ -50,7 +52,7 @@ import jfix.util.Zipfiles.EntryHandler;
 public class Imports {
 
     public static void fromFile(final java.io.File file, final Node parent,
-            final User editor) throws Exception {
+            final User editor, boolean replaceExisting) throws Exception {
         if (MimeTypes.guessContentTypeFromName(file.getName()).equals(
                 "application/zip")) {
             final StringBuilder errors = new StringBuilder();
@@ -65,7 +67,7 @@ public class Imports {
                         if (inputStream != null) {
                             Imports.fromInputStream(entryName, inputStream,
                                     parent.getChild(Filenames.asId(path)),
-                                    editor);
+                                    editor, replaceExisting);
                         }
                     } catch (NodeException e) {
                         errors.append(e.getMessage()).append(": ").append(path)
@@ -78,7 +80,7 @@ public class Imports {
             }
         } else {
             InputStream inputStream = new FileInputStream(file);
-            Imports.fromInputStream(file.getName(), inputStream, parent, editor);
+            Imports.fromInputStream(file.getName(), inputStream, parent, editor, replaceExisting);
             inputStream.close();
         }
     }
@@ -118,9 +120,20 @@ public class Imports {
     }
 
     public static void fromInputStream(String filename,
-            InputStream inputStream, Node parent, User editor) throws Exception {
+            InputStream inputStream, Node parent, User editor, boolean replaceExisting) throws Exception {
         Content newContent = newContent(filename, inputStream, editor);
         newContent.setEditor(editor);
+        if (replaceExisting) {
+            String id = newContent.getId();
+            for (Node c : parent.getChildren()) {
+                if (c.getId().equals(id)) {
+                    NodeEditor<Node> nodeEditor = Registry.getEditor(c);
+                    nodeEditor.setObject(c);
+                    nodeEditor.delete();
+                    break;
+                }
+            }
+        }
         Nodes.append(parent, Contents.customize(newContent));
     }
 

@@ -49,6 +49,7 @@ public class ContentManager extends Jease {
 
     private Button view;
     private Button dump;
+    private Fileupload importBtn;
     private Fileupload restore;
     private Fileupload upload;
 
@@ -57,7 +58,9 @@ public class ContentManager extends Jease {
         Component container = getTreeTable().getRightbox();
         container.getChildren().clear();
         initUploadButton();
+        initImportButton();
         container.appendChild(upload);
+        container.appendChild(importBtn);
         container.appendChild(new Label("\u00A0\u00A0\u00A0\u00A0"));
         if (JeaseSession.get(User.class).isAdministrator()) {
             initDumpButton();
@@ -100,6 +103,24 @@ public class ContentManager extends Jease {
                 });
     }
 
+    private void initImportButton() {
+        importBtn = new Fileupload(I18N.get("Import"), Images.DocumentSave, false);
+        importBtn.addEventListener(Events.ON_UPLOAD, event -> {
+            Media media = ((UploadEvent) event).getMedia();
+            if (media != null) {
+                Modal.confirm(I18N.get("Confirm_replace"), event1 -> {
+                    try {
+                        performUpload(media, true);
+                        Modal.info(I18N.get("Action_performed"));
+                    } finally {
+                        refresh();
+                    }
+                });
+            }
+        });
+        setUploadLimit();
+    }
+
     private void initUploadButton() {
         upload = new Fileupload(I18N.get("Upload"), Images.UserHome, true/*multiple*/);
         upload.addEventListener(Events.ON_UPLOAD, event -> {
@@ -108,14 +129,7 @@ public class ContentManager extends Jease {
                 try {
                     for (int i = 0; i < medias.length; i++) {
                         Media media = medias[i];
-                        try {
-                            File inputFile = Medias.asFile(media);
-                            inputFile.deleteOnExit();
-                            Imports.fromFile(inputFile,
-                                    JeaseSession.getContainer(), JeaseSession.get(User.class));
-                        } catch (Exception e) {
-                            Modal.error(e.getMessage());
-                        }
+                        performUpload(media, false);
                     }
                 } finally {
                     refresh();
@@ -124,6 +138,17 @@ public class ContentManager extends Jease {
         });
         //
         setUploadLimit();
+    }
+
+    private static void performUpload(Media media, boolean replaceExisting) {
+        try {
+            File inputFile = Medias.asFile(media);
+            inputFile.deleteOnExit();
+            Imports.fromFile(inputFile,
+                    JeaseSession.getContainer(), JeaseSession.get(User.class), replaceExisting);
+        } catch (Exception e) {
+            Modal.error(e.getMessage());
+        }
     }
 
     private void setUploadLimit() {
