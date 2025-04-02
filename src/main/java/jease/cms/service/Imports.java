@@ -52,7 +52,7 @@ import jfix.util.Zipfiles.EntryHandler;
 public class Imports {
 
     public static void fromFile(final java.io.File file, final Node parent,
-            final User editor, boolean replaceExisting) throws Exception {
+            final User editor, boolean replaceExisting, boolean idWithoutExtension) throws Exception {
         if (MimeTypes.guessContentTypeFromName(file.getName()).equals(
                 "application/zip")) {
             final StringBuilder errors = new StringBuilder();
@@ -66,8 +66,8 @@ public class Imports {
                         }
                         if (inputStream != null) {
                             Imports.fromInputStream(entryName, inputStream,
-                                    parent.getChild(Filenames.asId(path)),
-                                    editor, replaceExisting);
+                                    parent.getChild(getId(path, idWithoutExtension)),
+                                    editor, replaceExisting, idWithoutExtension);
                         }
                     } catch (NodeException e) {
                         errors.append(e.getMessage()).append(": ").append(path)
@@ -80,7 +80,7 @@ public class Imports {
             }
         } else {
             InputStream inputStream = new FileInputStream(file);
-            Imports.fromInputStream(file.getName(), inputStream, parent, editor, replaceExisting);
+            Imports.fromInputStream(file.getName(), inputStream, parent, editor, replaceExisting, idWithoutExtension);
             inputStream.close();
         }
     }
@@ -120,8 +120,8 @@ public class Imports {
     }
 
     public static void fromInputStream(String filename,
-            InputStream inputStream, Node parent, User editor, boolean replaceExisting) throws Exception {
-        Content newContent = newContent(filename, inputStream, editor);
+            InputStream inputStream, Node parent, User editor, boolean replaceExisting, boolean idWithoutExtension) throws Exception {
+        Content newContent = newContent(filename, inputStream, editor, idWithoutExtension);
         newContent.setEditor(editor);
         if (replaceExisting) {
             String id = newContent.getId();
@@ -138,20 +138,20 @@ public class Imports {
     }
 
     private static Content newContent(String filename, InputStream inputStream,
-            User editor) throws NodeException, IOException {
+            User editor, boolean idWithoutExtension) throws NodeException, IOException {
         String contentType = MimeTypes.guessContentTypeFromName(filename);
         if (editor.getRole().containsType(Text.class)
                 && contentType.startsWith("text/html")) {
-            return newText(filename, inputStream);
+            return newText(filename, inputStream, idWithoutExtension);
         } else if (editor.getRole().containsType(Image.class)
                 && contentType.startsWith("image/")) {
-            return newImage(filename, inputStream);
+            return newImage(filename, inputStream, idWithoutExtension);
         } else if (editor.getRole().containsType(Document.class)
                 && filename
                         .matches(".+\\.(csv|doc|docx|odp|ods|odt|pdf|ppt|pps|rtf|sxi|sxw|sxc|txt|xls|xlsx)$")) {
-            return newDocument(filename, inputStream);
+            return newDocument(filename, inputStream, idWithoutExtension);
         } else if (editor.getRole().containsType(File.class)) {
-            return newFile(filename, inputStream);
+            return newFile(filename, inputStream, idWithoutExtension);
         } else {
             throw new NodeException.IllegalNesting();
         }
@@ -165,10 +165,10 @@ public class Imports {
         return folder;
     }
 
-    private static Text newText(String filename, InputStream inputStream)
+    private static Text newText(String filename, InputStream inputStream, boolean idWithoutExtension)
             throws IOException {
         Text text = new Text();
-        text.setId(Filenames.asId(filename));
+        text.setId(getId(filename, idWithoutExtension));
         text.setTitle(FilenameUtils.removeExtension(filename));
         text.setLastModified(new Date());
         text.setContent(IOUtils.toString(inputStream, StandardCharsets.UTF_8));
@@ -176,11 +176,11 @@ public class Imports {
         return text;
     }
 
-    private static Image newImage(String filename, InputStream inputStream)
+    private static Image newImage(String filename, InputStream inputStream, boolean idWithoutExtension)
             throws IOException {
         Image image = new Image();
         String fileNoExt = FilenameUtils.removeExtension(filename);
-        image.setId(Filenames.asId(fileNoExt));
+        image.setId(getId(fileNoExt, idWithoutExtension));
         image.setTitle(fileNoExt);
         image.setLastModified(new Date());
         image.setContentType(MimeTypes.guessContentTypeFromName(filename));
@@ -188,10 +188,10 @@ public class Imports {
         return image;
     }
 
-    private static Document newDocument(String filename, InputStream inputStream)
+    private static Document newDocument(String filename, InputStream inputStream, boolean idWithoutExtension)
             throws IOException {
         Document document = new Document();
-        document.setId(Filenames.asId(filename));
+        document.setId(getId(filename, idWithoutExtension));
         document.setTitle(FilenameUtils.removeExtension(filename));
         document.setLastModified(new Date());
         document.setContentType(MimeTypes.guessContentTypeFromName(filename));
@@ -201,15 +201,19 @@ public class Imports {
         return document;
     }
 
-    private static File newFile(String filename, InputStream inputStream)
+    private static File newFile(String filename, InputStream inputStream, boolean idWithoutExtension)
             throws IOException {
         File file = new File();
-        file.setId(Filenames.asId(filename));
+        file.setId(getId(filename, idWithoutExtension));
         file.setTitle(FilenameUtils.removeExtension(filename));
         file.setLastModified(new Date());
         file.setContentType(MimeTypes.guessContentTypeFromName(filename));
         copyStreamToFile(inputStream, file.getFile());
         return file;
+    }
+
+    private static String getId(String filename, boolean excludeExtension) {
+        return Filenames.asId(excludeExtension ? FilenameUtils.removeExtension(filename) : filename);
     }
 
     private static void copyStreamToFile(InputStream inputStream,

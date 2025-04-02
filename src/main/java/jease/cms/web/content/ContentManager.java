@@ -23,6 +23,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 
 import jease.Names;
@@ -33,6 +34,7 @@ import jease.cms.domain.User;
 import jease.cms.service.Backups;
 import jease.cms.service.Imports;
 import jfix.util.I18N;
+import jfix.zk.Div;
 import jfix.zk.Filedownload;
 import jfix.zk.Fileupload;
 import jfix.zk.Images;
@@ -50,6 +52,7 @@ public class ContentManager extends Jease {
     private Button view;
     private Button dump;
     private Fileupload importBtn;
+    private Checkbox idWithoutExtensionCB;
     private Fileupload restore;
     private Fileupload upload;
 
@@ -59,6 +62,9 @@ public class ContentManager extends Jease {
         container.getChildren().clear();
         initUploadButton();
         initImportButton();
+        initIdWithoutExtensionCheckbox();
+
+        container.appendChild(new Div("margin-top: 8px", idWithoutExtensionCB));
         container.appendChild(upload);
         container.appendChild(importBtn);
         container.appendChild(new Label("\u00A0\u00A0\u00A0\u00A0"));
@@ -110,7 +116,7 @@ public class ContentManager extends Jease {
             if (media != null) {
                 Modal.confirm(I18N.get("Confirm_replace"), event1 -> {
                     try {
-                        performUpload(media, true);
+                        performUpload(media, true, idWithoutExtensionCB.isChecked());
                         Modal.info(I18N.get("Action_performed"));
                     } finally {
                         refresh();
@@ -121,6 +127,12 @@ public class ContentManager extends Jease {
         setUploadLimit();
     }
 
+    private void initIdWithoutExtensionCheckbox() {
+        idWithoutExtensionCB = new Checkbox(I18N.get("Id_without_ext"));
+        idWithoutExtensionCB.setTooltiptext(I18N.get("Id_without_ext_hint"));
+        idWithoutExtensionCB.setChecked(true);
+    }
+
     private void initUploadButton() {
         upload = new Fileupload(I18N.get("Upload"), Images.UserHome, true/*multiple*/);
         upload.addEventListener(Events.ON_UPLOAD, event -> {
@@ -129,7 +141,7 @@ public class ContentManager extends Jease {
                 try {
                     for (int i = 0; i < medias.length; i++) {
                         Media media = medias[i];
-                        performUpload(media, false);
+                        performUpload(media, false, idWithoutExtensionCB.isChecked());
                     }
                 } finally {
                     refresh();
@@ -140,12 +152,12 @@ public class ContentManager extends Jease {
         setUploadLimit();
     }
 
-    private static void performUpload(Media media, boolean replaceExisting) {
+    private static void performUpload(Media media, boolean replaceExisting, boolean idWithoutExtension) {
         try {
             File inputFile = Medias.asFile(media);
             inputFile.deleteOnExit();
             Imports.fromFile(inputFile,
-                    JeaseSession.getContainer(), JeaseSession.get(User.class), replaceExisting);
+                    JeaseSession.getContainer(), JeaseSession.get(User.class), replaceExisting, idWithoutExtension);
         } catch (Exception e) {
             Modal.error(e.getMessage());
         }
