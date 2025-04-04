@@ -9,12 +9,12 @@ Jease eases the development of content- & database-driven web-applications with 
 
 New branch of Jesae with Relational Database released with name [JeasePlus](https://github.com/jease/jeasePlus)
 
-[Home Page](http://jease.org)
+[Home Page](http://jease.javahost.org)
 
-[Demo](http://demo.jease.org)
+[Demo->TBA](#)
 
-[Demo Admin panel](http://demo.jease.org/login?file&login=demo&password=Demo123$)
-
+[Demo Admin panel->TBA]()
+<!--http://demo.jease.org/login?file&login=demo&password=Demo123$-->
 
 
 # Getting Started
@@ -28,7 +28,7 @@ New branch of Jesae with Relational Database released with name [JeasePlus](http
 ## 2) Install
 
 
-*   Download the [latest binary release bundle](http://jease.org/download/latest).
+*   Download the [latest binary release bundle](http://jease..javahost.org/download/latest).
 *   Unzip the downloaded package.
 
 ## 3) Start
