@@ -22,24 +22,24 @@ import jease.cmf.web.node.NodeTableModel;
 
 public interface JeaseConfig {
 
-	/**
-	 * Which type of nodes can be created by the user?
-	 */
-	Node[] newNodes();
+    /**
+     * Which type of nodes can be created by the user?
+     */
+    Node[] newNodes();
 
-	/**
-	 * Which editor should be used to edit a given node?
-	 */
-	NodeEditor<Node> newEditor(Node node);
+    /**
+     * Which editor should be used to edit a given node?
+     */
+    NodeEditor<Node> newEditor(Node node);
 
-	/**
-	 * Which TableModel should be used to render the contents of a container
-	 * node?
-	 */
-	NodeTableModel<Node> newTableModel();
+    /**
+     * Which TableModel should be used to render the contents of a container
+     * node?
+     */
+    NodeTableModel<Node> newTableModel();
 
-	/**
-	 * Which icon should be displayed in front of a given node?
-	 */
-	String getIcon(Node node);
+    /**
+     * Which icon should be displayed in front of a given node?
+     */
+    String getIcon(Node node);
 }

@@ -27,28 +27,28 @@ import jease.cmf.domain.Node;
  */
 public class NodeFilter {
 
-	private Set<Class<? extends Node>> acceptedNodes = new HashSet<>();
+    private Set<Class<? extends Node>> acceptedNodes = new HashSet<>();
 
-	public NodeFilter(final Node[] validNodes) {
-		for (Node node : validNodes) {
-			acceptedNodes.add(node.getClass());
-		}
-	}
+    public NodeFilter(final Node[] validNodes) {
+        for (Node node : validNodes) {
+            acceptedNodes.add(node.getClass());
+        }
+    }
 
-	/**
-	 * Returns only valid Nodes from given Nodes which were registered with this
-	 * NodeFilter.
-	 */
-	public Node[] apply(final Node[] nodes) {
-		return Stream.of(nodes).filter($node -> isAccepted($node))
-				.toArray($size -> new Node[$size]);
-	}
+    /**
+     * Returns only valid Nodes from given Nodes which were registered with this
+     * NodeFilter.
+     */
+    public Node[] apply(final Node[] nodes) {
+        return Stream.of(nodes).filter($node -> isAccepted($node))
+                .toArray($size -> new Node[$size]);
+    }
 
-	/**
-	 * Returns true if given Node is accepted by NodeFilter in regard to set of
-	 * registered Nodes.
-	 */
-	public boolean isAccepted(Node node) {
-		return node != null ? acceptedNodes.contains(node.getClass()) : false;
-	}
+    /**
+     * Returns true if given Node is accepted by NodeFilter in regard to set of
+     * registered Nodes.
+     */
+    public boolean isAccepted(Node node) {
+        return node != null ? acceptedNodes.contains(node.getClass()) : false;
+    }
 }

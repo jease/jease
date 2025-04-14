@@ -28,38 +28,38 @@ import org.zkoss.zul.Textbox;
 
 public class Editor extends ObjectEditor<Redirect> {
 
-	Textbox source = new Textbox();
-	Textbox target = new Textbox();
+    Textbox source = new Textbox();
+    Textbox target = new Textbox();
 
-	public Editor() {
-	}
+    public Editor() {
+    }
 
-	public void init() {
-		add(I18N.get("Source"), source);
-		add(I18N.get("Target"), target);
-	}
+    public void init() {
+        add(I18N.get("Source"), source);
+        add(I18N.get("Target"), target);
+    }
 
-	public void load() {
-		source.setText(getObject().getSource());
-		target.setText(getObject().getTarget());
-	}
+    public void load() {
+        source.setText(getObject().getSource());
+        target.setText(getObject().getTarget());
+    }
 
-	public void save() {
-		getObject().setSource(source.getText());
-		getObject().setTarget(target.getText());
-		getObject().setTimestamp(new Date());
-		Database.save(getObject());
-	}
+    public void save() {
+        getObject().setSource(source.getText());
+        getObject().setTarget(target.getText());
+        getObject().setTimestamp(new Date());
+        Database.save(getObject());
+    }
 
-	public void delete() {
-		Database.delete(getObject());
-	}
+    public void delete() {
+        Database.delete(getObject());
+    }
 
-	public void validate() {
-		validate(StringUtils.isEmpty(source.getValue()),
-				I18N.get("Source_is_required"));
-		validate(StringUtils.isEmpty(target.getValue()),
-				I18N.get("Target_is_required"));
-	}
+    public void validate() {
+        validate(StringUtils.isEmpty(source.getValue()),
+                I18N.get("Source_is_required"));
+        validate(StringUtils.isEmpty(target.getValue()),
+                I18N.get("Target_is_required"));
+    }
 
 }

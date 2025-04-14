@@ -33,71 +33,71 @@ import org.zkoss.zul.Button;
 
 public class Control extends Formbox implements Refreshable {
 
-	Spinner trashDays = new Spinner(Revisions.getDays());
-	Button emptyTrash = new Button(I18N.get("Empty_Trash"),
-			Images.UserTrashFull);
-	Selectfield type = new Selectfield();
-	Spinner count = new Spinner(Revisions.getCount());
-	Spinner days = new Spinner(Revisions.getDays());
-	Button purge = new Button(I18N.get("Purge"), Images.EditClear);
+    Spinner trashDays = new Spinner(Revisions.getDays());
+    Button emptyTrash = new Button(I18N.get("Empty_Trash"),
+            Images.UserTrashFull);
+    Selectfield type = new Selectfield();
+    Spinner count = new Spinner(Revisions.getCount());
+    Spinner days = new Spinner(Revisions.getDays());
+    Button purge = new Button(I18N.get("Purge"), Images.EditClear);
 
-	public Control() {
-		setHflex(null);
-		type.setItemRenderer(new ItemRenderer() {
-			public String render(Object value) {
-				Content content = (Content) value;
-				if (value != null) {
-					return I18N.get(content.getType()) + " ("
-							+ Revisions.getNumber(content.getClass()) + ")";
-				} else {
-					return "* (" + Revisions.getNumber(Content.class) + ")";
-				}
-			}
-		});
+    public Control() {
+        setHflex(null);
+        type.setItemRenderer(new ItemRenderer() {
+            public String render(Object value) {
+                Content content = (Content) value;
+                if (value != null) {
+                    return I18N.get(content.getType()) + " ("
+                            + Revisions.getNumber(content.getClass()) + ")";
+                } else {
+                    return "* (" + Revisions.getNumber(Content.class) + ")";
+                }
+            }
+        });
 
-		emptyTrash.addEventListener(Events.ON_CLICK,
-				$event -> empyTrashPerformed());
-		purge.addEventListener(Events.ON_CLICK, $event -> purgePerformed());
+        emptyTrash.addEventListener(Events.ON_CLICK,
+                $event -> empyTrashPerformed());
+        purge.addEventListener(Events.ON_CLICK, $event -> purgePerformed());
 
-		add(I18N.get("Trash"));
-		add(I18N.get("Days"), trashDays);
-		add("", emptyTrash);
+        add(I18N.get("Trash"));
+        add(I18N.get("Days"), trashDays);
+        add("", emptyTrash);
 
-		add(I18N.get("Revision"));
-		add(I18N.get("Type"), type);
-		add(I18N.get("Count"), count);
-		add(I18N.get("Days"), days);
-		add("", purge);
-	}
+        add(I18N.get("Revision"));
+        add(I18N.get("Type"), type);
+        add(I18N.get("Count"), count);
+        add(I18N.get("Days"), days);
+        add("", purge);
+    }
 
-	private Class<Content> getSelectedType() {
-		return type.getSelectedValue() != null ? (Class<Content>) type
-				.getSelectedValue().getClass() : Content.class;
-	}
+    private Class<Content> getSelectedType() {
+        return type.getSelectedValue() != null ? (Class<Content>) type
+                .getSelectedValue().getClass() : Content.class;
+    }
 
-	private void empyTrashPerformed() {
-		Modal.confirm(I18N.get("Are_you_sure"), $event -> {
-			Contents.emptyTrash(trashDays.intValue());
-			Modal.info(I18N.get("Action_performed"));
-			refresh();
-		});
-	}
+    private void empyTrashPerformed() {
+        Modal.confirm(I18N.get("Are_you_sure"), $event -> {
+            Contents.emptyTrash(trashDays.intValue());
+            Modal.info(I18N.get("Action_performed"));
+            refresh();
+        });
+    }
 
-	private void purgePerformed() {
-		Modal.confirm(
-				I18N.get("Are_you_sure"),
-				$event -> {
-					int result = Revisions.purge(getSelectedType(),
-							count.intValue(), days.intValue());
-					Modal.info(I18N.get("Revisions_purged") + ": " + result);
-					refresh();
-				});
-	}
+    private void purgePerformed() {
+        Modal.confirm(
+                I18N.get("Are_you_sure"),
+                $event -> {
+                    int result = Revisions.purge(getSelectedType(),
+                            count.intValue(), days.intValue());
+                    Modal.info(I18N.get("Revisions_purged") + ": " + result);
+                    refresh();
+                });
+    }
 
-	public void refresh() {
-		Object selectedValue = type.getSelectedValue();
-		type.setValues(Contents.getAvailableTypes());
-		type.setSelectedValue(selectedValue);
-	}
+    public void refresh() {
+        Object selectedValue = type.getSelectedValue();
+        type.setValues(Contents.getAvailableTypes());
+        type.setSelectedValue(selectedValue);
+    }
 
 }

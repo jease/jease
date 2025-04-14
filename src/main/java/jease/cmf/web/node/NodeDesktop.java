@@ -29,67 +29,67 @@ import org.zkoss.zul.Toolbarbutton;
 
 public abstract class NodeDesktop extends Row implements Refreshable {
 
-	private Panel desktopPanel;
-	private NodeTable desktopTable;
-	private NodeRefreshState refreshState;
+    private Panel desktopPanel;
+    private NodeTable desktopTable;
+    private NodeRefreshState refreshState;
 
-	public NodeDesktop() {
-		refreshState = new NodeRefreshState();
-	}
+    public NodeDesktop() {
+        refreshState = new NodeRefreshState();
+    }
 
-	protected void appendDesktop(NodeTable nodeTable) {
-		desktopTable = nodeTable;
-		desktopTable.addEventListener(Events.ON_CHANGE,
-				$event -> forceRefresh());
-		desktopPanel = new Panel(desktopTable);
-		desktopPanel.setHflex("9");
-		appendChild(desktopPanel);
-	}
+    protected void appendDesktop(NodeTable nodeTable) {
+        desktopTable = nodeTable;
+        desktopTable.addEventListener(Events.ON_CHANGE,
+                $event -> forceRefresh());
+        desktopPanel = new Panel(desktopTable);
+        desktopPanel.setHflex("9");
+        appendChild(desktopPanel);
+    }
 
-	public void refresh() {
-		if (refreshState.isStale()) {
-			refreshDesktop();
-			desktopTable.refresh();
-		}
-	}
+    public void refresh() {
+        if (refreshState.isStale()) {
+            refreshDesktop();
+            desktopTable.refresh();
+        }
+    }
 
-	protected void forceRefresh() {
-		refreshState.reset();
-		refresh();
-	}
+    protected void forceRefresh() {
+        refreshState.reset();
+        refresh();
+    }
 
-	protected void refreshDesktop() {
-		Node node = JeaseSession.getContainer();
-		desktopPanel.clearToolbar();
-		for (Node parent : node.getParents()) {
-			desktopPanel.appendChildToToolbar(newNavigationButton(parent));
-		}
-		desktopPanel.appendChildToToolbar(newEditButton(node));
-	}
+    protected void refreshDesktop() {
+        Node node = JeaseSession.getContainer();
+        desktopPanel.clearToolbar();
+        for (Node parent : node.getParents()) {
+            desktopPanel.appendChildToToolbar(newNavigationButton(parent));
+        }
+        desktopPanel.appendChildToToolbar(newEditButton(node));
+    }
 
-	protected Button newNavigationButton(final Node node) {
-		Button button = new Toolbarbutton(node.getId() + " /");
-		button.setDisabled(!node.isDescendant(JeaseSession.getRoots()));
-		button.setTooltiptext(node.getType());
-		button.addEventListener(Events.ON_CLICK, $event -> {
-			JeaseSession.setContainer(node);
-			forceRefresh();
-		});
-		return button;
-	}
+    protected Button newNavigationButton(final Node node) {
+        Button button = new Toolbarbutton(node.getId() + " /");
+        button.setDisabled(!node.isDescendant(JeaseSession.getRoots()));
+        button.setTooltiptext(node.getType());
+        button.addEventListener(Events.ON_CLICK, $event -> {
+            JeaseSession.setContainer(node);
+            forceRefresh();
+        });
+        return button;
+    }
 
-	protected Button newEditButton(final Node node) {
-		String label = StringUtils.isBlank(node.getId()) ? node.getPath()
-				: node.getId();
-		Button button = new Toolbarbutton(label);
-		button.setTooltiptext(node.getType());
-		button.addEventListener(Events.ON_CLICK,
-				$event -> desktopTable.onSelect(node));
-		return button;
-	}
+    protected Button newEditButton(final Node node) {
+        String label = StringUtils.isBlank(node.getId()) ? node.getPath()
+                : node.getId();
+        Button button = new Toolbarbutton(label);
+        button.setTooltiptext(node.getType());
+        button.addEventListener(Events.ON_CLICK,
+                $event -> desktopTable.onSelect(node));
+        return button;
+    }
 
-	public NodeTable getNodeTable() {
-		return desktopTable;
-	}
+    public NodeTable getNodeTable() {
+        return desktopTable;
+    }
 
 }

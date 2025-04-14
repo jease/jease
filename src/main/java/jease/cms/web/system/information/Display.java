@@ -28,22 +28,22 @@ import org.zkoss.zul.Label;
 
 public class Display extends Div implements Refreshable {
 
-	public void refresh() {
-		getChildren().clear();
-		Formbox form = new Formbox();
-		form.add(I18N.get("Version"));
-		form.add(I18N.get("Jease"), new Label(jease.Version.getName()));
-		form.add(I18N.get("ZK"), new Label(org.zkoss.zk.Version.RELEASE));
-		form.add(I18N.get("Database"));
-		form.add(I18N.get("Path"), new Label(Informatons.getDatabaseDirectory()));
-		form.add(I18N.get("Size"), new Label(Informatons.getDatabaseSize()));
-		form.add(I18N.get("Objects"));
-		form.add(I18N.get("Count"), new Label("" + Informatons.getDatabaseObjectCount().size()));
-		Map<Class<?>, Integer> classCount = Informatons.getDatabaseClassCount();
-		for (Class<?> clazz : classCount.keySet()) {
-			form.add("- " + clazz.getName(), new Label("" + classCount.get(clazz)));
-		}
-		appendChild(form);
-	}
+    public void refresh() {
+        getChildren().clear();
+        Formbox form = new Formbox();
+        form.add(I18N.get("Version"));
+        form.add(I18N.get("Jease"), new Label(jease.Version.getName()));
+        form.add(I18N.get("ZK"), new Label(org.zkoss.zk.Version.RELEASE));
+        form.add(I18N.get("Database"));
+        form.add(I18N.get("Path"), new Label(Informatons.getDatabaseDirectory()));
+        form.add(I18N.get("Size"), new Label(Informatons.getDatabaseSize()));
+        form.add(I18N.get("Objects"));
+        form.add(I18N.get("Count"), new Label("" + Informatons.getDatabaseObjectCount().size()));
+        Map<Class<?>, Integer> classCount = Informatons.getDatabaseClassCount();
+        for (Class<?> clazz : classCount.keySet()) {
+            form.add("- " + clazz.getName(), new Label("" + classCount.get(clazz)));
+        }
+        appendChild(form);
+    }
 
 }

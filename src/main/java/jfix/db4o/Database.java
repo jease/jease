@@ -32,134 +32,134 @@ import jfix.db4o.engine.PersistenceEngine;
  */
 public class Database {
 
-	private static String persistenceEngineClassName;
-	private static ObjectDatabase odb;
+    private static String persistenceEngineClassName;
+    private static ObjectDatabase odb;
 
-	static {
-		setPersistenceEngine("jfix.db4o.engine.PersistenceEnginePerst");
-	}
+    static {
+        setPersistenceEngine("jfix.db4o.engine.PersistenceEnginePerst");
+    }
 
-	/**
-	 * Sets the PersistenceEnginge by fully qualified classname.
-	 */
-	public static void setPersistenceEngine(String className) {
-		persistenceEngineClassName = className;
-	}
+    /**
+     * Sets the PersistenceEnginge by fully qualified classname.
+     */
+    public static void setPersistenceEngine(String className) {
+        persistenceEngineClassName = className;
+    }
 
-	/**
-	 * Sets the PersistenceEngine by given class.
-	 */
-	public static void setPersistenceEngine(
-			Class<? extends PersistenceEngine> clazz) {
-		persistenceEngineClassName = clazz.getName();
-	}
+    /**
+     * Sets the PersistenceEngine by given class.
+     */
+    public static void setPersistenceEngine(
+            Class<? extends PersistenceEngine> clazz) {
+        persistenceEngineClassName = clazz.getName();
+    }
 
-	/**
-	 * Opens the given database. The parameter is usually a simple name for the
-	 * database which is used by the PersistenceEngine to build the appropriate
-	 * path to the database-file. If the given database-name contains a
-	 * File.separator, the given database-name will be used as default directory
-	 * for the database-file.
-	 */
-	public static void open(String database) {
-		try {
-			PersistenceEngine engine = (PersistenceEngine) Class.forName(
-					persistenceEngineClassName).newInstance();
-			engine.open(database);
-			odb = new ObjectDatabase(engine);
-			odb.open();
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    /**
+     * Opens the given database. The parameter is usually a simple name for the
+     * database which is used by the PersistenceEngine to build the appropriate
+     * path to the database-file. If the given database-name contains a
+     * File.separator, the given database-name will be used as default directory
+     * for the database-file.
+     */
+    public static void open(String database) {
+        try {
+            PersistenceEngine engine = (PersistenceEngine) Class.forName(
+                    persistenceEngineClassName).newInstance();
+            engine.open(database);
+            odb = new ObjectDatabase(engine);
+            odb.open();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
-	/**
-	 * Closes the current database.
-	 */
-	public static void close() {
-		odb.close();
-	}
+    /**
+     * Closes the current database.
+     */
+    public static void close() {
+        odb.close();
+    }
 
-	/**
-	 * Extended access to opened ObjectDatabase.
-	 */
-	public static ObjectDatabase ext() {
-		return odb;
-	}
+    /**
+     * Extended access to opened ObjectDatabase.
+     */
+    public static ObjectDatabase ext() {
+        return odb;
+    }
 
-	/**
-	 * Performs a Read-Command.
-	 */
-	public static void read(Runnable transaction) {
-		odb.read(transaction);
-	}
+    /**
+     * Performs a Read-Command.
+     */
+    public static void read(Runnable transaction) {
+        odb.read(transaction);
+    }
 
-	/**
-	 * Performs a Write-Command.
-	 */
-	public static void write(Runnable transaction) {
-		odb.write(transaction);
-	}
+    /**
+     * Performs a Write-Command.
+     */
+    public static void write(Runnable transaction) {
+        odb.write(transaction);
+    }
 
-	/**
-	 * Saves or upates given object in database.
-	 */
-	public static void save(Persistent persistent) {
-		odb.save(persistent);
-	}
+    /**
+     * Saves or upates given object in database.
+     */
+    public static void save(Persistent persistent) {
+        odb.save(persistent);
+    }
 
-	/**
-	 * Deletes given object from database. If references to given object still
-	 * exists in database, a RuntimeException is thrown.
-	 */
-	public static void delete(Persistent persistent) {
-		odb.delete(persistent);
-	}
+    /**
+     * Deletes given object from database. If references to given object still
+     * exists in database, a RuntimeException is thrown.
+     */
+    public static void delete(Persistent persistent) {
+        odb.delete(persistent);
+    }
 
-	/**
-	 * Retrieves (cached) value from given supplier. The value of the supplier
-	 * will be cached as long as no write-operation is performed against the
-	 * database.
-	 */
-	public static <E> E query(Supplier<E> index) {
-		return odb.query(index);
-	}
+    /**
+     * Retrieves (cached) value from given supplier. The value of the supplier
+     * will be cached as long as no write-operation is performed against the
+     * database.
+     */
+    public static <E> E query(Supplier<E> index) {
+        return odb.query(index);
+    }
 
-	/**
-	 * Queries all object from database which are instances of given class and
-	 * match the given predicate.
-	 */
-	public static <E> List<E> query(Class<E> clazz, Predicate<E> predicate) {
-		return odb.query(clazz, predicate);
-	}
+    /**
+     * Queries all object from database which are instances of given class and
+     * match the given predicate.
+     */
+    public static <E> List<E> query(Class<E> clazz, Predicate<E> predicate) {
+        return odb.query(clazz, predicate);
+    }
 
-	/**
-	 * Queries all object from database which are instances of given class.
-	 */
-	public static <E> List<E> query(Class<E> clazz) {
-		return odb.query(clazz);
-	}
+    /**
+     * Queries all object from database which are instances of given class.
+     */
+    public static <E> List<E> query(Class<E> clazz) {
+        return odb.query(clazz);
+    }
 
-	/**
-	 * True if object is already stored in database.
-	 */
-	public static boolean isStored(Persistent persistent) {
-		return odb.isStored(persistent);
-	}
+    /**
+     * True if object is already stored in database.
+     */
+    public static boolean isStored(Persistent persistent) {
+        return odb.isStored(persistent);
+    }
 
-	/**
-	 * Checks if given object is unique when compared by given predicate.
-	 */
-	public static <E> boolean isUnique(E entity, Predicate<E> predicate) {
-		return odb.isUnique(entity, predicate);
-	}
+    /**
+     * Checks if given object is unique when compared by given predicate.
+     */
+    public static <E> boolean isUnique(E entity, Predicate<E> predicate) {
+        return odb.isUnique(entity, predicate);
+    }
 
-	/**
-	 * Retrieves unique object from database which is an instance of class and
-	 * matches given predicate. If no or more than one object do match the
-	 * predicate, null is returned.
-	 */
-	public static <E> E queryUnique(Class<E> clazz, Predicate<E> predicate) {
-		return odb.queryUnique(clazz, predicate);
-	}
+    /**
+     * Retrieves unique object from database which is an instance of class and
+     * matches given predicate. If no or more than one object do match the
+     * predicate, null is returned.
+     */
+    public static <E> E queryUnique(Class<E> clazz, Predicate<E> predicate) {
+        return odb.queryUnique(clazz, predicate);
+    }
 }

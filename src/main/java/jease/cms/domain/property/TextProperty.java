@@ -18,42 +18,42 @@ package jease.cms.domain.property;
 
 public class TextProperty extends Property {
 
-	private String value;
+    private String value;
 
-	public TextProperty() {
-	}
+    public TextProperty() {
+    }
 
-	public TextProperty(String name) {
-		super(name);
-	}
+    public TextProperty(String name) {
+        super(name);
+    }
 
-	public TextProperty(String name, String value) {
-		this(name);
-		setValue(value);
-	}
+    public TextProperty(String name, String value) {
+        this(name);
+        setValue(value);
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public TextProperty copy() {
-		TextProperty property = (TextProperty) super.copy();
-		property.setValue(getValue());
-		return property;
-	}
+    public TextProperty copy() {
+        TextProperty property = (TextProperty) super.copy();
+        property.setValue(getValue());
+        return property;
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		if (getValue() != null) {
-			setValue(getValue().replace(target, replacement));
-		}
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        if (getValue() != null) {
+            setValue(getValue().replace(target, replacement));
+        }
+    }
 
-	public String toString() {
-		return value;
-	}
+    public String toString() {
+        return value;
+    }
 }

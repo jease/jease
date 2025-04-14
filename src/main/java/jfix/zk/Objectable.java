@@ -18,5 +18,5 @@ package jfix.zk;
 
 public interface Objectable<E> {
 
-	void setObject(E object);
+    void setObject(E object);
 }

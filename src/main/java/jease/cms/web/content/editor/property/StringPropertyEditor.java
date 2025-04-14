@@ -21,18 +21,18 @@ import jease.cms.domain.property.StringProperty;
 import org.zkoss.zul.Textbox;
 
 public class StringPropertyEditor extends Textbox implements
-		PropertyEditor<StringProperty> {
+        PropertyEditor<StringProperty> {
 
-	private StringProperty property;
+    private StringProperty property;
 
-	public StringProperty getProperty() {
-		property.setValue(getValue());
-		return property;
-	}
+    public StringProperty getProperty() {
+        property.setValue(getValue());
+        return property;
+    }
 
-	public void setProperty(StringProperty property) {
-		this.property = property;
-		setValue(property.getValue());
-	}
+    public void setProperty(StringProperty property) {
+        this.property = property;
+        setValue(property.getValue());
+    }
 
 }

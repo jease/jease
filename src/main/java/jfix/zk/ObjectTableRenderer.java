@@ -24,34 +24,34 @@ import org.zkoss.zul.ListitemRenderer;
 
 public class ObjectTableRenderer<E> implements ListitemRenderer<E> {
 
-	private ObjectTableModel<E> model;
+    private ObjectTableModel<E> model;
 
-	public ObjectTableRenderer(ObjectTableModel<E> model) {
-		this.model = model;
-	}
+    public ObjectTableRenderer(ObjectTableModel<E> model) {
+        this.model = model;
+    }
 
-	public void render(final Listitem listitem, E obj, int index)
-			throws Exception {
-		listitem.setValue(obj);
-		for (int i = 0; i < model.getColumns().length; i++) {
-			E cellObj = (E) model.getCheckedValue(obj, i);
-			if (cellObj instanceof View) {
-				Listcell cell = new Listcell();
-				cell.appendChild(((View<E>) cellObj).getComponent());
-				listitem.appendChild(cell);
-			} else if (cellObj instanceof Component) {
-				Listcell cell = new Listcell();
-				cell.appendChild((Component) cellObj);
-				listitem.appendChild(cell);
-			} else {
-				Label label = new Label((String.valueOf(ObjectConverter
-						.convert(cellObj))));
-				label.setMultiline(true);
-				Listcell cell = new Listcell();
-				cell.appendChild(label);
-				listitem.appendChild(cell);
-			}
-		}
-	}
+    public void render(final Listitem listitem, E obj, int index)
+            throws Exception {
+        listitem.setValue(obj);
+        for (int i = 0; i < model.getColumns().length; i++) {
+            E cellObj = (E) model.getCheckedValue(obj, i);
+            if (cellObj instanceof View) {
+                Listcell cell = new Listcell();
+                cell.appendChild(((View<E>) cellObj).getComponent());
+                listitem.appendChild(cell);
+            } else if (cellObj instanceof Component) {
+                Listcell cell = new Listcell();
+                cell.appendChild((Component) cellObj);
+                listitem.appendChild(cell);
+            } else {
+                Label label = new Label((String.valueOf(ObjectConverter
+                        .convert(cellObj))));
+                label.setMultiline(true);
+                Listcell cell = new Listcell();
+                cell.appendChild(label);
+                listitem.appendChild(cell);
+            }
+        }
+    }
 
 }

@@ -20,7 +20,7 @@ import org.zkoss.zul.Box;
 
 public class Logout extends Box {
 
-	public Logout() {
-		Sessions.invalidate();
-	}
+    public Logout() {
+        Sessions.invalidate();
+    }
 }

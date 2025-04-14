@@ -36,78 +36,78 @@ import org.zkoss.zul.Listitem;
 
 public class ContentTableModel extends NodeTableModel<Node> {
 
-	/**
-	 * Which column names should be displayed as headers?
-	 */
-	public String[] getColumns() {
-		String[] columns = new String[] { I18N.get("Type"), I18N.get("Id"),
-				I18N.get("Title"), I18N.get("Last_modified"),
-				I18N.get("Editor"), I18N.get("Size"), I18N.get("Visible") };
-		if (Registry.getParameter(Names.JEASE_SITE_DESIGN) != null) {
-			return columns;
-		} else {
-			return Arrays.copyOf(columns, columns.length - 1);
-		}
-	}
+    /**
+     * Which column names should be displayed as headers?
+     */
+    public String[] getColumns() {
+        String[] columns = new String[] { I18N.get("Type"), I18N.get("Id"),
+                I18N.get("Title"), I18N.get("Last_modified"),
+                I18N.get("Editor"), I18N.get("Size"), I18N.get("Visible") };
+        if (Registry.getParameter(Names.JEASE_SITE_DESIGN) != null) {
+            return columns;
+        } else {
+            return Arrays.copyOf(columns, columns.length - 1);
+        }
+    }
 
-	/**
-	 * Which relative width (proportion) should be used to size a column?
-	 */
-	public int[] getProportions() {
-		return new int[] { 2, 5, 8, 5, 4, 3, 2 };
-	}
+    /**
+     * Which relative width (proportion) should be used to size a column?
+     */
+    public int[] getProportions() {
+        return new int[] { 2, 5, 8, 5, 4, 3, 2 };
+    }
 
-	/**
-	 * Which value should be displayed in a given column?
-	 */
-	public Object getValue(Node node, int column) {
-		final Content content = (Content) node;
-		switch (column) {
-		case 0:
-			return NodeViews.asIcon(content);
-		case 1:
-			return content.getId();
-		case 2:
-			return content.getTitle();
-		case 3:
-			return content.getLastModified();
-		case 4:
-			return content.getEditor();
-		case 5:
-			return NodeViews.asSize(content);
-		case 6:
-			return NodeViews.asCheckbox(
-					content.isVisible(),
-					event -> visibilityChangePerformed(content,
-							(Checkbox) event.getTarget()));
-		}
-		return "";
-	}
+    /**
+     * Which value should be displayed in a given column?
+     */
+    public Object getValue(Node node, int column) {
+        final Content content = (Content) node;
+        switch (column) {
+        case 0:
+            return NodeViews.asIcon(content);
+        case 1:
+            return content.getId();
+        case 2:
+            return content.getTitle();
+        case 3:
+            return content.getLastModified();
+        case 4:
+            return content.getEditor();
+        case 5:
+            return NodeViews.asSize(content);
+        case 6:
+            return NodeViews.asCheckbox(
+                    content.isVisible(),
+                    event -> visibilityChangePerformed(content,
+                            (Checkbox) event.getTarget()));
+        }
+        return "";
+    }
 
-	/**
-	 * Which content should be searchable in addition to columns above?
-	 */
-	public Object[] getSearchValues(Node content) {
-		return new Object[] { ((Content) content).getFulltext() };
-	}
+    /**
+     * Which content should be searchable in addition to columns above?
+     */
+    public Object[] getSearchValues(Node content) {
+        return new Object[] { ((Content) content).getFulltext() };
+    }
 
-	private void visibilityChangePerformed(Content content, Checkbox checkbox) {
-		// Change visibility for actual selected item
-		content.setVisible(checkbox.isChecked());
-		Nodes.save(content);
+    private void visibilityChangePerformed(Content content, Checkbox checkbox) {
+        // Change visibility for actual selected item
+        content.setVisible(checkbox.isChecked());
+        Nodes.save(content);
 
-		// Change visibility for multiple selected items
-		Listcell listcell = (Listcell) checkbox.getParent();
-		Listbox listbox = (Listbox) listcell.getListbox();
-		Set<Listitem> selectedItems = listbox.getSelectedItems();
-		if (!selectedItems.isEmpty()) {
-			for (Listitem item : listbox.getSelectedItems()) {
-				Content node = item.getValue();
-				node.setVisible(checkbox.isChecked());
-				Nodes.save(node);
-			}
-			listbox.clearSelection();
-			((ContainerTable) listbox.getParent()).refresh();
-		}
-	}
+        // Change visibility for multiple selected items
+        Listcell listcell = (Listcell) checkbox.getParent();
+        Listbox listbox = (Listbox) listcell.getListbox();
+        Set<Listitem> selectedItems = listbox.getSelectedItems();
+        if (!selectedItems.isEmpty()) {
+            for (Listitem item : listbox.getSelectedItems()) {
+                Content node = item.getValue();
+                node.setVisible(checkbox.isChecked());
+                Nodes.save(node);
+            }
+            listbox.clearSelection();
+            ((ContainerTable) listbox.getParent()).refresh();
+        }
+    }
 }

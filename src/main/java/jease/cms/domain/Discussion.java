@@ -26,68 +26,68 @@ import jease.cmf.domain.NodeException;
  */
 public class Discussion extends Content {
 
-	private String author;
-	private String comment;
+    private String author;
+    private String comment;
 
-	public Discussion() {
-	}
+    public Discussion() {
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	public String getComment() {
-		return comment;
-	}
+    public String getComment() {
+        return comment;
+    }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
-	public synchronized void addComment(String title, String author,
-			String text, boolean visible) {
-		Discussion comment = new Discussion();
-		comment.setId(getId() + "-" + (getChildren().length + 1));
-		comment.setTitle(title);
-		comment.setAuthor(author);
-		comment.setComment(text);
-		comment.setVisible(visible);
-		comment.setLastModified(new java.util.Date());
-		comment.setEditor(getEditor());
-		comment.setParent(this);
-	}
+    public synchronized void addComment(String title, String author,
+            String text, boolean visible) {
+        Discussion comment = new Discussion();
+        comment.setId(getId() + "-" + (getChildren().length + 1));
+        comment.setTitle(title);
+        comment.setAuthor(author);
+        comment.setComment(text);
+        comment.setVisible(visible);
+        comment.setLastModified(new java.util.Date());
+        comment.setEditor(getEditor());
+        comment.setParent(this);
+    }
 
-	public boolean isContainer() {
-		return true;
-	}
+    public boolean isContainer() {
+        return true;
+    }
 
-	protected void validateNesting(Node potentialChild, String potentialChildId)
-			throws NodeException {
-		super.validateNesting(potentialChild, potentialChildId);
-		if (!(potentialChild instanceof Discussion)) {
-			throw new NodeException.IllegalNesting();
-		}
-	}
+    protected void validateNesting(Node potentialChild, String potentialChildId)
+            throws NodeException {
+        super.validateNesting(potentialChild, potentialChildId);
+        if (!(potentialChild instanceof Discussion)) {
+            throw new NodeException.IllegalNesting();
+        }
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(author).append("\n")
-				.append(comment);
-	}
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n").append(author).append("\n")
+                .append(comment);
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		setAuthor(getAuthor().replace(target, replacement));
-		setComment(getComment().replace(target, replacement));
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        setAuthor(getAuthor().replace(target, replacement));
+        setComment(getComment().replace(target, replacement));
+    }
 
-	public Discussion copy(boolean recursive) {
-		Discussion discussion = (Discussion) super.copy(recursive);
-		discussion.setAuthor(getAuthor());
-		discussion.setComment(getComment());
-		return discussion;
-	}
+    public Discussion copy(boolean recursive) {
+        Discussion discussion = (Discussion) super.copy(recursive);
+        discussion.setAuthor(getAuthor());
+        discussion.setComment(getComment());
+        return discussion;
+    }
 }

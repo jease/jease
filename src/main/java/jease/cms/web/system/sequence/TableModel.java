@@ -25,30 +25,30 @@ import jfix.zk.ObjectTableModel;
 
 public class TableModel extends ObjectTableModel<Sequence> {
 
-	public Sequence newObject() {
-		return new Sequence();
-	}
+    public Sequence newObject() {
+        return new Sequence();
+    }
 
-	public String[] getColumns() {
-		return new String[] { I18N.get("Name"), I18N.get("Value") };
-	}
+    public String[] getColumns() {
+        return new String[] { I18N.get("Name"), I18N.get("Value") };
+    }
 
-	public int[] getProportions() {
-		return new int[] { 3, 1 };
-	}
+    public int[] getProportions() {
+        return new int[] { 3, 1 };
+    }
 
-	public List<Sequence> getList() {
-		return Database.query(Sequence.class);
-	}
+    public List<Sequence> getList() {
+        return Database.query(Sequence.class);
+    }
 
-	public Object getValue(Sequence sequence, int column) {
-		switch (column) {
-		case 0:
-			return sequence.getName();
-		case 1:
-			return sequence.getValue();
-		}
-		return "";
-	}
+    public Object getValue(Sequence sequence, int column) {
+        switch (column) {
+        case 0:
+            return sequence.getName();
+        case 1:
+            return sequence.getValue();
+        }
+        return "";
+    }
 
 }

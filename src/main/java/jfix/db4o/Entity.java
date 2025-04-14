@@ -25,23 +25,23 @@ import java.util.UUID;
  */
 public class Entity extends Persistent {
 
-	private final String id = UUID.randomUUID().toString();
+    private final String id = UUID.randomUUID().toString();
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (!(other instanceof Entity)) {
-			return false;
-		}
-		return id.equals(((Entity) other).id);
-	}
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Entity)) {
+            return false;
+        }
+        return id.equals(((Entity) other).id);
+    }
 
-	public int hashCode() {
-		return id.hashCode();
-	}
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

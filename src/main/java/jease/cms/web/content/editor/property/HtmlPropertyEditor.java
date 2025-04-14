@@ -20,22 +20,22 @@ import jease.cms.domain.property.HtmlProperty;
 import jease.cms.web.component.RichTextarea;
 
 public class HtmlPropertyEditor extends RichTextarea implements
-		PropertyEditor<HtmlProperty> {
+        PropertyEditor<HtmlProperty> {
 
-	private HtmlProperty property;
+    private HtmlProperty property;
 
-	public HtmlPropertyEditor() {
-		setHeight("150px");
-	}
+    public HtmlPropertyEditor() {
+        setHeight("150px");
+    }
 
-	public HtmlProperty getProperty() {
-		property.setValue(getValue());
-		return property;
-	}
+    public HtmlProperty getProperty() {
+        property.setValue(getValue());
+        return property;
+    }
 
-	public void setProperty(HtmlProperty property) {
-		this.property = property;
-		setValue(property.getValue());
-	}
+    public void setProperty(HtmlProperty property) {
+        this.property = property;
+        setValue(property.getValue());
+    }
 
 }

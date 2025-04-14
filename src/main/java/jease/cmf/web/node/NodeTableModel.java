@@ -23,21 +23,21 @@ import jease.cmf.web.JeaseSession;
 import jfix.zk.ObjectTableModel;
 
 public abstract class NodeTableModel<E extends Node> extends
-		ObjectTableModel<E> {
-	
-	public E newObject() {
-		return null;
-	}
+        ObjectTableModel<E> {
+    
+    public E newObject() {
+        return null;
+    }
 
-	public List<E> getList() {
-		return null;
-	}
+    public List<E> getList() {
+        return null;
+    }
 
-	public Node getContainer() {
-		return JeaseSession.getContainer();
-	}
+    public Node getContainer() {
+        return JeaseSession.getContainer();
+    }
 
-	public NodeFilter getFilter() {
-		return JeaseSession.getFilter();
-	}
+    public NodeFilter getFilter() {
+        return JeaseSession.getFilter();
+    }
 }

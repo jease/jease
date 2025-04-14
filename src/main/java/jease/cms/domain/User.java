@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jfix.db4o.Persistent;
-import jfix.util.Crypts;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import jfix.db4o.Persistent;
+import jfix.util.Crypts;
 
 /**
  * Users can create, update and delete content within the CMS. A user has a role
@@ -34,117 +34,136 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class User extends Persistent {
 
-	private String name;
-	private String login;
-	private String password;
-	private String email;
-	private Content[] roots;
-	private Role role;
-	private Date lastSession;
-	private boolean disabled;
+    private String name;
+    private String login;
+    private String password;
+    private String email;
+    private Content[] roots;
+    private Role role;
+    private Date lastSession;
+    private boolean disabled;
 
-	public User() {
-	}
+    public User() {
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getLogin() {
-		return login;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public boolean hasPassword(String password) {
-		return StringUtils.equals(this.password, encrypt(password));
-	}
+    public boolean hasPassword(String password) {
+        return StringUtils.equals(this.password, encrypt(password));
+    }
 
-	public void setPassword(String password) {
-		if (!StringUtils.equals(this.password, password)) {
-			this.password = encrypt(password);
-		}
-	}
+    /** Supposed to be called for raw password, e.g. entered from UI */
+    public void setPassword(String password) {
+        if (!StringUtils.equals(this.password, password)) {
+            this.password = encrypt(password);
+        }
+    }
 
-	protected String encrypt(String input) {
-		return StringUtils.isBlank(input) ? input : Crypts
-				.md5(input.getBytes());
-	}
+    public void setEncryptedPassword(String password) {
+        this.password = password;
+    }
 
-	public void setRoots(Content[] roots) {
-		this.roots = roots;
-	}
+    protected String encrypt(String input) {
+        return StringUtils.isBlank(input) ? input : Crypts.md5(input.getBytes());
+    }
 
-	/**
-	 * Returns all virtual "root"-containers which can be accessed by the user
-	 * via the CMS.
-	 */
-	public Content[] getRoots() {
-		List<Content> result = new ArrayList<Content>();
-		if (roots != null) {
-			for (Content root : roots) {
-				if (root != null) {
-					result.add(root);
-				}
-			}
-		}
-		return result.toArray(new Content[] {});
-	}
+    public void setRoots(Content[] roots) {
+        this.roots = roots;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    /**
+     * Returns all virtual "root"-containers which can be accessed by the user
+     * via the CMS.
+     */
+    public Content[] getRoots() {
+        List<Content> result = new ArrayList<Content>();
+        if (roots != null) {
+            for (Content root : roots) {
+                if (root != null) {
+                    result.add(root);
+                }
+            }
+        }
+        return result.toArray(new Content[] {});
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public Role getRole() {
-		return role;
-	}
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-	public boolean isAdministrator() {
-		return role != null ? role.isAdministrator() : false;
-	}
+    public Role getRole() {
+        return role;
+    }
 
-	public Date getLastSession() {
-		return lastSession;
-	}
+    public boolean isAdministrator() {
+        return role != null ? role.isAdministrator() : false;
+    }
 
-	public void setLastSession(Date lastSession) {
-		this.lastSession = lastSession;
-	}
+    public Date getLastSession() {
+        return lastSession;
+    }
 
-	public boolean isDisabled() {
-		return disabled;
-	}
+    public void setLastSession(Date lastSession) {
+        this.lastSession = lastSession;
+    }
 
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
-	}
+    public boolean isDisabled() {
+        return disabled;
+    }
 
-	/**
-	 * Returns true if user has access to root nodes and a role.
-	 */
-	public boolean isContentManager() {
-		return ArrayUtils.isNotEmpty(roots) && role != null;
-	}
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
 
-	public String toString() {
-		return "" + login;
-	}
+    /**
+     * Returns true if user has access to root nodes and a role.
+     */
+    public boolean isContentManager() {
+        return ArrayUtils.isNotEmpty(roots) && role != null;
+    }
+
+    @Override
+    public String toString() {
+        return "" + login;
+    }
+
+    public User shallowClone() {
+        User rslt = new User();
+        rslt.setName(getName());
+        rslt.setLogin(getLogin());
+        rslt.setEncryptedPassword(getPassword());
+        rslt.setEmail(getEmail());
+        rslt.setRole(getRole());
+        rslt.setLastSession(getLastSession());
+        rslt.setDisabled(isDisabled());
+        rslt.setRoots(getRoots()); // getRoots() creates copy
+        return rslt;
+    }
+
 }

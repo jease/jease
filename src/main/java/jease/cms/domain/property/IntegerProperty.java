@@ -18,36 +18,36 @@ package jease.cms.domain.property;
 
 public class IntegerProperty extends Property {
 
-	private int value;
+    private int value;
 
-	public IntegerProperty() {
-	}
+    public IntegerProperty() {
+    }
 
-	public IntegerProperty(String name) {
-		super(name);
-	}
+    public IntegerProperty(String name) {
+        super(name);
+    }
 
-	public IntegerProperty(String name, int value) {
-		this(name);
-		setValue(value);
-	}
+    public IntegerProperty(String name, int value) {
+        this(name);
+        setValue(value);
+    }
 
-	public int getValue() {
-		return value;
-	}
+    public int getValue() {
+        return value;
+    }
 
-	public void setValue(int value) {
-		this.value = value;
-	}
+    public void setValue(int value) {
+        this.value = value;
+    }
 
-	public IntegerProperty copy() {
-		IntegerProperty property = (IntegerProperty) super.copy();
-		property.setValue(getValue());
-		return property;
-	}
+    public IntegerProperty copy() {
+        IntegerProperty property = (IntegerProperty) super.copy();
+        property.setValue(getValue());
+        return property;
+    }
 
-	public String toString() {
-		return String.valueOf(value);
-	}
+    public String toString() {
+        return String.valueOf(value);
+    }
 
 }

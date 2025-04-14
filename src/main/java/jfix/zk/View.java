@@ -25,30 +25,30 @@ import org.zkoss.zk.ui.Component;
  */
 public class View<E> {
 
-	private E value;
-	private Component component;
+    private E value;
+    private Component component;
 
-	public View() {
-	}
+    public View() {
+    }
 
-	public View(E value, Component component) {
-		this.value = value;
-		this.component = component;
-	}
+    public View(E value, Component component) {
+        this.value = value;
+        this.component = component;
+    }
 
-	public E getValue() {
-		return value;
-	}
+    public E getValue() {
+        return value;
+    }
 
-	public Component getComponent() {
-		return component;
-	}
+    public Component getComponent() {
+        return component;
+    }
 
-	public void setValue(E value) {
-		this.value = value;
-	}
+    public void setValue(E value) {
+        this.value = value;
+    }
 
-	public void setComponent(Component component) {
-		this.component = component;
-	}
+    public void setComponent(Component component) {
+        this.component = component;
+    }
 }

@@ -31,107 +31,107 @@ import jfix.util.Urls;
 
 public class Linkchecker implements Runnable {
 
-	private static final Pattern INTERNAL_URL_PATH = Pattern.compile(
-			"^(.*?)(;|#|\\?)(.*)$", Pattern.DOTALL | Pattern.MULTILINE);
-	private static int TIMEOUT = 60;
-	private static boolean active = false;
+    private static final Pattern INTERNAL_URL_PATH = Pattern.compile(
+            "^(.*?)(;|#|\\?)(.*)$", Pattern.DOTALL | Pattern.MULTILINE);
+    private static int TIMEOUT = 60;
+    private static boolean active = false;
 
-	public static synchronized boolean isActive() {
-		return active;
-	}
+    public static synchronized boolean isActive() {
+        return active;
+    }
 
-	public static synchronized void start() {
-		new Thread(new Linkchecker()).start();
-	}
+    public static synchronized void start() {
+        new Thread(new Linkchecker()).start();
+    }
 
-	public synchronized void run() {
-		if (active == false) {
-			try {
-				active = true;
-				clear();
-				check();
-			} finally {
-				active = false;
-			}
-		}
-	}
+    public synchronized void run() {
+        if (active == false) {
+            try {
+                active = true;
+                clear();
+                check();
+            } finally {
+                active = false;
+            }
+        }
+    }
 
-	/**
-	 * Deletes all linkcheck objects from database.
-	 */
-	public static void clear() {
-		Database.write(new Runnable() {
-			public void run() {
-				for (Linkcheck linkcheck : Database.query(Linkcheck.class)) {
-					Database.delete(linkcheck);
-				}
-			}
-		});
-	}
+    /**
+     * Deletes all linkcheck objects from database.
+     */
+    public static void clear() {
+        Database.write(new Runnable() {
+            public void run() {
+                for (Linkcheck linkcheck : Database.query(Linkcheck.class)) {
+                    Database.delete(linkcheck);
+                }
+            }
+        });
+    }
 
-	/**
-	 * Deletes all linkcheck objects from database with given path.
-	 */
-	public static void clear(String path) {
-		for (Linkcheck linkcheck : Database.query(Linkcheck.class)) {
-			if (path.equals(linkcheck.getPath())) {
-				Database.delete(linkcheck);
-			}
-		}
-	}
+    /**
+     * Deletes all linkcheck objects from database with given path.
+     */
+    public static void clear(String path) {
+        for (Linkcheck linkcheck : Database.query(Linkcheck.class)) {
+            if (path.equals(linkcheck.getPath())) {
+                Database.delete(linkcheck);
+            }
+        }
+    }
 
-	/**
-	 * Performs full link check and saves status to database.
-	 */
-	public static void check() {
-		Map<String, Integer> linkStates = new HashMap<>();
-		for (Content content : Database.query(Content.class)) {
-			String fulltext = content.getFulltext().toString();
-			for (String url : extractUrls(fulltext)) {
-				int status;
-				if (linkStates.containsKey(url)) {
-					status = linkStates.get(url);
-				} else {
-					status = getStatus(content, url);
-					linkStates.put(url, status);
-				}
-				Database.save(new Linkcheck(content.getPath(), url, status));
-			}
-		}
-	}
+    /**
+     * Performs full link check and saves status to database.
+     */
+    public static void check() {
+        Map<String, Integer> linkStates = new HashMap<>();
+        for (Content content : Database.query(Content.class)) {
+            String fulltext = content.getFulltext().toString();
+            for (String url : extractUrls(fulltext)) {
+                int status;
+                if (linkStates.containsKey(url)) {
+                    status = linkStates.get(url);
+                } else {
+                    status = getStatus(content, url);
+                    linkStates.put(url, status);
+                }
+                Database.save(new Linkcheck(content.getPath(), url, status));
+            }
+        }
+    }
 
-	/**
-	 * For every URL in given content object perform a linkcheck and save status
-	 * to the database.
-	 */
-	public static void check(Content content) {
-		String fulltext = content.getFulltext().toString();
-		for (String url : extractUrls(fulltext)) {
-			Database.save(new Linkcheck(content.getPath(), url, getStatus(
-					content, url)));
-		}
-	}
+    /**
+     * For every URL in given content object perform a linkcheck and save status
+     * to the database.
+     */
+    public static void check(Content content) {
+        String fulltext = content.getFulltext().toString();
+        for (String url : extractUrls(fulltext)) {
+            Database.save(new Linkcheck(content.getPath(), url, getStatus(
+                    content, url)));
+        }
+    }
 
-	private static Set<String> extractUrls(String fulltext) {
-		return new HashSet<>(Regexps.extractUrlsFromHtml(fulltext));
-	}
+    private static Set<String> extractUrls(String fulltext) {
+        return new HashSet<>(Regexps.extractUrlsFromHtml(fulltext));
+    }
 
-	private static int getStatus(Content content, String url) {
-		if (url.startsWith("http:") || url.startsWith("https:")) {
-			return Urls.getStatus(url, TIMEOUT);
-		} else {
-			// Unknown protocol (e.g mailto: or file:) or scripting element
-			if (url.contains(":") || url.startsWith("<") || url.startsWith("$")) {
-				return -1;
-			}
-			Matcher matcher = INTERNAL_URL_PATH.matcher(url);
-			if (matcher.matches()) {
-				url = matcher.group(1);
-			}
-			if (url.startsWith("./~")) {
-				url = url.substring(3);
-			}
-			return content.getChild(url) != null ? 200 : 404;
-		}
-	}
+    private static int getStatus(Content content, String url) {
+        if (url.startsWith("http:") || url.startsWith("https:")) {
+            return Urls.getStatus(url, TIMEOUT);
+        } else {
+            // Unknown protocol (e.g mailto: or file:) or scripting element
+            if (url.contains(":") || url.startsWith("<") || url.startsWith("$")) {
+                return -1;
+            }
+            Matcher matcher = INTERNAL_URL_PATH.matcher(url);
+            if (matcher.matches()) {
+                url = matcher.group(1);
+            }
+            if (url.startsWith("./~")) {
+                url = url.substring(3);
+            }
+            return content.getChild(url) != null ? 200 : 404;
+        }
+    }
 }
