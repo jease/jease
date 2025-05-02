@@ -19,8 +19,7 @@ package jease.cms.web.user;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
+import jakarta.servlet.http.HttpSession;
 import jease.cms.domain.User;
 import jease.cms.service.Users;
 import jease.cms.web.servlet.JeaseSessionListener;
@@ -30,6 +29,7 @@ import jfix.zk.Sessions;
 
 public class TableModel extends ObjectTableModel<User> {
 
+    @Override
     public User newObject() {
         if (Sessions.get(User.class).isAdministrator()) {
             return new User();
@@ -38,20 +38,24 @@ public class TableModel extends ObjectTableModel<User> {
         }
     }
 
+    @Override
     public String[] getColumns() {
         return new String[] { I18N.get("Username"), I18N.get("Name"),
                 I18N.get("Email"), I18N.get("Role"), I18N.get("Last_Access"),
                 I18N.get("Session"), I18N.get("Roots") };
     }
 
+    @Override
     public int[] getProportions() {
         return new int[] { 2, 2, 2, 2, 2, 1, 4 };
     }
 
+    @Override
     public List<User> getList() {
         return Users.queryModifiableByUser(Sessions.get(User.class));
     }
 
+    @Override
     public Object getValue(User user, int column) {
         switch (column) {
         case 0:

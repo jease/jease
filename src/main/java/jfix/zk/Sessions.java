@@ -18,9 +18,9 @@ package jfix.zk;
 
 import java.util.Collections;
 
-import javax.servlet.http.HttpSession;
-
 import org.zkoss.zk.ui.Executions;
+
+import jakarta.servlet.http.HttpSession;
 
 public class Sessions {
 

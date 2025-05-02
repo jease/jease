@@ -22,14 +22,13 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.function.Supplier;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import jease.Names;
 import jease.Registry;
 import jfix.db4o.Database;
@@ -49,7 +48,7 @@ import jfix.db4o.Database;
  * mail.smtp.auth                        true
  * mail.smtp.port                        465
  * mail.smtp.socketFactory.port          465
- * mail.smtp.socketFactory.class         javax.net.ssl.SSLSocketFactory
+ * mail.smtp.socketFactory.class         jakarta.net.ssl.SSLSocketFactory
  * mail.smtp.socketFactory.fallback      false
  * mail.smtp.user                        dummy@gmail.com
  * mail.smtp.password                    topsecret
@@ -83,7 +82,7 @@ public class Mails {
         final Properties properties = Database.query(propertySupplier);
         if (properties != null) {
             Session session = Session.getInstance(properties,
-                    new javax.mail.Authenticator() {
+                    new jakarta.mail.Authenticator() {
                         @Override
                         protected PasswordAuthentication getPasswordAuthentication() {
                             return new PasswordAuthentication(properties

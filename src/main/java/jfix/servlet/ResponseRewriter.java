@@ -16,14 +16,15 @@
  */
 package jfix.servlet;
 
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.function.Function;
+
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 
 public class ResponseRewriter extends HttpServletResponseWrapper {
 
@@ -34,6 +35,7 @@ public class ResponseRewriter extends HttpServletResponseWrapper {
         this.printWriter = new Rewriter(response.getOutputStream(), rewriter);
     }
 
+    @Override
     public PrintWriter getWriter() throws IOException {
         return printWriter;
     }
@@ -48,20 +50,24 @@ public class ResponseRewriter extends HttpServletResponseWrapper {
             this.rewriter = rewriter;
         }
 
+        @Override
         public void write(int c) {
             buffer.append((char) c);
         }
 
+        @Override
         public void write(char[] chars, int offset, int length) {
             buffer.append(chars, offset, length);
             flush();
         }
 
+        @Override
         public void write(String string, int offset, int length) {
             buffer.append(string, offset, length);
             flush();
         }
 
+        @Override
         public void flush() {
             try {
                 synchronized (lock) {

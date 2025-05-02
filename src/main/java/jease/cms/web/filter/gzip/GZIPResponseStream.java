@@ -5,16 +5,16 @@ import java.io.IOException;
 import java.util.function.Predicate;
 import java.util.zip.GZIPOutputStream;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dynatrace.hash4j.hashing.Hashing;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class GZIPResponseStream extends ServletOutputStream {
     private static final Logger LOGGER = LoggerFactory.getLogger(GZIPResponseStream.class);

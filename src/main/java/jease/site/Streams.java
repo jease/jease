@@ -20,14 +20,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.math.NumberUtils;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jease.Names;
 import jease.Registry;
 import jfix.util.Images;
-
-import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * Service to stream binary contents to client.
@@ -36,7 +35,7 @@ public class Streams {
 
     /**
      * Write given file to response.
-     * 
+     *
      * If the given content type denotes a browser supported image, the image
      * will be automatically scaled if either "scale" is present as request
      * paramter or JEASE_IMAGE_LIMIT is set in Registry.
