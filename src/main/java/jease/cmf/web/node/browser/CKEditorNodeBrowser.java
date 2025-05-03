@@ -25,20 +25,20 @@ import org.zkoss.zul.Toolbarbutton;
 
 public class CKEditorNodeBrowser extends AbstractNodeBrowser {
 
-	private String callbackId;
+    private String callbackId;
 
-	protected void init() {
-		callbackId = Executions.getCurrent().getParameter("CKEditorFuncNum");
-		super.init();
-	}
+    protected void init() {
+        callbackId = Executions.getCurrent().getParameter("CKEditorFuncNum");
+        super.init();
+    }
 
-	protected Button newNodeSelector(Node node) {
-		Button button = new Toolbarbutton(node.getId(), JeaseSession
-				.getConfig().getIcon(node));
-		button.setWidgetListener(
-				"onClick",
-				String.format("window.opener.CKEDITOR.tools.callFunction(%s,'%s'); window.close();", callbackId,
-						"./~" + node.getPath()));
-		return button;
-	}
+    protected Button newNodeSelector(Node node) {
+        Button button = new Toolbarbutton(node.getId(), JeaseSession
+                .getConfig().getIcon(node));
+        button.setWidgetListener(
+                "onClick",
+                String.format("window.opener.CKEDITOR.tools.callFunction(%s,'%s'); window.close();", callbackId,
+                        "./~" + node.getPath()));
+        return button;
+    }
 }

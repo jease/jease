@@ -28,9 +28,9 @@ import com.db4o.io.NonFlushingStorage;
 
 public class PersistenceEngineDb4o extends PersistenceEngineBase implements PersistenceEngine {
 
-	protected ObjectContainer db;
+    protected ObjectContainer db;
 
-	@Override
+    @Override
     protected String getEngineName() {
         return "db4o";
     }
@@ -40,72 +40,72 @@ public class PersistenceEngineDb4o extends PersistenceEngineBase implements Pers
         return "db4o.yap";
     }
 
-	@Override
+    @Override
     public void open(String database) {
-		initDirectory(database);
-		openEngine();
-	}
+        initDirectory(database);
+        openEngine();
+    }
 
-	protected void openEngine() {
-		db = Db4oEmbedded.openFile(newConfiguration(), filename);
-	}
+    protected void openEngine() {
+        db = Db4oEmbedded.openFile(newConfiguration(), filename);
+    }
 
-	protected EmbeddedConfiguration newConfiguration() {
-		EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
-		config.common().activationDepth(0);
-		config.common().allowVersionUpdates(true);
-		config.common().callConstructors(true);
-		config.common().callbacks(false);
-		config.common().weakReferences(false);
-		config.file().freespace().useRamSystem();
-		config.file().storage(new NonFlushingStorage(new FileStorage()));
-		return config;
-	}
+    protected EmbeddedConfiguration newConfiguration() {
+        EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
+        config.common().activationDepth(0);
+        config.common().allowVersionUpdates(true);
+        config.common().callConstructors(true);
+        config.common().callbacks(false);
+        config.common().weakReferences(false);
+        config.file().freespace().useRamSystem();
+        config.file().storage(new NonFlushingStorage(new FileStorage()));
+        return config;
+    }
 
-	@Override
+    @Override
     public Collection<Object> query() {
-		List<Object> objects = new ArrayList<>();
-		for (Object obj : db.queryByExample(null)) {
-			db.ext().refresh(obj, 1);
-			objects.add(obj);
-		}
-		return objects;
-	}
+        List<Object> objects = new ArrayList<>();
+        for (Object obj : db.queryByExample(null)) {
+            db.ext().refresh(obj, 1);
+            objects.add(obj);
+        }
+        return objects;
+    }
 
-	@Override
+    @Override
     public void save(Object object) {
-		db.store(object);
-	}
+        db.store(object);
+    }
 
-	@Override
+    @Override
     public void delete(Object object) {
-		db.delete(object);
-	}
+        db.delete(object);
+    }
 
-	@Override
+    @Override
     public void begin() {
-		// Empty as db4o don't needs an explicit transaction begin.
-	}
+        // Empty as db4o don't needs an explicit transaction begin.
+    }
 
-	@Override
+    @Override
     public void commit() {
-		db.commit();
-	}
+        db.commit();
+    }
 
-	@Override
+    @Override
     public void rollback() {
-		db.rollback();
-	}
+        db.rollback();
+    }
 
-	@Override
+    @Override
     public void backup() {
-		String backupFilename = getBackupFileName();
-		db.ext().backup(backupFilename);
-	}
+        String backupFilename = getBackupFileName();
+        db.ext().backup(backupFilename);
+    }
 
-	@Override
+    @Override
     public void close() {
-		db.close();
-	}
+        db.close();
+    }
 
 }

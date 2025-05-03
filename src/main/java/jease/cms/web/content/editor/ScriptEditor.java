@@ -21,44 +21,51 @@ import org.sinnlabs.zk.ui.CodeMirror;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Label;
 
 import jease.cms.domain.Script;
 import jfix.util.I18N;
+import jfix.zk.Div;
 
 public class ScriptEditor extends ContentEditor<Script> {
 
-	CodeMirror code = new CodeMirror();
-	Checkbox forward = new Checkbox();
+    CodeMirror code = new CodeMirror();
+    Checkbox forward = new Checkbox(I18N.get("Forward"));
 
-	public ScriptEditor() {
-		code.setHeight(getPlainEditorHeight());
-		code.setLineNumbers(true);
-		id.addEventListener(Events.ON_CHANGING, event -> {
-		    code.setSyntax(FilenameUtils.getExtension(((InputEvent) event).getValue()));
-		});
-	}
+    public ScriptEditor() {
+        code.setHeight(getPlainEditorHeight());
+        code.setLineNumbers(true);
+        id.addEventListener(Events.ON_CHANGING, event -> {
+            code.setSyntax(FilenameUtils.getExtension(((InputEvent) event).getValue()));
+        });
+        compactHeader = true;
+    }
 
-	@Override
+    @Override
     public void init() {
-		add(I18N.get("Code"), code);
-		add(I18N.get("Forward"), forward);
-	}
+        Label label = new Label(I18N.get("Code"));
+        label.setStyle("font-weight: bold; float: left; margin-top: 3px");
+        forward.setStyle("margin-right: 15px");
+        Div h = new Div("text-align: right", label, forward);
+        add(h);
+        add(code);
+    }
 
-	@Override
+    @Override
     public void load() {
-		code.setSyntax(FilenameUtils.getExtension(id.getValue()));
-		code.setValue(getNode().getCode());
-		forward.setChecked(getNode().isForward());
-	}
+        code.setSyntax(FilenameUtils.getExtension(id.getValue()));
+        code.setValue(getNode().getCode());
+        forward.setChecked(getNode().isForward());
+    }
 
-	@Override
+    @Override
     public void save() {
-		getNode().setCode(code.getValue());
-		getNode().setForward(forward.isChecked());
-	}
+        getNode().setCode(code.getValue());
+        getNode().setForward(forward.isChecked());
+    }
 
-	@Override
+    @Override
     public void validate() {
-	}
+    }
 
 }

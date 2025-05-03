@@ -33,28 +33,28 @@ import org.apache.commons.lang3.ArrayUtils;
  */
 public class Relocator implements PathChangeProcessor {
 
-	public void process(String oldPath, String newPath) {
-		if (!oldPath.equals(newPath)
-				&& ArrayUtils.isEmpty(Nodes.getByPath(newPath).getParents(
-						Trash.class))) {
-			final String target = "./~" + oldPath;
-			final String replacement = "./~" + newPath;
-			Database.write(new Runnable() {
-				public void run() {
-					for (Content content : searchContent(target)) {
-						content.replace(target, replacement);
-						Database.save(content);
-					}
-				}
-			});
-		}
-	}
+    public void process(String oldPath, String newPath) {
+        if (!oldPath.equals(newPath)
+                && ArrayUtils.isEmpty(Nodes.getByPath(newPath).getParents(
+                        Trash.class))) {
+            final String target = "./~" + oldPath;
+            final String replacement = "./~" + newPath;
+            Database.write(new Runnable() {
+                public void run() {
+                    for (Content content : searchContent(target)) {
+                        content.replace(target, replacement);
+                        Database.save(content);
+                    }
+                }
+            });
+        }
+    }
 
-	private List<Content> searchContent(final String target) {
-		return Database.query(Content.class, new Predicate<Content>() {
-			public boolean test(Content obj) {
-				return obj.getFulltext().indexOf(target) != -1;
-			}
-		});
-	}
+    private List<Content> searchContent(final String target) {
+        return Database.query(Content.class, new Predicate<Content>() {
+            public boolean test(Content obj) {
+                return obj.getFulltext().indexOf(target) != -1;
+            }
+        });
+    }
 }

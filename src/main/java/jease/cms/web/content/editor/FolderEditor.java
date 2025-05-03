@@ -20,16 +20,16 @@ import jease.cms.domain.Folder;
 
 public class FolderEditor extends ContentEditor<Folder> {
 
-	public void init() {
-	}
+    public void init() {
+    }
 
-	public void load() {
-	}
+    public void load() {
+    }
 
-	public void save() {
-	}
+    public void save() {
+    }
 
-	public void validate() {
-	}
+    public void validate() {
+    }
 
 }

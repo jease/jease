@@ -21,23 +21,23 @@ import jease.cms.domain.property.DateProperty;
 import org.zkoss.zul.Datebox;
 
 public class DatePropertyEditor extends Datebox implements
-		PropertyEditor<DateProperty> {
+        PropertyEditor<DateProperty> {
 
-	private DateProperty property;
+    private DateProperty property;
 
-	public DatePropertyEditor() {
-		setLenient(false);
-		setFormat("short");
-	}
+    public DatePropertyEditor() {
+        setLenient(false);
+        setFormat("short");
+    }
 
-	public DateProperty getProperty() {
-		property.setValue(getValue());
-		return property;
-	}
+    public DateProperty getProperty() {
+        property.setValue(getValue());
+        return property;
+    }
 
-	public void setProperty(DateProperty property) {
-		this.property = property;
-		setValue(property.getValue());
-	}
+    public void setProperty(DateProperty property) {
+        this.property = property;
+        setValue(property.getValue());
+    }
 
 }

@@ -22,26 +22,26 @@ import org.zkoss.zul.Toolbar;
 
 public class Panel extends org.zkoss.zul.Panel {
 
-	public Panel(Component... comps) {
-		this("", comps);
-	}
+    public Panel(Component... comps) {
+        this("", comps);
+    }
 
-	public Panel(String title, Component... comps) {
-		setTitle(title);
-		appendChild(new Toolbar());
-		Panelchildren panelchildren = new Panelchildren();
-		panelchildren.setStyle("padding: 5px;");
-		for (Component comp : comps) {
-			panelchildren.appendChild(comp);
-		}
-		appendChild(panelchildren);
-	}
+    public Panel(String title, Component... comps) {
+        setTitle(title);
+        appendChild(new Toolbar());
+        Panelchildren panelchildren = new Panelchildren();
+        panelchildren.setStyle("padding: 5px;");
+        for (Component comp : comps) {
+            panelchildren.appendChild(comp);
+        }
+        appendChild(panelchildren);
+    }
 
-	public void clearToolbar() {
-		getTopToolbar().getChildren().clear();
-	}
+    public void clearToolbar() {
+        getTopToolbar().getChildren().clear();
+    }
 
-	public void appendChildToToolbar(Component child) {
-		getTopToolbar().appendChild(child);
-	}
+    public void appendChildToToolbar(Component child) {
+        getTopToolbar().appendChild(child);
+    }
 }

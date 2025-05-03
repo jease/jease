@@ -27,33 +27,33 @@ import jfix.zk.ObjectTableModel;
 
 public class TableModel extends ObjectTableModel<Role> {
 
-	public Role newObject() {
-		return new Role();
-	}
+    public Role newObject() {
+        return new Role();
+    }
 
-	public String[] getColumns() {
-		return new String[] { I18N.get("Name"), I18N.get("Type") };
-	}
+    public String[] getColumns() {
+        return new String[] { I18N.get("Name"), I18N.get("Type") };
+    }
 
-	public int[] getProportions() {
-		return new int[] { 1, 4 };
-	}
+    public int[] getProportions() {
+        return new int[] { 1, 4 };
+    }
 
-	public List<Role> getList() {
-		return Database.query(Role.class);
-	}
+    public List<Role> getList() {
+        return Database.query(Role.class);
+    }
 
-	public Object getValue(Role role, int column) {
-		switch (column) {
-		case 0:
-			return role.getName();
-		case 1:
-			return Stream
-					.of(role.getTypes())
-					.map($str -> I18N.get($str.substring($str.lastIndexOf(".") + 1)))
-					.collect(Collectors.joining(" | "));
-		}
-		return "";
-	}
+    public Object getValue(Role role, int column) {
+        switch (column) {
+        case 0:
+            return role.getName();
+        case 1:
+            return Stream
+                    .of(role.getTypes())
+                    .map($str -> I18N.get($str.substring($str.lastIndexOf(".") + 1)))
+                    .collect(Collectors.joining(" | "));
+        }
+        return "";
+    }
 
 }

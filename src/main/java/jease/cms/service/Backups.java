@@ -30,28 +30,36 @@ import jease.cms.domain.User;
  */
 public class Backups {
 
-	private final static Backup backup = new Backup(
-			Contents.getAvailableTypes());
+    private final static Backup backup = new Backup(
+            Contents.getAvailableTypes());
 
-	/**
-	 * Dump given node into XML-File.
-	 */
-	public static File dump(Node node) {
-		return backup.dump(node);
-	}
+    /**
+     * Dump given node into XML-File.
+     */
+    public static File dump(Node node) {
+        return backup.dump(node);
+    }
 
-	/**
-	 * Append content contained in previously backuped XML-file to given
-	 * container and assign ownership to given user.
-	 */
-	public static void restore(File backupFile, Node container, final User user)
-			throws NodeException {
-		Node node = backup.restore(backupFile);
-		node.traverse($node -> {
-			Content content = (Content) $node;
-			content.setEditor(user);
-			content.markChanged();
-		});
-		Nodes.append(container, node);
-	}
+    /**
+     * Append content contained in previously backuped XML-file to given
+     * container and assign ownership to given user.
+     */
+    public static void restore(File backupFile, Node container, final User user)
+            throws NodeException {
+        Node node = backup.restore(backupFile);
+        node.traverse($node -> {
+            Content content = (Content) $node;
+            content.setEditor(user);
+            content.markChanged();
+        });
+        Nodes.append(container, node);
+    }
+
+    public static File dumpUsers() {
+        return backup.dumpUsers();
+    }
+
+    public static boolean restoreUsers(File backupFile) {
+        return backup.restoreUsers(backupFile);
+    }
 }

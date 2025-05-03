@@ -25,50 +25,63 @@ import java.util.UUID;
 /**
  * Persistent class which can be used to store binary content directly in
  * file-system. You can get access to the file by calling #getFile().
- * 
+ *
  * Initially the blob is stored in #JAVA_IO_TMPDIR. When the blob is persisted
  * in database for the first time, the file will be moved to a directory
  * dependent on the database by calling #initPath().
  */
 public class Blob extends Persistent implements Persistent.Value {
 
-	protected static transient String JAVA_IO_TMPDIR = System
-			.getProperty("java.io.tmpdir") + File.separator;
+    protected static transient String JAVA_IO_TMPDIR = System
+            .getProperty("java.io.tmpdir") + File.separator;
 
-	protected transient String path;
-	protected final String id = UUID.randomUUID().toString();
+    protected transient String dir0;
+    protected transient String dir1;
+    protected transient String path;
+    protected String id = UUID.randomUUID().toString(); // should not be final, JDO usually ignores static and final fields
 
-	public String getId() {
-		return id;
-	}
+    public Blob() {
+    }
 
-	public File getFile() {
-		return new File(path != null ? path : (JAVA_IO_TMPDIR + id));
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String toString() {
-		return id;
-	}
+    public File getFile() {
+        return new File(path != null ? path : (JAVA_IO_TMPDIR + id));
+    }
 
-	protected void initPath(String blobDirectory) {
-		if (path == null) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(blobDirectory).append("blob").append(File.separator);
-			sb.append(id.substring(0, 2)).append(File.separator);
-			sb.append(id.substring(2, 4)).append(File.separator);
-			new File(sb.toString()).mkdirs();
-			File source = getFile();
-			path = sb.append(id).toString();
-			File target = getFile();
-			if (source.exists() && !target.exists()) {
-				try {
-					Files.move(source.toPath(), target.toPath(),
-							StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
-	}
+    public void deleteDirs() {
+        if (dir1 != null) new File(dir1).delete();
+        if (dir0 != null) new File(dir0).delete();
+    }
+
+    @Override
+    public String toString() {
+        return id;
+    }
+
+    protected void initPath(String blobDirectory) {
+        if (path == null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(blobDirectory).append("blob").append(File.separator);
+            sb.append(id.substring(0, 2)).append(File.separator);
+            dir0 = sb.toString();
+            sb.append(id.substring(2, 4)).append(File.separator);
+            dir1 = sb.toString();
+            new File(dir1).mkdirs();
+            File source = getFile();
+            path = sb.append(id).toString();
+            File target = getFile();
+            if (source.exists() && !target.exists()) {
+                try {
+                    Files.move(source.toPath(), target.toPath(),
+                            StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
 
 }

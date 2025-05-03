@@ -25,27 +25,27 @@ import jease.cmf.domain.NodeException;
  */
 public class Trash extends Content {
 
-	public Trash() {
-	}
+    public Trash() {
+    }
 
-	public boolean isContainer() {
-		return true;
-	}
+    public boolean isContainer() {
+        return true;
+    }
 
-	public boolean isPage() {
-		return false;
-	}
+    public boolean isPage() {
+        return false;
+    }
 
-	public Trash copy(boolean recursive) {
-		return (Trash) super.copy(recursive);
-	}
+    public Trash copy(boolean recursive) {
+        return (Trash) super.copy(recursive);
+    }
 
-	public boolean isEmpty() {
-		return getChildren().length == 0;
-	}
+    public boolean isEmpty() {
+        return getChildren().length == 0;
+    }
 
-	protected void validateDuplicate(Node potentialChild,
-			String potentialChildId) throws NodeException {
-		// Duplicates allowed
-	}
+    protected void validateDuplicate(Node potentialChild,
+            String potentialChildId) throws NodeException {
+        // Duplicates allowed
+    }
 }

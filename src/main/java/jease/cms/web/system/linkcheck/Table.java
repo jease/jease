@@ -35,57 +35,57 @@ import org.zkoss.zul.Button;
 
 public class Table extends ObjectTable<Linkcheck> {
 
-	private Button linkcheck = new Button();
+    private Button linkcheck = new Button();
 
-	public Table() {
-		init(new TableModel());
-		if (JeaseSession.get(User.class).isAdministrator()) {
-			initLinkcheck();
-		}
-	}
+    public Table() {
+        init(new TableModel());
+        if (JeaseSession.get(User.class).isAdministrator()) {
+            initLinkcheck();
+        }
+    }
 
-	private void initLinkcheck() {
-		linkcheck.addEventListener(Events.ON_CLICK,
-				$event -> linkcheckPerformed());
-		getLeftbox().appendChild(linkcheck);
-	}
+    private void initLinkcheck() {
+        linkcheck.addEventListener(Events.ON_CLICK,
+                $event -> linkcheckPerformed());
+        getLeftbox().appendChild(linkcheck);
+    }
 
-	private void linkcheckPerformed() {
-		if (!Linkchecker.isActive()
-				&& linkcheck.getLabel().equals(I18N.get("Start"))) {
-			Linkchecker.start();
-			Modal.info(I18N.get("In_Progress"), $event -> refresh());
-		} else {
-			refresh();
-		}
-	}
+    private void linkcheckPerformed() {
+        if (!Linkchecker.isActive()
+                && linkcheck.getLabel().equals(I18N.get("Start"))) {
+            Linkchecker.start();
+            Modal.info(I18N.get("In_Progress"), $event -> refresh());
+        } else {
+            refresh();
+        }
+    }
 
-	public void refresh() {
-		if (Linkchecker.isActive()) {
-			linkcheck.setLabel(I18N.get("Refresh"));
-			linkcheck.setImage(Images.ViewRefresh);
-		} else {
-			linkcheck.setLabel(I18N.get("Start"));
-			linkcheck.setImage(Images.MediaPlaybackStart);
-		}
-		super.refresh();
-	}
+    public void refresh() {
+        if (Linkchecker.isActive()) {
+            linkcheck.setLabel(I18N.get("Refresh"));
+            linkcheck.setImage(Images.ViewRefresh);
+        } else {
+            linkcheck.setLabel(I18N.get("Start"));
+            linkcheck.setImage(Images.MediaPlaybackStart);
+        }
+        super.refresh();
+    }
 
-	protected void onSelect(Object obj) {
-		final Linkcheck linkcheck = (Linkcheck) obj;
-		final Content content = (Content) Nodes.getByPath(linkcheck.getPath());
-		if (content != null) {
-			NodeEditor<Node> editor = Registry.getEditor(content);
-			editor.addEventListener(Events.ON_CHANGE, $event -> {
-				Linkchecker.clear(linkcheck.getPath());
-				Linkchecker.check(content);
-				refresh();
-			});
-			setEditor(editor);
-			super.onSelect(content);
-		} else {
-			setEditor(null);
-		}
-	}
+    protected void onSelect(Object obj) {
+        final Linkcheck linkcheck = (Linkcheck) obj;
+        final Content content = (Content) Nodes.getByPath(linkcheck.getPath());
+        if (content != null) {
+            NodeEditor<Node> editor = Registry.getEditor(content);
+            editor.addEventListener(Events.ON_CHANGE, $event -> {
+                Linkchecker.clear(linkcheck.getPath());
+                Linkchecker.check(content);
+                refresh();
+            });
+            setEditor(editor);
+            super.onSelect(content);
+        } else {
+            setEditor(null);
+        }
+    }
 
 }

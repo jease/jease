@@ -29,41 +29,41 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Discussions {
 
-	public static int MAX_SUBJECT_LENGTH = 64;
-	public static int MAX_AUTHOR_LENGTH = 64;
-	public static int MAX_COMMENT_LENGTH = 1024;
+    public static int MAX_SUBJECT_LENGTH = 64;
+    public static int MAX_AUTHOR_LENGTH = 64;
+    public static int MAX_COMMENT_LENGTH = 1024;
 
-	/**
-	 * Adds a comment with given values to given Discussion. Visible flag
-	 * indicates if added comment should be visible or not.
-	 * 
-	 * Returns null on success, otherwise an error message.
-	 */
-	public static String addComment(Discussion discussion, String author,
-			String subject, String comment, boolean visible) {
-		if (StringUtils.isBlank(subject) || StringUtils.isBlank(author) || StringUtils.isBlank(comment)) {
-			return I18N.get("All_fields_are_required");
-		}
-		if (subject.length() > MAX_SUBJECT_LENGTH || author.length() > MAX_AUTHOR_LENGTH || comment.length() > MAX_COMMENT_LENGTH) {
-			return I18N.get("Input_is_too_long");
-		}
+    /**
+     * Adds a comment with given values to given Discussion. Visible flag
+     * indicates if added comment should be visible or not.
+     * 
+     * Returns null on success, otherwise an error message.
+     */
+    public static String addComment(Discussion discussion, String author,
+            String subject, String comment, boolean visible) {
+        if (StringUtils.isBlank(subject) || StringUtils.isBlank(author) || StringUtils.isBlank(comment)) {
+            return I18N.get("All_fields_are_required");
+        }
+        if (subject.length() > MAX_SUBJECT_LENGTH || author.length() > MAX_AUTHOR_LENGTH || comment.length() > MAX_COMMENT_LENGTH) {
+            return I18N.get("Input_is_too_long");
+        }
 
-		// Escape all user input
-		subject = StringEscapeUtils.escapeHtml4(subject);
-		author = StringEscapeUtils.escapeHtml4(author);
-		comment = StringEscapeUtils.escapeHtml4(comment);
+        // Escape all user input
+        subject = StringEscapeUtils.escapeHtml4(subject);
+        author = StringEscapeUtils.escapeHtml4(author);
+        comment = StringEscapeUtils.escapeHtml4(comment);
 
-		// Save comment to database.
-		discussion.addComment(subject, author, comment, visible);
-		Nodes.save(discussion);
+        // Save comment to database.
+        discussion.addComment(subject, author, comment, visible);
+        Nodes.save(discussion);
 
-		// Send email for review to editor in charge.
-		String recipient = discussion.getEditor().getEmail();
-		if (StringUtils.isNotBlank(recipient)) {
-			Mails.dispatch(recipient, recipient,
-					String.format("%s (%s)", subject, author), comment);
-		}
+        // Send email for review to editor in charge.
+        String recipient = discussion.getEditor().getEmail();
+        if (StringUtils.isNotBlank(recipient)) {
+            Mails.dispatch(recipient, recipient,
+                    String.format("%s (%s)", subject, author), comment);
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

@@ -23,44 +23,44 @@ import jfix.db4o.Persistent;
  */
 public class Linkcheck extends Persistent {
 
-	private String path;
-	private String url;
-	private int status;
+    private String path;
+    private String url;
+    private int status;
 
-	public Linkcheck() {
-	}
+    public Linkcheck() {
+    }
 
-	public Linkcheck(String path, String url, int status) {
-		this.path = path;
-		this.url = url;
-		this.status = status;
-	}
+    public Linkcheck(String path, String url, int status) {
+        this.path = path;
+        this.url = url;
+        this.status = status;
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public int getStatus() {
-		return status;
-	}
+    public int getStatus() {
+        return status;
+    }
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
-	public String toString() {
-		return String.format("%s@%s", url, path);
-	}
+    public String toString() {
+        return String.format("%s@%s", url, path);
+    }
 }

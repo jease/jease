@@ -26,101 +26,101 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 
 public class Tabbox<E> extends org.zkoss.zul.Tabbox implements Refreshable,
-		Objectable<E> {
+        Objectable<E> {
 
-	private Tabs tabs = new Tabs();
-	private Tabpanels tabpanels = new Tabpanels();
+    private Tabs tabs = new Tabs();
+    private Tabpanels tabpanels = new Tabpanels();
 
-	public Tabbox() {
-		appendChild(tabs);
-		appendChild(tabpanels);
-		addEventListener(Events.ON_SELECT, new EventListener<Event>() {
-			public void onEvent(Event evt) {
-				refresh();
-			}
-		});
-	}
+    public Tabbox() {
+        appendChild(tabs);
+        appendChild(tabpanels);
+        addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+            public void onEvent(Event evt) {
+                refresh();
+            }
+        });
+    }
 
-	public void add(String title, Component comp) {
-		add(title, comp, null);
-	}
+    public void add(String title, Component comp) {
+        add(title, comp, null);
+    }
 
-	public void add(String title, Component comp, String image) {
-		RefreshableTabpanel tabpanel = new RefreshableTabpanel();
-		tabpanel.appendChild(comp);
-		tabs.appendChild(new Tab(title, image));
-		tabpanels.appendChild(tabpanel);
-	}
+    public void add(String title, Component comp, String image) {
+        RefreshableTabpanel tabpanel = new RefreshableTabpanel();
+        tabpanel.appendChild(comp);
+        tabs.appendChild(new Tab(title, image));
+        tabpanels.appendChild(tabpanel);
+    }
 
-	public void add(String title, Class<?> clazz) {
-		add(title, clazz, null);
-	}
+    public void add(String title, Class<?> clazz) {
+        add(title, clazz, null);
+    }
 
-	public void add(String title, Class<?> clazz, String image) {
-		RefreshableTabpanel tabpanel = new RefreshableTabpanel(clazz);
-		if (tabpanels.getChildren().size() == 0) {
-			tabpanel.refresh();
-		}
-		tabs.appendChild(new Tab(title, image));
-		tabpanels.appendChild(tabpanel);
-	}
+    public void add(String title, Class<?> clazz, String image) {
+        RefreshableTabpanel tabpanel = new RefreshableTabpanel(clazz);
+        if (tabpanels.getChildren().size() == 0) {
+            tabpanel.refresh();
+        }
+        tabs.appendChild(new Tab(title, image));
+        tabpanels.appendChild(tabpanel);
+    }
 
-	public void reset() {
-		tabs.getChildren().clear();
-		tabpanels.getChildren().clear();
-	}
+    public void reset() {
+        tabs.getChildren().clear();
+        tabpanels.getChildren().clear();
+    }
 
-	public void refresh() {
-		if (getSelectedPanel() instanceof Refreshable) {
-			((Refreshable) getSelectedPanel()).refresh();
-		}
-	}
+    public void refresh() {
+        if (getSelectedPanel() instanceof Refreshable) {
+            ((Refreshable) getSelectedPanel()).refresh();
+        }
+    }
 
-	public void setObject(E object) {
-		for (Object cmp : tabpanels.getChildren()) {
-			if (cmp instanceof Objectable) {
-				((Objectable<Object>) cmp).setObject(object);
-			}
-		}
-	}
+    public void setObject(E object) {
+        for (Object cmp : tabpanels.getChildren()) {
+            if (cmp instanceof Objectable) {
+                ((Objectable<Object>) cmp).setObject(object);
+            }
+        }
+    }
 
-	public E getObject() {
-		return null;
-	}
+    public E getObject() {
+        return null;
+    }
 }
 
 class RefreshableTabpanel extends Tabpanel implements Refreshable,
-		Objectable<Object> {
+        Objectable<Object> {
 
-	private Class<?> componentClass;
+    private Class<?> componentClass;
 
-	public RefreshableTabpanel() {
-	}
+    public RefreshableTabpanel() {
+    }
 
-	public RefreshableTabpanel(Class<?> componentClass) {
-		this.componentClass = componentClass;
-	}
+    public RefreshableTabpanel(Class<?> componentClass) {
+        this.componentClass = componentClass;
+    }
 
-	public void refresh() {
-		if (componentClass != null) {
-			try {
-				appendChild((Component) componentClass.newInstance());
-				componentClass = null;
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
-		}
+    public void refresh() {
+        if (componentClass != null) {
+            try {
+                appendChild((Component) componentClass.newInstance());
+                componentClass = null;
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
 
-		for (Object child : getChildren()) {
-			if (child instanceof Refreshable) {
-				((Refreshable) child).refresh();
-			}
-		}
-	}
+        for (Object child : getChildren()) {
+            if (child instanceof Refreshable) {
+                ((Refreshable) child).refresh();
+            }
+        }
+    }
 
-	public void setObject(Object object) {
-		if (getFirstChild() instanceof Objectable) {
-			((Objectable<Object>) getFirstChild()).setObject(object);
-		}
-	}
+    public void setObject(Object object) {
+        if (getFirstChild() instanceof Objectable) {
+            ((Objectable<Object>) getFirstChild()).setObject(object);
+        }
+    }
 }

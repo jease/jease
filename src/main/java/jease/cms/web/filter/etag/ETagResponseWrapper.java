@@ -1,14 +1,15 @@
 package jease.cms.web.filter.etag;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 
 /** See <a href="http://www.leveluplunch.com/java/tutorials/034-modify-html-response-using-filter/">
  *    Modify html response using filter</a>
@@ -21,7 +22,9 @@ public class ETagResponseWrapper extends HttpServletResponseWrapper {
 
     public ETagResponseWrapper(HttpServletResponse response) {
         super(response);
-        capture = new ByteArrayOutputStream(response.getBufferSize());
+        int sz = response.getBufferSize();
+        if (sz < 131072) sz = 131072;
+        capture = new ByteArrayOutputStream(sz);
     }
 
     @Override
@@ -70,8 +73,8 @@ public class ETagResponseWrapper extends HttpServletResponseWrapper {
         }
 
         if (writer == null) {
-            writer = new PrintWriter(new OutputStreamWriter(capture,
-                    getCharacterEncoding()));
+            writer = new PrintWriter(
+                    new BufferedWriter(new OutputStreamWriter(capture, getCharacterEncoding())));
         }
 
         return writer;

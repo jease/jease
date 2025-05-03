@@ -26,69 +26,69 @@ import jfix.db4o.Persistent;
  */
 public abstract class Property extends Persistent implements Persistent.Value {
 
-	private int serial;
-	private String name;
+    private int serial;
+    private String name;
 
-	public Property() {
-	}
+    public Property() {
+    }
 
-	public Property(String name) {
-		setName(name);
-	}
+    public Property(String name) {
+        setName(name);
+    }
 
-	public int getSerial() {
-		return serial;
-	}
+    public int getSerial() {
+        return serial;
+    }
 
-	public void initSerial() {
-		do {
-			serial = new Random().nextInt();
-		} while (serial < 1);
-	}
+    public void initSerial() {
+        do {
+            serial = new Random().nextInt();
+        } while (serial < 1);
+    }
 
-	public void setSerial(int serial) {
-		this.serial = serial;
-	}
+    public void setSerial(int serial) {
+        this.serial = serial;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getType() {
-		return getClass().getSimpleName().replace(
-				Property.class.getSimpleName(), "");
-	}
+    public String getType() {
+        return getClass().getSimpleName().replace(
+                Property.class.getSimpleName(), "");
+    }
 
-	public long getSize() {
-		return String.valueOf(toString()).length();
-	}
+    public long getSize() {
+        return String.valueOf(toString()).length();
+    }
 
-	public String toString() {
-		return name;
-	}
+    public String toString() {
+        return name;
+    }
 
-	public void cloneTo(Property clone) {
-		clone.setName(getName());
-	}
+    public void cloneTo(Property clone) {
+        clone.setName(getName());
+    }
 
-	public void replace(String target, String replacement) {
-		if (getName() != null) {
-			setName(getName().replace(target, replacement));
-		}
-	}
+    public void replace(String target, String replacement) {
+        if (getName() != null) {
+            setName(getName().replace(target, replacement));
+        }
+    }
 
-	public Property copy() {
-		try {
-			Property property = getClass().newInstance();
-			property.setSerial(getSerial());
-			property.setName(getName());
-			return property;
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    public Property copy() {
+        try {
+            Property property = getClass().newInstance();
+            property.setSerial(getSerial());
+            property.setName(getName());
+            return property;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 }

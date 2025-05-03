@@ -21,17 +21,17 @@ package jease.cms.domain;
  */
 public class Image extends File {
 
-	public Image() {
-	}
+    public Image() {
+    }
 
-	/**
-	 * Only accept images as valid content types.
-	 */
-	public boolean isValidContentType(String contentType) {
-		return contentType.startsWith("image/");
-	}
+    /**
+     * Only accept images as valid content types.
+     */
+    public boolean isValidContentType(String contentType) {
+        return contentType.startsWith("image/");
+    }
 
-	public Image copy(boolean recursive) {
-		return (Image) super.copy(recursive);
-	}
+    public Image copy(boolean recursive) {
+        return (Image) super.copy(recursive);
+    }
 }

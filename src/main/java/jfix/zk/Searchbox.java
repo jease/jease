@@ -26,46 +26,46 @@ import org.zkoss.zul.Hbox;
 
 public abstract class Searchbox extends Hbox {
 
-	Combobox searchField = new Combobox();
-	Button searchButton = new Button(I18N.get("Search"), Images.SystemSearch);
-	Button resetButton = new Button(I18N.get("Reset"), Images.ViewRefresh);
+    Combobox searchField = new Combobox();
+    Button searchButton = new Button(I18N.get("Search"), Images.SystemSearch);
+    Button resetButton = new Button(I18N.get("Reset"), Images.ViewRefresh);
 
-	public abstract void searchPerformed(String search);
+    public abstract void searchPerformed(String search);
 
-	public Searchbox() {
-		appendChild(searchField);
-		appendChild(searchButton);
-		appendChild(resetButton);
-		initListener();
-	}
+    public Searchbox() {
+        appendChild(searchField);
+        appendChild(searchButton);
+        appendChild(resetButton);
+        initListener();
+    }
 
-	private void initListener() {
-		searchField.setButtonVisible(false);
+    private void initListener() {
+        searchField.setButtonVisible(false);
 
-		EventListener<Event> searchAction = $event -> searchPerformed(searchField
-				.getText());
+        EventListener<Event> searchAction = $event -> searchPerformed(searchField
+                .getText());
 
-		EventListener<Event> resetAction = $event -> {
-			clearSearch();
-			searchPerformed(null);
-		};
+        EventListener<Event> resetAction = $event -> {
+            clearSearch();
+            searchPerformed(null);
+        };
 
-		searchButton.addEventListener(Events.ON_CLICK, searchAction);
-		resetButton.addEventListener(Events.ON_CLICK, resetAction);
-		searchField.addEventListener(Events.ON_OK, searchAction);
-		searchField.addEventListener(Events.ON_SELECT, searchAction);
-	}
+        searchButton.addEventListener(Events.ON_CLICK, searchAction);
+        resetButton.addEventListener(Events.ON_CLICK, resetAction);
+        searchField.addEventListener(Events.ON_OK, searchAction);
+        searchField.addEventListener(Events.ON_SELECT, searchAction);
+    }
 
-	public void setSearch(String search) {
-		searchField.setText(search);
-		searchPerformed(search);
-	}
+    public void setSearch(String search) {
+        searchField.setText(search);
+        searchPerformed(search);
+    }
 
-	public void clearSearch() {
-		searchField.setText(null);
-	}
+    public void clearSearch() {
+        searchField.setText(null);
+    }
 
-	public Combobox getSearchField() {
-		return searchField;
-	}
+    public Combobox getSearchField() {
+        return searchField;
+    }
 }

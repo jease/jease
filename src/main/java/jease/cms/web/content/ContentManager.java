@@ -18,6 +18,14 @@ package jease.cms.web.content;
 
 import java.io.File;
 
+import org.zkoss.util.media.Media;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Label;
+
 import jease.Names;
 import jease.Registry;
 import jease.cmf.web.Jease;
@@ -26,18 +34,13 @@ import jease.cms.domain.User;
 import jease.cms.service.Backups;
 import jease.cms.service.Imports;
 import jfix.util.I18N;
+import jfix.zk.Div;
 import jfix.zk.Filedownload;
 import jfix.zk.Fileupload;
 import jfix.zk.Images;
 import jfix.zk.Medias;
 import jfix.zk.Modal;
 import jfix.zk.WebBrowser;
-
-import org.zkoss.util.media.Media;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.UploadEvent;
-import org.zkoss.zul.Button;
 
 /**
  * JeaseCMS with additional content dump/restore and fileupload for quick
@@ -46,98 +49,136 @@ import org.zkoss.zul.Button;
  */
 public class ContentManager extends Jease {
 
-	private Button view;
-	private Button dump;
-	private Fileupload restore;
-	private Fileupload upload;
+    private Button view;
+    private Button dump;
+    private Fileupload importBtn;
+    private Checkbox idWithoutExtensionCB;
+    private Fileupload restore;
+    private Fileupload upload;
 
-	public ContentManager() {
-		getFlatTable().getLeftbox().getChildren().clear();
-		Component container = getTreeTable().getRightbox();
-		container.getChildren().clear();
-		if (JeaseSession.get(User.class).isAdministrator()) {
-			initDumpButton();
-			initRestoreButton();
-			container.appendChild(dump);
-			container.appendChild(restore);
-		}
-		initUploadButton();
-		container.appendChild(upload);
-		if (Registry.getParameter(Names.JEASE_SITE_DESIGN) != null) {
-			initViewButton();
-			container.appendChild(view);
-		}
-	}
+    public ContentManager() {
+        getFlatTable().getLeftbox().getChildren().clear();
+        Component container = getTreeTable().getRightbox();
+        container.getChildren().clear();
+        initUploadButton();
+        initImportButton();
+        initIdWithoutExtensionCheckbox();
 
-	private void initDumpButton() {
-		dump = new Button(I18N.get("Dump"), Images.DriveCdrom);
-		dump.addEventListener(Events.ON_CLICK, event -> Filedownload
-				.save(Backups.dump(JeaseSession.getContainer()))
+        container.appendChild(new Div("margin-top: 8px", idWithoutExtensionCB));
+        container.appendChild(upload);
+        container.appendChild(importBtn);
+        container.appendChild(new Label("\u00A0\u00A0\u00A0\u00A0"));
+        if (JeaseSession.get(User.class).isAdministrator()) {
+            initDumpButton();
+            initRestoreButton();
+            container.appendChild(dump);
+            container.appendChild(restore);
+        }
+        if (Registry.getParameter(Names.JEASE_SITE_DESIGN) != null) {
+            initViewButton();
+            container.appendChild(view);
+        }
+    }
 
-		);
-	}
+    private void initDumpButton() {
+        dump = new Button(I18N.get("Dump"), Images.DriveCdrom);
+        dump.addEventListener(Events.ON_CLICK, event ->
+            Filedownload.save(Backups.dump(JeaseSession.getContainer()))
+        );
+    }
 
-	private void initRestoreButton() {
-		restore = new Fileupload(I18N.get("Restore"), Images.MediaCdrom);
-		restore.addEventListener(
-				Events.ON_UPLOAD,
-				event -> {
-					Media media = ((UploadEvent) event).getMedia();
-					if (media != null) {
-						try {
-							File backupFile = Medias.asFile(media);
-							backupFile.deleteOnExit();
-							Backups.restore(backupFile,
-									JeaseSession.getContainer(),
-									JeaseSession.get(User.class));
-						} catch (Exception e) {
-							Modal.error(e.getMessage());
-						} finally {
-							refresh();
-						}
-					}
-				});
-	}
+    private void initRestoreButton() {
+        restore = new Fileupload(I18N.get("Restore"), Images.MediaCdrom);
+        restore.addEventListener(
+                Events.ON_UPLOAD,
+                event -> {
+                    Media media = ((UploadEvent) event).getMedia();
+                    if (media != null) {
+                        try {
+                            File backupFile = Medias.asFile(media);
+                            backupFile.deleteOnExit();
+                            Backups.restore(backupFile,
+                                    JeaseSession.getContainer(),
+                                    JeaseSession.get(User.class));
+                        } catch (Exception e) {
+                            Modal.error(e.getMessage());
+                        } finally {
+                            refresh();
+                        }
+                    }
+                });
+    }
 
-	private void initUploadButton() {
-		upload = new Fileupload(I18N.get("Upload"), Images.UserHome);
-		upload.addEventListener(
-				Events.ON_UPLOAD,
-				event -> {
-					Media media = ((UploadEvent) event).getMedia();
-					if (media != null) {
-						try {
-							File inputFile = Medias.asFile(media);
-							inputFile.deleteOnExit();
-							Imports.fromFile(inputFile,
-									JeaseSession.getContainer(),
-									JeaseSession.get(User.class));
-						} catch (Exception e) {
-							Modal.error(e.getMessage());
-						} finally {
-							refresh();
-						}
-					}
-				});
-		upload.setUploadLimit(Registry.getParameter(Names.JEASE_UPLOAD_LIMIT));
-	}
+    private void initImportButton() {
+        importBtn = new Fileupload(I18N.get("Import"), Images.DocumentSave, false);
+        importBtn.addEventListener(Events.ON_UPLOAD, event -> {
+            Media media = ((UploadEvent) event).getMedia();
+            if (media != null) {
+                Modal.confirm(I18N.get("Confirm_replace"), event1 -> {
+                    try {
+                        performUpload(media, true, idWithoutExtensionCB.isChecked());
+                        Modal.info(I18N.get("Action_performed"));
+                    } finally {
+                        refresh();
+                    }
+                });
+            }
+        });
+        setUploadLimit();
+    }
 
-	private void initViewButton() {
-		view = new Button(I18N.get("View"), Images.InternetWebBrowser);
-		view.addEventListener(
-				Events.ON_CLICK,
-				event -> {
-					getRoot().appendChild(
-							new WebBrowser(JeaseSession.getContainer()
-									.getPath()));
-				});
-	}
+    private void initIdWithoutExtensionCheckbox() {
+        idWithoutExtensionCB = new Checkbox(I18N.get("Id_without_ext"));
+        idWithoutExtensionCB.setTooltiptext(I18N.get("Id_without_ext_hint"));
+        idWithoutExtensionCB.setChecked(true);
+    }
 
-	public void refresh() {
-		super.refresh();
-		if (upload != null) {
-			upload.setUploadLimit(Registry
-					.getParameter(Names.JEASE_UPLOAD_LIMIT));
-		}
-	}
+    private void initUploadButton() {
+        upload = new Fileupload(I18N.get("Upload"), Images.UserHome, true/*multiple*/);
+        upload.addEventListener(Events.ON_UPLOAD, event -> {
+            Media[] medias = ((UploadEvent) event).getMedias();
+            if (medias != null) {
+                try {
+                    for (int i = 0; i < medias.length; i++) {
+                        Media media = medias[i];
+                        performUpload(media, false, idWithoutExtensionCB.isChecked());
+                    }
+                } finally {
+                    refresh();
+                }
+            }
+        });
+        //
+        setUploadLimit();
+    }
+
+    private static void performUpload(Media media, boolean replaceExisting, boolean idWithoutExtension) {
+        try {
+            File inputFile = Medias.asFile(media);
+            inputFile.deleteOnExit();
+            Imports.fromFile(inputFile,
+                    JeaseSession.getContainer(), JeaseSession.get(User.class), replaceExisting, idWithoutExtension);
+        } catch (Exception e) {
+            Modal.error(e.getMessage());
+        }
+    }
+
+    private void setUploadLimit() {
+        final String limit = Registry.getParameter(Names.JEASE_UPLOAD_LIMIT);
+        if (upload != null) upload.setUploadLimit(limit);
+    }
+
+    private void initViewButton() {
+        view = new Button(I18N.get("View"), Images.InternetWebBrowser);
+        view.addEventListener(
+                Events.ON_CLICK, event -> {
+                    getRoot().appendChild(new WebBrowser(JeaseSession.getContainer().getPath()));
+                });
+    }
+
+    @Override
+    public void refresh() {
+        super.refresh();
+        setUploadLimit();
+    }
 }

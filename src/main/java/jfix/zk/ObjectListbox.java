@@ -20,26 +20,26 @@ import org.zkoss.zul.Listheader;
 
 public class ObjectListbox<E> extends Listbox implements Refreshable {
 
-	public ObjectListbox(ObjectTableModel<E> model) {
-		setMold("paging");
-		setWidth("100%");
-		setModel(model);
-		setItemRenderer(new ObjectTableRenderer<E>(model));
-		appendChild(new ObjectTableHeader<E>(model));
-		if (model.isSortable()) {
-			((Listheader) getListhead().getFirstChild()).sort(true);
-		}
-	}
+    public ObjectListbox(ObjectTableModel<E> model) {
+        setMold("paging");
+        setWidth("100%");
+        setModel(model);
+        setItemRenderer(new ObjectTableRenderer<E>(model));
+        appendChild(new ObjectTableHeader<E>(model));
+        if (model.isSortable()) {
+            ((Listheader) getListhead().getFirstChild()).sort(true);
+        }
+    }
 
-	public void refresh() {
-		((Refreshable) getModel()).refresh();
-	}
+    public void refresh() {
+        ((Refreshable) getModel()).refresh();
+    }
 
-	public Object getSelectedValue() {
-		if (getSelectedItem() != null && getSelectedItem().getValue() != null) {
-			return getSelectedItem().getValue();
-		}
-		return null;
-	}
+    public Object getSelectedValue() {
+        if (getSelectedItem() != null && getSelectedItem().getValue() != null) {
+            return getSelectedItem().getValue();
+        }
+        return null;
+    }
 
 }

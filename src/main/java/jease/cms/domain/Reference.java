@@ -23,46 +23,46 @@ package jease.cms.domain;
  */
 public class Reference extends Content {
 
-	private Content content;
+    private Content content;
 
-	public Reference() {
-	}
+    public Reference() {
+    }
 
-	public Content getContent() {
-		return content;
-	}
+    public Content getContent() {
+        return content;
+    }
 
-	public void setContent(Content content) {
-		this.content = content;
-	}
+    public void setContent(Content content) {
+        this.content = content;
+    }
 
-	/**
-	 * Resolves chain of linked References and returns first content which is
-	 * not a Reference.
-	 */
-	public Content getDestination() {
-		Content destination = content;
-		while (destination instanceof Reference) {
-			destination = ((Reference) destination).getContent();
-		}
-		return destination;
-	}
+    /**
+     * Resolves chain of linked References and returns first content which is
+     * not a Reference.
+     */
+    public Content getDestination() {
+        Content destination = content;
+        while (destination instanceof Reference) {
+            destination = ((Reference) destination).getContent();
+        }
+        return destination;
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n")
-				.append(content != null ? content.getPath() : "");
-	}
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n")
+                .append(content != null ? content.getPath() : "");
+    }
 
-	public boolean isPage() {
-		if (content != null) {
-			return content.isPage();
-		}
-		return true;
-	}
+    public boolean isPage() {
+        if (content != null) {
+            return content.isPage();
+        }
+        return true;
+    }
 
-	public Reference copy(boolean recursive) {
-		Reference reference = (Reference) super.copy(recursive);
-		reference.setContent(getContent());
-		return reference;
-	}
+    public Reference copy(boolean recursive) {
+        Reference reference = (Reference) super.copy(recursive);
+        reference.setContent(getContent());
+        return reference;
+    }
 }

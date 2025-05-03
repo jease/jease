@@ -21,18 +21,18 @@ import jfix.util.I18N;
 
 public class TrashEditor extends ContentEditor<Trash> {
 
-	public void init() {
-	}
+    public void init() {
+    }
 
-	public void load() {
-		getDeleteButton().setLabel(
-				getNode().isEmpty() ? I18N.get("Delete") : I18N
-						.get("Empty_Trash"));
-	}
+    public void load() {
+        getDeleteButton().setLabel(
+                getNode().isEmpty() ? I18N.get("Delete") : I18N
+                        .get("Empty_Trash"));
+    }
 
-	public void save() {
-	}
+    public void save() {
+    }
 
-	public void validate() {
-	}
+    public void validate() {
+    }
 }

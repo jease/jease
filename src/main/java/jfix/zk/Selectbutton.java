@@ -27,87 +27,87 @@ import org.zkoss.zul.ListitemRenderer;
 
 public class Selectbutton extends Div {
 
-	private Selectfield selectfield = new Selectfield();
-	private Button button = new Button();
+    private Selectfield selectfield = new Selectfield();
+    private Button button = new Button();
 
-	public Selectbutton() {
-		selectfield.setHflex("1");
-		button.setHflex("1");
-		button.addEventListener(Events.ON_CLICK, event -> showSelection(null));
-		appendChild(button);
-	}
+    public Selectbutton() {
+        selectfield.setHflex("1");
+        button.setHflex("1");
+        button.addEventListener(Events.ON_CLICK, event -> showSelection(null));
+        appendChild(button);
+    }
 
-	private void showSelection(Object value) {
-		button.setParent(null);
-		selectfield.setParent(null);
-		if (getItemRenderer() instanceof ItemRenderer) {
-			button.setLabel(((ItemRenderer) getItemRenderer()).render(value));
-		} else {
-			button.setLabel(String.valueOf(value));
-		}
-		if (value == null) {
-			appendChild(selectfield);
-		} else {
-			appendChild(button);
-		}
-	}
+    private void showSelection(Object value) {
+        button.setParent(null);
+        selectfield.setParent(null);
+        if (getItemRenderer() instanceof ItemRenderer) {
+            button.setLabel(((ItemRenderer) getItemRenderer()).render(value));
+        } else {
+            button.setLabel(String.valueOf(value));
+        }
+        if (value == null) {
+            appendChild(selectfield);
+        } else {
+            appendChild(button);
+        }
+    }
 
-	public Object getSelectedValue() {
-		return selectfield.getSelectedValue();
-	}
+    public Object getSelectedValue() {
+        return selectfield.getSelectedValue();
+    }
 
-	public boolean isEmpty() {
-		return selectfield.isEmpty();
-	}
+    public boolean isEmpty() {
+        return selectfield.isEmpty();
+    }
 
-	public void setSelection(List<Object> values, Object value) {
-		selectfield.setSelection(values, value);
-		showSelection(value);
-	}
+    public void setSelection(List<Object> values, Object value) {
+        selectfield.setSelection(values, value);
+        showSelection(value);
+    }
 
-	public void setSelectedValue(Object value) {
-		selectfield.setSelectedValue(value);
-		showSelection(value);
-	}
+    public void setSelectedValue(Object value) {
+        selectfield.setSelectedValue(value);
+        showSelection(value);
+    }
 
-	public void setValues(Object[] values) {
-		selectfield.setValues(values);
-		showSelection(getSelectedValue());
-	}
+    public void setValues(Object[] values) {
+        selectfield.setValues(values);
+        showSelection(getSelectedValue());
+    }
 
-	public void setValues(List<Object> values) {
-		selectfield.setValues(values);
-		showSelection(getSelectedValue());
-	}
+    public void setValues(List<Object> values) {
+        selectfield.setValues(values);
+        showSelection(getSelectedValue());
+    }
 
-	public void setModel(ListModel<Object> model) {
-		selectfield.setModel(model);
-		showSelection(getSelectedValue());
-	}
+    public void setModel(ListModel<Object> model) {
+        selectfield.setModel(model);
+        showSelection(getSelectedValue());
+    }
 
-	public void setModel(Object[] values, Object selected) {
-		selectfield.setModel(values, selected);
-		showSelection(selected);
-	}
+    public void setModel(Object[] values, Object selected) {
+        selectfield.setModel(values, selected);
+        showSelection(selected);
+    }
 
-	public Object[] getValues() {
-		return selectfield.getValues();
-	}
+    public Object[] getValues() {
+        return selectfield.getValues();
+    }
 
-	public void addSelectListener(final EventListener<Event> eventListener) {
-		selectfield.addEventListener(Events.ON_SELECT, eventListener);
-	}
+    public void addSelectListener(final EventListener<Event> eventListener) {
+        selectfield.addEventListener(Events.ON_SELECT, eventListener);
+    }
 
-	public void setDisabled(boolean disabled) {
-		selectfield.setDisabled(disabled);
-		button.setDisabled(disabled);
-	}
+    public void setDisabled(boolean disabled) {
+        selectfield.setDisabled(disabled);
+        button.setDisabled(disabled);
+    }
 
-	public void setItemRenderer(ListitemRenderer<Object> renderer) {
-		selectfield.setItemRenderer(renderer);
-	}
+    public void setItemRenderer(ListitemRenderer<Object> renderer) {
+        selectfield.setItemRenderer(renderer);
+    }
 
-	public ListitemRenderer<Object> getItemRenderer() {
-		return selectfield.getItemRenderer();
-	}
+    public ListitemRenderer<Object> getItemRenderer() {
+        return selectfield.getItemRenderer();
+    }
 }

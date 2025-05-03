@@ -18,42 +18,42 @@ package jease.cms.domain.property;
 
 public class HtmlProperty extends Property {
 
-	private String value;
+    private String value;
 
-	public HtmlProperty() {
-	}
+    public HtmlProperty() {
+    }
 
-	public HtmlProperty(String name) {
-		super(name);
-	}
+    public HtmlProperty(String name) {
+        super(name);
+    }
 
-	public HtmlProperty(String name, String value) {
-		this(name);
-		setValue(value);
-	}
+    public HtmlProperty(String name, String value) {
+        this(name);
+        setValue(value);
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public HtmlProperty copy() {
-		HtmlProperty property = (HtmlProperty) super.copy();
-		property.setValue(getValue());
-		return property;
-	}
+    public HtmlProperty copy() {
+        HtmlProperty property = (HtmlProperty) super.copy();
+        property.setValue(getValue());
+        return property;
+    }
 
-	public void replace(String target, String replacement) {
-		super.replace(target, replacement);
-		if (getValue() != null) {
-			setValue(getValue().replace(target, replacement));
-		}
-	}
+    public void replace(String target, String replacement) {
+        super.replace(target, replacement);
+        if (getValue() != null) {
+            setValue(getValue().replace(target, replacement));
+        }
+    }
 
-	public String toString() {
-		return value;
-	}
+    public String toString() {
+        return value;
+    }
 }

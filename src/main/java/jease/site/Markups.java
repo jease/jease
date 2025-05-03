@@ -34,68 +34,68 @@ import org.eclipse.mylyn.wikitext.twiki.TWikiLanguage;
  */
 public class Markups {
 
-	public static final String CONFLUENCE = "Confluence";
-	public static final String MARKDOWN = "Markdown";
-	public static final String MEDIA_WIKI = "MediaWiki";
-	public static final String TEXTILE = "Textile";
-	public static final String TRAC_WIKI = "TracWiki";
-	public static final String TWIKI = "TWiki";
+    public static final String CONFLUENCE = "Confluence";
+    public static final String MARKDOWN = "Markdown";
+    public static final String MEDIA_WIKI = "MediaWiki";
+    public static final String TEXTILE = "Textile";
+    public static final String TRAC_WIKI = "TracWiki";
+    public static final String TWIKI = "TWiki";
 
-	public static final String LINK_PATTERN = "{0}";
+    public static final String LINK_PATTERN = "{0}";
 
-	public static String render(String content, String language, String pattern) {
-		if (CONFLUENCE.equalsIgnoreCase(language)) {
-			return renderConfluence(content, pattern);
-		}
-		if (MARKDOWN.equalsIgnoreCase(language)) {
-			return renderMarkdown(content, pattern);
-		}
-		if (MEDIA_WIKI.equalsIgnoreCase(language)) {
-			return renderMediaWiki(content, pattern);
-		}
-		if (TEXTILE.equalsIgnoreCase(language)) {
-			return renderTextile(content, pattern);
-		}
-		if (TRAC_WIKI.equalsIgnoreCase(language)) {
-			return renderTracWiki(content, pattern);
-		}
-		if (TWIKI.equalsIgnoreCase(language)) {
-			return renderTWiki(content, pattern);
-		}
-		return content;
-	}
+    public static String render(String content, String language, String pattern) {
+        if (CONFLUENCE.equalsIgnoreCase(language)) {
+            return renderConfluence(content, pattern);
+        }
+        if (MARKDOWN.equalsIgnoreCase(language)) {
+            return renderMarkdown(content, pattern);
+        }
+        if (MEDIA_WIKI.equalsIgnoreCase(language)) {
+            return renderMediaWiki(content, pattern);
+        }
+        if (TEXTILE.equalsIgnoreCase(language)) {
+            return renderTextile(content, pattern);
+        }
+        if (TRAC_WIKI.equalsIgnoreCase(language)) {
+            return renderTracWiki(content, pattern);
+        }
+        if (TWIKI.equalsIgnoreCase(language)) {
+            return renderTWiki(content, pattern);
+        }
+        return content;
+    }
 
-	public static String renderConfluence(String content, String pattern) {
-		return renderMarkup(content, new ConfluenceLanguage(), pattern);
-	}
+    public static String renderConfluence(String content, String pattern) {
+        return renderMarkup(content, new ConfluenceLanguage(), pattern);
+    }
 
-	public static String renderMarkdown(String content, String pattern) {
-		return renderMarkup(content, new MarkdownLanguage(), pattern);
-	}
+    public static String renderMarkdown(String content, String pattern) {
+        return renderMarkup(content, new MarkdownLanguage(), pattern);
+    }
 
-	public static String renderMediaWiki(String content, String pattern) {
-		return renderMarkup(content, new MediaWikiLanguage(), pattern);
-	}
+    public static String renderMediaWiki(String content, String pattern) {
+        return renderMarkup(content, new MediaWikiLanguage(), pattern);
+    }
 
-	public static String renderTextile(String content, String pattern) {
-		return renderMarkup(content, new TextileLanguage(), pattern);
-	}
+    public static String renderTextile(String content, String pattern) {
+        return renderMarkup(content, new TextileLanguage(), pattern);
+    }
 
-	public static String renderTracWiki(String content, String pattern) {
-		return renderMarkup(content, new TracWikiLanguage(), pattern);
-	}
+    public static String renderTracWiki(String content, String pattern) {
+        return renderMarkup(content, new TracWikiLanguage(), pattern);
+    }
 
-	public static String renderTWiki(String content, String pattern) {
-		return renderMarkup(content, new TWikiLanguage(), pattern);
-	}
+    public static String renderTWiki(String content, String pattern) {
+        return renderMarkup(content, new TWikiLanguage(), pattern);
+    }
 
-	private static String renderMarkup(String content, AbstractMarkupLanguage markup, String pattern) {
-		markup.setInternalLinkPattern(pattern);
-		StringWriter writer = new StringWriter();
-		DocumentBuilder builder = new HtmlDocumentBuilder(writer);
-		MarkupParser parser = new MarkupParser(markup, builder);
-		parser.parse(content, false);
-		return writer.toString();
-	}
+    private static String renderMarkup(String content, AbstractMarkupLanguage markup, String pattern) {
+        markup.setInternalLinkPattern(pattern);
+        StringWriter writer = new StringWriter();
+        DocumentBuilder builder = new HtmlDocumentBuilder(writer);
+        MarkupParser parser = new MarkupParser(markup, builder);
+        parser.parse(content, false);
+        return writer.toString();
+    }
 
 }

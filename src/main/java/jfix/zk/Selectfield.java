@@ -20,23 +20,23 @@ import java.util.List;
 
 public class Selectfield extends Listbox {
 
-	public Selectfield() {
-		init();
-	}
+    public Selectfield() {
+        init();
+    }
 
-	public Selectfield(List<Object> data) {
-		super(data);
-		init();
-	}
+    public Selectfield(List<Object> data) {
+        super(data);
+        init();
+    }
 
-	public Selectfield(Object[] data) {
-		super(data);
-		init();
-	}
+    public Selectfield(Object[] data) {
+        super(data);
+        init();
+    }
 
-	protected void init() {
-		setMold("select");
-		setHflex("1");
-		setRows(1);
-	}
+    protected void init() {
+        setMold("select");
+        setHflex("1");
+        setRows(1);
+    }
 }

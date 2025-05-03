@@ -18,36 +18,36 @@ package jease.cms.domain.property;
 
 public class BooleanProperty extends Property {
 
-	private boolean value;
+    private boolean value;
 
-	public BooleanProperty() {
-	}
+    public BooleanProperty() {
+    }
 
-	public BooleanProperty(String name) {
-		super(name);
-	}
+    public BooleanProperty(String name) {
+        super(name);
+    }
 
-	public BooleanProperty(String name, boolean value) {
-		this(name);
-		setValue(value);
-	}
+    public BooleanProperty(String name, boolean value) {
+        this(name);
+        setValue(value);
+    }
 
-	public boolean getValue() {
-		return value;
-	}
+    public boolean getValue() {
+        return value;
+    }
 
-	public void setValue(boolean value) {
-		this.value = value;
-	}
+    public void setValue(boolean value) {
+        this.value = value;
+    }
 
-	public BooleanProperty copy() {
-		BooleanProperty property = (BooleanProperty) super.copy();
-		property.setValue(getValue());
-		return property;
-	}
+    public BooleanProperty copy() {
+        BooleanProperty property = (BooleanProperty) super.copy();
+        property.setValue(getValue());
+        return property;
+    }
 
-	public String toString() {
-		return String.valueOf(value);
-	}
+    public String toString() {
+        return String.valueOf(value);
+    }
 
 }

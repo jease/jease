@@ -23,29 +23,31 @@ import jfix.util.I18N;
 
 public class WikiEditor extends ContentEditor<Wiki> {
 
-	CodeMirror content = new CodeMirror();
+    CodeMirror content = new CodeMirror();
 
-	public WikiEditor() {
-		content.setHeight(getPlainEditorHeight());
-		content.setSyntax("wiki");
-	}
+    public WikiEditor() {
+        content.setHeight(getPlainEditorHeight());
+        content.setSyntax("wiki");
+        compactHeader = true;
+    }
 
-	@Override
+    @Override
     public void init() {
-		add(I18N.get("Content"), content);
-	}
+        add(I18N.get("Content"));
+        add(content);
+    }
 
-	@Override
+    @Override
     public void load() {
-		content.setValue(getNode().getContent());
-	}
+        content.setValue(getNode().getContent());
+    }
 
-	@Override
+    @Override
     public void save() {
-		getNode().setContent(content.getValue());
-	}
+        getNode().setContent(content.getValue());
+    }
 
-	@Override
+    @Override
     public void validate() {
-	}
+    }
 }

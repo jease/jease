@@ -27,34 +27,34 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Textbox;
 
 public class ScriptPropertyEditor extends Div implements
-		PropertyEditor<ScriptProperty> {
+        PropertyEditor<ScriptProperty> {
 
-	private Textbox classarea = new Textbox();
-	private ScriptProperty property;
+    private Textbox classarea = new Textbox();
+    private ScriptProperty property;
 
-	public ScriptPropertyEditor() {
-		classarea.setWidth("100%");
-		Button execute = new Button(I18N.get("Execute"),
-				Images.MediaPlaybackStart);
-		execute.addEventListener(Events.ON_CLICK, $event -> executePerformed());
-		appendChild(classarea);
-		appendChild(execute);
-	}
+    public ScriptPropertyEditor() {
+        classarea.setWidth("100%");
+        Button execute = new Button(I18N.get("Execute"),
+                Images.MediaPlaybackStart);
+        execute.addEventListener(Events.ON_CLICK, $event -> executePerformed());
+        appendChild(classarea);
+        appendChild(execute);
+    }
 
-	public ScriptProperty getProperty() {
-		property.setCode(classarea.getValue());
-		return property;
-	}
+    public ScriptProperty getProperty() {
+        property.setCode(classarea.getValue());
+        return property;
+    }
 
-	public void setProperty(ScriptProperty property) {
-		this.property = property;
-		this.classarea.setValue(property.getCode());
-	}
+    public void setProperty(ScriptProperty property) {
+        this.property = property;
+        this.classarea.setValue(property.getCode());
+    }
 
-	private void executePerformed() {
-		ScriptProperty clone = property.copy();
-		clone.setCode(classarea.getValue());
-		Modal.info(clone.toString());
-	}
+    private void executePerformed() {
+        ScriptProperty clone = property.copy();
+        clone.setCode(classarea.getValue());
+        Modal.info(clone.toString());
+    }
 
 }

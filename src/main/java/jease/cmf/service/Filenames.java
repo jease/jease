@@ -25,36 +25,36 @@ import jfix.util.I18N;
  */
 public class Filenames {
 
-	private static FilenameConverter filenameConverter = new FilenameConverter();
+    private static FilenameConverter filenameConverter = new FilenameConverter();
 
-	public static class FilenameConverter {
-		public String convert(String filename) {
-			if (filename == null) {
-				return null;
-			}
-			for (String codePair : I18N.get("ASCII_CODES").split(",")) {
-				if (codePair.contains(":")) {
-					String[] codePairArray = codePair.split(":");
-					filename = filename.replace(codePairArray[0],
-							codePairArray[1]);
-				}
-			}
-			return Normalizer.normalize(filename, Normalizer.Form.NFD)
-					.replaceAll("[\\p{InCombiningDiacriticalMarks}]+", "")
-					.replaceAll("[^a-zA-Z0-9_/.-]", "-");
-		}
-	}
+    public static class FilenameConverter {
+        public String convert(String filename) {
+            if (filename == null) {
+                return null;
+            }
+            for (String codePair : I18N.get("ASCII_CODES").split(",")) {
+                if (codePair.contains(":")) {
+                    String[] codePairArray = codePair.split(":");
+                    filename = filename.replace(codePairArray[0],
+                            codePairArray[1]);
+                }
+            }
+            return Normalizer.normalize(filename, Normalizer.Form.NFD)
+                    .replaceAll("[\\p{InCombiningDiacriticalMarks}]+", "")
+                    .replaceAll("[^a-zA-Z0-9_/.-]", "-");
+        }
+    }
 
-	public static void setFilenameConverter(FilenameConverter filenameConverter) {
-		Filenames.filenameConverter = filenameConverter;
-	}
+    public static void setFilenameConverter(FilenameConverter filenameConverter) {
+        Filenames.filenameConverter = filenameConverter;
+    }
 
-	/**
-	 * Converts filename into id by replacing all non-ASCII-chars with ASCII
-	 * characters and underscores.
-	 */
-	public static String asId(String filename) {
-		return filenameConverter.convert(filename);
-	}
+    /**
+     * Converts filename into id by replacing all non-ASCII-chars with ASCII
+     * characters and underscores.
+     */
+    public static String asId(String filename) {
+        return filenameConverter.convert(filename);
+    }
 
 }

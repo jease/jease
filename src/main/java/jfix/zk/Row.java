@@ -20,12 +20,12 @@ import org.zkoss.zk.ui.Component;
 
 public class Row extends org.zkoss.zul.Hbox {
 
-	public Row() {
-		setHflex("1");
-	}
+    public Row() {
+        setHflex("1");
+    }
 
-	public Row(Component... children) {
-		super(children);
-		setHflex("1");
-	}
+    public Row(Component... children) {
+        super(children);
+        setHflex("1");
+    }
 }

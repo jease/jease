@@ -31,41 +31,41 @@ import org.zkoss.zul.Label;
 
 public abstract class AbstractNodeBrowser extends Div {
 
-	private Tree tree;
-	private Grid grid;
+    private Tree tree;
+    private Grid grid;
 
-	public AbstractNodeBrowser() {
-		init();
-	}
+    public AbstractNodeBrowser() {
+        init();
+    }
 
-	protected abstract Button newNodeSelector(Node node);
+    protected abstract Button newNodeSelector(Node node);
 
-	protected void init() {
-		tree = new NodeBrowserNavigationTree();
-		tree.addEventListener(Events.ON_SELECT, $event -> updateContent());
-		grid = new Grid();
-		appendChild(new Row(tree, grid));
-		updateContent();
-	}
+    protected void init() {
+        tree = new NodeBrowserNavigationTree();
+        tree.addEventListener(Events.ON_SELECT, $event -> updateContent());
+        grid = new Grid();
+        appendChild(new Row(tree, grid));
+        updateContent();
+    }
 
-	private void updateContent() {
-		grid.getRows().getChildren().clear();
-		for (Node node : JeaseSession.getFilter().apply(
-				((Node) tree.getSelectedValue()).getChildren())) {
-			Popup popup = newNodePreview(node);
-			Button button = newNodeSelector(node);
-			button.setHflex("1");
-			button.setTooltip(popup);
-			grid.add(new Div(button, popup));
-		}
-	}
+    private void updateContent() {
+        grid.getRows().getChildren().clear();
+        for (Node node : JeaseSession.getFilter().apply(
+                ((Node) tree.getSelectedValue()).getChildren())) {
+            Popup popup = newNodePreview(node);
+            Button button = newNodeSelector(node);
+            button.setHflex("1");
+            button.setTooltip(popup);
+            grid.add(new Div(button, popup));
+        }
+    }
 
-	private Popup newNodePreview(Node node) {
-		String id = node.getId();
-		if (id.endsWith(".jpg") || id.endsWith(".png") || id.endsWith(".gif")) {
-			return new Popup(new Image(node.getPath()));
-		} else {
-			return new Popup(new Label(node.getPath()));
-		}
-	}
+    private Popup newNodePreview(Node node) {
+        String id = node.getId();
+        if (id.endsWith(".jpg") || id.endsWith(".png") || id.endsWith(".gif")) {
+            return new Popup(new Image(node.getPath()));
+        } else {
+            return new Popup(new Label(node.getPath()));
+        }
+    }
 }

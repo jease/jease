@@ -27,38 +27,38 @@ import org.apache.tika.exception.TikaException;
  */
 public class Document extends File {
 
-	private String text;
-	private long lastTextUpdate;
+    private String text;
+    private long lastTextUpdate;
 
-	public Document() {
-	}
+    public Document() {
+    }
 
-	public StringBuilder getFulltext() {
-		return super.getFulltext().append("\n").append(getText());
-	}
+    public StringBuilder getFulltext() {
+        return super.getFulltext().append("\n").append(getText());
+    }
 
-	public String getText() {
-		if (text == null || lastTextUpdate < getFile().lastModified()) {
-			try {
-				Tika tika = new Tika();
-				tika.setMaxStringLength(-1);
-				text = tika.parseToString(getFile()).replaceAll("\n\\s*\n+",
-						"\n\n");
-			} catch (TikaException e) {
-				text = "";
-			} catch (IOException e) {
-				text = "";
-			} finally {
-				lastTextUpdate = getFile().lastModified();
-			}
-		}
-		return text;
-	}
+    public String getText() {
+        if (text == null || lastTextUpdate < getFile().lastModified()) {
+            try {
+                Tika tika = new Tika();
+                tika.setMaxStringLength(-1);
+                text = tika.parseToString(getFile()).replaceAll("\n\\s*\n+",
+                        "\n\n");
+            } catch (TikaException e) {
+                text = "";
+            } catch (IOException e) {
+                text = "";
+            } finally {
+                lastTextUpdate = getFile().lastModified();
+            }
+        }
+        return text;
+    }
 
-	public Document copy(boolean recursive) {
-		Document document = (Document) super.copy(recursive);
-		// Trigger conversion to plain text
-		document.getText();
-		return document;
-	}
+    public Document copy(boolean recursive) {
+        Document document = (Document) super.copy(recursive);
+        // Trigger conversion to plain text
+        document.getText();
+        return document;
+    }
 }

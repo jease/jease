@@ -28,36 +28,36 @@ import jfix.util.Reflections;
  */
 public class Passwords {
 
-	/**
-	 * Default implementation for password validation. A valid password needs to
-	 * contain at least 8 characters with mixed case letters, digits and
-	 * symbols.
-	 */
-	public static class PasswordValidator implements Function<String, Boolean> {
-		public Boolean apply(String password) {
-			return Crypts.isStrongPassword(password);
-		}
-	}
+    /**
+     * Default implementation for password validation. A valid password needs to
+     * contain at least 8 characters with mixed case letters, digits and
+     * symbols.
+     */
+    public static class PasswordValidator implements Function<String, Boolean> {
+        public Boolean apply(String password) {
+            return Crypts.isStrongPassword(password);
+        }
+    }
 
-	/**
-	 * Returns true if given password is valid.
-	 * 
-	 * If JEASE_PASSWORD_VALIDATOR is found in the Registry, it will be used. It
-	 * must be a class which implements
-	 * <code>java.util.function.Function<String, Boolean></code>.
-	 * 
-	 * Otherwise a generic password validation is used: the password must
-	 * contain 8 characters (mixed case letters, digits and symbols).
-	 */
-	public static boolean isValid(String password) {
-		String passwordValidator = Registry
-				.getParameter(Names.JEASE_PASSWORD_VALIDATOR);
-		if (passwordValidator != null) {
-			return ((Function<String, Boolean>) Reflections
-					.newInstance(passwordValidator)).apply(password);
-		} else {
-			return new PasswordValidator().apply(password);
-		}
-	}
+    /**
+     * Returns true if given password is valid.
+     * 
+     * If JEASE_PASSWORD_VALIDATOR is found in the Registry, it will be used. It
+     * must be a class which implements
+     * <code>java.util.function.Function<String, Boolean></code>.
+     * 
+     * Otherwise a generic password validation is used: the password must
+     * contain 8 characters (mixed case letters, digits and symbols).
+     */
+    public static boolean isValid(String password) {
+        String passwordValidator = Registry
+                .getParameter(Names.JEASE_PASSWORD_VALIDATOR);
+        if (passwordValidator != null) {
+            return ((Function<String, Boolean>) Reflections
+                    .newInstance(passwordValidator)).apply(password);
+        } else {
+            return new PasswordValidator().apply(password);
+        }
+    }
 
 }

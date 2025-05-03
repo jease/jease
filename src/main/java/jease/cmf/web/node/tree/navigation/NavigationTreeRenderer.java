@@ -28,28 +28,28 @@ import org.zkoss.zul.TreeitemRenderer;
 
 public class NavigationTreeRenderer implements TreeitemRenderer<Node> {
 
-	private EventListener<Event> dropListener;
+    private EventListener<Event> dropListener;
 
-	public NavigationTreeRenderer() {
-	}
+    public NavigationTreeRenderer() {
+    }
 
-	public NavigationTreeRenderer(EventListener<Event> dropListener) {
-		this.dropListener = dropListener;
-	}
+    public NavigationTreeRenderer(EventListener<Event> dropListener) {
+        this.dropListener = dropListener;
+    }
 
-	public void render(Treeitem treeitem, Node node, int index)
-			throws Exception {
-		treeitem.setLabel(node.getId());
-		treeitem.setTooltiptext(node.getType());
-		treeitem.setImage(JeaseSession.getConfig().getIcon(node));
-		treeitem.setValue(node);
-		if (dropListener != null) {
-			if (!ArrayUtils.contains(JeaseSession.getRoots(), node)) {
-				treeitem.getTreerow().setDraggable(Node.class.getSimpleName());
-			}
-			treeitem.getTreerow().setDroppable(Node.class.getSimpleName());
-			treeitem.getTreerow()
-					.addEventListener(Events.ON_DROP, dropListener);
-		}
-	}
+    public void render(Treeitem treeitem, Node node, int index)
+            throws Exception {
+        treeitem.setLabel(node.getId());
+        treeitem.setTooltiptext(node.getType());
+        treeitem.setImage(JeaseSession.getConfig().getIcon(node));
+        treeitem.setValue(node);
+        if (dropListener != null) {
+            if (!ArrayUtils.contains(JeaseSession.getRoots(), node)) {
+                treeitem.getTreerow().setDraggable(Node.class.getSimpleName());
+            }
+            treeitem.getTreerow().setDroppable(Node.class.getSimpleName());
+            treeitem.getTreerow()
+                    .addEventListener(Events.ON_DROP, dropListener);
+        }
+    }
 }

@@ -22,37 +22,37 @@ import jease.cmf.web.node.NodeFilter;
 
 public class JeaseSession extends jfix.zk.Sessions {
 
-	public static void setRoots(Node[] nodes) {
-		set(Names.JEASE_SESSION_ROOTS, nodes);
-	}
+    public static void setRoots(Node[] nodes) {
+        set(Names.JEASE_SESSION_ROOTS, nodes);
+    }
 
-	public static Node[] getRoots() {
-		return (Node[]) get(Names.JEASE_SESSION_ROOTS);
-	}
+    public static Node[] getRoots() {
+        return (Node[]) get(Names.JEASE_SESSION_ROOTS);
+    }
 
-	public static void setContainer(Node node) {
-		set(Names.JEASE_SESSION_CONTAINER,
-				node == null ? null : (node.isContainer() ? node : node
-						.getParent()));
-	}
+    public static void setContainer(Node node) {
+        set(Names.JEASE_SESSION_CONTAINER,
+                node == null ? null : (node.isContainer() ? node : node
+                        .getParent()));
+    }
 
-	public static Node getContainer() {
-		return (Node) get(Names.JEASE_SESSION_CONTAINER);
-	}
+    public static Node getContainer() {
+        return (Node) get(Names.JEASE_SESSION_CONTAINER);
+    }
 
-	public static void setConfig(JeaseConfig jeaseConfig) {
-		set(Names.JEASE_SESSION_CONFIG, jeaseConfig);
-	}
+    public static void setConfig(JeaseConfig jeaseConfig) {
+        set(Names.JEASE_SESSION_CONFIG, jeaseConfig);
+    }
 
-	public static JeaseConfig getConfig() {
-		return (JeaseConfig) get(Names.JEASE_SESSION_CONFIG);
-	}
+    public static JeaseConfig getConfig() {
+        return (JeaseConfig) get(Names.JEASE_SESSION_CONFIG);
+    }
 
-	public static NodeFilter getFilter() {
-		return (NodeFilter) get(Names.JEASE_SESSION_FILTER);
-	}
+    public static NodeFilter getFilter() {
+        return (NodeFilter) get(Names.JEASE_SESSION_FILTER);
+    }
 
-	public static void setFilter(NodeFilter nodeFilter) {
-		set(Names.JEASE_SESSION_FILTER, nodeFilter);
-	}
+    public static void setFilter(NodeFilter nodeFilter) {
+        set(Names.JEASE_SESSION_FILTER, nodeFilter);
+    }
 }

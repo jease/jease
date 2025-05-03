@@ -39,93 +39,93 @@ import java.util.Arrays;
 
 public class Editor extends ObjectEditor<User> {
 
-	Textbox name = new Textbox();
-	Textbox username = new Textbox();
-	Textbox password = new Textbox();
-	Textbox passwordRepeat = new Textbox();
-	Textbox email = new Textbox();
-	Selectfield role = new Selectfield();
-	Picklist roots = new Picklist((o1, o2) -> {return ((Content) o1).getPath().compareTo(((Content) o2).getPath());}, true);
-	Checkbox disabled = new Checkbox();
-	String passwordExample = I18N.get("Example") + ": " + Crypts.generatePassword(8);
+    Textbox name = new Textbox();
+    Textbox username = new Textbox();
+    Textbox password = new Textbox();
+    Textbox passwordRepeat = new Textbox();
+    Textbox email = new Textbox();
+    Selectfield role = new Selectfield();
+    Picklist roots = new Picklist((o1, o2) -> {return ((Content) o1).getPath().compareTo(((Content) o2).getPath());}, true);
+    Checkbox disabled = new Checkbox();
+    String passwordExample = I18N.get("Example") + ": " + Crypts.generatePassword(8);
 
-	public Editor() {
-		roots.setItemRenderer(new ItemRenderer() {
-			public String render(Object value) {
-				return ((Content) value).getPath();
-			}
-		});
-		if (!isAdministrationMode()) {
-			hideButtons();
-			getSaveButton().setVisible(true);
-		}
-		password.setType("password");
-		passwordRepeat.setType("password");
-	}
+    public Editor() {
+        roots.setItemRenderer(new ItemRenderer() {
+            public String render(Object value) {
+                return ((Content) value).getPath();
+            }
+        });
+        if (!isAdministrationMode()) {
+            hideButtons();
+            getSaveButton().setVisible(true);
+        }
+        password.setType("password");
+        passwordRepeat.setType("password");
+    }
 
-	public void init() {
-		add(I18N.get("Name"), name);
-		add(I18N.get("Username"), username);
-		add(I18N.get("Password"), password, passwordExample);
-		add(I18N.get("Password_Repeat"), passwordRepeat, passwordExample);
-		add(I18N.get("Email"), email);
-		if (isAdministrationMode()) {
-			add(I18N.get("Role"), role);
-			add(I18N.get("Roots"), roots);
-			add(I18N.get("Disabled"), disabled);
-		}
-	}
+    public void init() {
+        add(I18N.get("Name"), name);
+        add(I18N.get("Username"), username);
+        add(I18N.get("Password"), password, passwordExample);
+        add(I18N.get("Password_Repeat"), passwordRepeat, passwordExample);
+        add(I18N.get("Email"), email);
+        if (isAdministrationMode()) {
+            add(I18N.get("Role"), role);
+            add(I18N.get("Roots"), roots);
+            add(I18N.get("Disabled"), disabled);
+        }
+    }
 
-	public void load() {
-		name.setText(getObject().getName());
-		username.setText(getObject().getLogin());
-		password.setText(getObject().getPassword());
-		passwordRepeat.setText(getObject().getPassword());
-		email.setText(getObject().getEmail());
-		if (isAdministrationMode()) {
-			role.setSelection(Natural.sort(Database.query(Role.class)), getObject().getRole());
-			roots.setSelection(Contents.getContainer(), getObject().getRoots());
-			disabled.setChecked(getObject().isDisabled());
-			disabled.setDisabled(getSessionUser() == getObject());
-			getDeleteButton().setVisible(getSessionUser() != getObject());
-		}
-	}
+    public void load() {
+        name.setText(getObject().getName());
+        username.setText(getObject().getLogin());
+        password.setText(getObject().getPassword());
+        passwordRepeat.setText(getObject().getPassword());
+        email.setText(getObject().getEmail());
+        if (isAdministrationMode()) {
+            role.setSelection(Natural.sort(Database.query(Role.class)), getObject().getRole());
+            roots.setSelection(Contents.getContainer(), getObject().getRoots());
+            disabled.setChecked(getObject().isDisabled());
+            disabled.setDisabled(getSessionUser() == getObject());
+            getDeleteButton().setVisible(getSessionUser() != getObject());
+        }
+    }
 
-	public void save() {
-		getObject().setName(name.getText());
-		getObject().setLogin(username.getText());
-		getObject().setPassword(password.getText());
-		getObject().setEmail(email.getText());
-		if (isAdministrationMode()) {
-			getObject().setRole((Role) role.getSelectedValue());
-			getObject().setRoots(Arrays.asList(roots.getSelected()).toArray(new Content[roots.getSelected().length]));
-			getObject().setDisabled(disabled.isChecked());
-		}
-		Database.save(getObject());
-	}
+    public void save() {
+        getObject().setName(name.getText());
+        getObject().setLogin(username.getText());
+        getObject().setPassword(password.getText());
+        getObject().setEmail(email.getText());
+        if (isAdministrationMode()) {
+            getObject().setRole((Role) role.getSelectedValue());
+            getObject().setRoots(Arrays.asList(roots.getSelected()).toArray(new Content[roots.getSelected().length]));
+            getObject().setDisabled(disabled.isChecked());
+        }
+        Database.save(getObject());
+    }
 
-	public void delete() {
-		Users.replace(getObject(), getSessionUser());
-		Database.delete(getObject());
-	}
+    public void delete() {
+        Users.replace(getObject(), getSessionUser());
+        Database.delete(getObject());
+    }
 
-	public void validate() {
-		validate(StringUtils.isEmpty(name.getValue()), I18N.get("Name_is_required"));
-		validate(StringUtils.isEmpty(username.getValue()), I18N.get("Login_is_required"));
-		validate(StringUtils.isEmpty(password.getValue()), I18N.get("Password_is_required"));
-		validate(!password.getText().equals(passwordRepeat.getText()), I18N.get("Passwords_do_not_match"));
-		validate(!(StringUtils.isBlank(password.getText())
-				|| StringUtils.equals(password.getText(), getObject().getPassword())
-				|| Passwords.isValid(password.getText())), I18N.get("Password_is_not_reliable") + "\n" + passwordExample);
-		validate(!Users.isIdentityUnique(getObject(), username.getValue(),
-				email.getValue()), I18N.get("Identity_is_not_unique"));
-	}
+    public void validate() {
+        validate(StringUtils.isEmpty(name.getValue()), I18N.get("Name_is_required"));
+        validate(StringUtils.isEmpty(username.getValue()), I18N.get("Login_is_required"));
+        validate(StringUtils.isEmpty(password.getValue()), I18N.get("Password_is_required"));
+        validate(!password.getText().equals(passwordRepeat.getText()), I18N.get("Passwords_do_not_match"));
+        validate(!(StringUtils.isBlank(password.getText())
+                || StringUtils.equals(password.getText(), getObject().getPassword())
+                || Passwords.isValid(password.getText())), I18N.get("Password_is_not_reliable") + "\n" + passwordExample);
+        validate(!Users.isIdentityUnique(getObject(), username.getValue(),
+                email.getValue()), I18N.get("Identity_is_not_unique"));
+    }
 
-	protected boolean isAdministrationMode() {
-		return getSessionUser() != null && getSessionUser().isAdministrator();
-	}
+    protected boolean isAdministrationMode() {
+        return getSessionUser() != null && getSessionUser().isAdministrator();
+    }
 
-	protected User getSessionUser() {
-		return JeaseSession.get(User.class);
-	}
+    protected User getSessionUser() {
+        return JeaseSession.get(User.class);
+    }
 }

@@ -18,23 +18,23 @@ package jfix.zk;
 
 public class Radiogroup extends org.zkoss.zul.Radiogroup {
 
-	public Radiogroup() {
-	}
+    public Radiogroup() {
+    }
 
-	public Radiogroup(org.zkoss.zul.Radio... radios) {
-		for (org.zkoss.zul.Radio radio : radios) {
-			appendChild(radio);
-		}
-	}
+    public Radiogroup(org.zkoss.zul.Radio... radios) {
+        for (org.zkoss.zul.Radio radio : radios) {
+            appendChild(radio);
+        }
+    }
 
-	public Radiogroup doVertical() {
-		setOrient("vertical");
-		return this;
-	}
+    public Radiogroup doVertical() {
+        setOrient("vertical");
+        return this;
+    }
 
-	public Radiogroup doHorizontal() {
-		setOrient("horizontal");
-		return this;
-	}
+    public Radiogroup doHorizontal() {
+        setOrient("horizontal");
+        return this;
+    }
 
 }

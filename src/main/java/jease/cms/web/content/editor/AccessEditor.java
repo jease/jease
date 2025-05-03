@@ -25,50 +25,50 @@ import org.zkoss.zul.Textbox;
 
 public class AccessEditor extends ContentEditor<Access> {
 
-	Textbox login = new Textbox();
-	Textbox password = new Textbox();
-	Textbox passwordRepeat = new Textbox();
-	Datebox start = new Datebox();
-	Datebox stop = new Datebox();
+    Textbox login = new Textbox();
+    Textbox password = new Textbox();
+    Textbox passwordRepeat = new Textbox();
+    Datebox start = new Datebox();
+    Datebox stop = new Datebox();
 
-	public AccessEditor() {
-		password.setType("password");
-		passwordRepeat.setType("password");
-		start.setLenient(false);
-		start.setFormat("short+short");
-		stop.setLenient(false);
-		stop.setFormat("short+short");
-	}
+    public AccessEditor() {
+        password.setType("password");
+        passwordRepeat.setType("password");
+        start.setLenient(false);
+        start.setFormat("short+short");
+        stop.setLenient(false);
+        stop.setFormat("short+short");
+    }
 
-	public void init() {
-		add(I18N.get("Login"), login);
-		add(I18N.get("Password"), password);
-		add(I18N.get("Password_Repeat"), passwordRepeat);
-		add(I18N.get("Start"), start);
-		add(I18N.get("Stop"), stop);
-	}
+    public void init() {
+        add(I18N.get("Login"), login);
+        add(I18N.get("Password"), password);
+        add(I18N.get("Password_Repeat"), passwordRepeat);
+        add(I18N.get("Start"), start);
+        add(I18N.get("Stop"), stop);
+    }
 
-	public void load() {
-		login.setText(getNode().getLogin());
-		password.setText(getNode().getPassword());
-		passwordRepeat.setText(getNode().getPassword());
-		start.setValue(getNode().getStart());
-		stop.setValue(getNode().getStop());
-	}
+    public void load() {
+        login.setText(getNode().getLogin());
+        password.setText(getNode().getPassword());
+        passwordRepeat.setText(getNode().getPassword());
+        start.setValue(getNode().getStart());
+        stop.setValue(getNode().getStop());
+    }
 
-	public void save() {
-		getNode().setLogin(login.getText());
-		getNode().setPassword(password.getText());
-		getNode().setStart(start.getValue());
-		getNode().setStop(stop.getValue());
-	}
+    public void save() {
+        getNode().setLogin(login.getText());
+        getNode().setPassword(password.getText());
+        getNode().setStart(start.getValue());
+        getNode().setStop(stop.getValue());
+    }
 
-	public void validate() {
-		validate(StringUtils.isEmpty(login.getValue()),
-				I18N.get("Login_is_required"));
-		validate(StringUtils.isEmpty(password.getValue()),
-				I18N.get("Password_is_required"));
-		validate(!password.getText().equals(passwordRepeat.getText()),
-				I18N.get("Passwords_do_not_match"));
-	}
+    public void validate() {
+        validate(StringUtils.isEmpty(login.getValue()),
+                I18N.get("Login_is_required"));
+        validate(StringUtils.isEmpty(password.getValue()),
+                I18N.get("Password_is_required"));
+        validate(!password.getText().equals(passwordRepeat.getText()),
+                I18N.get("Passwords_do_not_match"));
+    }
 }

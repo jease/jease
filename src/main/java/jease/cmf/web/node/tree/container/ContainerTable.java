@@ -44,86 +44,86 @@ import org.zkoss.zul.Treerow;
 
 public class ContainerTable extends NodeTable {
 
-	private Radio singleSelect = new Radio(I18N.get("Edit"));
-	private Radio multiSelect = new Radio(I18N.get("Select"));
+    private Radio singleSelect = new Radio(I18N.get("Edit"));
+    private Radio multiSelect = new Radio(I18N.get("Select"));
 
-	public ContainerTable() {
-		initTableModel();
-		initItemRenderer();
-		initModeControl();
-	}
+    public ContainerTable() {
+        initTableModel();
+        initItemRenderer();
+        initModeControl();
+    }
 
-	public void onSelect(Object obj) {
-		if (!getListbox().isMultiple()) {
-			super.onSelect(obj);
-		}
-	}
+    public void onSelect(Object obj) {
+        if (!getListbox().isMultiple()) {
+            super.onSelect(obj);
+        }
+    }
 
-	private void initTableModel() {
-		init(new ContainerTableModel(JeaseSession.getConfig().newTableModel()));
-	}
+    private void initTableModel() {
+        init(new ContainerTableModel(JeaseSession.getConfig().newTableModel()));
+    }
 
-	private void initItemRenderer() {
-		ListitemRenderer<Node> treeTableRenderer = new ContainerTableRenderer(
-				getListbox().getItemRenderer(),
-				$event -> dropPerformed((DropEvent) $event));
-		getListbox().setItemRenderer(treeTableRenderer);
-	}
+    private void initItemRenderer() {
+        ListitemRenderer<Node> treeTableRenderer = new ContainerTableRenderer(
+                getListbox().getItemRenderer(),
+                $event -> dropPerformed((DropEvent) $event));
+        getListbox().setItemRenderer(treeTableRenderer);
+    }
 
-	private void initModeControl() {
-		singleSelect.setChecked(true);
-		singleSelect.addEventListener(Events.ON_CHECK, $event -> {
-			getListbox().setPageSize(getListbox().getPageSize() / 10);
-			getListbox().setMultiple(false);
-			getListbox().setCheckmark(false);
-		});
-		multiSelect.addEventListener(Events.ON_CHECK, $event -> {
-			getListbox().setPageSize(getListbox().getPageSize() * 10);
-			getListbox().setMultiple(true);
-			getListbox().setCheckmark(true);
-		});
-		appendChild(new Radiogroup(singleSelect, multiSelect));
-	}
+    private void initModeControl() {
+        singleSelect.setChecked(true);
+        singleSelect.addEventListener(Events.ON_CHECK, $event -> {
+            getListbox().setPageSize(getListbox().getPageSize() / 10);
+            getListbox().setMultiple(false);
+            getListbox().setCheckmark(false);
+        });
+        multiSelect.addEventListener(Events.ON_CHECK, $event -> {
+            getListbox().setPageSize(getListbox().getPageSize() * 10);
+            getListbox().setMultiple(true);
+            getListbox().setCheckmark(true);
+        });
+        appendChild(new Radiogroup(singleSelect, multiSelect));
+    }
 
-	private void dropPerformed(DropEvent dropEvent) {
-		getListbox().renderAll();
+    private void dropPerformed(DropEvent dropEvent) {
+        getListbox().renderAll();
 
-		Component target = dropEvent.getTarget();
-		Component dragged = dropEvent.getDragged();
+        Component target = dropEvent.getTarget();
+        Component dragged = dropEvent.getDragged();
 
-		if (dragged instanceof Listitem) {
-			Set<Listitem> itemSet = new HashSet<>(getListbox()
-					.getSelectedItems());
-			itemSet.add((Listitem) dragged);
-			List<Listitem> itemList = new ArrayList<>(getListbox().getItems());
-			itemList.retainAll(itemSet);
-			for (Listitem listitem : itemList) {
-				if (listitem != target) {
-					listitem.getParent().removeChild(listitem);
-					target.getParent().insertBefore(listitem, target);
-				}
-			}
-			getListbox().clearSelection();
-		}
+        if (dragged instanceof Listitem) {
+            Set<Listitem> itemSet = new HashSet<>(getListbox()
+                    .getSelectedItems());
+            itemSet.add((Listitem) dragged);
+            List<Listitem> itemList = new ArrayList<>(getListbox().getItems());
+            itemList.retainAll(itemSet);
+            for (Listitem listitem : itemList) {
+                if (listitem != target) {
+                    listitem.getParent().removeChild(listitem);
+                    target.getParent().insertBefore(listitem, target);
+                }
+            }
+            getListbox().clearSelection();
+        }
 
-		if (dragged instanceof Treerow) {
-			Treeitem treeitem = (Treeitem) dragged.getParent();
-			Listitem listitem = new Listitem("");
-			listitem.setValue(treeitem.getValue());
-			dragged.getParent().removeChild(dragged);
-			target.getParent().insertBefore(listitem, target);
-		}
+        if (dragged instanceof Treerow) {
+            Treeitem treeitem = (Treeitem) dragged.getParent();
+            Listitem listitem = new Listitem("");
+            listitem.setValue(treeitem.getValue());
+            dragged.getParent().removeChild(dragged);
+            target.getParent().insertBefore(listitem, target);
+        }
 
-		try {
-			Nodes.append(
-					JeaseSession.getContainer(),
-					Arrays.stream(getListbox().getValues()).toArray(
-							$size -> (Node[]) Array.newInstance(Node.class,
-									$size)));
-		} catch (NodeException e) {
-			Modal.error(e.getMessage());
-		} finally {
-			fireChangeEvent();
-		}
-	}
+        try {
+            Nodes.append(
+                    JeaseSession.getContainer(),
+                    Arrays.stream(getListbox().getValues()).toArray(
+                            $size -> (Node[]) Array.newInstance(Node.class,
+                                    $size)));
+        } catch (NodeException e) {
+            Modal.error(e.getMessage());
+        } finally {
+            fireChangeEvent();
+        }
+    }
 }

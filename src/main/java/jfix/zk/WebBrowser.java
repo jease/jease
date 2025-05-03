@@ -25,51 +25,51 @@ import org.zkoss.zul.Toolbarbutton;
 
 public class WebBrowser extends Window {
 
-	private static final String VIEW_WIDTH = WebBrowser.class.getName() + ".Width";
-	private static final String VIEW_HEIGHT = WebBrowser.class.getName() + ".Height";
-	private static final String DEFAULT_HEIGHT = "95%";
+    private static final String VIEW_WIDTH = WebBrowser.class.getName() + ".Width";
+    private static final String VIEW_HEIGHT = WebBrowser.class.getName() + ".Height";
+    private static final String DEFAULT_HEIGHT = "95%";
 
-	public WebBrowser(String url) {
-		setTitle(url + " : ");
-		setPosition("center");
-		setSizable(true);
-		doHighlighted();
-		addEventListener(Events.ON_SIZE,
-				event -> resize(((SizeEvent) event).getWidth(), ((SizeEvent) event).getHeight()));
+    public WebBrowser(String url) {
+        setTitle(url + " : ");
+        setPosition("center");
+        setSizable(true);
+        doHighlighted();
+        addEventListener(Events.ON_SIZE,
+                event -> resize(((SizeEvent) event).getWidth(), ((SizeEvent) event).getHeight()));
 
-		Button fullscreen = new Toolbarbutton("", Images.ApplicationsInternet);
-		fullscreen.setHref(url);
-		fullscreen.setTarget("_blank");
+        Button fullscreen = new Toolbarbutton("", Images.ApplicationsInternet);
+        fullscreen.setHref(url);
+        fullscreen.setTarget("_blank");
 
-		Caption caption = new Caption();
-		caption.appendChild(newResizeButton("XS", "360px", DEFAULT_HEIGHT));
-		caption.appendChild(newResizeButton("SM", "640px", DEFAULT_HEIGHT));
-		caption.appendChild(newResizeButton("MD", "768px", DEFAULT_HEIGHT));
-		caption.appendChild(newResizeButton("LG", "1024px", DEFAULT_HEIGHT));
-		caption.appendChild(newResizeButton("XL", "1200px", DEFAULT_HEIGHT));
-		caption.appendChild(fullscreen);
+        Caption caption = new Caption();
+        caption.appendChild(newResizeButton("XS", "360px", DEFAULT_HEIGHT));
+        caption.appendChild(newResizeButton("SM", "640px", DEFAULT_HEIGHT));
+        caption.appendChild(newResizeButton("MD", "768px", DEFAULT_HEIGHT));
+        caption.appendChild(newResizeButton("LG", "1024px", DEFAULT_HEIGHT));
+        caption.appendChild(newResizeButton("XL", "1200px", DEFAULT_HEIGHT));
+        caption.appendChild(fullscreen);
 
-		appendChild(caption);
+        appendChild(caption);
 
-		Iframe iframe = new Iframe();
-		iframe.setWidth("100%");
-		iframe.setHeight("100%");
-		iframe.setSrc(url + ((url.contains("?") ? "&" : "?") + System.currentTimeMillis()));
-		appendChild(iframe);
+        Iframe iframe = new Iframe();
+        iframe.setWidth("100%");
+        iframe.setHeight("100%");
+        iframe.setSrc(url + ((url.contains("?") ? "&" : "?") + System.currentTimeMillis()));
+        appendChild(iframe);
 
-		resize(Sessions.get(VIEW_WIDTH, DEFAULT_HEIGHT), Sessions.get(VIEW_HEIGHT, DEFAULT_HEIGHT));
-	}
+        resize(Sessions.get(VIEW_WIDTH, DEFAULT_HEIGHT), Sessions.get(VIEW_HEIGHT, DEFAULT_HEIGHT));
+    }
 
-	private void resize(String width, String height) {
-		Sessions.set(VIEW_WIDTH, width);
-		Sessions.set(VIEW_HEIGHT, height);
-		setWidth(width);
-		setHeight(height);
-	}
+    private void resize(String width, String height) {
+        Sessions.set(VIEW_WIDTH, width);
+        Sessions.set(VIEW_HEIGHT, height);
+        setWidth(width);
+        setHeight(height);
+    }
 
-	private Button newResizeButton(String label, String width, String height) {
-		Button button = new Toolbarbutton(label);
-		button.addEventListener(Events.ON_CLICK, event -> resize(width, height));
-		return button;
-	}
+    private Button newResizeButton(String label, String width, String height) {
+        Button button = new Toolbarbutton(label);
+        button.addEventListener(Events.ON_CLICK, event -> resize(width, height));
+        return button;
+    }
 }

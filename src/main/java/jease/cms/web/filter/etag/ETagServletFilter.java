@@ -6,18 +6,20 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.dynatrace.hash4j.hashing.Hashing;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class ETagServletFilter implements Filter {
 
@@ -27,6 +29,7 @@ public class ETagServletFilter implements Filter {
     private static final String IF_NONE_MATCH_HEADER = "If-None-Match";
     private static final String IF_MODIFIED_SINCE_HEADER = "If-Modified-Since";
     private static final String LAST_MODIFIED_HEADER = "Last-Modified";
+    private static final String CACHE_CONTROL_HEADER = "Cache-Control";
 
     private String contentTypeFilter;
     private Pattern contentTypePattern;
@@ -90,13 +93,19 @@ public class ETagServletFilter implements Filter {
                 return;
             }
         }
-        String resourcePath = getResourcePathFromRequest(req);
-        String token = ETagHashUtils.getMd5Digest(bytes, resourcePath);
+        //String resourcePath = getResourcePathFromRequest(req);
+        //String token = ETagHashUtils.getMd5Digest(bytes, resourcePath);
+        long bytesHash = Hashing.xxh3_64().hashBytesToLong(bytes);
+        String token = Long.toUnsignedString(bytesHash, 16);
         if (isEmpty(token)) {
             writeResp(bytes, resp);
             return;
         }
         resp.setHeader(ETAG_HEADER, token);
+        String s = req.getServletContext().getInitParameter("jease.etag.max.age");
+        if (s == null || s.isEmpty()) s = "900";
+        resp.setHeader(CACHE_CONTROL_HEADER, "max-age=" + s);
+
         String previousToken = req.getHeader(IF_NONE_MATCH_HEADER);
         if (previousToken != null && previousToken.equals(token)) { // compare previous token with current one
             LOGGER.info(ETAG_HEADER + " match: returning '304 Not Modified'");

@@ -21,7 +21,7 @@ import jfix.zk.ObjectTable;
 
 public class Table extends ObjectTable<Role> {
 
-	public Table() {
-		init(new TableModel(), new Editor());
-	}
+    public Table() {
+        init(new TableModel(), new Editor());
+    }
 }

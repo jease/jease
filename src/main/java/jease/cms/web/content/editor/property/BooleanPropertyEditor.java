@@ -21,17 +21,17 @@ import jease.cms.domain.property.BooleanProperty;
 import org.zkoss.zul.Checkbox;
 
 public class BooleanPropertyEditor extends Checkbox implements
-		PropertyEditor<BooleanProperty> {
+        PropertyEditor<BooleanProperty> {
 
-	private BooleanProperty property;
+    private BooleanProperty property;
 
-	public BooleanProperty getProperty() {
-		property.setValue(isChecked());
-		return property;
-	}
+    public BooleanProperty getProperty() {
+        property.setValue(isChecked());
+        return property;
+    }
 
-	public void setProperty(BooleanProperty property) {
-		this.property = property;
-		setChecked(property.getValue());
-	}
+    public void setProperty(BooleanProperty property) {
+        this.property = property;
+        setChecked(property.getValue());
+    }
 }

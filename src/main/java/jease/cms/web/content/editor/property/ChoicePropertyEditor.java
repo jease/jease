@@ -29,47 +29,47 @@ import jfix.zk.Scrollbox;
 import jfix.zk.Selectfield;
 
 public class ChoicePropertyEditor extends Container implements
-		PropertyEditor<ChoiceProperty> {
+        PropertyEditor<ChoiceProperty> {
 
-	private boolean setupProvider;
-	private ChoiceProperty property;
-	private Selectfield providerSelection = new Selectfield();
-	private Checklist valueSelection = new Checklist();
+    private boolean setupProvider;
+    private ChoiceProperty property;
+    private Selectfield providerSelection = new Selectfield();
+    private Checklist valueSelection = new Checklist();
 
-	public ChoicePropertyEditor() {
-	}
+    public ChoicePropertyEditor() {
+    }
 
-	public ChoiceProperty getProperty() {
-		if (setupProvider) {
-			property.setProvider((String) providerSelection.getSelectedValue());
-		} else {
-			property.setValue(Arrays.stream(valueSelection.getSelected())
-					.toArray(
-							size -> (String[]) Array.newInstance(String.class,
-									size)));
-		}
-		return property;
-	}
+    public ChoiceProperty getProperty() {
+        if (setupProvider) {
+            property.setProvider((String) providerSelection.getSelectedValue());
+        } else {
+            property.setValue(Arrays.stream(valueSelection.getSelected())
+                    .toArray(
+                            size -> (String[]) Array.newInstance(String.class,
+                                    size)));
+        }
+        return property;
+    }
 
-	public void setProperty(ChoiceProperty property) {
-		this.property = property;
-		if (property.getProvider() != null) {
-			Property provider = Properties.getByPath(property.getProvider());
-			if (provider instanceof Provider) {
-				String[] choices = ((Provider) provider).getValue();
-				valueSelection.setSelection(choices, property.getValue());
-				valueSelection.orientVertical();
-				if (choices.length > 15) {
-					setChild(new Scrollbox(valueSelection));
-				} else {
-					setChild(valueSelection);
-				}
-				return;
-			}
-		}
-		setupProvider = true;
-		providerSelection.setValues(Properties.getProviderPaths());
-		setChild(providerSelection);
-	}
+    public void setProperty(ChoiceProperty property) {
+        this.property = property;
+        if (property.getProvider() != null) {
+            Property provider = Properties.getByPath(property.getProvider());
+            if (provider instanceof Provider) {
+                String[] choices = ((Provider) provider).getValue();
+                valueSelection.setSelection(choices, property.getValue());
+                valueSelection.orientVertical();
+                if (choices.length > 15) {
+                    setChild(new Scrollbox(valueSelection));
+                } else {
+                    setChild(valueSelection);
+                }
+                return;
+            }
+        }
+        setupProvider = true;
+        providerSelection.setValues(Properties.getProviderPaths());
+        setChild(providerSelection);
+    }
 
 }

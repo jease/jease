@@ -37,156 +37,156 @@ import org.apache.commons.lang3.ArrayUtils;
  */
 public class Nodes {
 
-	private static Node root = queryRoot();
+    private static Node root = queryRoot();
 
-	private static Supplier<Map<String, Node>> nodesByPath = ConcurrentHashMap::new;
+    private static Supplier<Map<String, Node>> nodesByPath = ConcurrentHashMap::new;
 
-	/**
-	 * Returns the root node derived by a database-query.
-	 */
-	public static Node queryRoot() {
-		return Database.queryUnique(Node.class,
-				$node -> $node.getParent() == null);
-	}
+    /**
+     * Returns the root node derived by a database-query.
+     */
+    public static Node queryRoot() {
+        return Database.queryUnique(Node.class,
+                $node -> $node.getParent() == null);
+    }
 
-	/**
-	 * Sets the root-node for a repository. This method should only be called
-	 * once to initialize a repository.
-	 */
-	public static void setRoot(Node rootNode) {
-		root = rootNode;
-	}
+    /**
+     * Sets the root-node for a repository. This method should only be called
+     * once to initialize a repository.
+     */
+    public static void setRoot(Node rootNode) {
+        root = rootNode;
+    }
 
-	/**
-	 * Returns the root-node of the repository. A root node is the only node in
-	 * a repository which doesn't have a parent.
-	 */
-	public static Node getRoot() {
-		return root;
-	}
+    /**
+     * Returns the root-node of the repository. A root node is the only node in
+     * a repository which doesn't have a parent.
+     */
+    public static Node getRoot() {
+        return root;
+    }
 
-	/**
-	 * Returns the system time (milliseconds) of the last change in database.
-	 */
-	public static long queryLastChange() {
-		return Database.ext().getTimestamp();
-	}
+    /**
+     * Returns the system time (milliseconds) of the last change in database.
+     */
+    public static long queryLastChange() {
+        return Database.ext().getTimestamp();
+    }
 
-	/**
-	 * Returns true if given node is root or attached to a parent.
-	 */
-	public static boolean isRooted(Node node) {
-		return node == root || ArrayUtils.contains(node.getParents(), root);
-	}
+    /**
+     * Returns true if given node is root or attached to a parent.
+     */
+    public static boolean isRooted(Node node) {
+        return node == root || ArrayUtils.contains(node.getParents(), root);
+    }
 
-	/**
-	 * Returns node from root by given path.
-	 */
-	public static Node getByPath(String path) {
-		if (root == null) {
-			return null;
-		}
-		Map<String, Node> cache = Database.query(nodesByPath);
-		if (!cache.containsKey(path)) {
-			Node node = root.getChild(path);
-			if (node != null) {
-				cache.put(path, node);
-			}
-		}
-		return cache.get(path);
-	}
+    /**
+     * Returns node from root by given path.
+     */
+    public static Node getByPath(String path) {
+        if (root == null) {
+            return null;
+        }
+        Map<String, Node> cache = Database.query(nodesByPath);
+        if (!cache.containsKey(path)) {
+            Node node = root.getChild(path);
+            if (node != null) {
+                cache.put(path, node);
+            }
+        }
+        return cache.get(path);
+    }
 
-	/**
-	 * Appends given child to given node and saves changes to database.
-	 * 
-	 * Please note: appending a child to a node automatically removes the child
-	 * from the former container.
-	 */
-	public static void append(Node node, Node child) throws NodeException {
-		node.validateChild(child, child.getId());
-		node.appendChild(child);
-		Nodes.save(node);
-	}
+    /**
+     * Appends given child to given node and saves changes to database.
+     * 
+     * Please note: appending a child to a node automatically removes the child
+     * from the former container.
+     */
+    public static void append(Node node, Node child) throws NodeException {
+        node.validateChild(child, child.getId());
+        node.appendChild(child);
+        Nodes.save(node);
+    }
 
-	/**
-	 * Appends given children to given node and save changes to database.
-	 * 
-	 * Please note: appending a child to a node automatically removes the child
-	 * from the former container.
-	 */
-	public static void append(Node node, Node[] children) throws NodeException {
-		for (Node child : children) {
-			node.validateChild(child, child.getId());
-		}
-		node.appendChildren(children);
-		Nodes.save(node);
-	}
+    /**
+     * Appends given children to given node and save changes to database.
+     * 
+     * Please note: appending a child to a node automatically removes the child
+     * from the former container.
+     */
+    public static void append(Node node, Node[] children) throws NodeException {
+        for (Node child : children) {
+            node.validateChild(child, child.getId());
+        }
+        node.appendChildren(children);
+        Nodes.save(node);
+    }
 
-	/**
-	 * Saves all changes of a given node to database.
-	 */
-	public static void save(Node node) {
-		Processor.save.accept(node);
-	}
+    /**
+     * Saves all changes of a given node to database.
+     */
+    public static void save(Node node) {
+        Processor.save.accept(node);
+    }
 
-	/**
-	 * Deletes given node from repository.
-	 */
-	public static void delete(Node node) {
-		Processor.delete.accept(node);
-	}
+    /**
+     * Deletes given node from repository.
+     */
+    public static void delete(Node node) {
+        Processor.delete.accept(node);
+    }
 
-	/**
-	 * Inner class to customize save & delete operations. Calls to save / delete
-	 * are delegated to Processor. Set a customized processor for save / delete
-	 * / traverse for logging, workflow, etc.pp.
-	 */
-	public static class Processor {
+    /**
+     * Inner class to customize save & delete operations. Calls to save / delete
+     * are delegated to Processor. Set a customized processor for save / delete
+     * / traverse for logging, workflow, etc.pp.
+     */
+    public static class Processor {
 
-		private static Save save = new Save();
-		private static Delete delete = new Delete();
-		private static Traverse traverse = new Traverse();
+        private static Save save = new Save();
+        private static Delete delete = new Delete();
+        private static Traverse traverse = new Traverse();
 
-		public static class Save implements Consumer<Node> {
-			public void accept(final Node node) {
-				Database.write(() -> {
-					node.markChanged();
-					root.processChangedNodes(traverse);
-				});
-			}
-		}
+        public static class Save implements Consumer<Node> {
+            public void accept(final Node node) {
+                Database.write(() -> {
+                    node.markChanged();
+                    root.processChangedNodes(traverse);
+                });
+            }
+        }
 
-		public static class Delete implements Consumer<Node> {
-			public void accept(final Node node) {
-				Database.write(() -> {
-					node.detach();
-					root.processChangedNodes(traverse);
-				});
-			}
-		}
+        public static class Delete implements Consumer<Node> {
+            public void accept(final Node node) {
+                Database.write(() -> {
+                    node.detach();
+                    root.processChangedNodes(traverse);
+                });
+            }
+        }
 
-		public static class Traverse implements Consumer<Node> {
-			public void accept(Node node) {
-				if (isRooted(node)) {
-					Database.save(node);
-				} else {
-					Database.ext().deleteDeliberately(node);
-				}
-			}
-		}
+        public static class Traverse implements Consumer<Node> {
+            public void accept(Node node) {
+                if (isRooted(node)) {
+                    Database.save(node);
+                } else {
+                    Database.ext().deleteDeliberately(node);
+                }
+            }
+        }
 
-		public static void set(Save processor) {
-			save = processor;
-		}
+        public static void set(Save processor) {
+            save = processor;
+        }
 
-		public static void set(Delete processor) {
-			delete = processor;
-		}
+        public static void set(Delete processor) {
+            delete = processor;
+        }
 
-		public static void set(Traverse processor) {
-			traverse = processor;
-		}
+        public static void set(Traverse processor) {
+            traverse = processor;
+        }
 
-	}
+    }
 
 }

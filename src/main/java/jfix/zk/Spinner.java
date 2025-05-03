@@ -18,13 +18,13 @@ package jfix.zk;
 
 public class Spinner extends org.zkoss.zul.Spinner {
 
-	public Spinner() {
-		setConstraint("min 0,no negative");
-	}
+    public Spinner() {
+        setConstraint("min 0,no negative");
+    }
 
-	public Spinner(int value) {
-		super(value);
-		setConstraint("min 0,no negative");
-	}
+    public Spinner(int value) {
+        super(value);
+        setConstraint("min 0,no negative");
+    }
 
 }

@@ -4,6 +4,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
+<%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
 <%@page import="org.apache.solr.common.SolrDocument"%>
 <%@page import="org.apache.solr.common.SolrDocumentList"%>
 <%@page import="java.util.Map"%>
@@ -56,7 +57,7 @@
         <span ><%=String.format("%tF", item.d)%></span><br/>
         <hr/>
         <%}%>
-        <%@include file="/site/service/pager/SolrPagination.jsp" %>
+        <%@include file="/site/service/pager/SolrPagination.jspf" %>
     </div>
     <div class="col-md-4">
         <div class="card">

@@ -31,51 +31,51 @@ import org.zkoss.zul.Toolbarbutton;
 
 public class Linkfield extends Div {
 
-	Textbox url = new Textbox();
-	Button browse = new Button();
-	Button preview = new Toolbarbutton();
+    Textbox url = new Textbox();
+    Button browse = new Button();
+    Button preview = new Toolbarbutton();
 
-	public Linkfield() {
-		browse.setTooltiptext(I18N.get("Browser"));
-		browse.setImage(Images.UserHome);
-		browse.addEventListener(Events.ON_CLICK, $event -> browsePerformed());
-		preview.setTooltiptext(I18N.get("Open"));
-		preview.setImage(Images.InternetWebBrowser);
-		preview.setWidth("24px");
-		preview.addEventListener(Events.ON_CLICK, $event -> {
-			if (StringUtils.isNotEmpty(url.getValue())) {
-				getRoot().appendChild(new WebBrowser(url.getText()));
-			}
-		});
+    public Linkfield() {
+        browse.setTooltiptext(I18N.get("Browser"));
+        browse.setImage(Images.UserHome);
+        browse.addEventListener(Events.ON_CLICK, $event -> browsePerformed());
+        preview.setTooltiptext(I18N.get("Open"));
+        preview.setImage(Images.InternetWebBrowser);
+        preview.setWidth("24px");
+        preview.addEventListener(Events.ON_CLICK, $event -> {
+            if (StringUtils.isNotEmpty(url.getValue())) {
+                getRoot().appendChild(new WebBrowser(url.getText()));
+            }
+        });
 
-		appendChild(url);
-		appendChild(browse);
-		appendChild(preview);
-	}
+        appendChild(url);
+        appendChild(browse);
+        appendChild(preview);
+    }
 
-	private void browsePerformed() {
-		String path = url.getValue();
-		if (path.startsWith("./~")) {
-			path = path.substring(3);
-		}
-		final NodeBrowserWindow nodeBrowserWindow = new NodeBrowserWindow(
-				Nodes.getByPath(path));
-		nodeBrowserWindow.setTitle(I18N.get("Browser"));
-		nodeBrowserWindow.addEventListener(Events.ON_CLOSE, $event -> {
-			if (nodeBrowserWindow.getSelectedNode() != null) {
-				url.setText("./~"
-						+ nodeBrowserWindow.getSelectedNode().getPath());
-			}
-		});
-		getRoot().appendChild(nodeBrowserWindow);
-	}
+    private void browsePerformed() {
+        String path = url.getValue();
+        if (path.startsWith("./~")) {
+            path = path.substring(3);
+        }
+        final NodeBrowserWindow nodeBrowserWindow = new NodeBrowserWindow(
+                Nodes.getByPath(path));
+        nodeBrowserWindow.setTitle(I18N.get("Browser"));
+        nodeBrowserWindow.addEventListener(Events.ON_CLOSE, $event -> {
+            if (nodeBrowserWindow.getSelectedNode() != null) {
+                url.setText("./~"
+                        + nodeBrowserWindow.getSelectedNode().getPath());
+            }
+        });
+        getRoot().appendChild(nodeBrowserWindow);
+    }
 
-	public void setValue(String link) {
-		this.url.setValue(link);
-	}
+    public void setValue(String link) {
+        this.url.setValue(link);
+    }
 
-	public String getValue() {
-		return this.url.getValue();
-	}
+    public String getValue() {
+        return this.url.getValue();
+    }
 
 }

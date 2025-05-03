@@ -25,32 +25,32 @@ import org.zkoss.zul.Listheader;
 
 public class ObjectTableHeader<E> extends Listhead {
 
-	public ObjectTableHeader(final ObjectTableModel<E> model) {
-		String[] cols = model.getColumns();
-		for (int i = 0; i < cols.length; i++) {
-			final int col = i;
-			Listheader listheader = new Listheader(cols[col]);
-			listheader.setHflex("" + model.getProportions()[col]);
-			if (model.isSortable()) {
-				listheader.setSortAscending(new Comparator<E>() {
-					public int compare(E o1, E o2) {
-						return compareValues(model.getCheckedValue(o1, col),
-								model.getCheckedValue(o2, col));
-					}
-				});
-				listheader.setSortDescending(new Comparator<E>() {
-					public int compare(E o1, E o2) {
-						return -compareValues(model.getCheckedValue(o1, col),
-								model.getCheckedValue(o2, col));
-					}
-				});
-			}
-			appendChild(listheader);
-		}
-	}
+    public ObjectTableHeader(final ObjectTableModel<E> model) {
+        String[] cols = model.getColumns();
+        for (int i = 0; i < cols.length; i++) {
+            final int col = i;
+            Listheader listheader = new Listheader(cols[col]);
+            listheader.setHflex("" + model.getProportions()[col]);
+            if (model.isSortable()) {
+                listheader.setSortAscending(new Comparator<E>() {
+                    public int compare(E o1, E o2) {
+                        return compareValues(model.getCheckedValue(o1, col),
+                                model.getCheckedValue(o2, col));
+                    }
+                });
+                listheader.setSortDescending(new Comparator<E>() {
+                    public int compare(E o1, E o2) {
+                        return -compareValues(model.getCheckedValue(o1, col),
+                                model.getCheckedValue(o2, col));
+                    }
+                });
+            }
+            appendChild(listheader);
+        }
+    }
 
-	public int compareValues(Object o1, Object o2) {
-		return Natural.compare(ObjectConverter.convert(o1),
-				ObjectConverter.convert(o2));
-	}
+    public int compareValues(Object o1, Object o2) {
+        return Natural.compare(ObjectConverter.convert(o1),
+                ObjectConverter.convert(o2));
+    }
 }

@@ -23,32 +23,32 @@ import org.zkoss.zul.Toolbarbutton;
 
 public class Expander extends Column {
 
-	private Component component;
-	private Button button;
+    private Component component;
+    private Button button;
 
-	public Expander(String caption, Component component, boolean open) {
-		this.component = component;
-		this.button = new Toolbarbutton(caption);
-		this.button.addEventListener(Events.ON_CLICK, event -> toogle());
-		appendChild(button);
-		setOpen(open);
-	}
+    public Expander(String caption, Component component, boolean open) {
+        this.component = component;
+        this.button = new Toolbarbutton(caption);
+        this.button.addEventListener(Events.ON_CLICK, event -> toogle());
+        appendChild(button);
+        setOpen(open);
+    }
 
-	public void setOpen(boolean open) {
-		if (open) {
-			appendChild(component);
-			button.setImage(Images.ExpandableOn);
-		} else {
-			removeChild(component);
-			button.setImage(Images.ExpandableOff);
-		}
-	}
+    public void setOpen(boolean open) {
+        if (open) {
+            appendChild(component);
+            button.setImage(Images.ExpandableOn);
+        } else {
+            removeChild(component);
+            button.setImage(Images.ExpandableOff);
+        }
+    }
 
-	public boolean isOpen() {
-		return getChildren().contains(component);
-	}
+    public boolean isOpen() {
+        return getChildren().contains(component);
+    }
 
-	public void toogle() {
-		setOpen(!isOpen());
-	}
+    public void toogle() {
+        setOpen(!isOpen());
+    }
 }

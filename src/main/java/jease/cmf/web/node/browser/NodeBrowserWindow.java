@@ -27,35 +27,35 @@ import org.zkoss.zul.Toolbarbutton;
 
 public class NodeBrowserWindow extends Window {
 
-	private Node selectedNode;
+    private Node selectedNode;
 
-	public NodeBrowserWindow(Node container) {
-		Node currentContainer = JeaseSession.getContainer();
-		if (container != null) {
-			JeaseSession.setContainer(container);
-		}
-		appendChild(new NodeBrowser());
-		JeaseSession.setContainer(currentContainer);
-		doModal();
-	}
+    public NodeBrowserWindow(Node container) {
+        Node currentContainer = JeaseSession.getContainer();
+        if (container != null) {
+            JeaseSession.setContainer(container);
+        }
+        appendChild(new NodeBrowser());
+        JeaseSession.setContainer(currentContainer);
+        doModal();
+    }
 
-	public Node getSelectedNode() {
-		return selectedNode;
-	}
+    public Node getSelectedNode() {
+        return selectedNode;
+    }
 
-	public class NodeBrowser extends AbstractNodeBrowser {
-		protected Button newNodeSelector(final Node node) {
-			Button button = new Toolbarbutton(node.getId(), JeaseSession
-					.getConfig().getIcon(node));
-			button.addEventListener(Events.ON_CLICK,
-					$event -> nodeSelectPerformed(node));
-			return button;
-		}
-	}
+    public class NodeBrowser extends AbstractNodeBrowser {
+        protected Button newNodeSelector(final Node node) {
+            Button button = new Toolbarbutton(node.getId(), JeaseSession
+                    .getConfig().getIcon(node));
+            button.addEventListener(Events.ON_CLICK,
+                    $event -> nodeSelectPerformed(node));
+            return button;
+        }
+    }
 
-	private void nodeSelectPerformed(Node node) {
-		selectedNode = node;
-		Events.sendEvent(this, new Event(Events.ON_CLOSE));
-	}
+    private void nodeSelectPerformed(Node node) {
+        selectedNode = node;
+        Events.sendEvent(this, new Event(Events.ON_CLOSE));
+    }
 
 }

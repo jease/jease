@@ -23,19 +23,19 @@ import org.zkoss.zul.ListModelList;
 
 public class Combobox extends org.zkoss.zul.Combobox {
 
-	public Combobox() {
-		setHflex("1");
-	}
+    public Combobox() {
+        setHflex("1");
+    }
 
-	public void setSelection(List<?> values, String selected) {
-		setModel(new ListModelList<Object>(values));
-		if (selected != null) {
-			setValue(selected);
-		}
-	}
+    public void setSelection(List<?> values, String selected) {
+        setModel(new ListModelList<Object>(values));
+        if (selected != null) {
+            setValue(selected);
+        }
+    }
 
-	public boolean isEmpty() {
-		return StringUtils.isBlank(getValue());
-	}
+    public boolean isEmpty() {
+        return StringUtils.isBlank(getValue());
+    }
 
 }

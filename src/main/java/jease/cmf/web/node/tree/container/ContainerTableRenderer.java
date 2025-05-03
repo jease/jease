@@ -26,23 +26,23 @@ import org.zkoss.zul.ListitemRenderer;
 
 public class ContainerTableRenderer implements ListitemRenderer<Node> {
 
-	private ListitemRenderer<Node> itemRenderer;
-	private EventListener<Event> dropListener;
+    private ListitemRenderer<Node> itemRenderer;
+    private EventListener<Event> dropListener;
 
-	public ContainerTableRenderer(ListitemRenderer<Node> itemRenderer,
-			EventListener<Event> dropListener) {
-		this.itemRenderer = itemRenderer;
-		this.dropListener = dropListener;
-	}
+    public ContainerTableRenderer(ListitemRenderer<Node> itemRenderer,
+            EventListener<Event> dropListener) {
+        this.itemRenderer = itemRenderer;
+        this.dropListener = dropListener;
+    }
 
-	public void render(Listitem listitem, Node value, int index)
-			throws Exception {
-		itemRenderer.render(listitem, value, index);
-		if (value != null) {
-			listitem.setDraggable(Node.class.getSimpleName());
-		}
-		listitem.setDroppable(Node.class.getSimpleName());
-		listitem.addEventListener(Events.ON_DROP, dropListener);
-	}
+    public void render(Listitem listitem, Node value, int index)
+            throws Exception {
+        itemRenderer.render(listitem, value, index);
+        if (value != null) {
+            listitem.setDraggable(Node.class.getSimpleName());
+        }
+        listitem.setDroppable(Node.class.getSimpleName());
+        listitem.addEventListener(Events.ON_DROP, dropListener);
+    }
 
 }

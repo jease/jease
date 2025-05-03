@@ -25,35 +25,35 @@ import org.zkoss.zul.Window;
 
 public abstract class LoginWindow extends Div {
 
-	Login login = new Login() {
-		public boolean loginPerformed(String user, String password) {
-			doLogin(user, password);
-			if (login.getParent().getParent() != null) {
-				Modal.error(I18N.get("Login_is_not_valid"));
-				return false;
-			} else {
-				return true;
-			}
-		}
-	};
+    Login login = new Login() {
+        public boolean loginPerformed(String user, String password) {
+            doLogin(user, password);
+            if (login.getParent().getParent() != null) {
+                Modal.error(I18N.get("Login_is_not_valid"));
+                return false;
+            } else {
+                return true;
+            }
+        }
+    };
 
-	public abstract void doLogin(String user, String password);
+    public abstract void doLogin(String user, String password);
 
-	public void show(Component comp) {
-		Components.replace(login.getParent(), comp);
-	}
+    public void show(Component comp) {
+        Components.replace(login.getParent(), comp);
+    }
 
-	public LoginWindow() {
-		Window window = new Window(getTitle(), "normal", false);
-		window.setPosition("center");
-		window.setWidth("300px");
-		window.doOverlapped();
-		window.appendChild(login);
-		appendChild(window);
-	}
+    public LoginWindow() {
+        Window window = new Window(getTitle(), "normal", false);
+        window.setPosition("center");
+        window.setWidth("300px");
+        window.doOverlapped();
+        window.appendChild(login);
+        appendChild(window);
+    }
 
-	public String getTitle() {
-		return I18N.get("Login");
-	}
+    public String getTitle() {
+        return I18N.get("Login");
+    }
 
 }

@@ -19,11 +19,11 @@ import org.zkoss.zk.ui.Component;
 
 public class Container extends Div {
 
-	public Container() {
-	}
+    public Container() {
+    }
 
-	public void setChild(Component child) {
-		getChildren().clear();
-		appendChild(child);
-	}
+    public void setChild(Component child) {
+        getChildren().clear();
+        appendChild(child);
+    }
 }

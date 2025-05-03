@@ -28,37 +28,37 @@ import org.zkoss.zul.Label;
 
 public class TableModel extends ObjectTableModel<Parameter> {
 
-	public Parameter newObject() {
-		return new Parameter();
-	}
+    public Parameter newObject() {
+        return new Parameter();
+    }
 
-	public String[] getColumns() {
-		return new String[] { I18N.get("Key"), I18N.get("Value") };
-	}
+    public String[] getColumns() {
+        return new String[] { I18N.get("Key"), I18N.get("Value") };
+    }
 
-	public int[] getProportions() {
-		return new int[] { 1, 1 };
-	}
+    public int[] getProportions() {
+        return new int[] { 1, 1 };
+    }
 
-	public List<Parameter> getList() {
-		return Database.query(Parameter.class);
-	}
+    public List<Parameter> getList() {
+        return Database.query(Parameter.class);
+    }
 
-	public Object getValue(Parameter parameter, int column) {
-		switch (column) {
-		case 0:
-			return parameter.getKey();
-		case 1:
-			String value = parameter.getValue();
-			int index = value.indexOf("\n");
-			if (index != -1) {
-				return new View<String>(value, new Label(value.substring(0,
-						index) + " [...]"));
-			} else {
-				return parameter.getValue();
-			}
-		}
-		return "";
-	}
+    public Object getValue(Parameter parameter, int column) {
+        switch (column) {
+        case 0:
+            return parameter.getKey();
+        case 1:
+            String value = parameter.getValue();
+            int index = value.indexOf("\n");
+            if (index != -1) {
+                return new View<String>(value, new Label(value.substring(0,
+                        index) + " [...]"));
+            } else {
+                return parameter.getValue();
+            }
+        }
+        return "";
+    }
 
 }

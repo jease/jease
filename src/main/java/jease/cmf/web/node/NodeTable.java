@@ -27,52 +27,52 @@ import org.zkoss.zk.ui.event.Events;
 
 public class NodeTable extends ObjectTable<Node> {
 
-	private NodeConstructor nodeConstructor;
+    private NodeConstructor nodeConstructor;
 
-	public NodeTable() {
-	}
+    public NodeTable() {
+    }
 
-	public void refresh() {
-		if (nodeConstructor == null) {
-			initNodeConstructor();
-		}
-		nodeConstructor.refresh();
-		super.refresh();
-	}
+    public void refresh() {
+        if (nodeConstructor == null) {
+            initNodeConstructor();
+        }
+        nodeConstructor.refresh();
+        super.refresh();
+    }
 
-	private void initNodeConstructor() {
-		nodeConstructor = new NodeConstructor();
-		nodeConstructor.addEventListener(Events.ON_SELECT,
-				$event -> onSelect(nodeConstructor.getSelectedNode()));
-		getCreateButton().setVisible(true);
-		getCreateButton().getParent().insertBefore(nodeConstructor,
-				getCreateButton());
-	}
+    private void initNodeConstructor() {
+        nodeConstructor = new NodeConstructor();
+        nodeConstructor.addEventListener(Events.ON_SELECT,
+                $event -> onSelect(nodeConstructor.getSelectedNode()));
+        getCreateButton().setVisible(true);
+        getCreateButton().getParent().insertBefore(nodeConstructor,
+                getCreateButton());
+    }
 
-	public void onSelect(Object obj) {
-		if (obj == null) {
-			obj = nodeConstructor.getSelectedNode();
-		}
-		if (obj instanceof Node) {
-			final Node node = (Node) obj;
-			ObjectEditor<? extends Node> nodeEditor = JeaseSession.getConfig()
-					.newEditor(node);
-			nodeEditor.addEventListener(
-					Events.ON_CHANGE,
-					$event -> {
-						fireChangeEvent();
-						int index = getElements().indexOf(node);
-						if (index != -1) {
-							getListbox().setActivePage(
-									index / getListbox().getPageSize());
-						}
-					});
-			setEditor(nodeEditor);
-			super.onSelect(obj);
-		}
-	}
+    public void onSelect(Object obj) {
+        if (obj == null) {
+            obj = nodeConstructor.getSelectedNode();
+        }
+        if (obj instanceof Node) {
+            final Node node = (Node) obj;
+            ObjectEditor<? extends Node> nodeEditor = JeaseSession.getConfig()
+                    .newEditor(node);
+            nodeEditor.addEventListener(
+                    Events.ON_CHANGE,
+                    $event -> {
+                        fireChangeEvent();
+                        int index = getElements().indexOf(node);
+                        if (index != -1) {
+                            getListbox().setActivePage(
+                                    index / getListbox().getPageSize());
+                        }
+                    });
+            setEditor(nodeEditor);
+            super.onSelect(obj);
+        }
+    }
 
-	protected void fireChangeEvent() {
-		Events.sendEvent(new Event(Events.ON_CHANGE, this));
-	}
+    protected void fireChangeEvent() {
+        Events.sendEvent(new Event(Events.ON_CHANGE, this));
+    }
 }

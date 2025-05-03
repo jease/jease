@@ -25,20 +25,20 @@ import org.zkoss.zul.ext.TreeOpenableModel;
 
 public class NodeBrowserNavigationTree extends Tree {
 
-	public NodeBrowserNavigationTree() {
-		setWidth("300px");
-		setModel(new NavigationTreeModel(JeaseSession.getRoots(),
-				JeaseSession.getFilter()));
-		((TreeOpenableModel) getModel()).addOpenPath(new int[] { 0 });
-		setItemRenderer(new NavigationTreeRenderer());
-		refresh();
-	}
+    public NodeBrowserNavigationTree() {
+        setWidth("300px");
+        setModel(new NavigationTreeModel(JeaseSession.getRoots(),
+                JeaseSession.getFilter()));
+        ((TreeOpenableModel) getModel()).addOpenPath(new int[] { 0 });
+        setItemRenderer(new NavigationTreeRenderer());
+        refresh();
+    }
 
-	public Object getSelectedValue() {
-		Object value = super.getSelectedValue();
-		if (value == null) {
-			value = JeaseSession.getContainer();
-		}
-		return value;
-	}
+    public Object getSelectedValue() {
+        Object value = super.getSelectedValue();
+        if (value == null) {
+            value = JeaseSession.getContainer();
+        }
+        return value;
+    }
 }
